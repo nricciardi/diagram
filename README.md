@@ -5,34 +5,111 @@
 [Progetto rita nome provvisorio, ben accette proposte]
 
 
-## Idea Diagrammi
+Nomi papabili con cui rinominare repo e progetto:
 
-TODO: portare alla rita degli esempi di diagramma, sta attendo prima di darci l'OK
+- Diagramify
+- Draw2Diagram
+
+
+## Buone abitudini per non smadonnare
+
+[Se avete altri suggerimenti per questa sezione ditelo, almeno evitiamo un cacatone di progetto]
+
+- Inserire sempre i **link delle fonti** (per la presentazione finale)
+- Tener traccia di ciò che si fa con **file readme** o simili (markdown possibilmente, almeno si possono leggere da Github)
+- **Commit in inglese**
+- **Commenti (nel codice) in inglese**, esclusi TODO
+- Nomi dei file, quando possibile, separati da trattino `-`
+
+La documentazione possiamo tenerla in italiano, poi la facciamo tradurre a Chat
+
+
+## Overview idea
+
+**Goal**: Ottenere una rappresentazione digitale di un diagramma scritto a mano.
+
+Il sistema si compone di diverse parti:
+
+- **Preprocessor** (no rete): preprocessa le immagini, e.g. raddrizza le immagini (*geometria*)
+- **Classifier** (rete): classifica i diagrammi restituendo la tipologia (e.g. `graph-diagram`, `flow-chart`)
+- **Extractor** (ibrido): entità astratta per *estrarre* una rappresentazione agnostica di *una specifica tipologia* di diagramma da un'immagine (e.g. matrice del grafo per i `graph-diagram`)
+- **Transducer** (no rete): traduce (staticamente) i concetti agnostici in uno *specifico* linguaggio di markup di rappresentazione dei diagrammi (e.g. Mermaid)
+- **Compiler** (no rete): compila il linguaggio di markup nell'effettivo diagramma
+- **Orchestrator** (no rete): gestisce il flusso e i componenti
+
+> [!IMPORTANT]
+> *Perché non una rete (e.g. transformer) che produce subito il linguaggio di markup?* Non abbiamo i dataset e potrebbe produrre linguaggio non funzionante.
+
+![Overview](doc/assets/images/overview.png)
+
+La rete classificatrice è utilizzata per individuare quale modulo estrattivo utilizzare.
+
+Ogni extractor è **specializzato** su una sola tipologia di digramma.
+
+Per esempio, dato come input un'immagine di un grafo:
+
+![Input](dataset/source/fa/test/writer018_fa_001.png)
+
+Il classificatore produce `graph-diagram`, dunque l'orchestratore porta all'extractor per i diagrammi l'immagine di input.
+
+L'extractor dei diagrammi produce la matrice del grafo, dove per righe e per colonne si hanno i **nodi** e i **fuori nodi** (per gestire frecce che partono dal nulla). Il valore è un interno non negativo che indica il numero di connessioni (la posizione nella matrice indica provenienza e destinazione). Inoltre, produce le datastruct di lookup per notazioni sulle frecce e testo dei nodi.
+
+L'orchestratore porta in input dei trasduttori (in base input dell'utente oppure tutti) della relativa tipologia di diagramma, i quali produrranno le traduzioni in linguaggio di lookup.
+Per esempio, in Mermaid si potrebbe avere del testo del tipo:
+
+```
+graph LR;
+    q0--> q0 & q1
+    q1--> q2
+    q2--> q2 & q1
+"""
+```
+
+Infine, il linguaggio di markup è compilato con il relativo compilatore.
+
+
+
+
+## Dataset
+
+Source: https://github.com/bernhardschaefer/handwritten-diagram-datasets
+
+Ci sono tre cartelle:
+
+- **source**: contiene i dataset presi da Internet
+- **classifier**: contiene il dataset finale da usare per allenare il classificatore
+- **extractor**: contiene le sotto-cartelle per le varie sotto-reti
+
+### Graph diagram: dataset/source/fa
+
+[dataset/source/fa](dataset/source/fa/) contiene solo **graph diagram**
+
+Link dataset: https://cmp.felk.cvut.cz/~breslmar/finite_automata/
+
+Ci sono 300 diagrammi disegnati da 25 persone.
+
+I diagrammi sono tutti **annotati** con **bounding box**, *anche per il testo*.
+
+*Categorie:*
+
+![Categorie](doc/assets/images/categories-fa.png)
+
+*Esempio di annotazione*
+
+![Esempio annotazione](doc/assets/images/annotation-fa.png)
+
+
+
+
+
+
+
+## Possibili linguaggi di markup
 
 - PlantUML
 - Mermaid
 - D2lang
 
-Bisogna capire se si riesce a fare una cosa del tipo "scrivimelo nel linguaggio che più si adatta" oppure dobbiamo fissarlo a priori (e.g. train su Mermaid).
+Tool interessante: **kroki** (https://kroki.io/) 
 
-**EDIT:**
-
-Repo con dataset diagrammi: https://github.com/bernhardschaefer/handwritten-diagram-datasets
-
-Flow dell'applicazione:
-
-1. Prende un'immagine di input
-2. Tramite un classificatore, viene restituito il **tipo** di diagramma
-3. Dato il tipo di diagramma, viene mandato in input alla rete **associata al tipo**
-4. Ogni tipologia di rete restituisce un output "agnostico" rispetto al linguaggio da compilare
-5. Ogni linguaggio compilabile ha il suo "parser" da output della rete a input per il compilatore (e.g. Mermaid)
-
-_Esempio diagramma dei grafi:_
-
-La rete è di fatto una objects detection che restituisce la doppia coppia di coordinate del box e la tipologia di oggetto (nodo, freccia, annotazione, ...).
-
-Dopodiché, post processing per cercare tutti gli overlap tra box di nodi e box di frecce + overlap tra box di frecce e box delle annotazioni.
-
-=> si ottiene quindi una rappresentazione _logica_ del grafo (e.g. una matrice del grafo stesso).
-
-Il parser, ad hoc per ogni linguaggio (e.g. Mermaid), si occupa di costruire il codice effettivo da far compilare dal compilatore dei diagrammi.
+> Kroki provides a unified API to create diagrams from textual descriptions
