@@ -2,6 +2,9 @@
 
 [Scrivo in italiano per fare prima, poi cambiamo in inglese]
 
+[Progetto rita nome provvisorio, ben accette proposte]
+
+
 ## Idea Diagrammi
 
 TODO: portare alla rita degli esempi di diagramma, sta attendo prima di darci l'OK
