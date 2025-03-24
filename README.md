@@ -19,7 +19,7 @@ Nomi papabili con cui rinominare repo e progetto:
 - Tener traccia di ciò che si fa con **file readme** o simili (markdown possibilmente, almeno si possono leggere da Github)
 - **Commit in inglese**
 - **Commenti (nel codice) in inglese**, esclusi TODO
-- Nomi dei file, quando possibile, separati da trattino `-`
+- Nomi dei file, quando possibile, separati da underscore `_`
 
 La documentazione possiamo tenerla in italiano, poi la facciamo tradurre a Chat
 
