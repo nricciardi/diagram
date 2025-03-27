@@ -1,3 +1,35 @@
+Commenti nic:
+
+I caratteri speciali come li gestiamo? e.g. caratteri matematici delle formule (molto probabili in diagrammi)
+
+Non mi è chiarissimo cosa intendi per encoding del testo? Un vettore sparso? Forse troppo spendacciona come soluzione (?) 
+
+(Te l'ho già detto, ma per completezza) con JSON io intendevo una classe (JSON è impropriamente usato per riferirsi a quello che poi sarebbe il dump)
+che abbia al suo interno, per esempio, una o più liste di oggetti, invece che un singolo campo `content` di tipo tensore
+
+(Sempre ammesso che io abbia capito), secondo me tenere un qualcosa come `elements` dell'esempio sotto ci può stare per tenersi traccia del testo
+(e forse anche ulteriori campi per i bbox), poi le relazioni si potrebbe fare anche con il tensore. 
+Secondo me è cruciale capire quante cose davvero si possono fare in GPU nel processo che va dall'uscita della rete dei bbox all'ottenimento
+della stringa di output del trasduttore. Perché, per esempio, se l'overlapping non si può parallelizzare a dovere perdiamo molti dei vantaggi
+di un approccio a tensore. Stessa cosa per il trasducer, se non si riesce a parallelizzare la creazione della stringa tocca sempre la CPU
+(forse si può fare per diagrammi semplici, ma già con flowchart con giri strani ho dei dubbi)
+
+
+e.g. (potrei non aver capito benissimo UDR, ma è solo un esempio per cosa intendo con "json")
+```Python
+class UnifiedDiagramRepresentation(DiagramRepresentation):
+  
+    elements: list
+    # [
+    # { id, type, label }
+    # ]
+    
+    relations: list
+    # [
+    # { id_obj1, id_obj2, type }
+    # ]
+``` 
+
 # Unified Representation 
 
 | Tensor                          | JSON                             |
@@ -26,7 +58,7 @@ Professor's suggestion: "if you can do everything with tensors, use tensors"
 >   - To be defined if 1 and 2 fail
 
 Why could 2. be a good trade-off? 
-- We keep the advantages of using tensors for everything but text
+- We keep the advantages of using tensors for everything except text
   - Everything on GPU both in extractor and in transducer
 - We add the advantages of JSON for managing text
 - Easy to implement (we just need two attributes in the `UnifiedDiagramRepresentation` class)
@@ -35,7 +67,7 @@ Why could 2. be a good trade-off?
 
 Why could 3. be a good trade-off?
 - Only one representation for everything 
-- Easier to manage
+- Easier to manage (and human-readable)
 - Cleaner code
 
 > [!IMPORTANT]
