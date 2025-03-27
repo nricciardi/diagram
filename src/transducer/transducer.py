@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import List, Type
-from src.classifier.extractor.representation.representation import DiagramRepresentation
-from src.classifier.extractor.representation.unified_representation import UnifiedDiagramRepresentation
+from src.representation.representation import DiagramRepresentation
+from src.representation.unified_representation import UnifiedDiagramRepresentation
 from src.transducer.outcome import Outcome
 
 
@@ -17,10 +17,11 @@ class Transducer(ABC):
         pass
 
     @abstractmethod
-    def elaborate(self, diagram_representation: DiagramRepresentation) -> Outcome:
+    def elaborate(self, diagram_id: str, diagram_representation: DiagramRepresentation) -> Outcome:
         """
         Convert agnostic representation into (compilable) outcome
 
+        :param diagram_id:
         :param diagram_representation:
         :return:
         """

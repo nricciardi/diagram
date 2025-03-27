@@ -15,6 +15,7 @@ Nomi papabili con cui rinominare repo e progetto:
 
 [Se avete altri suggerimenti per questa sezione ditelo, almeno evitiamo un cacatone di progetto]
 
+- Attenersi allo standard dei linguaggi utilizzati
 - Inserire sempre i **link delle fonti** (per la presentazione finale)
 - Tener traccia di ciò che si fa con **file readme** o simili (markdown possibilmente, almeno si possono leggere da Github)
 - **Commit in inglese**
@@ -66,6 +67,41 @@ graph LR;
 ```
 
 Infine, il linguaggio di markup è compilato con il relativo compilatore.
+
+
+## System structure
+
+[Non è presente il path perché in caso di refactor so che ci dimenticheremmo di fare refactor anche di questa parte, usate il finder per cercare le classi quando non chiare] 
+
+### Components
+
+#### Diagram
+
+I diagram ID sono sempre di tipo `str` per una maggiore flessibilità, gli ID "well-known" sono listati nell'enum: `Diagram`
+
+Usare `Diagram.DIAGRAM_TYPE.value` per ottenere l'ID stringa.
+
+#### Classifier
+
+`Classifier` classe astratta che rappresenta il componente classificatore.
+
+Il metodo `classify` prende in input un oggetto `Image` e restituisce il digram ID.
+
+##### Image
+
+`Image` classe che wrappa l'immagine di input.
+
+TODO: definire gli attributi interni, probabilmente un tensore `content` con i pixel o qualcosa del genere
+
+
+#### Representation
+
+`DiagramRepresentation` classe astratta generale per le rappresentazioni dei diagrammi.
+
+Nella pratica viene usata la classe _concreta_ `UnifiedDiagramRepresentation` per la rappresentazione degli elementi del diagramma.
+
+TODO: definire gli attributi interni, probabilmente un tensore `content` o qualcosa del genere
+
 
 
 

@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from src.classifier.extractor.representation.representation import DiagramRepresentation
+from src.representation.representation import DiagramRepresentation
 from src.image import Image
 
 
