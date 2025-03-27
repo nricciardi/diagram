@@ -109,6 +109,9 @@ TODO: definire gli attributi interni, probabilmente un tensore `content` o qualc
 
 Ogni trasduttore, by default, supporta solo `UnifiedDiagramRepresentation`.
 
+L'id del trasduttore è usato per configurazioni avanzate dell'orchestratore, ad esempio quando si vuole ottenere 
+solo un sotto-insieme dei possibili outcome.
+
 Per creare un nuovo trasduttore bisogna implementare due metodi:
 
 - `compatible_diagrams` che restituisce la lista di diagram ID gestibili (usato dall'orchestratore per capire cosa può essere passato al transducer)
@@ -139,9 +142,13 @@ graph LR;
 
 `Extractor` classe astratta da implementare in base al proprio estrattore.
 
-L'unico metodo astratto da implementare è `extract`, il quale necessita del tipo di diagramma (diagram ID) e l'immagine di input. 
+Il metodo astratto `extract` necessita del tipo di diagramma (diagram ID) e l'immagine di input. 
 Restituisce la `DiagramRepresentation` del diagramma (la quale verrà poi passata ai trasduttori compatibili).
 
+Inoltre, è necessario specificare i diagram ID supportati, implementando il relativo metodo.
+
+L'id dell'extractor è usato per configurazioni avanzate dell'orchestratore, ad esempio quando si hanno più estrattori 
+e si vuole esplicitamente usarne solo un sotto-insieme.
 
 ## Dataset
 

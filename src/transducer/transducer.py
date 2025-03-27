@@ -7,6 +7,9 @@ from src.transducer.outcome import Outcome
 
 class Transducer(ABC):
 
+    def __init__(self, identifier: str):
+        self._identifier = identifier
+
     def compatible_representations(self) -> List[Type[UnifiedDiagramRepresentation]]:
         return [
             UnifiedDiagramRepresentation

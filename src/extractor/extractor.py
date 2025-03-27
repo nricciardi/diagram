@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from typing import List
 
 from src.representation.representation import DiagramRepresentation
 from src.image import Image
@@ -8,6 +9,10 @@ class Extractor(ABC):
 
     def __init__(self, identifier: str):
         self._identifier = identifier
+
+    @abstractmethod
+    def compatible_diagrams(self) -> List[str]:
+        pass
 
     @abstractmethod
     def extract(self, diagram_id: str, image: Image) -> DiagramRepresentation:

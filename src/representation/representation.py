@@ -19,10 +19,10 @@ class DiagramRepresentation(ABC):
 
 
     @abstractmethod
-    def load(self, intput_path: str):
+    def load(self, input_path: str):
         """
         Load representation from file
 
-        :param intput_path:
+        :param input_path:
         :return:
         """

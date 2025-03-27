@@ -11,7 +11,7 @@ class UnifiedDiagramRepresentation(DiagramRepresentation):
     def dump(self, output_path: str):
         raise NotImplemented()      # TODO
 
-    def load(self, intput_path: str):
+    def load(self, input_path: str):
         raise NotImplemented()      # TODO
 
     # TODO: inserite qui i campi che vi servono (NO id del diagramma, ci pensa l'orchestratore)

@@ -9,6 +9,9 @@ from src.transducer.transducer import Transducer
 
 class FlowchartToMermaidTransducer(Transducer):
 
+    def __init__(self, identifier: str):
+        super().__init__(identifier)
+
     def compatible_diagrams(self) -> List[str]:
         return [
             Diagram.FLOW_CHART.value,
