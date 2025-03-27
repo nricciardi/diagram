@@ -103,7 +103,44 @@ Nella pratica viene usata la classe _concreta_ `UnifiedDiagramRepresentation` pe
 TODO: definire gli attributi interni, probabilmente un tensore `content` o qualcosa del genere
 
 
+#### Transducer
 
+`Transducer` classe astratta da ereditare per costruire i propri trasduttori.
+
+Ogni trasduttore, by default, supporta solo `UnifiedDiagramRepresentation`.
+
+Per creare un nuovo trasduttore bisogna implementare due metodi:
+
+- `compatible_diagrams` che restituisce la lista di diagram ID gestibili (usato dall'orchestratore per capire cosa può essere passato al transducer)
+- `elaborate` prende come input il diagram ID e la rappresentazione agnostica del diagramma; restituisce come output un `Outcome`
+
+
+##### Outcome
+
+`Outcome` classe wrapper per l'output finale di un trasduttore. L'orchestratore lo userà per ottenere il diagramma digitale (tramite compilatore).
+
+Attualmente `Outcome` ha un solo attributo, i.e. `body`, predisposto a contenere ciò che dovrà essere passato al compilatore.
+
+Per esempio in un transducer Mermaid:
+
+```python
+outcome.body = """
+graph LR;
+    A--> B & C & D
+    B--> A & E
+    C--> A & E
+    D--> A & E
+    E--> B & C & D
+"""
+```
+
+
+#### Extractor
+
+`Extractor` classe astratta da implementare in base al proprio estrattore.
+
+L'unico metodo astratto da implementare è `extract`, il quale necessita del tipo di diagramma (diagram ID) e l'immagine di input. 
+Restituisce la `DiagramRepresentation` del diagramma (la quale verrà poi passata ai trasduttori compatibili).
 
 
 ## Dataset

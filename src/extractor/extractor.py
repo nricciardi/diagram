@@ -10,7 +10,7 @@ class Extractor(ABC):
         self._identifier = identifier
 
     @abstractmethod
-    def extract(self, image: Image, diagram_id: str) -> DiagramRepresentation:
+    def extract(self, diagram_id: str, image: Image) -> DiagramRepresentation:
         """
         Extract agnostic representation of a diagram (image)
 
