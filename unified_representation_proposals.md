@@ -2,8 +2,9 @@ Commenti nic:
 
 I caratteri speciali come li gestiamo? e.g. caratteri matematici delle formule (molto probabili in diagrammi)
 - We use a Python data structure to manage text, the text itself is given by the extractor (more specifically, by the bounding box)
+- nic: of course, but _everything_ cannot be "encoded" into string (e.g. greek letters, integral symbols and so on)
 
-Non mi è chiarissimo cosa intendi per encoding del testo? Un vettore sparso? Forse troppo spendacciona come soluzione (?) 
+[SOLVED] Non mi è chiarissimo cosa intendi per encoding del testo? Un vettore sparso? Forse troppo spendacciona come soluzione (?) 
 - Encoding text with a tensor is not a feasible nor an efficient solution, so we just eliminate it from the options
 
 (Te l'ho già detto, ma per completezza) con JSON io intendevo una classe (JSON è impropriamente usato per riferirsi a quello che poi sarebbe il dump)
@@ -127,7 +128,20 @@ TODO (I will, I promise)
 
 ### Format Proposals (relations)
 
+
+nic: about `elements`, we may think to move `[{id, type, label}]` to `{id: {type, label}}`, because indexing has O(1)
+
+
 #### Tensor shape
+
+nic: why boolean values? We may use integers and remove `category` axis => avoiding sparse tensor, 
+**BUT** are we able to manage all possible kind of relations?
+Do we really want to encode all possible relations?
+I'm afraid that we must encode _all possible relations in all possible diagrams_ assigning them a progressive identifier,
+it seems a "not clear" solution (because each transducer must know exactly _which_ identifiers must handle... 
+and identifiers change? We must re-map all identifiers in all encoders?), even if it seems "universal"
+
+
 
 > [!IMPORTANT]
 > Shape: (category, obj1, obj2) 
