@@ -14,7 +14,6 @@ della stringa di output del trasduttore. Perché, per esempio, se l'overlapping 
 di un approccio a tensore. Stessa cosa per il trasducer, se non si riesce a parallelizzare la creazione della stringa tocca sempre la CPU
 (forse si può fare per diagrammi semplici, ma già con flowchart con giri strani ho dei dubbi)
 
-
 e.g. (potrei non aver capito benissimo UDR, ma è solo un esempio per cosa intendo con "json")
 ```Python
 class UnifiedDiagramRepresentation(DiagramRepresentation):
@@ -28,7 +27,21 @@ class UnifiedDiagramRepresentation(DiagramRepresentation):
     # [
     # { id_obj1, id_obj2, type }
     # ]
-``` 
+```
+
+ Commenti Pippo:
+1. Nel caso 2 - tensore con testo da tenere in un dizionario per intenderci - se i valori possiibli del tensore sono sempre 0 o 1, nel file che lega testo-oggetti c'è l'informazione degli oggetti a cui si lega?
+exempli gratia:
+In un GD c'è un nodo A (indice) con del testo all'interno, specificatamente "buongiorno". Si ottiene dunque:
+
+```python
+  tensor("testo", "A", "A") -> 1
+            &
+  {
+    ["A", "A"]: "buongiorno"
+  }
+```
+?
 
 # Unified Representation 
 
