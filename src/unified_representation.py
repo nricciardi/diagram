@@ -1,4 +1,4 @@
-from src.representation.representation import DiagramRepresentation
+from core.representation.representation import DiagramRepresentation
 from dataclasses import dataclass
 
 

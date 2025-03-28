@@ -1,8 +1,8 @@
 from abc import ABC, abstractmethod
 from typing import List
 
-from src.representation.representation import DiagramRepresentation
-from src.image import Image
+from core.representation.representation import DiagramRepresentation
+from core.image import Image
 
 
 class Extractor(ABC):

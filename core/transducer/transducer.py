@@ -1,8 +1,8 @@
 from abc import ABC, abstractmethod
 from typing import List, Type
-from src.representation.representation import DiagramRepresentation
-from src.representation.unified_representation import UnifiedDiagramRepresentation
-from src.transducer.outcome import Outcome
+from core.representation.representation import DiagramRepresentation
+from src.unified_representation import UnifiedDiagramRepresentation
+from core.transducer.outcome import Outcome
 
 
 class Transducer(ABC):

@@ -1,9 +1,9 @@
 from typing import List
 
-from src.classifier.classifier import Classifier
-from src.extractor.extractor import Extractor
-from src.image import Image
-from src.transducer.transducer import Transducer
+from core.classifier.classifier import Classifier
+from core.extractor import Extractor
+from core.image import Image
+from core.transducer.transducer import Transducer
 
 
 class Orchestrator:

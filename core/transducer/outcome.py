@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from src.diagram import Diagram
+from src.wellknown_diagram import WellKnownDiagram
 
 
 @dataclass
