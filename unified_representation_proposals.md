@@ -1,3 +1,73 @@
+
+image -> extract 
+
+image -> rete -> (obj, x1, y1, x2, y2) 
+
+[(obj, x1, y1, x2, y2)] -> overlap -> [A, C], [B, C]
+
+
+EnumElement:
+    Circle,
+    Rect
+
+EnumReleation:
+    StdArr
+    DotArr
+    InterArr
+
+elements: {
+    A: { category: EnumElement, label: "q0" },
+    B: { category: EnumElement, label: "q1" },
+    D: { category: EnumElement, label: None },
+}
+
+
+relations: [
+    {
+        from: A,
+        to: B
+        category: EnumReleation.StdArr,
+        label: "b"
+    },
+    {
+        from: None,
+        to: B
+        category: EnumReleation.StdArr,
+        label: None
+    }
+]
+
+*
+
+extract
+---- 
+transducer
+
+* ->
+
+A:"q0" -"b"-> B:"q1"
+
+for element in elements:
+    for relation in relations:
+        if relation.from == element:
+            if relation.category == StdArr:
+            outcome = f"{element.id}:{element.label} -{relation.label}-> {relation.to}:{relation.to}"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 Commenti nic:
 
 I caratteri speciali come li gestiamo? e.g. caratteri matematici delle formule (molto probabili in diagrammi)
