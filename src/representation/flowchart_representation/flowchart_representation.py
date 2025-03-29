@@ -1,6 +1,6 @@
 from typing import Dict
-from flowchart_enum import FlowchartElementEnum, FlowchartRelationEnum
 from core.representation.representation import DiagramRepresentation
+from src.representation.flowchart_representation.flowchart_enum import FlowchartElementEnum, FlowchartRelationEnum
 
 class FlowchartElementId():
     """
