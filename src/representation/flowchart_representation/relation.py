@@ -12,7 +12,7 @@ class FlowchartRelationCategory(Enum):
     DOTTED_ARROW: str = "DottedArrowhead"
 
 
-@dataclass
+@dataclass(frozen=True)
 class Relation:
     """
     Flowchart relation
