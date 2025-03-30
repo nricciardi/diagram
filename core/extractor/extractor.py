@@ -3,16 +3,13 @@ from typing import List
 
 from core.representation.representation import DiagramRepresentation
 from core.image import Image
+from core.utils.compatible_mixins import CompatibleDiagramsMixin
 
 
-class Extractor(ABC):
+class Extractor(CompatibleDiagramsMixin, ABC):
 
     def __init__(self, identifier: str):
         self._identifier = identifier
-
-    @abstractmethod
-    def compatible_diagrams(self) -> List[str]:
-        pass
 
     @abstractmethod
     def extract(self, diagram_id: str, image: Image) -> DiagramRepresentation:
