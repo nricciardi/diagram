@@ -10,7 +10,7 @@ from src.unified_representation import UnifiedDiagramRepresentation
 from core.transducer.outcome import Outcome
 from core.transducer.transducer import Transducer
 
-from src.representation.flowchart_representation.flowchart_enum import FlowchartElementEnum, FlowchartRelationEnum
+from src.representation.flowchart_representation.element import FlowchartElement, FlowchartRelation
 
 class FlowchartToMermaidTransducer(Transducer):
 
@@ -24,35 +24,35 @@ class FlowchartToMermaidTransducer(Transducer):
         ]
 
     @staticmethod
-    def wrap_element(category: FlowchartElementEnum, label: str) -> str:
+    def wrap_element(category: FlowchartElement, label: str) -> str:
         match category:
-            case FlowchartElementEnum.CIRCLE:
+            case FlowchartElement.CIRCLE:
                 return f"(({label}))"
-            case FlowchartElementEnum.TERMINAL:
+            case FlowchartElement.TERMINAL:
                 return f"([{label}])"
-            case FlowchartElementEnum.PROCESS:
+            case FlowchartElement.PROCESS:
                 return f"({label})"
-            case FlowchartElementEnum.DECISION:
+            case FlowchartElement.DECISION:
                 return "{" + label + "}"
-            case FlowchartElementEnum.INPUT_OUTPUT:
+            case FlowchartElement.INPUT_OUTPUT:
                 return f"[/{label}/]"
-            case FlowchartElementEnum.SUBROUTINE:
+            case FlowchartElement.SUBROUTINE:
                 return f"[{label}]"
             case _:
                 raise ValueError(f"Unknown flowchart element category: {category}")
 
     @staticmethod
-    def wrap_relation(category: FlowchartRelationEnum, label: str) -> str:
+    def wrap_relation(category: FlowchartRelation, label: str) -> str:
         match category:
-            case FlowchartRelationEnum.ARROW:
+            case FlowchartRelation.ARROW:
                 if label == "":
                     return "-->"
                 return f"-->|{label}|"
-            case FlowchartRelationEnum.OPEN_LINK:
+            case FlowchartRelation.OPEN_LINK:
                 if label == "":
                     return " --- "
                 return f"---|{label}|"
-            case FlowchartRelationEnum.DOTTED_ARROW:
+            case FlowchartRelation.DOTTED_ARROW:
                 if label == "":
                     return "-.->"
                 return f" -. {label} .->"
@@ -89,13 +89,13 @@ class TestFlowchartToMermaidTransducer(unittest.TestCase):
         assert WellKnownDiagram.GRAPH_DIAGRAM.value in compatible_diagrams, "Graph diagram should be compatible"
 
     def test_wrap_element(self):
-        assert self.transducer.wrap_element(FlowchartElementEnum.CIRCLE, "Test") == "((Test))", \
+        assert self.transducer.wrap_element(FlowchartElement.CIRCLE, "Test") == "((Test))", \
             "Wrapped element should be ((Test))"
-        assert self.transducer.wrap_element(FlowchartElementEnum.TERMINAL, "Test") == "([Test])", \
+        assert self.transducer.wrap_element(FlowchartElement.TERMINAL, "Test") == "([Test])", \
             "Wrapped element should be ([Test])"
 
     def test_wrap_relation(self):
-        wrapped_relation = self.transducer.wrap_relation(FlowchartRelationEnum.ARROW, "Test")
+        wrapped_relation = self.transducer.wrap_relation(FlowchartRelation.ARROW, "Test")
         assert wrapped_relation == "-->|Test|", "Wrapped relation should be -->|Test|"
         
     def test_elaborate(self):
@@ -103,14 +103,14 @@ class TestFlowchartToMermaidTransducer(unittest.TestCase):
         id_a, id_b, id_c = FlowchartElementId("A"), FlowchartElementId("B"), FlowchartElementId("C")
         
         elements: Dict[str, FlowchartElement] = {
-            id_a: FlowchartElement(id_a, FlowchartElementEnum.CIRCLE, "Start_Node"),
-            id_b: FlowchartElement(id_b, FlowchartElementEnum.PROCESS, "i++"),
-            id_c: FlowchartElement(id_c, FlowchartElementEnum.DECISION, "if i > 5"),
+            id_a: FlowchartElement(id_a, FlowchartElement.CIRCLE, "Start_Node"),
+            id_b: FlowchartElement(id_b, FlowchartElement.PROCESS, "i++"),
+            id_c: FlowchartElement(id_c, FlowchartElement.DECISION, "if i > 5"),
         }
         
         relations: List[FlowchartRelation] = [
-            FlowchartRelation(FlowchartRelationEnum.ARROW, id_a, id_b, "int i = 0"),
-            FlowchartRelation(FlowchartRelationEnum.DOTTED_ARROW, id_b, id_c, ""),
+            FlowchartRelation(FlowchartRelation.ARROW, id_a, id_b, "int i = 0"),
+            FlowchartRelation(FlowchartRelation.DOTTED_ARROW, id_b, id_c, ""),
         ]
         
         representation = FlowchartRepresentation(elements, relations)
