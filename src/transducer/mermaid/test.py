@@ -1,6 +1,6 @@
 import unittest
 
-from core.transducer.outcome import Outcome
+from core.transducer.outcome import TransducerOutcome
 from src.representation.flowchart_representation.element import FlowchartElementCategory
 from src.representation.flowchart_representation.flowchart_representation import Element, Relation, \
     FlowchartRepresentation
@@ -46,7 +46,7 @@ class TestFlowchartToMermaidTransducer(unittest.TestCase):
         ]
 
         representation = FlowchartRepresentation(elements, relations)
-        expected_outcome = Outcome("test_diagram", "Flowchart TD\n"
+        expected_outcome = TransducerOutcome("test_diagram", "Flowchart TD\n"
                                                    "\tA((Start_Node))\n"
                                                    "\tB(i++)\n"
                                                    "\tC{if i > 5}\n"

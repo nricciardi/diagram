@@ -9,7 +9,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../.
 from src.wellknown_diagram import WellKnownDiagram
 from core.representation.representation import DiagramRepresentation
 from src.representation.flowchart_representation.flowchart_representation import FlowchartRepresentation
-from core.transducer.outcome import Outcome
+from core.transducer.outcome import TransducerOutcome
 from core.transducer.transducer import Transducer
 
 
@@ -64,7 +64,7 @@ class FlowchartToMermaidTransducer(Transducer):
             case _:
                 raise ValueError(f"Unknown flowchart relation category: {category}")
 
-    def elaborate(self, diagram_id: str, diagram_representation: DiagramRepresentation) -> Outcome:
+    def elaborate(self, diagram_id: str, diagram_representation: DiagramRepresentation) -> TransducerOutcome:
         assert isinstance(diagram_representation, FlowchartRepresentation)
         
         body: str = "Flowchart TD\n"
@@ -76,5 +76,5 @@ class FlowchartToMermaidTransducer(Transducer):
             body += f"\t{relation.source_id.id}"
             body += f"{self.wrap_relation(relation.category, relation.label)}{relation.target_id.id}\n"
         
-        outcome: Outcome = Outcome(diagram_id, body)
+        outcome: TransducerOutcome = TransducerOutcome(diagram_id, body)
         return outcome

@@ -4,7 +4,7 @@ from src.wellknown_diagram import WellKnownDiagram
 
 
 @dataclass(frozen=True, slots=True)
-class Outcome:
+class TransducerOutcome:
     diagram_id: str
     markup_language: str
     payload: str

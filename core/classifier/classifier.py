@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 
-from core.image import Image
+from core.image.image import Image
+
 
 class Classifier(ABC):
 

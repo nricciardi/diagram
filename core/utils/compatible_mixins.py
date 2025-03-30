@@ -1,7 +1,12 @@
 from abc import ABC, abstractmethod
 from typing import Type, List
+from dataclasses import dataclass
 
 from core.representation.representation import DiagramRepresentation
+
+@dataclass
+class IdentifiableMixin(ABC):
+    identifier: str
 
 
 class CompatibleRepresentationsMixin(ABC):

@@ -7,15 +7,14 @@ from collections import defaultdict
 from core.classifier.classifier import Classifier
 from core.compiler.compiler import Compiler
 from core.extractor.extractor import Extractor
-from core.image import Image
+from core.image.image import Image
 from core.representation.representation import DiagramRepresentation
-from core.transducer.outcome import Outcome
+from core.transducer.outcome import TransducerOutcome
 from core.transducer.transducer import Transducer
-
 
 logger = logging.getLogger(__name__)
 
-class Orchestrator:
+class Orchestrator(Compiler):
 
     def __init__(self, classifier: Classifier, extractors: List[Extractor], transducers: List[Transducer], compilers: List[Compiler]):
         self.__classifier = classifier
@@ -37,22 +36,23 @@ class Orchestrator:
 
         return os.path.join(outputs_dir_path, file_name)
 
-    def image2diagram(self, outputs_dir_path: str, image: Image, parallelization: bool = False):
+    def image2diagram(self, image: Image, parallelization: bool = False, then_compile: bool = True, outputs_dir_path: str | None = None) -> List[TransducerOutcome]:
         """
         Convert one handwritten image to digital diagram
 
         :param outputs_dir_path: directory in which outputs will be dumped
         :param image: input image
         :param parallelization: enable parallelization
-        :return:
+        :param then_compile: True if compile outcomes
+        :return: all transducer outcomes, based on extractors and transducers more than one outcome can be produced
         """
 
         if parallelization:
-            self.__par_image2diagram(outputs_dir_path, image)
+            return self.__par_image2diagram(image, then_compile=then_compile, outputs_path=outputs_dir_path)
         else:
-            self.__seq_image2diagram(outputs_dir_path, image)
+            return self.__seq_image2diagram(image, then_compile=then_compile, outputs_dir_path=outputs_dir_path)
 
-    def __seq_image2diagram(self, outputs_dir_path: str, image: Image):
+    def __seq_image2diagram(self, image: Image, then_compile: bool, outputs_dir_path: str | None = None) -> List[TransducerOutcome]:
         """
         Convert image to diagram sequentially
         """
@@ -69,7 +69,7 @@ class Orchestrator:
         logger.info(f"{len(diagram_representations)} diagram representation(s) found")
         logger.debug(diagram_representations)
 
-        outcomes: List[Outcome] = []
+        outcomes: List[TransducerOutcome] = []
         for diagram_representation in diagram_representations:
             logger.info(f"transduce {type(diagram_representation)} type...")
             o = self.__seq_transduce(diagram_id, diagram_representation)
@@ -79,37 +79,21 @@ class Orchestrator:
 
             outcomes.extend(o)
 
-        outcomes_by_markuplang: Dict[str, List[Outcome]] = defaultdict(list)  # { markuplang: [outcomes] }
-        for outcome in outcomes:
-            outcomes_by_markuplang[outcome.markup_language].append(outcome)
+        if not then_compile:
+            return outcomes
 
-        logger.info(f"outcomes are grouped into {len(outcomes_by_markuplang.keys())} groups: {outcomes_by_markuplang.keys()}")
-        logger.debug(outcomes_by_markuplang)
+        self.__seq_compile_transducer_outcomes(outcomes, outputs_dir_path)
 
-        for markuplang, outcomes in outcomes_by_markuplang.items():
-            for compiler in self.__compilers:
-                if markuplang in compiler.compatible_markup_languages():
-                    for outcome in outcomes:
-                        logger.info("compile...")
-                        logger.debug(compiler)
-                        logger.debug(outcome)
+        return outcomes
 
-                        compiler.compile(
-                            outcome.payload,
-                            Orchestrator.build_output_path(
-                                outputs_dir_path,
-                                outcome.diagram_id,
-                                outcome.markup_language
-                            )
-                        )
-
-
-    def __par_image2diagram(self, outputs_path: str, image: Image):
+    def __par_image2diagram(self, image: Image, then_compile: bool, outputs_path: str | None = None) -> List[TransducerOutcome]:
         """
         Convert image to diagram in parallel
         """
 
         diagram_id = self.__classifier.classify(image)
+
+        raise NotImplemented()
 
 
     def __compatible_extractors(self, diagram_id: str) -> List[Extractor]:
@@ -149,28 +133,58 @@ class Orchestrator:
         diagram_representations: List[DiagramRepresentation] = []
 
         for extractor in compatible_extractors:
+            logger.debug(f"extract using {extractor.identifier}")
             representation: DiagramRepresentation = extractor.extract(diagram_id, image)
             diagram_representations.append(representation)
 
         return diagram_representations
 
-    def __seq_transduce(self, diagram_id: str, diagram_representation: DiagramRepresentation) -> List[Outcome]:
+    def __seq_transduce(self, diagram_id: str, diagram_representation: DiagramRepresentation) -> List[TransducerOutcome]:
         """
         Transduce representation sequentially
         """
 
         compatible_transducer: List[Transducer] = self.__compatible_transducers(diagram_id, diagram_representation)
 
-        outcomes: List[Outcome] = []
+        outcomes: List[TransducerOutcome] = []
         for transducer in compatible_transducer:
+            logger.debug(f"transduce using {transducer.identifier}")
             outcome = transducer.transduce(diagram_id, diagram_representation)
             outcomes.append(outcome)
 
         return outcomes
 
+    def __seq_compile_transducer_outcomes(self, outcomes: List[TransducerOutcome], outputs_dir_path: str):
 
+        outcomes_by_markuplang: Dict[str, List[TransducerOutcome]] = defaultdict(list)  # { markuplang: [outcomes] }
+        for outcome in outcomes:
+            outcomes_by_markuplang[outcome.markup_language].append(outcome)
 
+        logger.info(f"outcomes are grouped into {len(outcomes_by_markuplang.keys())} groups: {outcomes_by_markuplang.keys()}")
+        logger.debug(outcomes_by_markuplang)
 
+        for markuplang, outcomes in outcomes_by_markuplang.items():
+            for compiler in self.__compilers:
+                if markuplang in compiler.compatible_markup_languages():
+                    for outcome in outcomes:
+                        logger.info(f"compile using {compiler.identifier}...")
+                        logger.debug(compiler)
+                        logger.debug(outcome)
+
+                        compiler.compile(
+                            outcome.payload,
+                            Orchestrator.build_output_path(
+                                outputs_dir_path,
+                                outcome.diagram_id,
+                                outcome.markup_language
+                            )
+                        )
+
+    def compile(self, payload: str, output_path: str):
+        raise NotImplemented()      # TODO
+
+    def compatible_markup_languages(self) -> List[str]:
+        raise NotImplemented()      # TODO
 
 
 

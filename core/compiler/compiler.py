@@ -1,9 +1,9 @@
 from abc import ABC, abstractmethod
 
-from core.utils.compatible_mixins import CompatibleMarkupLanguagesMixin
+from core.utils.compatible_mixins import CompatibleMarkupLanguagesMixin, IdentifiableMixin
 
 
-class Compiler(CompatibleMarkupLanguagesMixin, ABC):
+class Compiler(IdentifiableMixin, CompatibleMarkupLanguagesMixin, ABC):
 
      @abstractmethod
      def compile(self, payload: str, output_path: str):

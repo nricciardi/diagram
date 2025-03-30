@@ -1,6 +1,7 @@
+from abc import ABC
 
 
-class Image:
+class Image(ABC):
     """
     Wrap class for images
     """

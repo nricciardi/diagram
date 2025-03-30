@@ -5,7 +5,7 @@ from core.representation.representation import DiagramRepresentation
 from src.representation.flowchart_representation.flowchart_representation import FlowchartRepresentation
 from src.representation.flowchart_representation.element import FlowchartElementCategory, Element
 from src.representation.flowchart_representation.relation import FlowchartRelationCategory, Relation
-from core.transducer.outcome import Outcome
+from core.transducer.outcome import TransducerOutcome
 from core.transducer.transducer import Transducer
 from src.wellknown_markuplang import WellKnownMarkupLanguage
 
@@ -76,7 +76,7 @@ class FlowchartToD2Transducer(Transducer):
             case _:
                 raise ValueError(f"Unknown flowchart relation category: {category}")
 
-    def transduce(self, diagram_id: str, diagram_representation: DiagramRepresentation) -> Outcome:
+    def transduce(self, diagram_id: str, diagram_representation: DiagramRepresentation) -> TransducerOutcome:
         assert isinstance(diagram_representation, FlowchartRepresentation)
 
         body: str = ""
@@ -88,7 +88,7 @@ class FlowchartToD2Transducer(Transducer):
             body += f"{relation.source_id}"
             body += self.wrap_relation(relation.category, relation.label, relation.target_id)
 
-        outcome: Outcome = Outcome(diagram_id, WellKnownMarkupLanguage.D2_LANG.value, body)
+        outcome: TransducerOutcome = TransducerOutcome(diagram_id, WellKnownMarkupLanguage.D2_LANG.value, body)
         return outcome
 
 
@@ -138,7 +138,7 @@ class TestFlowchartToD2LTransducer(unittest.TestCase):
         ]
 
         representation = FlowchartRepresentation(elements, relations)
-        expected_result = Outcome("test_diagram", WellKnownMarkupLanguage.D2_LANG.value, "A: Circle\n"
+        expected_result = TransducerOutcome("test_diagram", WellKnownMarkupLanguage.D2_LANG.value, "A: Circle\n"
                                                                                          "A.shape: circle\n"
                                                                                          "B: Process\n"
                                                                                          "B.style.border-radius: 8\n"
