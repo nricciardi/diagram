@@ -14,7 +14,7 @@ class FlowchartElementCategory(Enum):
     SUBROUTINE: str = "SubroutineNode"
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, slots=True)
 class Element:
     """
     Flowchart element
