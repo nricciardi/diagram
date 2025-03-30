@@ -115,7 +115,7 @@ solo un sotto-insieme dei possibili outcome.
 Per creare un nuovo trasduttore bisogna implementare due metodi:
 
 - `compatible_diagrams` che restituisce la lista di diagram ID gestibili (usato dall'orchestratore per capire cosa può essere passato al transducer)
-- `elaborate` prende come input il diagram ID e la rappresentazione agnostica del diagramma; restituisce come output un `Outcome`
+- `transduce` prende come input il diagram ID e la rappresentazione agnostica del diagramma; restituisce come output un `Outcome`
 
 
 ##### Outcome

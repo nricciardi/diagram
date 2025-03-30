@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Type
 
 from core.classifier.classifier import Classifier
 from core.extractor.extractor import Extractor
@@ -39,6 +39,7 @@ class Orchestrator:
 
         diagram_representations: List[DiagramRepresentation] = self.__seq_extraction(diagram_id, image)
 
+        outcomes: List[Outcome] = self.__seq_transduce(diagram_id, )
 
 
     def __par_image2diagram(self, outputs_path: str, image: Image):
@@ -51,7 +52,7 @@ class Orchestrator:
 
     def __compatible_extractors(self, diagram_id: str) -> List[Extractor]:
         """
-        Return reference of compatible extractors with diagram identifier
+        Return reference of compatible extractors given diagram identifier
         """
 
         compatible_extractors = list(
@@ -60,16 +61,20 @@ class Orchestrator:
 
         return compatible_extractors
 
-    def __compatible_transducers(self, diagram_id: str) -> List[Extractor]:
+    def __compatible_transducers(self, diagram_id: str, diagram_representation: DiagramRepresentation) -> List[Transducer]:
         """
-        Return reference of compatible extractors with diagram identifier
+        Return reference of compatible transducer given diagram identifier and diagram representation type
         """
 
-        compatible_extractors = list(
-            extractor for extractor in self.__extractors if diagram_id in extractor.compatible_diagrams()
-        )
+        compatible_transducer = []
 
-        return compatible_extractors
+        for transducer in self.__transducers:
+            if diagram_id in transducer.compatible_diagrams():
+                for compatible_representation_type in transducer.compatible_representations():
+                    if isinstance(diagram_representation, compatible_representation_type):
+                        compatible_transducer.append(transducer)
+
+        return compatible_transducer
 
 
     def __seq_extraction(self, diagram_id: str, image: Image) -> List[DiagramRepresentation]:
@@ -87,11 +92,19 @@ class Orchestrator:
 
         return diagram_representations
 
-    def __seq_trasduce(self, diagram_id: str, image: Image) -> List[Outcome]:
+    def __seq_transduce(self, diagram_id: str, diagram_representation: DiagramRepresentation) -> List[Outcome]:
         """
-        Trasduce representation sequentially
+        Transduce representation sequentially
         """
 
+        compatible_transducer: List[Transducer] = self.__compatible_transducers(diagram_id, diagram_representation)
+
+        outcomes: List[Outcome] = []
+        for transducer in compatible_transducer:
+            outcome = transducer.transduce(diagram_id, diagram_representation)
+            outcomes.append(outcome)
+
+        return outcomes
 
 
 

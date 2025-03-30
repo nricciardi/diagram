@@ -8,10 +8,22 @@ class CompatibleRepresentationsMixin(ABC):
 
     @abstractmethod
     def compatible_representations(self) -> List[Type[DiagramRepresentation]]:
-        pass
+        """
+        List of compatible diagram representation class
+        """
 
 class CompatibleDiagramsMixin(ABC):
 
     @abstractmethod
     def compatible_diagrams(self) -> List[str]:
-        pass
+        """
+        List of compatible diagram identifiers (as string)
+        """
+
+class CompatibleMarkupLanguagesMixin(ABC):
+
+    @abstractmethod
+    def compatible_markup_languages(self) -> List[str]:
+        """
+        List of compatible markup languages identifiers (as string)
+        """

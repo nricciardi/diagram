@@ -12,7 +12,7 @@ class Transducer(CompatibleDiagramsMixin, CompatibleRepresentationsMixin, ABC):
         self._identifier = identifier
 
     @abstractmethod
-    def trasduce(self, diagram_id: str, diagram_representation: DiagramRepresentation) -> Outcome:
+    def transduce(self, diagram_id: str, diagram_representation: DiagramRepresentation) -> Outcome:
         """
         Convert agnostic representation into (compilable) outcome
 
