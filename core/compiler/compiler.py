@@ -7,4 +7,7 @@ class Compiler(CompatibleMarkupLanguagesMixin, ABC):
 
      @abstractmethod
      def compile(self, payload: str, output_path: str):
-         pass
+         """
+         :param payload:
+         :param output_path: path in which output will be dumped
+         """
