@@ -4,6 +4,7 @@ from core.classifier.classifier import Classifier
 from core.extractor.extractor import Extractor
 from core.image import Image
 from core.representation.representation import DiagramRepresentation
+from core.transducer.outcome import Outcome
 from core.transducer.transducer import Transducer
 
 
@@ -24,8 +25,28 @@ class Orchestrator:
         :return:
         """
 
+        if parallelization:
+            self.__par_image2diagram(outputs_path, image)
+        else:
+            self.__seq_image2diagram(outputs_path, image)
+
+    def __seq_image2diagram(self, outputs_path: str, image: Image):
+        """
+        Convert image to diagram sequentially
+        """
+
         diagram_id = self.__classifier.classify(image)
 
+        diagram_representations: List[DiagramRepresentation] = self.__seq_extraction(diagram_id, image)
+
+
+
+    def __par_image2diagram(self, outputs_path: str, image: Image):
+        """
+        Convert image to diagram in parallel
+        """
+
+        diagram_id = self.__classifier.classify(image)
 
 
     def __compatible_extractors(self, diagram_id: str) -> List[Extractor]:
@@ -39,9 +60,19 @@ class Orchestrator:
 
         return compatible_extractors
 
-    # def __seq_image2diagram
+    def __compatible_transducers(self, diagram_id: str) -> List[Extractor]:
+        """
+        Return reference of compatible extractors with diagram identifier
+        """
 
-    def __seq_extraction(self, diagram_id: str, image: Image):
+        compatible_extractors = list(
+            extractor for extractor in self.__extractors if diagram_id in extractor.compatible_diagrams()
+        )
+
+        return compatible_extractors
+
+
+    def __seq_extraction(self, diagram_id: str, image: Image) -> List[DiagramRepresentation]:
         """
         Extract representations from image, using extractors sequentially
         """
@@ -56,9 +87,10 @@ class Orchestrator:
 
         return diagram_representations
 
-
-
-
+    def __seq_trasduce(self, diagram_id: str, image: Image) -> List[Outcome]:
+        """
+        Trasduce representation sequentially
+        """
 
 
 
