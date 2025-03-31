@@ -14,7 +14,7 @@ from core.transducer.transducer import Transducer
 
 logger = logging.getLogger(__name__)
 
-class Orchestrator(Compiler):
+class Orchestrator:
 
     def __init__(self, classifier: Classifier, extractors: List[Extractor], transducers: List[Transducer], compilers: List[Compiler]):
         self.__classifier = classifier
@@ -179,12 +179,6 @@ class Orchestrator(Compiler):
                                 outcome.markup_language
                             )
                         )
-
-    def compile(self, payload: str, output_path: str):
-        raise NotImplemented()      # TODO
-
-    def compatible_markup_languages(self) -> List[str]:
-        raise NotImplemented()      # TODO
 
 
 
