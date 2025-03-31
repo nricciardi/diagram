@@ -1,10 +1,8 @@
-from typing import List
+from typing import List, Type
 import sys, os
 
 from src.representation.flowchart_representation.element import FlowchartElementCategory
 from src.representation.flowchart_representation.relation import FlowchartRelationCategory
-
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../")))
 
 from src.wellknown_diagram import WellKnownDiagram
 from core.representation.representation import DiagramRepresentation
@@ -26,6 +24,12 @@ class FlowchartToMermaidTransducer(Transducer):
         return [
             WellKnownDiagram.FLOW_CHART.value,
             WellKnownDiagram.GRAPH_DIAGRAM.value,
+        ]
+
+    def compatible_representations(self) -> List[Type[DiagramRepresentation]]:
+        return [
+            FlowchartRepresentation,
+
         ]
 
     @staticmethod
@@ -64,17 +68,17 @@ class FlowchartToMermaidTransducer(Transducer):
             case _:
                 raise ValueError(f"Unknown flowchart relation category: {category}")
 
-    def elaborate(self, diagram_id: str, diagram_representation: DiagramRepresentation) -> TransducerOutcome:
+    def transduce(self, diagram_id: str, diagram_representation: DiagramRepresentation) -> TransducerOutcome:
         assert isinstance(diagram_representation, FlowchartRepresentation)
         
         body: str = "Flowchart TD\n"
         for id, element in diagram_representation.elements.items():
-            body += f"\t{id.id}{self.wrap_element(element.category, element.label)}\n"
+            body += f"\t{id}{self.wrap_element(element.category, element.label)}\n"
             
         body += "\n"
         for relation in diagram_representation.relations:
-            body += f"\t{relation.source_id.id}"
-            body += f"{self.wrap_relation(relation.category, relation.label)}{relation.target_id.id}\n"
+            body += f"\t{relation.source_id}"
+            body += f"{self.wrap_relation(relation.category, relation.label)}{relation.target_id}\n"
         
-        outcome: TransducerOutcome = TransducerOutcome(diagram_id, body)
+        outcome: TransducerOutcome = TransducerOutcome(diagram_id=diagram_id, payload=body, markup_language="mermaid")
         return outcome

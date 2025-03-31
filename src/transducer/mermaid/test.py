@@ -1,4 +1,7 @@
 import unittest
+import sys, os
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../")))
 
 from core.transducer.outcome import TransducerOutcome
 from src.representation.flowchart_representation.element import FlowchartElementCategory
@@ -46,7 +49,7 @@ class TestFlowchartToMermaidTransducer(unittest.TestCase):
         ]
 
         representation = FlowchartRepresentation(elements, relations)
-        expected_outcome = TransducerOutcome("test_diagram", "Flowchart TD\n"
+        expected_outcome = TransducerOutcome(diagram_id="test_diagram", markup_language="mermaid", payload="Flowchart TD\n"
                                                    "\tA((Start_Node))\n"
                                                    "\tB(i++)\n"
                                                    "\tC{if i > 5}\n"
@@ -54,7 +57,7 @@ class TestFlowchartToMermaidTransducer(unittest.TestCase):
                                                    "\tA-->|int i = 0|B\n"
                                                    "\tB-.->C\n")
 
-        assert expected_outcome == self.transducer.elaborate("test_diagram", representation), \
+        assert expected_outcome == self.transducer.transduce("test_diagram", representation), \
             "Elaborated outcome should match expected outcome"
 
 
