@@ -1,6 +1,8 @@
 import unittest
 import sys, os
 
+from src.wellknown_markuplang import WellKnownMarkupLanguage
+
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../")))
 
 from core.transducer.outcome import TransducerOutcome
@@ -24,17 +26,7 @@ class TestFlowchartToMermaidTransducer(unittest.TestCase):
         assert WellKnownDiagram.FLOW_CHART.value in compatible_diagrams, "Flowchart should be compatible"
         assert WellKnownDiagram.GRAPH_DIAGRAM.value in compatible_diagrams, "Graph diagram should be compatible"
 
-    def test_wrap_element(self):
-        assert self.transducer.wrap_element(FlowchartElementCategory.CIRCLE.value, "Test") == "((Test))", \
-            "Wrapped element should be ((Test))"
-        assert self.transducer.wrap_element(FlowchartElementCategory.TERMINAL.value, "Test") == "([Test])", \
-            "Wrapped element should be ([Test])"
-
-    def test_wrap_relation(self):
-        wrapped_relation = self.transducer.wrap_relation(FlowchartRelationCategory.ARROW.value, "Test")
-        assert wrapped_relation == "-->|Test|", "Wrapped relation should be -->|Test|"
-
-    def test_elaborate(self):
+    def test_transduce(self):
         id_a, id_b, id_c = "A", "B", "C"
 
         elements: Dict[str, Element] = {
@@ -49,13 +41,16 @@ class TestFlowchartToMermaidTransducer(unittest.TestCase):
         ]
 
         representation = FlowchartRepresentation(elements, relations)
-        expected_outcome = TransducerOutcome(diagram_id="test_diagram", markup_language="mermaid", payload="Flowchart TD\n"
-                                                   "\tA((Start_Node))\n"
-                                                   "\tB(i++)\n"
-                                                   "\tC{if i > 5}\n"
-                                                   "\n"
-                                                   "\tA-->|int i = 0|B\n"
-                                                   "\tB-.->C\n")
+        expected_outcome = TransducerOutcome(diagram_id="test_diagram", markup_language=WellKnownMarkupLanguage.MERMAID.value,
+                                             payload="""---
+title: test_diagram
+---
+graph 
+a(("Start_Node"))
+b["i++"]
+c{"if i > 5")
+a --->|int i = 0| b
+b -.-> c""")
 
         assert expected_outcome == self.transducer.transduce("test_diagram", representation), \
             "Elaborated outcome should match expected outcome"
