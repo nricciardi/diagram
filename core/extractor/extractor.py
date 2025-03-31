@@ -9,7 +9,7 @@ from core.utils.compatible_mixins import CompatibleDiagramsMixin, IdentifiableMi
 class Extractor(IdentifiableMixin, CompatibleDiagramsMixin, ABC):
 
     @abstractmethod
-    def extract(self, diagram_id: str, image: Image) -> DiagramRepresentation:
+    async def extract(self, diagram_id: str, image: Image) -> DiagramRepresentation:
         """
         Extract agnostic representation of a diagram (image)
 

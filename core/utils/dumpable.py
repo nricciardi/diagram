@@ -3,7 +3,7 @@ from abc import ABC, abstractmethod
 
 class DumpableMixin(ABC):
     @abstractmethod
-    def dump(self, output_path: str):
+    async def dump(self, output_path: str):
         """
         Dump representation into file
 

@@ -6,7 +6,7 @@ from core.utils.compatible_mixins import CompatibleMarkupLanguagesMixin, Identif
 class Compiler(IdentifiableMixin, CompatibleMarkupLanguagesMixin, ABC):
 
      @abstractmethod
-     def compile(self, payload: str, output_path: str):
+     async def compile(self, payload: str, output_path: str):
          """
          :param payload:
          :param output_path: path in which output will be dumped

@@ -36,7 +36,7 @@ class Orchestrator:
 
         return os.path.join(outputs_dir_path, file_name)
 
-    def image2diagram(self, image: Image, parallelization: bool = False, then_compile: bool = True, outputs_dir_path: str | None = None) -> List[TransducerOutcome]:
+    async def image2diagram(self, image: Image, parallelization: bool = False, then_compile: bool = True, outputs_dir_path: str | None = None) -> List[TransducerOutcome]:
         """
         Convert one handwritten image to digital diagram
 
@@ -48,23 +48,23 @@ class Orchestrator:
         """
 
         if parallelization:
-            return self.__par_image2diagram(image, then_compile=then_compile, outputs_path=outputs_dir_path)
+            return await self.__par_image2diagram(image, then_compile=then_compile, outputs_path=outputs_dir_path)
         else:
-            return self.__seq_image2diagram(image, then_compile=then_compile, outputs_dir_path=outputs_dir_path)
+            return await self.__seq_image2diagram(image, then_compile=then_compile, outputs_dir_path=outputs_dir_path)
 
-    def __seq_image2diagram(self, image: Image, then_compile: bool, outputs_dir_path: str | None = None) -> List[TransducerOutcome]:
+    async def __seq_image2diagram(self, image: Image, then_compile: bool, outputs_dir_path: str | None = None) -> List[TransducerOutcome]:
         """
         Convert image to diagram sequentially
         """
 
         logger.info("classify image...")
         logger.debug(image)
-        diagram_id = self.__classifier.classify(image)
+        diagram_id = await self.__classifier.classify(image)
 
         logger.info(f"image was classified as {diagram_id}")
 
         logger.info(f"extract image...")
-        diagram_representations: List[DiagramRepresentation] = self.__seq_extraction(diagram_id, image)
+        diagram_representations: List[DiagramRepresentation] = await self.__seq_extraction(diagram_id, image)
 
         logger.info(f"{len(diagram_representations)} diagram representation(s) found")
         logger.debug(diagram_representations)
@@ -72,7 +72,7 @@ class Orchestrator:
         outcomes: List[TransducerOutcome] = []
         for diagram_representation in diagram_representations:
             logger.info(f"transduce {type(diagram_representation)} type...")
-            o = self.__seq_transduce(diagram_id, diagram_representation)
+            o = await self.__seq_transduce(diagram_id, diagram_representation)
 
             logger.info(f"transduction done: {len(o)} outcomes")
             logger.debug(o)
@@ -82,16 +82,16 @@ class Orchestrator:
         if not then_compile:
             return outcomes
 
-        self.__seq_compile_transducer_outcomes(outcomes, outputs_dir_path)
+        await self.__seq_compile_transducer_outcomes(outcomes, outputs_dir_path)
 
         return outcomes
 
-    def __par_image2diagram(self, image: Image, then_compile: bool, outputs_path: str | None = None) -> List[TransducerOutcome]:
+    async def __par_image2diagram(self, image: Image, then_compile: bool, outputs_path: str | None = None) -> List[TransducerOutcome]:
         """
         Convert image to diagram in parallel
         """
 
-        diagram_id = self.__classifier.classify(image)
+        diagram_id = await self.__classifier.classify(image)
 
         raise NotImplemented()
 
@@ -123,7 +123,7 @@ class Orchestrator:
         return compatible_transducer
 
 
-    def __seq_extraction(self, diagram_id: str, image: Image) -> List[DiagramRepresentation]:
+    async def __seq_extraction(self, diagram_id: str, image: Image) -> List[DiagramRepresentation]:
         """
         Extract representations from image, using extractors sequentially
         """
@@ -134,12 +134,12 @@ class Orchestrator:
 
         for extractor in compatible_extractors:
             logger.debug(f"extract using {extractor.identifier}")
-            representation: DiagramRepresentation = extractor.extract(diagram_id, image)
+            representation: DiagramRepresentation = await extractor.extract(diagram_id, image)
             diagram_representations.append(representation)
 
         return diagram_representations
 
-    def __seq_transduce(self, diagram_id: str, diagram_representation: DiagramRepresentation) -> List[TransducerOutcome]:
+    async def __seq_transduce(self, diagram_id: str, diagram_representation: DiagramRepresentation) -> List[TransducerOutcome]:
         """
         Transduce representation sequentially
         """
@@ -149,12 +149,12 @@ class Orchestrator:
         outcomes: List[TransducerOutcome] = []
         for transducer in compatible_transducer:
             logger.debug(f"transduce using {transducer.identifier}")
-            outcome = transducer.transduce(diagram_id, diagram_representation)
+            outcome = await transducer.transduce(diagram_id, diagram_representation)
             outcomes.append(outcome)
 
         return outcomes
 
-    def __seq_compile_transducer_outcomes(self, outcomes: List[TransducerOutcome], outputs_dir_path: str):
+    async def __seq_compile_transducer_outcomes(self, outcomes: List[TransducerOutcome], outputs_dir_path: str):
 
         outcomes_by_markuplang: Dict[str, List[TransducerOutcome]] = defaultdict(list)  # { markuplang: [outcomes] }
         for outcome in outcomes:
@@ -171,7 +171,7 @@ class Orchestrator:
                         logger.debug(compiler)
                         logger.debug(outcome)
 
-                        compiler.compile(
+                        await compiler.compile(
                             outcome.payload,
                             Orchestrator.build_output_path(
                                 outputs_dir_path,
