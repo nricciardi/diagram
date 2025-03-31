@@ -52,16 +52,22 @@ class Orchestrator:
         else:
             return await self.__seq_image2diagram(image, then_compile=then_compile, outputs_dir_path=outputs_dir_path)
 
+    async def __classify(self, image: Image) -> str:
+        logger.info("classify image...")
+        logger.debug(image)
+
+        diagram_id = await self.__classifier.classify(image)
+
+        logger.info(f"image was classified as {diagram_id}")
+
+        return diagram_id
+
     async def __seq_image2diagram(self, image: Image, then_compile: bool, outputs_dir_path: str | None = None) -> List[TransducerOutcome]:
         """
         Convert image to diagram sequentially
         """
 
-        logger.info("classify image...")
-        logger.debug(image)
-        diagram_id = await self.__classifier.classify(image)
-
-        logger.info(f"image was classified as {diagram_id}")
+        diagram_id = await self.__classify(image)
 
         logger.info(f"extract image...")
         diagram_representations: List[DiagramRepresentation] = await self.__seq_extraction(diagram_id, image)
@@ -91,7 +97,7 @@ class Orchestrator:
         Convert image to diagram in parallel
         """
 
-        diagram_id = await self.__classifier.classify(image)
+        diagram_id = await self.__classify(image)
 
         raise NotImplemented()
 
