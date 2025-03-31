@@ -20,17 +20,16 @@ class FlowchartRepresentation(DiagramRepresentation):
     """
     def dump(self, output_path: str):
         
-        for id, element in self.elements.items():
+        for identifier, element in self.elements.items():
             with open(output_path, "a") as file:
-                file.write(f"{id};;{element.category};;{"" if element.label == None else element.label}\n")
+                file.write(f"{identifier};;{element.category};;{"" if element.label is None else element.label}\n")
                 
         with open(output_path, "a") as file:
             file.write("\n")
             
         for relation in self.relations:
             with open(output_path, "a") as file:
-                file.write(f"{relation.category};;{"" if relation.source_id == None else relation.source_id};; \
-                           {"" if relation.target_id == None else relation.target_id};;{"" if relation.label == None else relation.label}\n")
+                file.write(f"{relation.category};;{"" if relation.source_id is None else relation.source_id};;{"" if relation.target_id is None else relation.target_id};;{"" if relation.label is None else relation.label}\n")
         
     
     def load(self, input_path: str):
@@ -46,15 +45,17 @@ class FlowchartRepresentation(DiagramRepresentation):
             if line == "\n":
                 break_line = idx
                 break
-            id, category, label = line.split(";;")
-            label = (None if label == "" else label)
-            self.elements[id] = Element(id, category, label)
+            identifier, category, label = line.split(";;")
+            label = label.strip()
+            label = (None if label.strip() == "" else label.strip())
+            self.elements[identifier] = Element(identifier, category, label)
             
         lines = lines[break_line + 1:]
         for line in lines:
             category, source_id, target_id, label = line.split(";;")
             source_id = (None if source_id == "" else source_id)
             target_id = (None if target_id == "" else target_id)
+            label = label.strip()
             label = (None if label == "" else label)
             self.relations.append(Relation(category, source_id, target_id, label))
 
