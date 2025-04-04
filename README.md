@@ -21,6 +21,7 @@ Nomi papabili con cui rinominare repo e progetto:
 - **Commit in inglese**
 - **Commenti (nel codice) in inglese**, esclusi TODO
 - Nomi dei file, quando possibile, separati da underscore `_`
+- Aggiungere in `requirements.txt` le dipendenze
 
 La documentazione possiamo tenerla in italiano, poi la facciamo tradurre a Chat
 

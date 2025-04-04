@@ -23,30 +23,30 @@ class MockClassifier(Classifier):
     n_calls = -1
     mock_classifications = [FAKE_DIAGRAM_TYPE_1, FAKE_DIAGRAM_TYPE_2]
 
-    async def classify(self, image: Image) -> str:
+    def classify(self, image: Image) -> str:
         self.n_calls += 1
         return self.mock_classifications[self.n_calls % len(self.mock_classifications)]
 
 class MockDiagramRepresentation1(DiagramRepresentation):
 
-    async def dump(self, output_path: str):
+    def dump(self, output_path: str):
         pass
 
-    async def load(self, input_path: str):
+    def load(self, input_path: str):
         pass
 
 class MockDiagramRepresentation2(DiagramRepresentation):
 
-    async def dump(self, output_path: str):
+    def dump(self, output_path: str):
         pass
 
-    async def load(self, input_path: str):
+    def load(self, input_path: str):
         pass
 
 
 class MockExtractor1(Extractor):
 
-    async def extract(self, diagram_id: str, image: Image) -> DiagramRepresentation:
+    def extract(self, diagram_id: str, image: Image) -> DiagramRepresentation:
         return MockDiagramRepresentation1()
 
     def compatible_diagrams(self) -> List[str]:
@@ -56,7 +56,7 @@ class MockExtractor1(Extractor):
 
 class MockExtractor2(Extractor):
 
-    async def extract(self, diagram_id: str, image: Image) -> DiagramRepresentation:
+    def extract(self, diagram_id: str, image: Image) -> DiagramRepresentation:
         return MockDiagramRepresentation2()
 
     def compatible_diagrams(self) -> List[str]:
@@ -66,7 +66,7 @@ class MockExtractor2(Extractor):
 
 class MockExtractor3(Extractor):
 
-    async def extract(self, diagram_id: str, image: Image) -> DiagramRepresentation:
+    def extract(self, diagram_id: str, image: Image) -> DiagramRepresentation:
         raise ValueError("this doesn't have to be called")
 
     def compatible_diagrams(self) -> List[str]:
@@ -77,7 +77,7 @@ class MockExtractor3(Extractor):
 
 class MockTransducer1(Transducer):
 
-    async def transduce(self, diagram_id: str, diagram_representation: DiagramRepresentation) -> TransducerOutcome:
+    def transduce(self, diagram_id: str, diagram_representation: DiagramRepresentation) -> TransducerOutcome:
         return TransducerOutcome(diagram_id, FAKE_MARKUP_LANGUAGE_1, FAKE_PAYLOAD_1)
 
     def compatible_diagrams(self) -> List[str]:
@@ -92,7 +92,7 @@ class MockTransducer1(Transducer):
 
 class MockTransducer2(Transducer):
 
-    async def transduce(self, diagram_id: str, diagram_representation: DiagramRepresentation) -> TransducerOutcome:
+    def transduce(self, diagram_id: str, diagram_representation: DiagramRepresentation) -> TransducerOutcome:
         return TransducerOutcome(diagram_id, FAKE_MARKUP_LANGUAGE_2, FAKE_PAYLOAD_2)
 
     def compatible_diagrams(self) -> List[str]:
@@ -107,7 +107,7 @@ class MockTransducer2(Transducer):
 
 class MockCompiler1(Compiler):
 
-    async def compile(self, payload: str, output_path: str):
+    def compile(self, payload: str, output_path: str):
         assert payload, FAKE_PAYLOAD_1
 
     def compatible_markup_languages(self) -> List[str]:
@@ -117,7 +117,7 @@ class MockCompiler1(Compiler):
 
 class MockCompiler2(Compiler):
 
-    async def compile(self, payload: str, output_path: str):
+    def compile(self, payload: str, output_path: str):
         assert payload, FAKE_PAYLOAD_2
 
     def compatible_markup_languages(self) -> List[str]:
@@ -129,7 +129,7 @@ class MockImage(Image):
     pass
 
 
-class TestOrchestrator(unittest.IsolatedAsyncioTestCase):
+class TestOrchestrator(unittest.TestCase):
 
     @staticmethod
     def default_orchestrator() -> Orchestrator:
@@ -152,20 +152,34 @@ class TestOrchestrator(unittest.IsolatedAsyncioTestCase):
 
         return orchestrator
 
-    async def test_sequential_draw2image(self):
+    def test_sequential_draw2image(self):
         orchestrator = TestOrchestrator.default_orchestrator()
 
         input = MockImage()
 
         outcomes: List[TransducerOutcome] = []
-        outcomes.extend(await orchestrator.image2diagram(image=input, outputs_dir_path="..."))
-        outcomes.extend(await orchestrator.image2diagram(image=input, outputs_dir_path="..."))
+        outcomes.extend(orchestrator.image2diagram(image=input))
+        outcomes.extend(orchestrator.image2diagram(image=input))
 
         assert len(outcomes), 2
 
         assert outcomes[0].payload, FAKE_PAYLOAD_1
         assert outcomes[1].payload, FAKE_PAYLOAD_2
 
+
+    def test_parallel_draw2image(self):
+        orchestrator = TestOrchestrator.default_orchestrator()
+
+        input = MockImage()
+
+        outcomes: List[TransducerOutcome] = []
+        outcomes.extend(orchestrator.image2diagram(image=input, parallelization=True))
+        outcomes.extend(orchestrator.image2diagram(image=input, parallelization=True))
+
+        assert len(outcomes), 2
+
+        assert outcomes[0].payload, FAKE_PAYLOAD_1
+        assert outcomes[1].payload, FAKE_PAYLOAD_2
 
 
 

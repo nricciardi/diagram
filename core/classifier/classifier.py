@@ -6,7 +6,7 @@ from core.image.image import Image
 class Classifier(ABC):
 
     @abstractmethod
-    async def classify(self, image: Image) -> str:
+    def classify(self, image: Image) -> str:
         """
         Classify input image, in order to find the most probable diagram type
 

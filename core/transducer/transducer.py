@@ -9,7 +9,7 @@ from core.transducer.outcome import TransducerOutcome
 class Transducer(IdentifiableMixin, CompatibleDiagramsMixin, CompatibleRepresentationsMixin, ABC):
 
     @abstractmethod
-    async def transduce(self, diagram_id: str, diagram_representation: DiagramRepresentation) -> TransducerOutcome:
+    def transduce(self, diagram_id: str, diagram_representation: DiagramRepresentation) -> TransducerOutcome:
         """
         Convert agnostic representation into (compilable) outcome
 
