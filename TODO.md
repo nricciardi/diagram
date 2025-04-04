@@ -13,16 +13,30 @@
 - [ ] fil: Refactor (non necessario) transducer (usare le librerie sul gruppo)
 - [ ] sav: Wrappare compilatore Mermaid (https://mermaid.js.org/ecosystem/tutorials.html#jupyter-python-integration-with-mermaid-js)
 - [ ] sav: Wrappare compilatore D2
-- [ ] nic: Multiprocess orchestratore
+- [x] nic: Multiprocess orchestratore
 - [ ] fil: Proposal
 
 
 ## Lunedì 14/04
 
-- [ ] 
+- [ ] CLI per main
+- [ ] Classifier
+  - [ ] Preprocessing
+    - [ ] Definire
+    - [ ] TODO
+    - [ ] TODO
+    - [ ] TODO
+  - [ ] Rete classificatrice
+    - [ ] Definire
+    - [ ] TODO
+    - [ ] TODO
+    - [ ] TODO
+- Componente per overlapping
+  - [ ] Definire
+  - TODO
+  - TODO
+  - TODO
 
 ## Lunedì 21/04
-
-TODO
 
 

@@ -107,7 +107,7 @@ class MockTransducer2(Transducer):
 
 class MockCompiler1(Compiler):
 
-    def compile(self, payload: str, output_path: str):
+    def compile(self, payload: str, output_path: str, **kwargs):
         assert payload, FAKE_PAYLOAD_1
 
     def compatible_markup_languages(self) -> List[str]:
@@ -117,7 +117,7 @@ class MockCompiler1(Compiler):
 
 class MockCompiler2(Compiler):
 
-    def compile(self, payload: str, output_path: str):
+    def compile(self, payload: str, output_path: str, **kwargs):
         assert payload, FAKE_PAYLOAD_2
 
     def compatible_markup_languages(self) -> List[str]:
@@ -152,7 +152,7 @@ class TestOrchestrator(unittest.TestCase):
 
         return orchestrator
 
-    def test_sequential_draw2image(self):
+    def test_sequential_image2diagram(self):
         orchestrator = TestOrchestrator.default_orchestrator()
 
         input = MockImage()
@@ -167,7 +167,7 @@ class TestOrchestrator(unittest.TestCase):
         assert outcomes[1].payload, FAKE_PAYLOAD_2
 
 
-    def test_parallel_draw2image(self):
+    def test_parallel_image2diagram(self):
         orchestrator = TestOrchestrator.default_orchestrator()
 
         input = MockImage()
@@ -182,7 +182,13 @@ class TestOrchestrator(unittest.TestCase):
         assert outcomes[1].payload, FAKE_PAYLOAD_2
 
 
+    def test_parallel_images2diagrams(self):
 
+        n = 100
+        inputs = [MockImage() for _ in range(n)]
 
+        orchestrator = TestOrchestrator.default_orchestrator()
 
+        outcomes: List[TransducerOutcome] = orchestrator.images2diagrams(inputs, parallelization=True)
 
+        assert len(outcomes), n

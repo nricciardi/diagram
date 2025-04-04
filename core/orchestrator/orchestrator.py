@@ -1,6 +1,7 @@
 import hashlib
 import os
 import logging
+from compileall import compile_dir
 from concurrent.futures import Future
 from concurrent.futures.process import ProcessPoolExecutor
 from datetime import datetime
@@ -25,7 +26,7 @@ class Orchestrator:
         self.__compilers = compilers
 
     @classmethod
-    def build_output_path(cls, outputs_dir_path: str, diagram_id: str, markup_language: str, make_unique: bool = True, unique_strength: int = 8) -> str:
+    def _build_output_path(cls, outputs_dir_path: str, diagram_id: str, markup_language: str, make_unique: bool = True, unique_strength: int = 8) -> str:
 
         file_name = f"{diagram_id}__{markup_language}"
 
@@ -37,6 +38,16 @@ class Orchestrator:
             file_name += f"__{unique}"
 
         return os.path.join(outputs_dir_path, file_name)
+
+    @staticmethod
+    def _arrange_outcomes_by_markuplang(outcomes: List[TransducerOutcome]):
+        outcomes_by_markuplang: Dict[str, List[TransducerOutcome]] = defaultdict(list)  # { markuplang: [outcomes] }
+        for outcome in outcomes:
+            outcomes_by_markuplang[outcome.markup_language].append(outcome)
+
+        logger.debug(outcomes_by_markuplang)
+
+        return outcomes_by_markuplang
 
     def __classify(self, image: Image) -> str:
         logger.info("classify image...")
@@ -73,6 +84,7 @@ class Orchestrator:
                         compatible_transducer.append(transducer)
 
         return compatible_transducer
+
 
     def images2diagrams(self, images: List[Image], parallelization: bool = False, then_compile: bool = True, outputs_dir_path: str | None = None) -> List[TransducerOutcome]:
         """
@@ -123,7 +135,7 @@ class Orchestrator:
         """
 
         if parallelization:
-            return self.__par_image2diagram(image, then_compile=then_compile, outputs_path=outputs_dir_path)
+            return self.__par_image2diagram(image, then_compile=then_compile, outputs_dir_path=outputs_dir_path)
         else:
             return self.__seq_image2diagram(image, then_compile=then_compile, outputs_dir_path=outputs_dir_path)
 
@@ -193,12 +205,8 @@ class Orchestrator:
 
     def __seq_compile_transducer_outcomes(self, outcomes: List[TransducerOutcome], outputs_dir_path: str):
 
-        outcomes_by_markuplang: Dict[str, List[TransducerOutcome]] = defaultdict(list)  # { markuplang: [outcomes] }
-        for outcome in outcomes:
-            outcomes_by_markuplang[outcome.markup_language].append(outcome)
-
+        outcomes_by_markuplang: Dict[str, List[TransducerOutcome]] = Orchestrator._arrange_outcomes_by_markuplang(outcomes)
         logger.info(f"outcomes are grouped into {len(outcomes_by_markuplang.keys())} groups: {outcomes_by_markuplang.keys()}")
-        logger.debug(outcomes_by_markuplang)
 
         for markuplang, outcomes in outcomes_by_markuplang.items():
             for compiler in self.__compilers:
@@ -210,7 +218,7 @@ class Orchestrator:
 
                         compiler.compile(
                             outcome.payload,
-                            Orchestrator.build_output_path(
+                            Orchestrator._build_output_path(
                                 outputs_dir_path,
                                 outcome.diagram_id,
                                 outcome.markup_language
@@ -219,7 +227,7 @@ class Orchestrator:
 
     # ===> PAR <===
 
-    def __par_image2diagram(self, image: Image, then_compile: bool, outputs_path: str | None = None) -> List[TransducerOutcome]:
+    def __par_image2diagram(self, image: Image, then_compile: bool, outputs_dir_path: str | None = None) -> List[TransducerOutcome]:
         """
         Convert image to diagram in parallel
         """
@@ -231,13 +239,9 @@ class Orchestrator:
         if not then_compile:
             return outcomes
 
-        # TODO
-        # with ProcessPoolExecutor() as executor:
-        #     tasks: List[Future] = []
-        #     for transducer in compatible_transducers:
-        #         logger.info(f"transduce {type(diagram_representation)} type...")
-        #
-        # return outcomes
+        self.__par_compile(outcomes, outputs_dir_path)
+
+        return outcomes
 
 
     def __par_elaboration(self, diagram_id: str, image: Image) -> List[TransducerOutcome]:
@@ -281,5 +285,36 @@ class Orchestrator:
 
             return outcomes
 
+    def __par_compile(self, outcomes: List[TransducerOutcome], outputs_dir_path: str):
 
+        outcomes_by_markuplang: Dict[str, List[TransducerOutcome]] = Orchestrator._arrange_outcomes_by_markuplang(outcomes)
+        logger.info(f"outcomes are grouped into {len(outcomes_by_markuplang.keys())} groups: {outcomes_by_markuplang.keys()}")
 
+        def compile_using_compiler(compiler: Compiler, input: Dict[str, List[TransducerOutcome]]):
+            for markuplang, outcomes in outcomes_by_markuplang:
+                logger.info(f"compile {len(outcomes)} outcomes of markuplang: {markuplang}...")
+
+                for markuplang, outcomes in input.items():
+                    if markuplang in compiler.compatible_markup_languages():
+                        for outcome in outcomes:
+                            logger.info(f"compile using {compiler.identifier}...")
+                            logger.debug(compiler)
+                            logger.debug(outcome)
+
+                            compiler.compile(
+                                outcome.payload,
+                                Orchestrator._build_output_path(
+                                    outputs_dir_path,
+                                    outcome.diagram_id,
+                                    outcome.markup_language
+                                )
+                            )
+
+        with ProcessPoolExecutor() as executor:
+            tasks: List[Future] = []
+            for compiler in self.__compilers:
+                tasks.append(
+                    executor.submit(compile_using_compiler, compiler, outcomes_by_markuplang)
+                )
+
+            _ = (task.result() for task in tasks)
