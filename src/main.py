@@ -1,7 +1,8 @@
 from core.orchestrator.orchestrator import Orchestrator
 from src.transducer.d2l.flowchart_transducer import FlowchartToD2Transducer
 from src.transducer.mermaid.flowchart_transducer import FlowchartToMermaidTransducer
-
+from src.compiler.d2.flowchart_compiler import FlowchartToD2Compiler
+from src.compiler.mermaid.flowchart_compiler import FlowchartToMermaidCompiler
 
 def main():
     orchestrator = Orchestrator(
@@ -14,7 +15,8 @@ def main():
             FlowchartToD2Transducer("flowchart-to-d2-transducer"),
         ],
         compilers=[
-            # TODO
+            FlowchartToMermaidCompiler("flowchart-to-mermaid-compiler"),
+            FlowchartToD2Compiler("flowchart-to-d2-compiler")
         ]
     )
 
