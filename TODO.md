@@ -20,6 +20,8 @@
 ## Lunedì 14/04
 
 - [ ] CLI per main
+- [ ] Rollback transducer
+- [ ] Test completo transducer + compiler
 - [ ] Classifier
   - [ ] Preprocessing
     - [ ] Definire

@@ -2,7 +2,7 @@ import unittest
 from typing import Dict, List
 
 from src.wellknown_markuplang import WellKnownMarkupLanguage
-from src.transducer.d2l.flowchart_transducer import FlowchartToD2Transducer
+from src.transducer.d2.flowchart_transducer import FlowchartToD2Transducer
 from src.wellknown_diagram import WellKnownDiagram
 from src.representation.flowchart_representation.element import FlowchartElementCategory, Element
 from src.representation.flowchart_representation.relation import FlowchartRelationCategory, Relation

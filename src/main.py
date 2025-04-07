@@ -1,5 +1,5 @@
 from core.orchestrator.orchestrator import Orchestrator
-from src.transducer.d2l.flowchart_transducer import FlowchartToD2Transducer
+from src.transducer.d2.flowchart_transducer import FlowchartToD2Transducer
 from src.transducer.mermaid.flowchart_transducer import FlowchartToMermaidTransducer
 from src.compiler.d2.flowchart_compiler import FlowchartToD2Compiler
 from src.compiler.mermaid.flowchart_compiler import FlowchartToMermaidCompiler
