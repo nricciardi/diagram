@@ -10,34 +10,37 @@
 ## Lunedì 07/04
 
 - [ ] Scelgiere un nuovo diagramma
-- [ ] fil: Refactor (non necessario) transducer (usare le librerie sul gruppo)
-- [ ] sav: Wrappare compilatore Mermaid (https://mermaid.js.org/ecosystem/tutorials.html#jupyter-python-integration-with-mermaid-js)
-- [ ] sav: Wrappare compilatore D2
+- [ ] ~~fil: Refactor (non necessario) transducer (usare le librerie sul gruppo)~~
+- [x] sav: Wrappare compilatore Mermaid (https://mermaid.js.org/ecosystem/tutorials.html#jupyter-python-integration-with-mermaid-js)
+- [x] sav: Wrappare compilatore D2
 - [x] nic: Multiprocess orchestratore
-- [ ] fil: Proposal
+- [x] fil: Proposal
 
 
 ## Lunedì 14/04
 
-- [ ] CLI per main
-- [ ] Rollback transducer
-- [ ] Test completo transducer + compiler
+- [ ] Dottorando: scelgiere un nuovo diagramma
+- [ ] nic: CLI per main
+- [ ] fil: Rollback transducer
+- [ ] sav: Definire l'output/input della rete dei bbox dell'extractor (07/04/2025 alle 10)
+- [ ] Dataset
+  - [ ] Portare proposte
+  - [ ] Parse del dataset per i nostri scopi
+  - [ ] Fillare la classe wrapper `Image` per avere sia il "content opencv" sia annotazioni "json" come attributi 
+  - [ ] Creare classe per gestire il dataset (e.g. get_image); guardare se c'è la classe 
+- [ ] fil: Test completo transducer + compiler
 - [ ] Classifier
   - [ ] Preprocessing
-    - [ ] Definire
-    - [ ] TODO
-    - [ ] TODO
-    - [ ] TODO
+    - [ ] Definire -> chiedendo al dottorando
+    - [ ] Togliere rumore (gaussian filter) [filter]
+    - [ ] Togliere il background (e.g. togliere quadretti) [e.g. Otsu]
+    - [ ] Raddrizzare immagini [geom]
   - [ ] Rete classificatrice
-    - [ ] Definire
-    - [ ] TODO
-    - [ ] TODO
-    - [ ] TODO
-- Componente per overlapping
-  - [ ] Definire
-  - TODO
-  - TODO
-  - TODO
+    - [ ] Definire -> chiedendo al dottorando
+- Chiedere al dottorando per i bounding box
+- Componente per overlapping (relazioni tra elementi dopo bounding)
+  - [ ] sav: Definire come fare
+  - [ ] Farlo
 
 ## Lunedì 21/04
 
