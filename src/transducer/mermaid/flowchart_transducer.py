@@ -1,13 +1,15 @@
 from typing import List, Type
-from python_mermaid.diagram import MermaidDiagram, Link, Node
-from python_mermaid.utils import snake_case
+import sys, os
+
+from src.representation.flowchart_representation.element import FlowchartElementCategory
+from src.representation.flowchart_representation.relation import FlowchartRelationCategory
 
 from src.wellknown_diagram import WellKnownDiagram
 from core.representation.representation import DiagramRepresentation
 from src.representation.flowchart_representation.flowchart_representation import FlowchartRepresentation
 from core.transducer.outcome import TransducerOutcome
 from core.transducer.transducer import Transducer
-from src.wellknown_markuplang import WellKnownMarkupLanguage
+
 
 class FlowchartToMermaidTransducer(Transducer):
 
@@ -26,33 +28,53 @@ class FlowchartToMermaidTransducer(Transducer):
 
         ]
 
+    @staticmethod
+    def wrap_element(category: str, label: str) -> str:
+        match category:
+            case FlowchartElementCategory.CIRCLE.value:
+                return f"(({label}))"
+            case FlowchartElementCategory.TERMINAL.value:
+                return f"([{label}])"
+            case FlowchartElementCategory.PROCESS.value:
+                return f"({label})"
+            case FlowchartElementCategory.DECISION.value:
+                return "{" + label + "}"
+            case FlowchartElementCategory.INPUT_OUTPUT.value:
+                return f"[/{label}/]"
+            case FlowchartElementCategory.SUBROUTINE.value:
+                return f"[{label}]"
+            case _:
+                raise ValueError(f"Unknown flowchart element category: {category}")
+
+    @staticmethod
+    def wrap_relation(category: str, label: str) -> str:
+        match category:
+            case FlowchartRelationCategory.ARROW.value:
+                if label == "":
+                    return "-->"
+                return f"-->|{label}|"
+            case FlowchartRelationCategory.OPEN_LINK.value:
+                if label == "":
+                    return " --- "
+                return f"---|{label}|"
+            case FlowchartRelationCategory.DOTTED_ARROW.value:
+                if label == "":
+                    return "-.->"
+                return f" -. {label} .->"
+            case _:
+                raise ValueError(f"Unknown flowchart relation category: {category}")
+
     def transduce(self, diagram_id: str, diagram_representation: DiagramRepresentation) -> TransducerOutcome:
         assert isinstance(diagram_representation, FlowchartRepresentation)
-
-        nodes: list[Node] = [
-            Node(
-                id=node_id,
-                content=element.label,
-                shape=element.category
-            ) for node_id, element in diagram_representation.elements.items()
-        ]
-
-        links: list[Link] = [
-            Link(
-                origin=next((node for node in nodes if node.id == snake_case(relation.source_id)), None),
-                end=next((node for node in nodes if node.id == snake_case(relation.target_id)), None),
-                shape=relation.category,
-                message=relation.label
-            ) for relation in diagram_representation.relations
-        ]
-
-        links = [link for link in links if link.origin is not None and link.end is not None]
-
-        body: MermaidDiagram = MermaidDiagram(
-            title=diagram_id,
-            nodes=nodes,
-            links=links
-        )
         
-        outcome: TransducerOutcome = TransducerOutcome(diagram_id=diagram_id, payload=body.__str__(), markup_language=WellKnownMarkupLanguage.MERMAID.value)
+        body: str = "Flowchart TD\n"
+        for id, element in diagram_representation.elements.items():
+            body += f"\t{id}{self.wrap_element(element.category, element.label)}\n"
+            
+        body += "\n"
+        for relation in diagram_representation.relations:
+            body += f"\t{relation.source_id}"
+            body += f"{self.wrap_relation(relation.category, relation.label)}{relation.target_id}\n"
+        
+        outcome: TransducerOutcome = TransducerOutcome(diagram_id=diagram_id, payload=body, markup_language="mermaid")
         return outcome

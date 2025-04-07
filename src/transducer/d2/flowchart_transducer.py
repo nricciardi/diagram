@@ -1,12 +1,14 @@
 from typing import List, Type
-from py_d2 import D2Diagram, D2Shape, D2Connection, D2Style
 
 from src.wellknown_diagram import WellKnownDiagram
 from core.representation.representation import DiagramRepresentation
 from src.representation.flowchart_representation.flowchart_representation import FlowchartRepresentation
+from src.representation.flowchart_representation.element import FlowchartElementCategory, Element
+from src.representation.flowchart_representation.relation import FlowchartRelationCategory, Relation
 from core.transducer.outcome import TransducerOutcome
 from core.transducer.transducer import Transducer
 from src.wellknown_markuplang import WellKnownMarkupLanguage
+
 
 class FlowchartToD2Transducer(Transducer):
 
@@ -22,26 +24,67 @@ class FlowchartToD2Transducer(Transducer):
     def compatible_representations(self) -> List[Type[DiagramRepresentation]]:
         return [FlowchartRepresentation]
 
+    @staticmethod
+    def wrap_element(category: str, label: str, elem_id: str) -> str:
+        match category:
+            case FlowchartElementCategory.CIRCLE.value:
+                return f"{elem_id}: {label}\n" \
+                       f"{elem_id}.shape: circle\n"
+            case FlowchartElementCategory.TERMINAL.value:
+                return f"{elem_id}: {label}\n" \
+                       f"{elem_id}.shape: oval\n"
+            case FlowchartElementCategory.PROCESS.value:
+                return f"{elem_id}: {label}\n" \
+                       f"{elem_id}.style.border-radius: 8\n"
+            case FlowchartElementCategory.DECISION.value:
+                return f"{elem_id}: {label}\n" \
+                       f"{elem_id}.shape: diamond\n"
+            case FlowchartElementCategory.INPUT_OUTPUT.value:
+                return f"{elem_id}: {label}\n" \
+                       f"{elem_id}.shape: parallelogram\n"
+            case FlowchartElementCategory.SUBROUTINE.value:
+                return f"{elem_id}: {label}\n"
+            case _:
+                raise ValueError(f"Unknown flowchart element category: {category}")
+
+    @staticmethod
+    def wrap_relation(category: str, label: str, target_id: str) -> str:
+        match category:
+            case FlowchartRelationCategory.ARROW.value:
+                if label == "":
+                    return f"->{target_id}\n"
+                return f"->{target_id}: {label}\n"
+            case FlowchartRelationCategory.OPEN_LINK.value:
+                if label == "":
+                    return f"--{target_id}\n"
+                return f"--{target_id}: {label}\n"
+            case FlowchartRelationCategory.DOTTED_ARROW.value:
+                if label == "":
+                    return f"->{target_id} {{\n" \
+                           "\tstyle: {\n" \
+                           "\tstroke-dash: 3\n" \
+                           "\t}\n" \
+                           "}\n"
+                return f"->{target_id}: {label} {{\n" \
+                       "\tstyle: {\n" \
+                       "\t\tstroke-dash: 3\n" \
+                       "\t}\n" \
+                       "}\n"
+            case _:
+                raise ValueError(f"Unknown flowchart relation category: {category}")
+
     def transduce(self, diagram_id: str, diagram_representation: DiagramRepresentation) -> TransducerOutcome:
         assert isinstance(diagram_representation, FlowchartRepresentation)
 
-        shapes: list[D2Shape] = [
-            D2Shape(
-                name=element.identifier,
-                label=element.label,
+        body: str = ""
+        for element in diagram_representation.elements.values():
+            body += self.wrap_element(element.category, element.label, element.identifier)
 
-            ) for identifier, element in diagram_representation.elements.items()
-        ]
+        body += "\n"
+        for relation in diagram_representation.relations:
+            body += f"{relation.source_id}"
+            body += self.wrap_relation(relation.category, relation.label, relation.target_id)
 
-        connections: list[D2Connection] = [
-            D2Connection(
-                shape_1=relation.source_id,
-                shape_2=relation.target_id,
-                label=relation.label
-            ) for relation in diagram_representation.relations
-        ]
-
-        body: D2Diagram = D2Diagram(shapes=shapes, connections=connections)
-
-        outcome: TransducerOutcome = TransducerOutcome(diagram_id, WellKnownMarkupLanguage.D2_LANG.value, payload=str(body))
+        outcome: TransducerOutcome = TransducerOutcome(diagram_id, WellKnownMarkupLanguage.D2_LANG.value, body)
         return outcome
+
