@@ -23,7 +23,7 @@
 - [ ] nic: CLI per main
 - [ ] fil: Rollback transducer
 - [ ] sav: Definire l'output/input della rete dei bbox dell'extractor (07/04/2025 alle 10)
-- [ ] Dataset
+- [ ] Dataset (`DataLoader`)
   - [ ] Portare proposte
   - [ ] Parse del dataset per i nostri scopi
   - [ ] Fillare la classe wrapper `Image` per avere sia il "content opencv" sia annotazioni "json" come attributi 
