@@ -9,7 +9,6 @@ from core.transducer.outcome import TransducerOutcome
 from core.transducer.transducer import Transducer
 from src.wellknown_markuplang import WellKnownMarkupLanguage
 
-
 class FlowchartToD2Transducer(Transducer):
 
     def __init__(self, identifier: str):
@@ -87,4 +86,3 @@ class FlowchartToD2Transducer(Transducer):
 
         outcome: TransducerOutcome = TransducerOutcome(diagram_id, WellKnownMarkupLanguage.D2_LANG.value, body)
         return outcome
-
