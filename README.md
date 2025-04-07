@@ -1,14 +1,10 @@
-# Progetto rita
+# D.I.A.G.R.A.M.: Development of Image Analysis for Graph Recognition And Modeling
+
+This project proposes the development of a system for analyzing different types of handwritten diagrams and converting them into well-rendered images through a textual syntax.
+The goal is to create a tool capable of analyzing scanned or photographed sketches of diagrams and automatically generating code that can be rendered into the same diagrams digitally, 
+to eventually integrate or modify them.
 
 [Scrivo in italiano per fare prima, poi cambiamo in inglese]
-
-[Progetto rita nome provvisorio, ben accette proposte]
-
-
-Nomi papabili con cui rinominare repo e progetto:
-
-- Diagramify
-- Draw2Diagram
 
 
 ## Buone abitudini per non smadonnare
