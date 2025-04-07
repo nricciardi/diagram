@@ -11,6 +11,10 @@ from core.transducer.outcome import TransducerOutcome
 from core.transducer.transducer import Transducer
 
 
+class FlowchartRelation:
+    pass
+
+
 class FlowchartToMermaidTransducer(Transducer):
 
     def __init__(self, identifier: str):
@@ -66,15 +70,15 @@ class FlowchartToMermaidTransducer(Transducer):
 
     def transduce(self, diagram_id: str, diagram_representation: DiagramRepresentation) -> TransducerOutcome:
         assert isinstance(diagram_representation, FlowchartRepresentation)
-        
+
         body: str = "Flowchart TD\n"
         for id, element in diagram_representation.elements.items():
             body += f"\t{id}{self.wrap_element(element.category, element.label)}\n"
-            
+
         body += "\n"
         for relation in diagram_representation.relations:
             body += f"\t{relation.source_id}"
             body += f"{self.wrap_relation(relation.category, relation.label)}{relation.target_id}\n"
-        
+
         outcome: TransducerOutcome = TransducerOutcome(diagram_id=diagram_id, payload=body, markup_language="mermaid")
         return outcome
