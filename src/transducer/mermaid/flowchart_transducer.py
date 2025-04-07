@@ -71,9 +71,9 @@ class FlowchartToMermaidTransducer(Transducer):
     def transduce(self, diagram_id: str, diagram_representation: DiagramRepresentation) -> TransducerOutcome:
         assert isinstance(diagram_representation, FlowchartRepresentation)
 
-        body: str = "Flowchart TD\n"
-        for id, element in diagram_representation.elements.items():
-            body += f"\t{id}{self.wrap_element(element.category, element.label)}\n"
+        body: str = "flowchart TD\n"
+        for identifier, element in diagram_representation.elements.items():
+            body += f"\t{identifier}{self.wrap_element(element.category, element.label)}\n"
 
         body += "\n"
         for relation in diagram_representation.relations:

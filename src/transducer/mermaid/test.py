@@ -42,15 +42,14 @@ class TestFlowchartToMermaidTransducer(unittest.TestCase):
 
         representation = FlowchartRepresentation(elements, relations)
         expected_outcome = TransducerOutcome(diagram_id="test_diagram", markup_language=WellKnownMarkupLanguage.MERMAID.value,
-                                             payload="""---
-title: test_diagram
----
-graph 
-a(("Start_Node"))
-b["i++"]
-c{"if i > 5")
-a --->|int i = 0| b
-b -.-> c""")
+                                             payload="""flowchart TD
+	A((Start_Node))
+	B(i++)
+	C{if i > 5}
+
+	A-->|int i = 0|B
+	B-.->C
+""")
 
         assert expected_outcome == self.transducer.transduce("test_diagram", representation), \
             "Elaborated outcome should match expected outcome"
