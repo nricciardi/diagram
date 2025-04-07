@@ -19,6 +19,21 @@ class TestFlowchartToD2LTransducer(unittest.TestCase):
         assert WellKnownDiagram.FLOW_CHART.value in compatible_diagrams, "Flowchart should be compatible"
         assert WellKnownDiagram.GRAPH_DIAGRAM.value in compatible_diagrams, "Graph diagram should be compatible"
 
+    def test_wrap_element(self):
+        id_a, id_f = "A", "F"
+        result: str = self.transducer.wrap_element(FlowchartElementCategory.CIRCLE.value, "Test", id_a)
+        expected_result: str = "A: Test\nA.shape: circle\n"
+        self.assertEqual(result, expected_result, f"Expected\n{expected_result}, got\n{result}")
+        result: str = self.transducer.wrap_element(FlowchartElementCategory.TERMINAL.value, "Test", id_f)
+        expected_result: str = "F: Test\nF.shape: oval\n"
+        self.assertEqual(result, expected_result)
+
+    def test_wrap_relation(self):
+        id_d = "D"
+        result = self.transducer.wrap_relation(FlowchartRelationCategory.ARROW.value, "Test", id_d)
+        expected_result: str = "->D: Test\n"
+        self.assertEqual(result, expected_result)
+
     def test_transduce(self):
         id_a, id_b, id_c, id_d, id_e, id_f = "A", "B", "C", "D", "E", "F"
 
@@ -36,6 +51,7 @@ class TestFlowchartToD2LTransducer(unittest.TestCase):
             Relation(FlowchartRelationCategory.DOTTED_ARROW.value, id_b, id_c, "Dotted Arrow"),
             Relation(FlowchartRelationCategory.ARROW.value, id_c, id_d, ""),
             Relation(FlowchartRelationCategory.ARROW.value, id_d, id_e, ""),
+            Relation(FlowchartRelationCategory.OPEN_LINK.value, id_e, id_f, "Open Link"),
         ]
 
         representation = FlowchartRepresentation(elements, relations)
@@ -59,7 +75,8 @@ class TestFlowchartToD2LTransducer(unittest.TestCase):
                                                                                          "}"
                                                                                          "\n"
                                                                                          "C->D\n"
-                                                                                         "D->E\n")
+                                                                                         "D->E\n"
+                                                                                         "E--F: Open Link\n")
 
         result = self.transducer.transduce("test_diagram", representation)
         self.assertEqual(expected_result.payload, result.payload)
