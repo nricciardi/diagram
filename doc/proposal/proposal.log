@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.5) (preloaded format=pdflatex 2023.7.3)  7 APR 2025 14:04
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.5) (preloaded format=pdflatex 2023.7.3)  7 APR 2025 14:48
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -336,7 +336,7 @@ Package hyperref Info: Link coloring OFF on input line 18.
 
 {C:/Users/filip/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}{C:/Users/fili
 p/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/cm-super/cm-super-ts1.enc}]
-<../assets/images/overview.png, id=26, 769.6755pt x 231.9867pt>
+<../assets/images/overview.png, id=30, 769.6755pt x 231.9867pt>
 File: ../assets/images/overview.png Graphic file (type png)
 <use ../assets/images/overview.png>
 Package pdftex.def Info: ../assets/images/overview.png  used on input line 50.
@@ -354,32 +354,42 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
-[2 <../assets/images/overview.png>] (proposal.aux)
+[2 <../assets/images/overview.png>]
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 14.49998pt, for example:
+(fancyhdr)                \setlength{\headheight}{14.49998pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
+
+[3] (proposal.aux)
  ***********
 LaTeX2e <2023-06-01> patch level 1
 L3 programming layer <2023-06-16>
  ***********
 Package rerunfilecheck Info: File `proposal.out' has not changed.
-(rerunfilecheck)             Checksum: 5D55954078701FC60158C43D18332198;332.
+(rerunfilecheck)             Checksum: 42861B1C83FB2CBCA2D5AF49EA7F9C4B;425.
  ) 
 Here is how much of TeX's memory you used:
- 9210 strings out of 476037
- 142483 string characters out of 5779846
+ 9219 strings out of 476037
+ 142604 string characters out of 5779846
  1860763 words of memory out of 5000000
- 29851 multiletter control sequences out of 15000+600000
- 517206 words of font info for 47 fonts, out of 8000000 for 9000
+ 29855 multiletter control sequences out of 15000+600000
+ 517553 words of font info for 48 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 75i,11n,79p,439b,493s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 75i,12n,79p,439b,493s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <C:/Users/filip/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/
 cmbx10.pfb><C:/Users/filip/AppData/Local/Programs/MiKTeX/fonts/type1/public/ams
 fonts/cm/cmbx12.pfb><C:/Users/filip/AppData/Local/Programs/MiKTeX/fonts/type1/p
 ublic/amsfonts/cm/cmr10.pfb><C:/Users/filip/AppData/Local/Programs/MiKTeX/fonts
 /type1/public/amsfonts/cm/cmr12.pfb><C:/Users/filip/AppData/Local/Programs/MiKT
 eX/fonts/type1/public/amsfonts/cm/cmr17.pfb><C:/Users/filip/AppData/Local/Progr
-ams/MiKTeX/fonts/type1/public/cm-super/sfrm1200.pfb>
-Output written on proposal.pdf (2 pages, 236265 bytes).
+ams/MiKTeX/fonts/type1/public/amsfonts/cm/cmti12.pfb><C:/Users/filip/AppData/Lo
+cal/Programs/MiKTeX/fonts/type1/public/cm-super/sfrm1200.pfb>
+Output written on proposal.pdf (3 pages, 249072 bytes).
 PDF statistics:
- 65 PDF objects out of 1000 (max. 8388607)
- 7 named destinations out of 1000 (max. 500000)
- 30 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 80 PDF objects out of 1000 (max. 8388607)
+ 11 named destinations out of 1000 (max. 500000)
+ 38 words of extra memory for PDF output out of 10000 (max. 10000000)
 
