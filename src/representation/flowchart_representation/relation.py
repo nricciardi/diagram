@@ -7,8 +7,9 @@ For reference: https://en.wikipedia.org/wiki/Flowchart#Building_blocks
 
 
 class FlowchartRelationCategory(Enum):
-    ARROW: str = "normal"
-    DOTTED_ARROW: str = "dotted"
+    ARROW: str = "Arrowhead"
+    OPEN_LINK: str = "OpenLink"
+    DOTTED_ARROW: str = "DottedArrowhead"
 
 
 @dataclass(frozen=True, slots=True)
