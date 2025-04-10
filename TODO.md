@@ -22,7 +22,7 @@
 - [ ] Dottorando: scelgiere un nuovo diagramma
 - [ ] nic: CLI per main
 - [ ] fil: Rollback transducer
-- [ ] sav: Definire l'output/input della rete dei bbox dell'extractor (07/04/2025 alle 10)
+- [x] sav: Definire l'output/input della rete dei bbox dell'extractor (07/04/2025 alle 10)
 - [ ] Dataset (`DataLoader`)
   - [ ] Portare proposte
   - [ ] Parse del dataset per i nostri scopi
