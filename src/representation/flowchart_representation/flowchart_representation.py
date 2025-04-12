@@ -5,13 +5,13 @@ from src.representation.flowchart_representation.element import Element
 from src.representation.flowchart_representation.relation import Relation
 
 
-@dataclass
+@dataclass(frozen=True)
 class FlowchartRepresentation(DiagramRepresentation):
     """
     Flowchart representation
     """
 
-    elements: Dict[str, Element]
+    elements: List[Element]
     relations: List[Relation]
 
     """

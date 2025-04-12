@@ -5,7 +5,7 @@ from core.utils.dumpable import DumpableMixin
 from core.utils.loadable import LoadableMixin
 
 
-@dataclass
+@dataclass(frozen=True)
 class DiagramRepresentation(DumpableMixin, LoadableMixin, ABC):
     """
     Agnostic representation of a diagram
