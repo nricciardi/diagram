@@ -14,8 +14,8 @@ from src.representation.flowchart_representation.relation import Relation
 @dataclass(frozen=True)
 class ObjectRelation:
     category: str
-    source: Optional[ImageBoundingBox]
-    target: Optional[ImageBoundingBox]
+    source_index: Optional[int]
+    target_index: Optional[int]
 
 
 class ElementTextTypeOutcome(Enum):
@@ -104,6 +104,8 @@ class MultistageFlowchartExtractor(MultiStageExtractor, ABC):
     def _compute_relations(self, diagram_id: str, element_bboxes: List[ImageBoundingBox], arrow_bboxes: List[ImageBoundingBox]) -> List[ObjectRelation]:
         """
         Compute relations between elements and arrows
+
+        source_index and target_index must be indices of element_bboxes lists
         """
 
     @abstractmethod
@@ -147,15 +149,38 @@ class MultistageFlowchartExtractor(MultiStageExtractor, ABC):
         relations: List[Relation] = []
 
         for obj_relation in objects_relations:
+            inner_text: List[str] = []
+            source_text: List[str] = []
+            middle_text: List[str] = []
+            target_text: List[str] = []
+
+            for arrow_bbox, associated_text_bboxes in arrow_texts_associations.items():
+                for associated_text_bbox in associated_text_bboxes:
+                    outcome = self._element_text_type(diagram_id, arrow_bbox, associated_text_bbox)
+                    text = self._digitalize_text(diagram_id, image, associated_text_bbox)
+
+                    match outcome:
+                        case ArrowTextTypeOutcome.INNER:
+                            inner_text.append(text)
+                        case ArrowTextTypeOutcome.SOURCE:
+                            source_text.append(text)
+                        case ArrowTextTypeOutcome.MIDDLE:
+                            middle_text.append(text)
+                        case ArrowTextTypeOutcome.TARGET:
+                            target_text.append(text)
+                        case ElementTextTypeOutcome.DISCARD:
+                            raise NotImplemented()  # TODO: secchio degli scarti
 
             relation = Relation(
                 category=obj_relation.category,
-                source_id=obj_relation.source.
+                source_id=obj_relation.source_index,
+                target_id=obj_relation.target_index,
+                inner_text=inner_text,
+                source_text=source_text,
+                middle_text=middle_text,
+                target_text=target_text,
             )
 
-
-        for arrow_bbox, associated_text_bboxes in arrow_texts_associations.items():
-            pass
-
+            relations.append(relation)
 
         return relations

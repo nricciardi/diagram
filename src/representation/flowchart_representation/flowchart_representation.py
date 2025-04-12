@@ -11,7 +11,7 @@ class FlowchartRepresentation(DiagramRepresentation):
     Flowchart representation
     """
 
-    elements: Dict[str, Element]
+    elements: List[Element]
     relations: List[Relation]
 
     """

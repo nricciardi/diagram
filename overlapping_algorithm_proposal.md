@@ -96,8 +96,8 @@ def jsonify_relations(relations: Tensor[R, 2]) -> List[Relation]:
    json_relations: List[Relation]
    json_relation: Relation
    for relation in relations:
-      json_relation.source_id = relation[0]
-      json_relation.target_id = relation[1]
+      json_relation.source_index = relation[0]
+      json_relation.target_index = relation[1]
       json_relation.category = ...  # How do we get the category of the relation from the bbox net?
       json_relation.text = ...  # The "label" we are looking for here (which is different from the "labels" the bbox net
       # will return) are objects rather than attributes for the bbox: how do we turn an object into an attribute for 
