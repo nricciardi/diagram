@@ -52,15 +52,11 @@ class MultistageFlowchartExtractor(MultiStageExtractor, ABC):
 
         elements_texts_associations, arrows_texts_associations = self._compute_text_associations(diagram_id, element_bboxes, arrow_bboxes, text_bboxes)
 
-        object_relations: List[ObjectRelation] = self._compute_relations(diagram_id, element_bboxes, arrow_bboxes)
+        objects_relations: List[ObjectRelation] = self._compute_relations(diagram_id, element_bboxes, arrow_bboxes)
 
-        elements: List[Element] = []
-        for element_bbox, associated_text_bboxes in elements_texts_associations.items():
-            pass
+        elements: List[Element] = self._build_elements(diagram_id, image, elements_texts_associations)
 
-        relations: List[Relation] = []
-        for arrow_bbox, associated_text_bboxes in elements_texts_associations.items():
-            pass
+        relations: List[Relation] = self._build_relations(diagram_id, image, objects_relations, arrows_texts_associations)
 
         return FlowchartRepresentation(
             elements=elements,
@@ -111,14 +107,55 @@ class MultistageFlowchartExtractor(MultiStageExtractor, ABC):
         """
 
     @abstractmethod
-    def _element_text_type(self, diagram_id: str, node_bbox: ImageBoundingBox, text_bbox: ImageBoundingBox) -> ElementTextTypeOutcome:
+    def _element_text_type(self, diagram_id: str, element_bbox: ImageBoundingBox, text_bbox: ImageBoundingBox) -> ElementTextTypeOutcome:
         """
-        Return if text of node is inner, outer or must be discarded
+        Return if text of element is inner, outer or must be discarded
         """
 
     @abstractmethod
     def _arrow_text_type(self, diagram_id: str, arrow_bbox: ImageBoundingBox, text_bbox: ImageBoundingBox) -> ArrowTextTypeOutcome:
         """
-        Return if text of node is inner, outer or must be discarded
+        Return if text of arrow is inner, outer or must be discarded
         """
 
+    def _build_elements(self, diagram_id: str, image: Image, elements_texts_associations: Dict[ImageBoundingBox, List[ImageBoundingBox]]) -> List[Element]:
+
+        elements: List[Element] = []
+        for element_bbox, associated_text_bboxes in elements_texts_associations.items():
+            inner_text: List[str] = []
+            outer_text: List[str] = []
+
+            for associated_text_bbox in associated_text_bboxes:
+                outcome = self._element_text_type(diagram_id, element_bbox, associated_text_bbox)
+                text = self._digitalize_text(diagram_id, image, associated_text_bbox)
+
+                match outcome:
+                    case ElementTextTypeOutcome.INNER:
+                        inner_text.append(text)
+                    case ElementTextTypeOutcome.OUTER:
+                        outer_text.append(text)
+                    case ElementTextTypeOutcome.DISCARD:
+                        raise NotImplemented()  # TODO: secchio degli scarti
+
+            element: Element = Element(element_bbox.category, inner_text, outer_text)
+            elements.append(element)
+
+        return elements
+
+
+    def _build_relations(self, diagram_id: str, image: Image, objects_relations: List[ObjectRelation], arrow_texts_associations: Dict[ImageBoundingBox, List[ImageBoundingBox]]) -> List[Relation]:
+        relations: List[Relation] = []
+
+        for obj_relation in objects_relations:
+
+            relation = Relation(
+                category=obj_relation.category,
+                source_id=obj_relation.source.
+            )
+
+
+        for arrow_bbox, associated_text_bboxes in arrow_texts_associations.items():
+            pass
+
+
+        return relations
