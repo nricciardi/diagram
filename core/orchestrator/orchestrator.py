@@ -1,7 +1,7 @@
 import hashlib
 import os
 import logging
-from compileall import compile_dir
+from dataclasses import dataclass
 from concurrent.futures import Future
 from concurrent.futures.process import ProcessPoolExecutor
 from datetime import datetime
@@ -17,13 +17,13 @@ from core.transducer.transducer import Transducer
 
 logger = logging.getLogger(__name__)
 
-class Orchestrator:
 
-    def __init__(self, classifier: Classifier, extractors: List[Extractor], transducers: List[Transducer], compilers: List[Compiler]):
-        self.__classifier = classifier
-        self.__extractors = extractors
-        self.__transducers = transducers
-        self.__compilers = compilers
+@dataclass
+class Orchestrator:
+    classifier: Classifier
+    extractors: List[Extractor]
+    transducers: List[Transducer]
+    compilers: List[Compiler]
 
     @classmethod
     def _build_output_path(cls, outputs_dir_path: str, diagram_id: str, markup_language: str, make_unique: bool = True, unique_strength: int = 8) -> str:

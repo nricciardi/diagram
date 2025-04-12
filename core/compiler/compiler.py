@@ -1,8 +1,9 @@
 from abc import ABC, abstractmethod
-
+from dataclasses import dataclass
 from core.utils.compatible_mixins import CompatibleMarkupLanguagesMixin, IdentifiableMixin
 
 
+@dataclass
 class Compiler(IdentifiableMixin, CompatibleMarkupLanguagesMixin, ABC):
 
      @abstractmethod

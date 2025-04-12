@@ -1,8 +1,9 @@
 from abc import ABC, abstractmethod
-
+from dataclasses import dataclass
 from core.image.image import Image
 
 
+@dataclass
 class Classifier(ABC):
 
     @abstractmethod

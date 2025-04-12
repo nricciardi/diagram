@@ -32,6 +32,7 @@
 
 ## Martedì 22/04
 
+- [ ] nic: Filtro confidenza
 - [ ] sav: Dataset (`DataLoader`)
   - [ ] Parse del dataset per i nostri scopi
   - [ ] Fillare la classe wrapper `Image` per avere sia il "content opencv" sia annotazioni "json" come attributi 
@@ -53,7 +54,6 @@
 - [ ] Cercare testa e coda delle frecce (rete) [sgherro]
 - [ ] Preprocessing extractor [sgherro]
 - [ ] Object detection -> nodi, frecce, testo [sgherro]
-- [ ] Filtro confidenza
 - [ ] Classifier
   - [ ] Preprocessing [sgherro]
     - [ ] Definire quali fare -> chiedendo al dottorando

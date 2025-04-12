@@ -1,11 +1,12 @@
 from abc import ABC, abstractmethod
 from typing import List, Type
+from dataclasses import dataclass
 from core.representation.representation import DiagramRepresentation
 from core.utils.compatible_mixins import CompatibleDiagramsMixin, CompatibleRepresentationsMixin, IdentifiableMixin
-from src.unified_representation import UnifiedDiagramRepresentation
 from core.transducer.outcome import TransducerOutcome
 
 
+@dataclass
 class Transducer(IdentifiableMixin, CompatibleDiagramsMixin, CompatibleRepresentationsMixin, ABC):
 
     @abstractmethod
