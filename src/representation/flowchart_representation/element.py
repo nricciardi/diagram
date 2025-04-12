@@ -1,5 +1,6 @@
 from enum import Enum
 from dataclasses import dataclass
+from typing import List
 
 """
 For reference: https://en.wikipedia.org/wiki/Flowchart#Building_blocks
@@ -20,6 +21,6 @@ class Element:
     Flowchart element
     """
 
-    identifier: str
     category: str
-    label: str | None = None
+    inner_text: List[str]
+    outer_text: List[str]

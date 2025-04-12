@@ -1,5 +1,6 @@
 from enum import Enum
 from dataclasses import dataclass
+from typing import List
 
 """
 For reference: https://en.wikipedia.org/wiki/Flowchart#Building_blocks
@@ -19,7 +20,9 @@ class Relation:
     """
 
     category: str
-    source_id: str | None
-    target_id: str | None
-    label: str | None = None
-
+    source_id: int | None
+    target_id: int | None
+    inner_text: List[str]
+    source_text: List[str]
+    target_text: List[str]
+    middle_text: List[str]

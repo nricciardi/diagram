@@ -22,14 +22,14 @@ class FlowchartRepresentation(DiagramRepresentation):
         
         for identifier, element in self.elements.items():
             with open(output_path, "a") as file:
-                file.write(f"{identifier};;{element.category};;{"" if element.label is None else element.label}\n")
+                file.write(f"{identifier};;{element.category};;{"" if element.text is None else element.text}\n")
                 
         with open(output_path, "a") as file:
             file.write("\n")
             
         for relation in self.relations:
             with open(output_path, "a") as file:
-                file.write(f"{relation.category};;{"" if relation.source_id is None else relation.source_id};;{"" if relation.target_id is None else relation.target_id};;{"" if relation.label is None else relation.label}\n")
+                file.write(f"{relation.category};;{"" if relation.source_id is None else relation.source_id};;{"" if relation.target_id is None else relation.target_id};;{"" if relation.text is None else relation.text}\n")
         
     
     def load(self, input_path: str):

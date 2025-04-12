@@ -11,14 +11,14 @@ class TestFlowchartRepresentation(unittest.TestCase):
     def setUp(self):
         self.flowchart = FlowchartRepresentation(
             elements={
-                "1": Element(identifier="1", category="circle", label="Start"),
-                "2": Element(identifier="2", category="process", label="Process"),
-                "3": Element(identifier="3", category="terminal", label="End"),
+                "1": Element(identifier="1", category="circle", text="Start"),
+                "2": Element(identifier="2", category="process", text="Process"),
+                "3": Element(identifier="3", category="terminal", text="End"),
             },
             relations=[
                 Relation(category="arrow", source_id="1", target_id="2"),
                 Relation(category="arrow", source_id="2", target_id="3"),
-                Relation(category="arrow", source_id="1", target_id=None, label="Input")
+                Relation(category="arrow", source_id="1", target_id=None, text="Input")
             ]
         )
         test_file = "test_flowchart.txt"
@@ -48,7 +48,7 @@ class TestFlowchartRepresentation(unittest.TestCase):
         self.assertEqual(len(self.flowchart.elements), 3)
         self.assertEqual(len(self.flowchart.relations), 3)
         
-        self.assertEqual(self.flowchart.elements["1"].label, "Start")
+        self.assertEqual(self.flowchart.elements["1"].text, "Start")
         self.assertEqual(self.flowchart.relations[0].source_id, "1")
         self.assertEqual(self.flowchart.relations[0].target_id, "2")
     

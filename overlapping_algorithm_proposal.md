@@ -71,24 +71,26 @@ def compute_distance(bbox1: FloatTensor[4], bbox2: FloatTensor[4]) -> float:
 ## Algorithm 
 
 The algorithm is the following
+
 ```Python
 def find_relations(boxes: FloatTensor[N, 4], labels: Int64Tensor[N]) -> Tensor:
-    relations: Tensor[R, 2] # pair-wise relation tensor: every row has two objects, R is the number of relations found
-    R = 0
-    threshold = ... # TODO define threshold
-    for i, box1 in boxes:
-       for j, box2 in boxes:
-        if i == j:
-           continue
-        if are_overlapped(bbox1=box1, bbox2=box2):
+   relations: Tensor[R, 2]  # pair-wise relation tensor: every row has two objects, R is the number of relations found
+   R = 0
+   threshold = ...  # TODO define threshold
+   for i, box1 in boxes:
+      for j, box2 in boxes:
+         if i == j:
+            continue
+         if are_overlapped(bbox1=box1, bbox2=box2):
             relations[R] = [i, j]
             R += 1
-        else:
+         else:
             distance = compute_distance(bbox1=box1, bbox2=box2)
             if distance < threshold:
-                relations[R] = [i, j]
-                R += 1
-    return relations
+               relations[R] = [i, j]
+               R += 1
+   return relations
+
 
 def jsonify_relations(relations: Tensor[R, 2]) -> List[Relation]:
    json_relations: List[Relation]
@@ -96,36 +98,38 @@ def jsonify_relations(relations: Tensor[R, 2]) -> List[Relation]:
    for relation in relations:
       json_relation.source_id = relation[0]
       json_relation.target_id = relation[1]
-      json_relation.category = ... # How do we get the category of the relation from the bbox net?
-      json_relation.label = ... # The "label" we are looking for here (which is different from the "labels" the bbox net
+      json_relation.category = ...  # How do we get the category of the relation from the bbox net?
+      json_relation.text = ...  # The "label" we are looking for here (which is different from the "labels" the bbox net
       # will return) are objects rather than attributes for the bbox: how do we turn an object into an attribute for 
       # another object? 
       json_relations.append(json_relation)
-    
+
    return json_relations
+
 
 def jsonify_elements(labels: Int64Tensor[N]) -> Dict[str, Element]:
    elements: Dict[str, Element]
-   element: Element 
+   element: Element
    for i, label in labels:
-      element.identifier = i 
-      element.category = label 
-      element.label = ... # Same problem of json_relation.label 
-      elements[i] = element 
-    
-   return elements 
+      element.identifier = i
+      element.category = label
+      element.text = ...  # Same problem of json_relation.label 
+      elements[i] = element
+
+   return elements
+
 
 def algorithm(boxes: FloatTensor[N, 4], labels: Int64Tensor[N]) -> DiagramRepresentation:
    elements: Dict[str, Element]
    relations: Tensor[R, 2]
    json_relations: List[Relation]
    representation: FlowchartRepresentation
-    
+
    elements = jsonify_elements(labels=labels)
    relations = find_relations(boxes=boxes, labels=labels)
    json_relations = jsonify_relations(relations=relations)
-    
-   representation.elements = elements 
+
+   representation.elements = elements
    representation.relations = json_relations
    return representation
 ```

@@ -73,12 +73,12 @@ class FlowchartToMermaidTransducer(Transducer):
 
         body: str = "flowchart TD\n"
         for identifier, element in diagram_representation.elements.items():
-            body += f"\t{identifier}{self.wrap_element(element.category, element.label)}\n"
+            body += f"\t{identifier}{self.wrap_element(element.category, element.text)}\n"
 
         body += "\n"
         for relation in diagram_representation.relations:
             body += f"\t{relation.source_id}"
-            body += f"{self.wrap_relation(relation.category, relation.label)}{relation.target_id}\n"
+            body += f"{self.wrap_relation(relation.category, relation.text)}{relation.target_id}\n"
 
         outcome: TransducerOutcome = TransducerOutcome(diagram_id=diagram_id, payload=body, markup_language="mermaid")
         return outcome
