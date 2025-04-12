@@ -44,9 +44,13 @@ def extract_bbox(image) -> BboxOutput:
 
 ### Preprocessing
 
+`_preprocess`
+
 TODO
 
 ### Object detection -> nodi, frecce, testo
+
+`_extract_diagram_objects`
 
 TODO
 
@@ -56,6 +60,8 @@ TODO: scegliere la soglia (dipende da quanto brava è la rete)
 
 ### Associare i testi alle frecce e ai nodi
 
+`_compute_text_associations`
+
 Iterare sui bbox testo: 
 
 Scegliere il bbox nodo/freccia più vicino (**senza soglia**)
@@ -63,11 +69,15 @@ Scegliere il bbox nodo/freccia più vicino (**senza soglia**)
 
 ### Digitalizzazione del testo
 
+`_digitalize_text`
+
 TODO: rete
 
 TODO: chiedere se possiamo prendere una rete già fatta per il testo
 
 ### Overlapping nodi-frecce per relazioni
+
+`_compute_relations`
 
 freccia massimo due nodi, soglia per rimuovere frecce troppo lontane (e.g. dei None)
 
@@ -99,6 +109,8 @@ target_id: int | None
 
 ### Overlapping nodi-testo
 
+`_element_text_type`
+
 **Per ogni testo** (=> associazione univoca testo-nodo):
 
 ```python
@@ -113,6 +125,8 @@ outer_text: List[str]
 
 
 ### Overlapping frecce-testo
+
+`_arrow_text_type`
 
 ```python
 inner_text: List[str]

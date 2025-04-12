@@ -14,11 +14,12 @@ class FlowchartRepresentation(DiagramRepresentation):
     elements: List[Element]
     relations: List[Relation]
 
-    """
+
+    def dump(self, output_path: str):
+        """
         The syntax is: first all elements - with id, category and label separated by ;; -
         then a new line and all relations - with category, source_id, target_id and label separated by ;;
-    """
-    def dump(self, output_path: str):
+        """
         
         for identifier, element in self.elements.items():
             with open(output_path, "a") as file:
