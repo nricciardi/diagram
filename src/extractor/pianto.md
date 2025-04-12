@@ -11,14 +11,36 @@
 1. Preprocessing
 2. Object detection -> nodi, frecce, testo
 3. Filtro confidenza
-4. Associare i testi alle frecce e ai nodi
-5. [in parallelo]
+4. [in parallelo]
+   - Associare i testi alle frecce e ai nodi 
    - Digitalizzazione del testo
    - Overlapping nodi-frecce per relazioni (+ cercare testa e coda delle frecce)
+5. [in parallelo]
    - Overlapping nodi-testo
    - Overlapping frecce-testo
 6. Creazione DiagramRepresentation
 7. Gestione del secchio degli scartati
+
+```python
+
+def extract(image):
+   ...
+    output = extract_bbox(image)
+    overlap(output)
+
+def extract_bbox(image) -> BboxOutput:
+   
+   model = ...
+   output_rcnn = model(image)
+   
+   output: BboxOutput = transform(output_rcnn)
+   
+   return output
+
+```
+ 
+
+
 
 ### Preprocessing
 

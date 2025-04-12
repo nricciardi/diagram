@@ -21,27 +21,56 @@
 
 - [ ] Dottorando: scelgiere un nuovo diagramma
 - [ ] nic: CLI per main
-- [ ] fil: Rollback transducer
+- [x] fil: Rollback transducer
 - [x] sav: Definire l'output/input della rete dei bbox dell'extractor (07/04/2025 alle 10)
-- [ ] Dataset (`DataLoader`)
-  - [ ] Portare proposte
+- [ ] fil: Test completo transducer + compiler
+- [ ] nic: Template pattern extractor
+- [ ] nic: Definire output tra punto 3 e 4 extractor
+- [ ] sav: Portare proposte dataloader
+- [ ] fil: Refactor DiagramRepresentation
+- [ ] nic: mail a Baraldi
+
+## Martedì 22/04
+
+- [ ] sav: Dataset (`DataLoader`)
   - [ ] Parse del dataset per i nostri scopi
   - [ ] Fillare la classe wrapper `Image` per avere sia il "content opencv" sia annotazioni "json" come attributi 
-  - [ ] Creare classe per gestire il dataset (e.g. get_image); guardare se c'è la classe 
-- [ ] fil: Test completo transducer + compiler
+  - [ ] Creare classe per gestire il dataset (e.g. get_image); guardare se c'è la classe
+- [ ] nic: Associare i testi alle frecce e ai nodi
+- [ ] fil: Overlapping nodi-frecce per relazioni
+- [ ] sav: Overlapping nodi-testo
+- [ ] sav: Overlapping frecce-testo
+- [ ] fil: Creazione DiagramRepresentation
+- [ ] nic: Gestione del secchio degli scartati
+- [ ] fil: Digitalizzazione del testo (rete già fatta)
+ 
+**Dottorando deve rispondere**
+
+- [ ] Organizzare deadline
+
+## Lunedì 28/04
+
+- [ ] Cercare testa e coda delle frecce (rete) [sgherro]
+- [ ] Preprocessing extractor [sgherro]
+- [ ] Object detection -> nodi, frecce, testo [sgherro]
+- [ ] Filtro confidenza
 - [ ] Classifier
-  - [ ] Preprocessing
-    - [ ] Definire -> chiedendo al dottorando
+  - [ ] Preprocessing [sgherro]
+    - [ ] Definire quali fare -> chiedendo al dottorando
     - [ ] Togliere rumore (gaussian filter) [filter]
     - [ ] Togliere il background (e.g. togliere quadretti) [e.g. Otsu]
-    - [ ] Raddrizzare immagini [geom]
+    - [ ] 
   - [ ] Rete classificatrice
     - [ ] Definire -> chiedendo al dottorando
-- Chiedere al dottorando per i bounding box
-- Componente per overlapping (relazioni tra elementi dopo bounding)
-  - [ ] sav: Definire come fare
-  - [ ] Farlo
 
-## Lunedì 21/04
+## Lunedì 05/05
+
+- [ ] Classifier: Raddrizzare immagini [geom]
+
+
+
+## Venerdì 27/06
+
+
 
 

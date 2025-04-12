@@ -83,7 +83,7 @@ Consigliano di normalizzare i valori dei pixel tra 0 e 1 con media 0 e varianza 
 
 Ridurre l’overfitting e migliorare la generalizzazione.
 
-Si possono usare i transformer.
+=> non genera i bbox
 
 Handwritten Digit Recognition Using Deep Learning Algorithms, arXiv (2021)
 https://arxiv.org/pdf/2106.12614
