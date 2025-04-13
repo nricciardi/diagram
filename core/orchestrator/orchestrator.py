@@ -5,7 +5,7 @@ from dataclasses import dataclass
 from concurrent.futures import Future
 from concurrent.futures.process import ProcessPoolExecutor
 from datetime import datetime
-from typing import List, Dict
+from typing import List, Dict, Optional
 from collections import defaultdict
 from core.classifier.classifier import Classifier
 from core.compiler.compiler import Compiler
@@ -53,7 +53,7 @@ class Orchestrator:
         logger.info("classify image...")
         logger.debug(image)
 
-        diagram_id = self.__classifier.classify(image)
+        diagram_id = self.classifier.classify(image)
 
         logger.info(f"image was classified as {diagram_id}")
 
@@ -65,7 +65,7 @@ class Orchestrator:
         """
 
         compatible_extractors = list(
-            extractor for extractor in self.__extractors if diagram_id in extractor.compatible_diagrams()
+            extractor for extractor in self.extractors if diagram_id in extractor.compatible_diagrams()
         )
 
         return compatible_extractors
@@ -77,7 +77,7 @@ class Orchestrator:
 
         compatible_transducer = []
 
-        for transducer in self.__transducers:
+        for transducer in self.transducers:
             if diagram_id in transducer.compatible_diagrams():
                 for compatible_representation_type in transducer.compatible_representations():
                     if isinstance(diagram_representation, compatible_representation_type):
@@ -86,7 +86,7 @@ class Orchestrator:
         return compatible_transducer
 
 
-    def images2diagrams(self, images: List[Image], parallelization: bool = False, then_compile: bool = True, outputs_dir_path: str | None = None) -> List[TransducerOutcome]:
+    def images2diagrams(self, images: List[Image], parallelization: bool = False, then_compile: bool = True, outputs_dir_path: Optional[str] = None) -> List[TransducerOutcome]:
         """
         Convert a bulk of images
 
@@ -209,7 +209,7 @@ class Orchestrator:
         logger.info(f"outcomes are grouped into {len(outcomes_by_markuplang.keys())} groups: {outcomes_by_markuplang.keys()}")
 
         for markuplang, outcomes in outcomes_by_markuplang.items():
-            for compiler in self.__compilers:
+            for compiler in self.compilers:
                 if markuplang in compiler.compatible_markup_languages():
                     for outcome in outcomes:
                         logger.info(f"compile using {compiler.identifier}...")
@@ -312,7 +312,7 @@ class Orchestrator:
 
         with ProcessPoolExecutor() as executor:
             tasks: List[Future] = []
-            for compiler in self.__compilers:
+            for compiler in self.compilers:
                 tasks.append(
                     executor.submit(compile_using_compiler, compiler, outcomes_by_markuplang)
                 )

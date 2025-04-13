@@ -20,22 +20,23 @@
 ## Lunedì 14/04
 
 - [ ] Dottorando: scelgiere un nuovo diagramma
-- [ ] nic: CLI per main
+- [x] nic: CLI per main
 - [x] fil: Rollback transducer
 - [x] sav: Definire l'output/input della rete dei bbox dell'extractor (07/04/2025 alle 10)
 - [ ] fil: Test completo transducer + compiler
-- [ ] nic: Template pattern extractor
-- [ ] nic: Definire output tra punto 3 e 4 extractor
+- [x] nic: Template pattern extractor
+- [x] nic: Definire output tra punto 3 e 4 extractor
 - [ ] sav: Portare proposte dataloader
 - [ ] fil: Refactor DiagramRepresentation
 - [ ] nic: mail a Baraldi
 
 ## Martedì 22/04
 
-- [ ] nic: Filtro confidenza
+- [x] nic: Filtro confidenza
 - [ ] sav: Dataset (`DataLoader`)
   - [ ] Parse del dataset per i nostri scopi
-  - [ ] Fillare la classe wrapper `Image` per avere sia il "content opencv" sia annotazioni "json" come attributi 
+  - [ ] Fillare la classe wrapper `Image` per avere sia il "content opencv" sia annotazioni "json" come attributi (e.g. `TensorImage` o qualcosa di simile)
+  - [ ] Fillare TODO main.py
   - [ ] Creare classe per gestire il dataset (e.g. get_image); guardare se c'è la classe
 - [ ] nic: Associare i testi alle frecce e ai nodi
 - [ ] fil: Overlapping nodi-frecce per relazioni
