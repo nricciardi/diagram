@@ -26,7 +26,7 @@
 - [x] fil: Refactor DiagramRepresentation
 - [x] fil: Refactor TransducerMermaid
 - [x] fil: Refactor TransducerD2
-- [ ] fil: Test completo transducer + compiler
+- [x] fil: Test completo transducer + compiler
 - [x] nic: Template pattern extractor
 - [x] nic: Definire output tra punto 3 e 4 extractor
 - [ ] sav: Portare proposte dataloader
