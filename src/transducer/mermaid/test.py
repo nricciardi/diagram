@@ -27,28 +27,28 @@ class TestFlowchartToMermaidTransducer(unittest.TestCase):
         assert WellKnownDiagram.GRAPH_DIAGRAM.value in compatible_diagrams, "Graph diagram should be compatible"
 
     def test_transduce(self):
-        id_a, id_b, id_c = "A", "B", "C"
+        id_a, id_b, id_c = "0", "1", "2"
 
-        elements: Dict[str, Element] = {
-            id_a: Element(id_a, FlowchartElementCategory.CIRCLE.value, "Start_Node"),
-            id_b: Element(id_b, FlowchartElementCategory.PROCESS.value, "i++"),
-            id_c: Element(id_c, FlowchartElementCategory.DECISION.value, "if i > 5"),
-        }
+        elements: list[Element] = [
+            Element(FlowchartElementCategory.CIRCLE.value, ["Start_Node"], []),
+            Element(FlowchartElementCategory.PROCESS.value, ["i++"], []),
+            Element(FlowchartElementCategory.DECISION.value, ["if i > 5"], []),
+        ]
 
         relations: List[Relation] = [
-            Relation(FlowchartRelationCategory.ARROW.value, id_a, id_b, "int i = 0"),
-            Relation(FlowchartRelationCategory.DOTTED_ARROW.value, id_b, id_c, ""),
+            Relation(FlowchartRelationCategory.ARROW.value, id_a, id_b, ["int i = 0"], [], [], []),
+            Relation(FlowchartRelationCategory.DOTTED_ARROW.value, id_b, id_c, [""], [], [], []),
         ]
 
         representation = FlowchartRepresentation(elements, relations)
         expected_outcome = TransducerOutcome(diagram_id="test_diagram", markup_language=WellKnownMarkupLanguage.MERMAID.value,
                                              payload="""flowchart TD
-	A((Start_Node))
-	B(i++)
-	C{if i > 5}
+	0((Start_Node))
+	1(i++)
+	2{if i > 5}
 
-	A-->|int i = 0|B
-	B-.->C
+	0-->|int i = 0|1
+	1-.->2
 """)
 
         assert expected_outcome == self.transducer.transduce("test_diagram", representation), \

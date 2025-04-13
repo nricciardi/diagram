@@ -24,7 +24,7 @@
 - [x] fil: Rollback transducer
 - [x] sav: Definire l'output/input della rete dei bbox dell'extractor (07/04/2025 alle 10)
 - [x] fil: Refactor DiagramRepresentation
-- [ ] fil: Refactor TransducerMermaid
+- [x] fil: Refactor TransducerMermaid
 - [x] fil: Refactor TransducerD2
 - [ ] fil: Test completo transducer + compiler
 - [x] nic: Template pattern extractor

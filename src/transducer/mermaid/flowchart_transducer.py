@@ -72,13 +72,13 @@ class FlowchartToMermaidTransducer(Transducer):
         assert isinstance(diagram_representation, FlowchartRepresentation)
 
         body: str = "flowchart TD\n"
-        for identifier, element in diagram_representation.elements.items():
-            body += f"\t{identifier}{self.wrap_element(element.category, element.text)}\n"
+        for identifier, element in enumerate(diagram_representation.elements):
+            body += f"\t{identifier}{self.wrap_element(element.category, " ".join(element.inner_text))}\n"
 
         body += "\n"
         for relation in diagram_representation.relations:
             body += f"\t{relation.source_id}"
-            body += f"{self.wrap_relation(relation.category, relation.text)}{relation.target_id}\n"
+            body += f"{self.wrap_relation(relation.category, relation.get_text())}{relation.target_id}\n"
 
         outcome: TransducerOutcome = TransducerOutcome(diagram_id=diagram_id, payload=body, markup_language="mermaid")
         return outcome
