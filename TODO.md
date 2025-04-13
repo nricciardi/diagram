@@ -29,17 +29,17 @@
 - [x] fil: Test completo transducer + compiler
 - [x] nic: Template pattern extractor
 - [x] nic: Definire output tra punto 3 e 4 extractor
-- [ ] sav: Portare proposte dataloader
+- [x] sav: Portare proposte dataloader
 - [ ] nic: mail a Baraldi
 
 ## Martedì 22/04
 
 - [x] nic: Filtro confidenza
 - [ ] sav: Dataset (`DataLoader`)
-  - [ ] Parse del dataset per i nostri scopi
+  - [x] Parse del dataset per i nostri scopi
   - [ ] Fillare la classe wrapper `Image` per avere sia il "content opencv" sia annotazioni "json" come attributi (e.g. `TensorImage` o qualcosa di simile)
   - [ ] Fillare TODO main.py
-  - [ ] Creare classe per gestire il dataset (e.g. get_image); guardare se c'è la classe
+  - [x] Creare classe per gestire il dataset (e.g. get_image); guardare se c'è la classe
 - [ ] nic: Associare i testi alle frecce e ai nodi
 - [ ] fil: Overlapping nodi-frecce per relazioni
 - [ ] sav: Overlapping nodi-testo
