@@ -24,3 +24,16 @@ class Element:
     category: str
     inner_text: List[str]
     outer_text: List[str]
+
+    def to_dict(self) -> dict:
+        return {
+            "category": self.category,
+            "inner_text": self.inner_text,
+            "outer_text": self.outer_text,
+        }
+
+    def from_dict(self, data: dict) -> 'Element':
+        object.__setattr__(self, "category", data["category"])
+        object.__setattr__(self, "inner_text", data["inner_text"])
+        object.__setattr__(self, "outer_text", data["outer_text"])
+        return self

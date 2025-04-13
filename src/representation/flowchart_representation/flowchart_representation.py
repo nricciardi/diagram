@@ -21,7 +21,7 @@ class FlowchartRepresentation(DiagramRepresentation):
         with open(output_path, 'w') as file:
             json.dump({
             "elements": [element.to_dict() for element in self.elements],
-            "relations": [relation.to_dict() for relation in self.relations]
+            "relations": [relation.to_dict() for relation in self.relations],
             }, file, indent=4)
 
     @staticmethod
@@ -29,6 +29,5 @@ class FlowchartRepresentation(DiagramRepresentation):
         
         with open(input_path, 'r') as file:
             data = json.load(file)
-            elements = [Element.from_dict(element) for element in data['elements']]
-            relations = [Relation.from_dict(relation) for relation in data['relations']]
-            return FlowchartRepresentation(elements=elements, relations=relations)
+            return FlowchartRepresentation(elements=[Element("", [], []).from_dict(element) for element in data["elements"]],
+                                           relations=[Relation("", "", "", [], [], [], []).from_dict(relation) for relation in data["relations"]])
