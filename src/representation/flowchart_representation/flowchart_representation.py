@@ -1,3 +1,4 @@
+import json
 from typing import Dict, List
 from dataclasses import dataclass
 from core.representation.representation import DiagramRepresentation
@@ -16,47 +17,18 @@ class FlowchartRepresentation(DiagramRepresentation):
 
 
     def dump(self, output_path: str):
-        """
-        The syntax is: first all elements - with id, category and label separated by ;; -
-        then a new line and all relations - with category, source_id, target_id and label separated by ;;
-        """
-        
-        for identifier, element in self.elements.items():
-            with open(output_path, "a") as file:
-                file.write(f"{identifier};;{element.category};;{"" if element.text is None else element.text}\n")
-                
-        with open(output_path, "a") as file:
-            file.write("\n")
-            
-        for relation in self.relations:
-            with open(output_path, "a") as file:
-                file.write(f"{relation.category};;{"" if relation.source_id is None else relation.source_id};;{"" if relation.target_id is None else relation.target_id};;{"" if relation.text is None else relation.text}\n")
-        
-    
-    def load(self, input_path: str):
-        
-        with open(input_path, "r") as file:
-            lines: list[str] = file.readlines()
-        
-        self.elements = {}
-        self.relations = []
-        break_line = len(lines)
-        
-        for idx, line in enumerate(lines):
-            if line == "\n":
-                break_line = idx
-                break
-            identifier, category, label = line.split(";;")
-            label = label.strip()
-            label = (None if label.strip() == "" else label.strip())
-            self.elements[identifier] = Element(identifier, category, label)
-            
-        lines = lines[break_line + 1:]
-        for line in lines:
-            category, source_id, target_id, label = line.split(";;")
-            source_id = (None if source_id == "" else source_id)
-            target_id = (None if target_id == "" else target_id)
-            label = label.strip()
-            label = (None if label == "" else label)
-            self.relations.append(Relation(category, source_id, target_id, label))
 
+        with open(output_path, 'w') as file:
+            json.dump({
+            "elements": [element.to_dict() for element in self.elements],
+            "relations": [relation.to_dict() for relation in self.relations]
+            }, file, indent=4)
+
+    @staticmethod
+    def load(input_path: str) -> 'FlowchartRepresentation':
+        
+        with open(input_path, 'r') as file:
+            data = json.load(file)
+            elements = [Element.from_dict(element) for element in data['elements']]
+            relations = [Relation.from_dict(relation) for relation in data['relations']]
+            return FlowchartRepresentation(elements=elements, relations=relations)
