@@ -48,8 +48,8 @@ class Relation:
         object.__setattr__(self, "middle_text", data["middle_text"])
         return self
 
-    def get_text(self):
+    def get_text(self) -> str:
         # TODO: Eventualmente modificarla.
         to_ret = ""
         to_ret += (" ".join(self.inner_text))
-        to_ret += (" ".join(self.middle_text))
+        return to_ret
