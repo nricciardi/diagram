@@ -9,8 +9,8 @@
 
 ## Lunedì 07/04
 
-- [ ] Scelgiere un nuovo diagramma
-- [ ] ~~fil: Refactor (non necessario) transducer (usare le librerie sul gruppo)~~
+- [ ] Scegliere un nuovo diagramma
+- [x] ~~fil: Refactor (non necessario) transducer (usare le librerie sul gruppo)~~
 - [x] sav: Wrappare compilatore Mermaid (https://mermaid.js.org/ecosystem/tutorials.html#jupyter-python-integration-with-mermaid-js)
 - [x] sav: Wrappare compilatore D2
 - [x] nic: Multiprocess orchestratore
@@ -19,15 +19,15 @@
 
 ## Lunedì 14/04
 
-- [ ] Dottorando: scelgiere un nuovo diagramma
+- [ ] Dottorando: scegliere un nuovo diagramma
 - [x] nic: CLI per main
 - [x] fil: Rollback transducer
 - [x] sav: Definire l'output/input della rete dei bbox dell'extractor (07/04/2025 alle 10)
+- [ ] fil: Refactor DiagramRepresentation
 - [ ] fil: Test completo transducer + compiler
 - [x] nic: Template pattern extractor
 - [x] nic: Definire output tra punto 3 e 4 extractor
 - [ ] sav: Portare proposte dataloader
-- [ ] fil: Refactor DiagramRepresentation
 - [ ] nic: mail a Baraldi
 
 ## Martedì 22/04

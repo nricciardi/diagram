@@ -2,8 +2,9 @@ from abc import ABC, abstractmethod
 
 
 class LoadableMixin(ABC):
+    @staticmethod
     @abstractmethod
-    async def load(self, input_path: str):
+    async def load(input_path: str):
         """
         Load representation from file
 
