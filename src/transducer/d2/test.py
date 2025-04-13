@@ -35,48 +35,48 @@ class TestFlowchartToD2LTransducer(unittest.TestCase):
         self.assertEqual(result, expected_result)
 
     def test_transduce(self):
-        id_a, id_b, id_c, id_d, id_e, id_f = "A", "B", "C", "D", "E", "F"
+        id_a, id_b, id_c, id_d, id_e, id_f = "0", "1", "2", "3", "4", "5"
 
-        elements: Dict[str, Element] = {
-            id_a: Element(id_a, FlowchartElementCategory.CIRCLE.value, "Circle"),
-            id_b: Element(id_b, FlowchartElementCategory.PROCESS.value, "Process"),
-            id_c: Element(id_c, FlowchartElementCategory.DECISION.value, "Decision"),
-            id_d: Element(id_d, FlowchartElementCategory.INPUT_OUTPUT.value, "Input Output"),
-            id_e: Element(id_e, FlowchartElementCategory.SUBROUTINE.value, "Subroutine"),
-            id_f: Element(id_f, FlowchartElementCategory.TERMINAL.value, "Terminal state"),
-        }
+        elements: list[Element] = [
+            Element(FlowchartElementCategory.CIRCLE.value, ["Circle"], []),
+            Element(FlowchartElementCategory.PROCESS.value, ["Process"], []),
+            Element(FlowchartElementCategory.DECISION.value, ["Decision"], []),
+            Element(FlowchartElementCategory.INPUT_OUTPUT.value, ["Input Output"], []),
+            Element(FlowchartElementCategory.SUBROUTINE.value, ["Subroutine"], []),
+            Element(FlowchartElementCategory.TERMINAL.value, ["Terminal state"], []),
+        ]
 
         relations: List[Relation] = [
-            Relation(FlowchartRelationCategory.ARROW.value, id_a, id_b, "Arrow"),
-            Relation(FlowchartRelationCategory.DOTTED_ARROW.value, id_b, id_c, "Dotted Arrow"),
-            Relation(FlowchartRelationCategory.ARROW.value, id_c, id_d, ""),
-            Relation(FlowchartRelationCategory.ARROW.value, id_d, id_e, ""),
-            Relation(FlowchartRelationCategory.OPEN_LINK.value, id_e, id_f, "Open Link"),
+            Relation(FlowchartRelationCategory.ARROW.value, id_a, id_b, ["Arrow"], [], [], []),
+            Relation(FlowchartRelationCategory.DOTTED_ARROW.value, id_b, id_c, ["Dotted Arrow"], [], [], []),
+            Relation(FlowchartRelationCategory.ARROW.value, id_c, id_d, [], [], [], []),
+            Relation(FlowchartRelationCategory.ARROW.value, id_d, id_e, [], [], [], []),
+            Relation(FlowchartRelationCategory.OPEN_LINK.value, id_e, id_f, ["Open Link"], [], [], []),
         ]
 
         representation = FlowchartRepresentation(elements, relations)
-        expected_result = TransducerOutcome("test_diagram", WellKnownMarkupLanguage.D2_LANG.value, "A: Circle\n"
-                                                                                         "A.shape: circle\n"
-                                                                                         "B: Process\n"
-                                                                                         "B.style.border-radius: 8\n"
-                                                                                         "C: Decision\n"
-                                                                                         "C.shape: diamond\n"
-                                                                                         "D: Input Output\n"
-                                                                                         "D.shape: parallelogram\n"
-                                                                                         "E: Subroutine\n"
-                                                                                         "F: Terminal state\n"
-                                                                                         "F.shape: oval\n"
+        expected_result = TransducerOutcome("test_diagram", WellKnownMarkupLanguage.D2_LANG.value, "0: Circle\n"
+                                                                                         "0.shape: circle\n"
+                                                                                         "1: Process\n"
+                                                                                         "1.style.border-radius: 8\n"
+                                                                                         "2: Decision\n"
+                                                                                         "2.shape: diamond\n"
+                                                                                         "3: Input Output\n"
+                                                                                         "3.shape: parallelogram\n"
+                                                                                         "4: Subroutine\n"
+                                                                                         "5: Terminal state\n"
+                                                                                         "5.shape: oval\n"
                                                                                          "\n"
-                                                                                         "A->B: Arrow\n"
-                                                                                         "B->C: Dotted Arrow {\n"
+                                                                                         "0->1: Arrow\n"
+                                                                                         "1->2: Dotted Arrow {\n"
                                                                                          "\tstyle: {\n"
                                                                                          "\t\tstroke-dash: 3\n"
                                                                                          "\t}\n"
                                                                                          "}"
                                                                                          "\n"
-                                                                                         "C->D\n"
-                                                                                         "D->E\n"
-                                                                                         "E--F: Open Link\n")
+                                                                                         "2->3\n"
+                                                                                         "3->4\n"
+                                                                                         "4--5: Open Link\n")
 
         result = self.transducer.transduce("test_diagram", representation)
         self.assertEqual(expected_result.payload, result.payload)
