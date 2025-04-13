@@ -14,5 +14,6 @@ class TransducerOutcome(DumpableMixin, LoadableMixin):
     def dump(self, output_path: str):
         pass        # TODO
 
-    def load(self, input_path: str):
+    @staticmethod
+    def load(input_path: str):
         pass        # TODO
