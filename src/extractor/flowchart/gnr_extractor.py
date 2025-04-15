@@ -1,5 +1,6 @@
 import logging
 from dataclasses import dataclass
+from enum import IntEnum
 from typing import List, Tuple, Dict
 from shapely.geometry import Polygon
 
@@ -15,11 +16,18 @@ from src.wellknown_diagram import WellKnownDiagram
 logger = logging.getLogger(__name__)
 
 
+class ArrowSplit(IntEnum):
+    SOURCE_SPLIT = 20
+    MIDDLE_SPLIT = 60
+    TARGET_SPLIT = 20
+
+
 @dataclass
 class GNRFlowchartExtractor(MultistageFlowchartExtractor):
     element_text_overlap_threshold: float = 0.5  # TODO find optimal threshold
     element_text_distance_threshold: float = 10  # TODO find optimal threshold
     arrow_text_distance_threshold: float = 10  # TODO find optimal threshold
+    ratios = [ArrowSplit.SOURCE_SPLIT.value, ArrowSplit.MIDDLE_SPLIT.value, ArrowSplit.TARGET_SPLIT.value]
 
     def compatible_diagrams(self) -> List[str]:
         return [
