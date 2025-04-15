@@ -1,17 +1,11 @@
-from core.image.bbox.bbox import ImageBoundingBox
-from typing import List, Tuple
 import math
+
+from core.image.bbox.bbox import ImageBoundingBox
+from src.utils.bbox_vertices import bbox_vertices
 
 
 def bbox_distance(bbox1: ImageBoundingBox, bbox2: ImageBoundingBox) -> float:
-    bbox1_vertices: List[Tuple[float, float]] = [(bbox1.top_left_x, bbox1.top_left_y),
-                                                 (bbox1.bottom_left_x, bbox1.bottom_left_y),
-                                                 (bbox1.top_right_x, bbox1.top_right_y),
-                                                 (bbox1.bottom_right_x, bbox1.bottom_right_y)]
-    bbox2_vertices: List[Tuple[float, float]] = [(bbox2.top_left_x, bbox2.top_left_y),
-                                                 (bbox2.bottom_left_x, bbox2.bottom_left_y),
-                                                 (bbox2.top_right_x, bbox2.top_right_y),
-                                                 (bbox2.bottom_right_x, bbox2.bottom_right_y)]
+    bbox1_vertices, bbox2_vertices = bbox_vertices(bbox1=bbox1, bbox2=bbox2)
 
     distance: float = 0
     for bbox1_vertex in bbox1_vertices:
