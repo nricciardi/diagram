@@ -8,10 +8,8 @@ from core.image.image import Image
 
 from src.extractor.flowchart.multistage_extractor import MultistageFlowchartExtractor, ArrowTextTypeOutcome, \
     ElementTextTypeOutcome, ObjectRelation
-from src.utils.bbox_distance import bbox_distance
-from src.utils.bbox_overlap import bbox_overlap
-from src.utils.bbox_split import bbox_split
-from src.utils.bbox_vertices import bbox_vertices
+from src.utils.bbox_utils import bbox_overlap, bbox_distance, bbox_vertices, bbox_split
+
 from src.wellknown_diagram import WellKnownDiagram
 
 logger = logging.getLogger(__name__)
@@ -19,6 +17,9 @@ logger = logging.getLogger(__name__)
 
 @dataclass
 class GNRFlowchartExtractor(MultistageFlowchartExtractor):
+    element_text_overlap_threshold: float = 0.5  # TODO find optimal threshold
+    element_text_distance_threshold: float = 10  # TODO find optimal threshold
+    arrow_text_distance_threshold: float = 10  # TODO find optimal threshold
 
     def compatible_diagrams(self) -> List[str]:
         return [
@@ -41,7 +42,7 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
     def _compute_text_associations(self, diagram_id: str, element_bboxes: List[ImageBoundingBox],
                                    arrow_bboxes: List[ImageBoundingBox],
                                    text_bboxes: List[ImageBoundingBox]) -> Tuple[
-            Dict[ImageBoundingBox, List[ImageBoundingBox]], Dict[ImageBoundingBox, List[ImageBoundingBox]]]:
+        Dict[ImageBoundingBox, List[ImageBoundingBox]], Dict[ImageBoundingBox, List[ImageBoundingBox]]]:
         pass
 
     def _digitalize_text(self, diagram_id: str, image: Image, text_bbox: ImageBoundingBox) -> str:
@@ -64,15 +65,14 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
             distance = bbox_distance(bbox1=element_bbox, bbox2=text_bbox)
             logger.debug(f'Distance element-text is {distance}')
 
-        overlap_threshold: float = 0.5  # TODO find optimal threshold
-        distance_threshold: float = 10  # TODO find optimal threshold
         outcome: ElementTextTypeOutcome = ElementTextTypeOutcome.INNER
 
-        if overlap_text >= overlap_threshold:
+        if overlap_text >= self.element_text_overlap_threshold:
             outcome = ElementTextTypeOutcome.INNER
-        if 0 < overlap_text < overlap_threshold or (overlap_text == 0 and distance <= distance_threshold):
+        if 0 < overlap_text < self.element_text_overlap_threshold or (
+                overlap_text == 0 and distance <= self.element_text_distance_threshold):
             outcome = ElementTextTypeOutcome.OUTER
-        if overlap_text == 0 and distance > distance_threshold:
+        if overlap_text == 0 and distance > self.element_text_distance_threshold:
             outcome = ElementTextTypeOutcome.DISCARD
 
         logger.debug(f'Outcome {outcome.value} for overlapping element-text')
@@ -89,14 +89,13 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
         distance = arrow_poly.distance(text_poly)
         logger.debug(f'Distance arrow-text is {distance}')
 
-        distance_threshold: float = 10  # TODO find optimal threshold
         outcome: ArrowTextTypeOutcome = ArrowTextTypeOutcome.INNER
-        if distance > distance_threshold:
+        if distance > self.arrow_text_distance_threshold:
             outcome = ArrowTextTypeOutcome.DISCARD
         if distance == 0:
             outcome = ArrowTextTypeOutcome.INNER
 
-        if 0 < distance < distance_threshold:
+        if 0 < distance < self.arrow_text_distance_threshold:
             direction: str = ...  # 'top-bottom' or 'left-right'
             ratios = [20, 60, 20]
             logger.debug('Computing arrow split...')
