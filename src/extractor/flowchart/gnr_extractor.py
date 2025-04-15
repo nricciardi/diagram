@@ -1,6 +1,7 @@
 import logging
+from collections import defaultdict
 from dataclasses import dataclass
-from typing import List, Tuple, Dict
+from typing import List, Tuple, Dict, Optional
 from shapely.geometry import Polygon
 
 from core.image.bbox.bbox import ImageBoundingBox
@@ -20,6 +21,8 @@ logger = logging.getLogger(__name__)
 @dataclass
 class GNRFlowchartExtractor(MultistageFlowchartExtractor):
 
+    element_precedent_over_arrow_in_text_association: bool = True
+
     def compatible_diagrams(self) -> List[str]:
         return [
             WellKnownDiagram.GRAPH_DIAGRAM.value,
@@ -38,11 +41,39 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
     def _preprocess(self, diagram_id: str, image: Image) -> Image:
         pass
 
-    def _compute_text_associations(self, diagram_id: str, element_bboxes: List[ImageBoundingBox],
-                                   arrow_bboxes: List[ImageBoundingBox],
-                                   text_bboxes: List[ImageBoundingBox]) -> Tuple[
-            Dict[ImageBoundingBox, List[ImageBoundingBox]], Dict[ImageBoundingBox, List[ImageBoundingBox]]]:
-        pass
+    def _compute_text_associations(self, diagram_id: str, element_bboxes: List[ImageBoundingBox], arrow_bboxes: List[ImageBoundingBox],
+                                   text_bboxes: List[ImageBoundingBox]) -> Tuple[Dict[ImageBoundingBox, List[ImageBoundingBox]], Dict[ImageBoundingBox, List[ImageBoundingBox]]]:
+
+        element_text_associations: Dict[ImageBoundingBox, List[ImageBoundingBox]] = defaultdict(list)
+        arrow_text_associations: Dict[ImageBoundingBox, List[ImageBoundingBox]] = defaultdict(list)
+
+        for text_bbox in text_bboxes:
+
+            minimum_element_text_distance: float = float('inf')
+            minimum_element_text_bbox: Optional[ImageBoundingBox] = None
+            for element_bbox in element_bboxes:
+                element_text_distance: float = bbox_distance(text_bbox, element_bbox)
+
+                if element_text_distance < minimum_element_text_distance:
+                    minimum_element_text_distance = element_text_distance
+                    minimum_element_text_bbox = element_bbox
+
+            minimum_arrow_text_distance: float = float('inf')
+            minimum_arrow_text_bbox: Optional[ImageBoundingBox] = None
+            for arrow_bbox in arrow_bboxes:
+                arrow_text_distance: float = bbox_distance(text_bbox, arrow_bbox)
+
+                if arrow_text_distance < minimum_arrow_text_distance:
+                    minimum_arrow_text_distance = arrow_text_distance
+                    minimum_arrow_text_bbox = arrow_bbox
+
+            if minimum_arrow_text_distance < minimum_element_text_distance or (minimum_arrow_text_distance == minimum_element_text_distance and not self.element_precedent_over_arrow_in_text_association):
+                arrow_text_associations[minimum_arrow_text_bbox].append(text_bbox)
+
+            else:
+                element_text_associations[minimum_element_text_bbox].append(text_bbox)
+
+        return element_text_associations, arrow_text_associations
 
     def _digitalize_text(self, diagram_id: str, image: Image, text_bbox: ImageBoundingBox) -> str:
         pass

@@ -4,6 +4,7 @@ from dataclasses import dataclass
 
 @dataclass(frozen=True)
 class ImageBoundingBox2Points(ImageBoundingBox):
+
     @property
     def top_left_x(self) -> float:
         return float(self.box[0])

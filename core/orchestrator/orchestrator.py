@@ -50,12 +50,12 @@ class Orchestrator:
         return outcomes_by_markuplang
 
     def __classify(self, image: Image) -> str:
-        logger.info("classify image...")
+        logger.info("Classify image...")
         logger.debug(image)
 
         diagram_id = self.classifier.classify(image)
 
-        logger.info(f"image was classified as {diagram_id}")
+        logger.info(f"Image was classified as {diagram_id}")
 
         return diagram_id
 
@@ -103,7 +103,7 @@ class Orchestrator:
             with ProcessPoolExecutor() as executor:
                 tasks: List[Future] = []
                 for index, image in enumerate(images):
-                    logger.info(f"elaborate image n. {index}")
+                    logger.info(f"Elaborate image n. {index}")
 
                     tasks.append(
                         executor.submit(self.image2diagram, image, parallelization, then_compile, outputs_dir_path)
@@ -117,7 +117,7 @@ class Orchestrator:
 
         else:
             for index, image in enumerate(images):
-                logger.info(f"elaborate image n. {index}")
+                logger.info(f"Elaborate image n. {index}")
                 outcomes.extend(self.image2diagram(image, parallelization, then_compile=then_compile, outputs_dir_path=outputs_dir_path))
 
 
@@ -148,7 +148,7 @@ class Orchestrator:
 
         diagram_id = self.__classify(image)
 
-        logger.info(f"extract image...")
+        logger.info(f"Extract image...")
         diagram_representations: List[DiagramRepresentation] = self.__seq_extraction(diagram_id, image)
 
         logger.info(f"{len(diagram_representations)} diagram representation(s) found")
@@ -156,10 +156,10 @@ class Orchestrator:
 
         outcomes: List[TransducerOutcome] = []
         for diagram_representation in diagram_representations:
-            logger.info(f"transduce {type(diagram_representation)} type...")
+            logger.info(f"Transduce {type(diagram_representation)} type...")
             o = self.__seq_transduce(diagram_id, diagram_representation)
 
-            logger.info(f"transduction done: {len(o)} outcomes")
+            logger.info(f"Transduction done: {len(o)} outcomes")
             logger.debug(o)
 
             outcomes.extend(o)
@@ -182,7 +182,7 @@ class Orchestrator:
         diagram_representations: List[DiagramRepresentation] = []
 
         for extractor in compatible_extractors:
-            logger.debug(f"extract using {extractor.identifier}")
+            logger.debug(f"Extract using {extractor.identifier}")
             representation: DiagramRepresentation = extractor.extract(diagram_id, image)
             diagram_representations.append(representation)
 
@@ -197,7 +197,7 @@ class Orchestrator:
 
         outcomes: List[TransducerOutcome] = []
         for transducer in compatible_transducer:
-            logger.debug(f"transduce using {transducer.identifier}")
+            logger.debug(f"Transduce using {transducer.identifier}")
             outcome = transducer.transduce(diagram_id, diagram_representation)
             outcomes.append(outcome)
 
@@ -206,13 +206,13 @@ class Orchestrator:
     def __seq_compile_transducer_outcomes(self, outcomes: List[TransducerOutcome], outputs_dir_path: str):
 
         outcomes_by_markuplang: Dict[str, List[TransducerOutcome]] = Orchestrator._arrange_outcomes_by_markuplang(outcomes)
-        logger.info(f"outcomes are grouped into {len(outcomes_by_markuplang.keys())} groups: {outcomes_by_markuplang.keys()}")
+        logger.info(f"Outcomes are grouped into {len(outcomes_by_markuplang.keys())} groups: {outcomes_by_markuplang.keys()}")
 
         for markuplang, outcomes in outcomes_by_markuplang.items():
             for compiler in self.compilers:
                 if markuplang in compiler.compatible_markup_languages():
                     for outcome in outcomes:
-                        logger.info(f"compile using {compiler.identifier}...")
+                        logger.info(f"Compile using {compiler.identifier}...")
                         logger.debug(compiler)
                         logger.debug(outcome)
 
@@ -254,7 +254,7 @@ class Orchestrator:
         with ProcessPoolExecutor() as executor:
             tasks: List[Future] = []
             for extractor in compatible_extractors:
-                logger.debug(f"extract using {extractor.identifier}")
+                logger.debug(f"Extract using {extractor.identifier}")
 
                 tasks.append(
                     executor.submit(self._par_extract_using_extractor_and_transduce, extractor, diagram_id, image)
@@ -274,7 +274,7 @@ class Orchestrator:
         with ProcessPoolExecutor() as executor:
             tasks: List[Future] = []
             for transducer in compatible_transducers:
-                logger.info(f"transduce {type(diagram_representation)} type...")
+                logger.info(f"Transduce {type(diagram_representation)} type...")
                 tasks.append(
                     executor.submit(transducer.transduce, diagram_id, diagram_representation)
                 )
@@ -292,12 +292,12 @@ class Orchestrator:
 
         def compile_using_compiler(compiler: Compiler, input: Dict[str, List[TransducerOutcome]]):
             for markuplang, outcomes in outcomes_by_markuplang:
-                logger.info(f"compile {len(outcomes)} outcomes of markuplang: {markuplang}...")
+                logger.info(f"Compile {len(outcomes)} outcomes of markuplang: {markuplang}...")
 
                 for markuplang, outcomes in input.items():
                     if markuplang in compiler.compatible_markup_languages():
                         for outcome in outcomes:
-                            logger.info(f"compile using {compiler.identifier}...")
+                            logger.info(f"Compile using {compiler.identifier}...")
                             logger.debug(compiler)
                             logger.debug(outcome)
 

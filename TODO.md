@@ -48,13 +48,17 @@
 - [ ] fil: Digitalizzazione del testo (rete già fatta)
 - [x] sav: print -> log
 - [x] test Image, TensorImage
- 
+- [ ] sav: Aggiungere doc utils
+- [ ] sav: Accorpare utils bbox in un solo file `bbox` (?)
+
 **Dottorando deve rispondere**
 
 - [ ] Organizzare deadline
 
 ## Lunedì 28/04
 
+- [ ] Sistemare file md sparsi in una documentazione più organica
+- [ ] Parallelizzare extractor
 - [ ] Cercare testa e coda delle frecce (rete) [sgherro]
 - [ ] Preprocessing extractor [sgherro]
 - [ ] Object detection -> nodi, frecce, testo [sgherro]
