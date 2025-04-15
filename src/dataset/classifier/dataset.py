@@ -3,6 +3,9 @@ import pandas as pd
 from torch.utils.data import Dataset
 from torchvision.io import read_image
 import json
+from typing import Tuple
+
+from core.image.image import Image
 
 
 class ClassifierDataset(Dataset):
@@ -18,7 +21,7 @@ class ClassifierDataset(Dataset):
     def __len__(self):
         return len(self.img_labels)
 
-    def __getitem__(self, idx):
+    def __getitem__(self, idx) -> Tuple[Image, str]:
         img_path = os.path.join(self.img_dir, self.img_labels.iloc[idx, 0])
         image = read_image(img_path)
         label = self.img_labels.iloc[idx, 1]
