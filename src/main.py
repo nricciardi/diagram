@@ -5,6 +5,7 @@ import sys
 import logging
 from pathlib import Path
 from core.image.image import Image
+from core.image.tensor_image import TensorImage
 from core.orchestrator.orchestrator import Orchestrator
 from src.classifier.classifier import GNRClassifier
 from src.extractor.flowchart.gnr_extractor import GNRFlowchartExtractor
@@ -12,7 +13,6 @@ from src.transducer.d2.flowchart_transducer import FlowchartToD2Transducer
 from src.transducer.mermaid.flowchart_transducer import FlowchartToMermaidTransducer
 from src.compiler.d2.flowchart_compiler import FlowchartToD2Compiler
 from src.compiler.mermaid.flowchart_compiler import FlowchartToMermaidCompiler
-
 
 # Configure logging
 logging.basicConfig(
@@ -30,6 +30,7 @@ LOG_LEVELS = {
     "critical": logging.CRITICAL,
 }
 
+
 def configure_logger(level_name: str):
     level = LOG_LEVELS.get(level_name.lower(), logging.INFO)
     logging.basicConfig(
@@ -40,6 +41,7 @@ def configure_logger(level_name: str):
     logger = logging.getLogger(__name__)
     logger.debug(f"Logger configured with level: {level_name.upper()}")
     return logger
+
 
 def validate_and_create_output_dir(path, logger):
     output_path = Path(path)
@@ -94,9 +96,8 @@ def parse_args():
     return parser.parse_args()
 
 
-
 def main(inputs_paths: List[str], parallelization: bool, then_compile: bool, outputs_dir_path: Optional[str]):
-    images: List[Image] = []        # TODO: [Image(path) for path in inputs_paths] o qualcosa di simile
+    images: List[Image] = [TensorImage.from_str(path) for path in inputs_paths]
 
     orchestrator = Orchestrator(
         classifier=GNRClassifier(),
