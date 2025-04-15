@@ -39,17 +39,17 @@
   - [x] Fillare la classe wrapper `Image` per avere sia il "content opencv" sia annotazioni "json" come attributi (e.g. `TensorImage` o qualcosa di simile)
   - [x] Fillare TODO main.py
   - [x] Creare classe per gestire il dataset (e.g. get_image); guardare se c'è la classe
-- [ ] nic: Associare i testi alle frecce e ai nodi
+- [x] nic: Associare i testi alle frecce e ai nodi
 - [ ] fil: Overlapping nodi-frecce per relazioni
 - [x] sav: Overlapping nodi-testo
 - [ ] sav: Overlapping frecce-testo
 - [ ] fil: Creazione DiagramRepresentation
-- [ ] nic: Gestione del secchio degli scartati
+- [x] nic: Gestione del secchio degli scartati
 - [ ] fil: Digitalizzazione del testo (rete già fatta)
 - [x] sav: print -> log
 - [x] test Image, TensorImage
 - [ ] sav: Aggiungere doc utils
-- [ ] sav: Accorpare utils bbox in un solo file `bbox` (?)
+- [x] sav: Accorpare utils bbox in un solo file `bbox` (?)
 
 **Dottorando deve rispondere**
 
@@ -67,7 +67,6 @@
     - [ ] Definire quali fare -> chiedendo al dottorando
     - [ ] Togliere rumore (gaussian filter) [filter]
     - [ ] Togliere il background (e.g. togliere quadretti) [e.g. Otsu]
-    - [ ] 
   - [ ] Rete classificatrice
     - [ ] Definire -> chiedendo al dottorando
 
@@ -80,6 +79,6 @@
 
 ## Venerdì 27/06
 
-
+Possibile deadline
 
 

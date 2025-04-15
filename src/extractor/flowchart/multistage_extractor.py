@@ -1,3 +1,4 @@
+import logging
 from abc import ABC, abstractmethod
 from typing import List, Tuple, Optional, Dict
 from enum import Enum
@@ -9,6 +10,9 @@ from core.representation.representation import DiagramRepresentation
 from src.representation.flowchart_representation.element import Element
 from src.representation.flowchart_representation.flowchart_representation import FlowchartRepresentation
 from src.representation.flowchart_representation.relation import Relation
+
+
+logger = logging.getLogger(__name__)
 
 
 @dataclass(frozen=True)
@@ -122,6 +126,7 @@ class MultistageFlowchartExtractor(MultiStageExtractor, ABC):
 
     def _build_elements(self, diagram_id: str, image: Image, elements_texts_associations: Dict[ImageBoundingBox, List[ImageBoundingBox]]) -> List[Element]:
 
+        bucket_of_discarded_texts: List[ImageBoundingBox] = []      # kept for future use
         elements: List[Element] = []
         for element_bbox, associated_text_bboxes in elements_texts_associations.items():
             inner_text: List[str] = []
@@ -129,6 +134,11 @@ class MultistageFlowchartExtractor(MultiStageExtractor, ABC):
 
             for associated_text_bbox in associated_text_bboxes:
                 outcome = self._element_text_type(diagram_id, element_bbox, associated_text_bbox)
+
+                if outcome == ElementTextTypeOutcome.DISCARD:
+                    logger.debug(f"{associated_text_bbox} discarded")
+                    bucket_of_discarded_texts.append(associated_text_bbox)
+
                 text = self._digitalize_text(diagram_id, image, associated_text_bbox)
 
                 match outcome:
@@ -137,7 +147,7 @@ class MultistageFlowchartExtractor(MultiStageExtractor, ABC):
                     case ElementTextTypeOutcome.OUTER:
                         outer_text.append(text)
                     case ElementTextTypeOutcome.DISCARD:
-                        raise NotImplemented()  # TODO: secchio degli scarti
+                        raise ValueError("unreachable statement")
 
             element: Element = Element(element_bbox.category, inner_text, outer_text)
             elements.append(element)
@@ -146,8 +156,9 @@ class MultistageFlowchartExtractor(MultiStageExtractor, ABC):
 
 
     def _build_relations(self, diagram_id: str, image: Image, objects_relations: List[ObjectRelation], arrow_texts_associations: Dict[ImageBoundingBox, List[ImageBoundingBox]]) -> List[Relation]:
-        relations: List[Relation] = []
 
+        bucket_of_discarded_texts: List[ImageBoundingBox] = []      # kept for future use
+        relations: List[Relation] = []
         for obj_relation in objects_relations:
             inner_text: List[str] = []
             source_text: List[str] = []
@@ -157,6 +168,11 @@ class MultistageFlowchartExtractor(MultiStageExtractor, ABC):
             for arrow_bbox, associated_text_bboxes in arrow_texts_associations.items():
                 for associated_text_bbox in associated_text_bboxes:
                     outcome = self._element_text_type(diagram_id, arrow_bbox, associated_text_bbox)
+
+                    if outcome == ElementTextTypeOutcome.DISCARD:
+                        logger.debug(f"{associated_text_bbox} discarded")
+                        bucket_of_discarded_texts.append(associated_text_bbox)
+
                     text = self._digitalize_text(diagram_id, image, associated_text_bbox)
 
                     match outcome:
@@ -169,7 +185,7 @@ class MultistageFlowchartExtractor(MultiStageExtractor, ABC):
                         case ArrowTextTypeOutcome.TARGET:
                             target_text.append(text)
                         case ElementTextTypeOutcome.DISCARD:
-                            raise NotImplemented()  # TODO: secchio degli scarti
+                            raise ValueError("unreachable statement")
 
             relation = Relation(
                 category=obj_relation.category,
