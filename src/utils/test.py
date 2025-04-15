@@ -1,8 +1,7 @@
 import unittest
 import torch
 from core.image.bbox.bbox2p import ImageBoundingBox2Points
-from src.utils.bbox_distance import bbox_distance
-from src.utils.bbox_overlap import bbox_overlap
+from src.utils.bbox_utils import bbox_distance, bbox_overlap
 
 
 class TestUtils(unittest.TestCase):
