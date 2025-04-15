@@ -1,9 +1,9 @@
+import json
 import os
+from typing import Tuple
+
 import pandas as pd
 from torch.utils.data import Dataset
-from torchvision.io import read_image
-import json
-from typing import Tuple
 
 from core.image.image import Image
 from core.image.tensor_image import TensorImage
@@ -14,7 +14,6 @@ class ClassifierDataset(Dataset):
         with open(annotations_file, 'r') as f:
             data = json.load(f)
             self.img_labels = pd.DataFrame.from_dict(data.items())
-        # self.img_labels = pd.read_json(annotations_file)
         self.img_dir = img_dir
         self.transform = transform
         self.target_transform = target_transform
