@@ -6,6 +6,7 @@ import json
 from typing import Tuple
 
 from core.image.image import Image
+from core.image.tensor_image import TensorImage
 
 
 class ClassifierDataset(Dataset):
@@ -23,7 +24,7 @@ class ClassifierDataset(Dataset):
 
     def __getitem__(self, idx) -> Tuple[Image, str]:
         img_path = os.path.join(self.img_dir, self.img_labels.iloc[idx, 0])
-        image = read_image(img_path)
+        image = TensorImage.from_str(str(img_path))
         label = self.img_labels.iloc[idx, 1]
         if self.transform:
             image = self.transform(image)

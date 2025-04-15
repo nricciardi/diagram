@@ -1,3 +1,5 @@
+from torchvision.io import read_image
+
 from core.image.image import Image
 from dataclasses import dataclass
 from torch import Tensor
@@ -10,7 +12,7 @@ class TensorImage(Image):
 
     @staticmethod
     def from_str(path: str) -> 'Image':
-        return TensorImage(path)        # TODO
+        return TensorImage(read_image(path))
 
     def as_tensor(self) -> Tensor:
         return self.tensor

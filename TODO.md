@@ -19,7 +19,6 @@
 
 ## Lunedì 14/04
 
-- [ ] Dottorando: scegliere un nuovo diagramma
 - [x] nic: CLI per main
 - [x] fil: Rollback transducer
 - [x] sav: Definire l'output/input della rete dei bbox dell'extractor (07/04/2025 alle 10)
@@ -30,7 +29,7 @@
 - [x] nic: Template pattern extractor
 - [x] nic: Definire output tra punto 3 e 4 extractor
 - [x] sav: Portare proposte dataloader
-- [ ] nic: mail a Baraldi
+- [x] nic: mail a Baraldi
 
 ## Martedì 22/04
 
@@ -47,6 +46,8 @@
 - [ ] fil: Creazione DiagramRepresentation
 - [ ] nic: Gestione del secchio degli scartati
 - [ ] fil: Digitalizzazione del testo (rete già fatta)
+- [ ] sav: print -> log
+- [ ] test Image, TensorImage
  
 **Dottorando deve rispondere**
 
@@ -69,7 +70,8 @@
 ## Lunedì 05/05
 
 - [ ] Classifier: Raddrizzare immagini [geom]
-
+- [ ] Docker con cli d2, dipendenze python 
+- [ ] Dottorando: scegliere un nuovo diagramma
 
 
 ## Venerdì 27/06

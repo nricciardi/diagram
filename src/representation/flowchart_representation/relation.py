@@ -20,8 +20,8 @@ class Relation:
     """
 
     category: str
-    source_id: Optional[str]
-    target_id: Optional[str]
+    source_id: Optional[int]
+    target_id: Optional[int]
     inner_text: List[str]
     source_text: List[str]
     target_text: List[str]
