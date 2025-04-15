@@ -34,10 +34,10 @@
 ## Martedì 22/04
 
 - [x] nic: Filtro confidenza
-- [ ] sav: Dataset (`DataLoader`)
+- [x] sav: Dataset (`DataLoader`)
   - [x] Parse del dataset per i nostri scopi
-  - [ ] Fillare la classe wrapper `Image` per avere sia il "content opencv" sia annotazioni "json" come attributi (e.g. `TensorImage` o qualcosa di simile)
-  - [ ] Fillare TODO main.py
+  - [x] Fillare la classe wrapper `Image` per avere sia il "content opencv" sia annotazioni "json" come attributi (e.g. `TensorImage` o qualcosa di simile)
+  - [x] Fillare TODO main.py
   - [x] Creare classe per gestire il dataset (e.g. get_image); guardare se c'è la classe
 - [ ] nic: Associare i testi alle frecce e ai nodi
 - [ ] fil: Overlapping nodi-frecce per relazioni
@@ -46,8 +46,8 @@
 - [ ] fil: Creazione DiagramRepresentation
 - [ ] nic: Gestione del secchio degli scartati
 - [ ] fil: Digitalizzazione del testo (rete già fatta)
-- [ ] sav: print -> log
-- [ ] test Image, TensorImage
+- [x] sav: print -> log
+- [x] test Image, TensorImage
  
 **Dottorando deve rispondere**
 
