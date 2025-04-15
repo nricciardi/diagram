@@ -41,7 +41,7 @@
   - [x] Creare classe per gestire il dataset (e.g. get_image); guardare se c'è la classe
 - [ ] nic: Associare i testi alle frecce e ai nodi
 - [ ] fil: Overlapping nodi-frecce per relazioni
-- [ ] sav: Overlapping nodi-testo
+- [x] sav: Overlapping nodi-testo
 - [ ] sav: Overlapping frecce-testo
 - [ ] fil: Creazione DiagramRepresentation
 - [ ] nic: Gestione del secchio degli scartati
