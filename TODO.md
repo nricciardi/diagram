@@ -42,13 +42,13 @@
 - [x] nic: Associare i testi alle frecce e ai nodi
 - [ ] fil: Overlapping nodi-frecce per relazioni
 - [x] sav: Overlapping nodi-testo
-- [ ] sav: Overlapping frecce-testo
+- [x] sav: Overlapping frecce-testo
 - [ ] fil: Creazione DiagramRepresentation
 - [x] nic: Gestione del secchio degli scartati
 - [ ] fil: Digitalizzazione del testo (rete già fatta)
 - [x] sav: print -> log
 - [x] test Image, TensorImage
-- [ ] sav: Aggiungere doc utils
+- [x] sav: Aggiungere doc utils
 - [x] sav: Accorpare utils bbox in un solo file `bbox` (?)
 
 **Dottorando deve rispondere**
