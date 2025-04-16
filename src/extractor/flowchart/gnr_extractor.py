@@ -2,16 +2,14 @@ import logging
 from collections import defaultdict
 from dataclasses import dataclass
 from typing import List, Tuple, Dict, Optional
-from enum import IntEnum
+
 from shapely.geometry import Polygon
 
 from core.image.bbox.bbox import ImageBoundingBox
 from core.image.image import Image
-
 from src.extractor.flowchart.multistage_extractor import MultistageFlowchartExtractor, ArrowTextTypeOutcome, \
     ElementTextTypeOutcome, ObjectRelation
 from src.utils.bbox_utils import bbox_overlap, bbox_distance, bbox_vertices, bbox_split
-
 from src.wellknown_diagram import WellKnownDiagram
 
 logger = logging.getLogger(__name__)
@@ -23,7 +21,7 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
     element_text_overlap_threshold: float = 0.5  # TODO find optimal threshold
     element_text_distance_threshold: float = 10  # TODO find optimal threshold
     arrow_text_distance_threshold: float = 10  # TODO find optimal threshold
-    ratios = [0.2, 0.6, 0.2] # Source, Middle, Target
+    ratios = [0.2, 0.6, 0.2]  # Source, Middle, Target
 
     def compatible_diagrams(self) -> List[str]:
         return [
@@ -137,7 +135,7 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
         if distance == 0 and overlap_text == 1:
             outcome = ArrowTextTypeOutcome.INNER
 
-        direction: str = 'height'  # TODO 'height' or 'horizontally'
+        direction: str = 'vertically'  # TODO 'vertically' or 'horizontally'
         arrow_head: str = 'down'  # TODO 'up', 'down', 'left', or 'right'
         logger.debug('Computing arrow splits...')
         splits = bbox_split(bbox=arrow_bbox, direction=direction, ratios=self.ratios, arrow_head=arrow_head)

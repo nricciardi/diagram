@@ -68,7 +68,7 @@ def bbox_split(bbox: ImageBoundingBox, direction: str, ratios: List[float], arro
 
     vertices, other_vertices = bbox_vertices(bbox1=bbox, bbox2=bbox)
 
-    if direction == 'height':
+    if direction == 'vertically':
         if arrow_head == 'down':
             left = [vertices[0], vertices[3]]
             right = [vertices[1], vertices[2]]
