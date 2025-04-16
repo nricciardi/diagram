@@ -3,7 +3,7 @@ import torch
 
 from core.image.bbox.bbox2p import ImageBoundingBox2Points
 from src.extractor.flowchart.gnr_extractor import GNRFlowchartExtractor
-from src.extractor.flowchart.multistage_extractor import ElementTextTypeOutcome
+from src.extractor.flowchart.multistage_extractor import ElementTextTypeOutcome, ArrowTextTypeOutcome
 
 
 class TestGNRFlowchartExtractor(unittest.TestCase):
@@ -99,6 +99,15 @@ class TestGNRFlowchartExtractor(unittest.TestCase):
 
         self.assertEqual(self.extractor._element_text_type(diagram_id='flowchart', element_bbox=bbox1, text_bbox=bbox2), ElementTextTypeOutcome.OUTER)
         self.assertEqual(self.extractor._element_text_type(diagram_id='flowchart', element_bbox=bbox3, text_bbox=bbox4), ElementTextTypeOutcome.INNER)
+
+    def test_arrow_text_type(self):
+        arrow_box: torch.Tensor = torch.tensor([5, 10, 8, 1])
+        text_box: torch.Tensor = torch.tensor([7, 6, 12, 5])
+
+        arrow_bbox: ImageBoundingBox2Points = ImageBoundingBox2Points(category='arrow', box=arrow_box, trust=1.0)
+        text_bbox: ImageBoundingBox2Points = ImageBoundingBox2Points(category='text', box=text_box, trust=1.0)
+
+        self.assertEqual(self.extractor._arrow_text_type(diagram_id='flowchart', arrow_bbox=arrow_bbox, text_bbox=text_bbox), ArrowTextTypeOutcome.MIDDLE)
 
 
 if __name__ == '__main__':
