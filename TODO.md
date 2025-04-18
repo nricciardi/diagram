@@ -40,7 +40,7 @@
   - [x] Fillare TODO main.py
   - [x] Creare classe per gestire il dataset (e.g. get_image); guardare se c'è la classe
 - [x] nic: Associare i testi alle frecce e ai nodi
-- [ ] fil: Overlapping nodi-frecce per relazioni
+- [x] fil: Overlapping nodi-frecce per relazioni
 - [x] sav: Overlapping nodi-testo
 - [x] sav: Overlapping frecce-testo
 - [ ] fil: Creazione DiagramRepresentation

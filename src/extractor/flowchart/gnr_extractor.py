@@ -107,16 +107,44 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
             cropped_tensor = cropped_tensor.repeat(3, 1, 1)
         cropped_image = to_pil_image(cropped_tensor)
 
+        logger.debug("Analyzing the text found...")
         # Run OCR
         pixel_values = self.processor(images=cropped_image, return_tensors="pt").pixel_values
         generated_ids = self.model.generate(pixel_values)
         generated_text = self.processor.batch_decode(generated_ids, skip_special_tokens=True)[0]
+        logger.debug(f"Text found is '{generated_text}'")
 
         return generated_text.strip()
 
     def _compute_relations(self, diagram_id: str, element_bboxes: List[ImageBoundingBox],
                            arrow_bboxes: List[ImageBoundingBox]) -> List[ObjectRelation]:
-        pass
+        ret: List[ObjectRelation] = []
+        OVERLAP_SCORE: float = 0.1
+        for arrow in arrow_bboxes:
+            overlaps = []
+            for idx, elem in enumerate(element_bboxes):
+                overlap_score = bbox_overlap(bbox1=arrow, bbox2=elem)
+                if overlap_score > OVERLAP_SCORE:
+                    overlaps.append((idx, overlap_score))
+
+            overlaps.sort(key=lambda x: x[1], reverse=True)
+
+            if len(overlaps) >= 2:
+                source_id = overlaps[0][0]
+                target_id = overlaps[1][0]
+            elif len(overlaps) == 1:
+                source_id = overlaps[0][0]
+                target_id = overlaps[0][0]
+            else:
+                continue
+
+            ret.append(ObjectRelation(
+                category=arrow.category,
+                source_index=source_id,
+                target_index=target_id
+            ))
+
+        return ret
 
     def _element_text_type(self, diagram_id: str, element_bbox: ImageBoundingBox,
                            text_bbox: ImageBoundingBox) -> ElementTextTypeOutcome:
