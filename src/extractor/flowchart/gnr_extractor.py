@@ -94,15 +94,17 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
         top = int(min(text_bbox.top_left_y, text_bbox.top_right_y))
         bottom = int(max(text_bbox.bottom_left_y, text_bbox.bottom_right_y))
 
-        # Sanity clamp (in case the box goes out of bounds)
         _, H, W = tensor.shape
         left = max(0, left)
         right = min(W, right)
         top = max(0, top)
         bottom = min(H, bottom)
 
-        # Crop and convert to PIL
         cropped_tensor = tensor[:, top:bottom, left:right]
+        if cropped_tensor.ndim == 2:
+            cropped_tensor = cropped_tensor.unsqueeze(0).repeat(3, 1, 1)
+        elif cropped_tensor.shape[0] == 1:
+            cropped_tensor = cropped_tensor.repeat(3, 1, 1)
         cropped_image = to_pil_image(cropped_tensor)
 
         # Run OCR

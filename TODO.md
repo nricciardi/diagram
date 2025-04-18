@@ -46,6 +46,7 @@
 - [ ] fil: Creazione DiagramRepresentation
 - [x] nic: Gestione del secchio degli scartati
 - [x] fil: Digitalizzazione del testo (rete già fatta)
+- [x] fil: Testare la digitalizzazione del testo
 - [x] sav: print -> log
 - [x] test Image, TensorImage
 - [x] sav: Aggiungere doc utils
