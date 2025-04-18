@@ -12,6 +12,9 @@ from src.extractor.flowchart.multistage_extractor import MultistageFlowchartExtr
 from src.utils.bbox_utils import bbox_overlap, bbox_distance, bbox_vertices, bbox_split
 from src.wellknown_diagram import WellKnownDiagram
 
+from torchvision.transforms.functional import to_pil_image
+from transformers import TrOCRProcessor, VisionEncoderDecoderModel
+
 logger = logging.getLogger(__name__)
 
 
@@ -22,6 +25,10 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
     element_text_distance_threshold: float = 10  # TODO find optimal threshold
     arrow_text_distance_threshold: float = 10  # TODO find optimal threshold
     ratios = [0.2, 0.6, 0.2]  # Source, Middle, Target
+    
+    # For text digitalization
+    processor = TrOCRProcessor.from_pretrained("microsoft/trocr-small-handwritten")
+    model = VisionEncoderDecoderModel.from_pretrained("microsoft/trocr-small-handwritten")
 
     def compatible_diagrams(self) -> List[str]:
         return [
@@ -79,7 +86,31 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
         return element_text_associations, arrow_text_associations
 
     def _digitalize_text(self, diagram_id: str, image: Image, text_bbox: ImageBoundingBox) -> str:
-        pass
+        tensor = image.as_tensor()  # [C, H, W], torch.Tensor
+
+        # Get bounding box as integers
+        left = int(min(text_bbox.top_left_x, text_bbox.bottom_left_x))
+        right = int(max(text_bbox.top_right_x, text_bbox.bottom_right_x))
+        top = int(min(text_bbox.top_left_y, text_bbox.top_right_y))
+        bottom = int(max(text_bbox.bottom_left_y, text_bbox.bottom_right_y))
+
+        # Sanity clamp (in case the box goes out of bounds)
+        _, H, W = tensor.shape
+        left = max(0, left)
+        right = min(W, right)
+        top = max(0, top)
+        bottom = min(H, bottom)
+
+        # Crop and convert to PIL
+        cropped_tensor = tensor[:, top:bottom, left:right]
+        cropped_image = to_pil_image(cropped_tensor)
+
+        # Run OCR
+        pixel_values = self.processor(images=cropped_image, return_tensors="pt").pixel_values
+        generated_ids = self.model.generate(pixel_values)
+        generated_text = self.processor.batch_decode(generated_ids, skip_special_tokens=True)[0]
+
+        return generated_text.strip()
 
     def _compute_relations(self, diagram_id: str, element_bboxes: List[ImageBoundingBox],
                            arrow_bboxes: List[ImageBoundingBox]) -> List[ObjectRelation]:
