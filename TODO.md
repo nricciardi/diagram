@@ -45,7 +45,7 @@
 - [x] sav: Overlapping frecce-testo
 - [ ] fil: Creazione DiagramRepresentation
 - [x] nic: Gestione del secchio degli scartati
-- [ ] fil: Digitalizzazione del testo (rete già fatta)
+- [x] fil: Digitalizzazione del testo (rete già fatta)
 - [x] sav: print -> log
 - [x] test Image, TensorImage
 - [x] sav: Aggiungere doc utils
