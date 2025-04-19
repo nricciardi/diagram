@@ -1,6 +1,8 @@
 import math
 from typing import List, Tuple
 import numpy as np
+from torch.ao.ns.fx.utils import return_first_non_observer_node
+from zmq.backend import second
 
 from core.image.bbox.bbox import ImageBoundingBox
 
@@ -129,3 +131,24 @@ def bbox_split(bbox: ImageBoundingBox, direction: str, ratios: List[float], arro
             t_start = t_end
 
     return boxes
+
+def bbox_relative_position(first_bbox: ImageBoundingBox, second_bbox: ImageBoundingBox, direction: str) -> str:
+    """
+    Returns the relative position of the second_bbox w.r.t. first_bbox
+    Output may be "right" or "left" if direction is "horizontally";
+        else it may be "up" or "down" if direction is "vertically".
+    """
+
+    if direction == "horizontally":
+        if second_bbox.top_left_x > first_bbox.top_left_x:
+            return "right"
+        else:
+            return "left"
+
+    elif direction == "vertically":
+        if second_bbox.bottom_right_y < second_bbox.top_right_y:
+            return "down"
+        else:
+            return "up"
+
+    raise ValueError("bbox_relative_position: 'direction' parameter must be either 'horizontally' or 'vertically'")
