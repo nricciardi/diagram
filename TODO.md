@@ -40,15 +40,16 @@
   - [x] Fillare TODO main.py
   - [x] Creare classe per gestire il dataset (e.g. get_image); guardare se c'è la classe
 - [x] nic: Associare i testi alle frecce e ai nodi
-- [ ] fil: Overlapping nodi-frecce per relazioni
+- [x] fil: Overlapping nodi-frecce per relazioni
 - [x] sav: Overlapping nodi-testo
-- [ ] sav: Overlapping frecce-testo
+- [x] sav: Overlapping frecce-testo
 - [ ] fil: Creazione DiagramRepresentation
 - [x] nic: Gestione del secchio degli scartati
-- [ ] fil: Digitalizzazione del testo (rete già fatta)
+- [x] fil: Digitalizzazione del testo (rete già fatta)
+- [x] fil: Testare la digitalizzazione del testo
 - [x] sav: print -> log
 - [x] test Image, TensorImage
-- [ ] sav: Aggiungere doc utils
+- [x] sav: Aggiungere doc utils
 - [x] sav: Accorpare utils bbox in un solo file `bbox` (?)
 
 **Dottorando deve rispondere**

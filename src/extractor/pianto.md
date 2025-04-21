@@ -71,7 +71,16 @@ Scegliere il bbox nodo/freccia più vicino (**senza soglia**)
 
 `_digitalize_text`
 
-TODO: rete
+Da Chat:
+
+   | Model | Library | Type | Size | Speed | Accuracy | Language Support | HuggingFace Hosted | Handwriting Support | Notes |
+   | ------ | ------- | ------ | ------ | ------ | ------- | ------ | ------ |  ------ | ------- |
+   | microsoft/trocr-small | Transformer (TrOCR) | ~100 MB | Medium | High (printed) | English (mostly) | ✅ Yes | ❌ (use -handwritten version) | Great for clean, printed text
+microsoft/trocr-small-handwritten | Transformer (TrOCR) | ~100 MB | Medium | High (handwriting) | English | ✅ Yes | ✅ Yes | Optimized for handwriting
+keras-io/ocr-crnn | CNN + RNN | ~30 MB | Fast | Medium-High | Latin-based only | ✅ Yes | ❌ | Lightweight, but needs TF setup
+easyocr | CNN + RNN + CTC | ~60 MB | Fast | Good | 80+ languages | ❌ No (pip only) | ✅ Yes | Easiest to use, great multilingual support
+
+Per ora provo con trocr-small-handwritten
 
 TODO: chiedere se possiamo prendere una rete già fatta per il testo
 

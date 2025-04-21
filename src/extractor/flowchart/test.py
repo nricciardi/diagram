@@ -1,9 +1,14 @@
 import unittest
 import torch
+import sys, os
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../")))
 
 from core.image.bbox.bbox2p import ImageBoundingBox2Points
+from core.image.tensor_image import TensorImage
+from core.image.image import Image
 from src.extractor.flowchart.gnr_extractor import GNRFlowchartExtractor
-from src.extractor.flowchart.multistage_extractor import ElementTextTypeOutcome
+from src.extractor.flowchart.multistage_extractor import ElementTextTypeOutcome, ArrowTextTypeOutcome
 
 
 class TestGNRFlowchartExtractor(unittest.TestCase):
@@ -100,6 +105,19 @@ class TestGNRFlowchartExtractor(unittest.TestCase):
         self.assertEqual(self.extractor._element_text_type(diagram_id='flowchart', element_bbox=bbox1, text_bbox=bbox2), ElementTextTypeOutcome.OUTER)
         self.assertEqual(self.extractor._element_text_type(diagram_id='flowchart', element_bbox=bbox3, text_bbox=bbox4), ElementTextTypeOutcome.INNER)
 
+    def test_arrow_text_type(self):
+        arrow_box: torch.Tensor = torch.tensor([5, 10, 8, 1])
+        text_box: torch.Tensor = torch.tensor([7, 6, 12, 5])
+
+        arrow_bbox: ImageBoundingBox2Points = ImageBoundingBox2Points(category='arrow', box=arrow_box, trust=1.0)
+        text_bbox: ImageBoundingBox2Points = ImageBoundingBox2Points(category='text', box=text_box, trust=1.0)
+
+        self.assertEqual(self.extractor._arrow_text_type(diagram_id='flowchart', arrow_bbox=arrow_bbox, text_bbox=text_bbox), ArrowTextTypeOutcome.MIDDLE)
+
+    def test_digitalize_text(self):
+        bbox_text: ImageBoundingBox2Points = ImageBoundingBox2Points("text", torch.Tensor([339, 339, 91, 84]), trust=0.9)
+        image: Image = TensorImage.from_str("..\\..\\..\\dataset\\source\\fa\\test\\writer018_fa_001.png")
+        self.assertEqual("q0", self.extractor._digitalize_text(diagram_id="flowchart", image=image, text_bbox=bbox_text))
 
 if __name__ == '__main__':
     unittest.main()
