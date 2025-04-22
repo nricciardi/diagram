@@ -1,3 +1,6 @@
+Assunto: 1 o 2 elementi per freccia
+
+
 
 # Extractor
 

@@ -43,7 +43,7 @@
 - [x] fil: Overlapping nodi-frecce per relazioni
 - [x] sav: Overlapping nodi-testo
 - [x] sav: Overlapping frecce-testo
-- [ ] fil: Creazione DiagramRepresentation
+- [x] fil: Creazione DiagramRepresentation
 - [x] nic: Gestione del secchio degli scartati
 - [x] fil: Digitalizzazione del testo (rete già fatta)
 - [x] fil: Testare la digitalizzazione del testo
@@ -58,28 +58,60 @@
 
 ## Lunedì 28/04
 
-- [ ] Sistemare file md sparsi in una documentazione più organica
-- [ ] Parallelizzare extractor
-- [ ] Cercare testa e coda delle frecce (rete) [sgherro]
+
+   G   N   R
+- [ ] [ ] [ ] **Ottenere rappresentazione freccia** (as-is) (retta passante per test* o cod* da cui ottenere bbox 4 punti): provare [rete](https://link.springer.com/article/10.1007/s10032-020-00361-1) oppure trovarne un'altra (oppure piangere e farla noi)
+  - [ ] Cercare testa e coda delle frecce (rete) [sgherro]
+- [ ] [ ] [ ] Aggiornare docstring
+- [ ] fil: refactor distanza in creazione relazioni
+- [ ] sav: togliere direzioni
+- [ ] fil: togliere direzioni
+- [ ] [ ] [ ] ipotesi/assunzioni, a linguaggio naturale come funziona, problemi e idee (8 direzione/posizione/... freccia)
+  - [ ] Aggiornare il readme (assunzioni fatte, struttura overview sistema, estrattore con tutti i passaggi), rimuovere i file md inutili
+- [ ] [ ] [ ] **Classifier** ("da zero"): Capire come fare il classifier (guardare paper di reti già fatte possibilmente su diagrammi)
+  - Classi: `graph`, `flowchart`, `other` (circuiti, class diagram, diagrammi scolastici)
+  - Dataset:
+    - FA, FAB, ...
+    - https://paperswithcode.com/dataset/ai2d
+    - Circuiti
+    - Class
+    - BPMN
+- [ ] [ ] [ ] **Object detection** (fine-tuning): trovare reti già fatte (possibilmente sui diagrammi o simili)
+  - Dataset: FA, FAB, ...
+- [ ] nic: mandare mail allo sgherro
+
+
+Per lo sgherro (in base alla priorità):
+
+1. Problema delle frecce
+2. Object detection
+3. Classifier
+4. Preprocessing
+5. (Dataset)
+
+
+## Lunedì 05/05
+
 - [ ] Preprocessing extractor [sgherro]
 - [ ] Object detection -> nodi, frecce, testo [sgherro]
 - [ ] Classifier
   - [ ] Preprocessing [sgherro]
     - [ ] Definire quali fare -> chiedendo al dottorando
     - [ ] Togliere rumore (gaussian filter) [filter]
-    - [ ] Togliere il background (e.g. togliere quadretti) [e.g. Otsu]
+  - [ ] Classifier: Raddrizzare immagini [geom]
+  - [ ] Togliere il background (e.g. togliere quadretti) [e.g. Otsu]
   - [ ] Rete classificatrice
     - [ ] Definire -> chiedendo al dottorando
 
-## Lunedì 05/05
 
-- [ ] Classifier: Raddrizzare immagini [geom]
+
+## Backlog
+
+- [ ] Ottimizzare digitalizzazione testo passando il batch di bbox (extractor)
+- [ ] Parallelizzare extractor
+- [ ] Possibile deadline
 - [ ] Docker con cli d2, dipendenze python 
-- [ ] Dottorando: scegliere un nuovo diagramma
 
 
-## Venerdì 27/06
-
-Possibile deadline
 
 
