@@ -1,8 +1,6 @@
 import math
 from typing import List, Tuple
 import numpy as np
-from torch.ao.ns.fx.utils import return_first_non_observer_node
-from zmq.backend import second
 
 from core.image.bbox.bbox import ImageBoundingBox
 
@@ -72,7 +70,8 @@ def bbox_overlap(bbox1: ImageBoundingBox, bbox2: ImageBoundingBox, two_wrt_one: 
     return overlap_percentage
 
 
-def bbox_vertices(bbox1: ImageBoundingBox, bbox2: ImageBoundingBox) -> Tuple[List[Tuple[float, float]], List[Tuple[float, float]]]:
+def bbox_vertices(bbox1: ImageBoundingBox, bbox2: ImageBoundingBox) -> Tuple[
+        List[Tuple[float, float]], List[Tuple[float, float]]]:
     """
     Computes the vertices of two bounding boxes and returns them as lists of coordinate tuples.
     Args:
@@ -84,7 +83,7 @@ def bbox_vertices(bbox1: ImageBoundingBox, bbox2: ImageBoundingBox) -> Tuple[Lis
             - The first list contains the vertices of `bbox1` as (x, y) coordinate tuples.
             - The second list contains the vertices of `bbox2` as (x, y) coordinate tuples.
     """
-    
+
     bbox1_vertices: List[Tuple[float, float]] = [(bbox1.top_left_x, bbox1.top_left_y),
                                                  (bbox1.top_right_x, bbox1.top_right_y),
                                                  (bbox1.bottom_right_x, bbox1.bottom_right_y),
@@ -109,16 +108,15 @@ def interpolate(p1: Tuple[float, float], p2: Tuple[float, float], t: float) -> n
     Returns:
         np.ndarray: The interpolated point as a NumPy array of shape (2,).
     """
-    
+
     return (1 - t) * np.array(p1) + t * np.array(p2)
 
 
-def bbox_split(bbox: ImageBoundingBox, direction: str, ratios: List[float], arrow_head: str) -> List[List[Tuple]]:
+def bbox_split(bbox: ImageBoundingBox, ratios: List[float], arrow_head: str) -> List[List[Tuple]]:
     """
     Splits a bounding box into smaller sub-boxes based on the specified direction, ratios, and arrow head orientation.
     Args:
         bbox (ImageBoundingBox): The bounding box to be split, defined by its vertices.
-        direction (str): The direction of the split, either 'vertically' or 'horizontally'.
         ratios (List[float]): A list of ratios that determine the size of each sub-box along the split direction.
                               The sum of the ratios should equal 1.
         arrow_head (str): The orientation of the arrow head, which determines the order of the split.
@@ -131,12 +129,47 @@ def bbox_split(bbox: ImageBoundingBox, direction: str, ratios: List[float], arro
         ValueError: If the direction is not 'vertically' or 'horizontally'.
                     If the arrow_head is not valid for the given direction.
                     If the sum of ratios does not equal 1.
+    Notes:
+        - While it is technically possible to pass 2 points bboxes as parameters, to have more accurate results,
+        it is suggested to use 4 points bboxes
+        - Arrow_head is needed both to understand which sides to cut and to distinguish which split is the source
+        and which is the target
+        - In case of multiple heads (or no heads at all), a random one (among the two possible for the type of
+        split) should be passed
     """
-    
+
+    if arrow_head not in ['down', 'up', 'left', 'right']:
+        raise ValueError(f'Arrow_head should be down, up, left or right; got {arrow_head} instead')
+
+    if abs(sum(ratios) - 1.0) > 1e-6:
+        raise ValueError(f'Sum of ratios should equal 1, got {sum(ratios)} instead')
+
+    # bbox 4 points (not aligned)
+    # posizione testa freccia (4 direzioni)
+    # 2 teste -> me ne dai una a caso
+
+    # testa freccia serve per distinguere source e target (4 direzioni)
+    # direzione serve per capire lungo quali lati tagliere
+
+    # Riccio's improvement
+    # testa freccia fa entrambe (4 direzioni)
+
+    # Adesso
+    # testa freccia: 0, 1, 2 -> 1 OK, 0/2 -> me ne dai una a caso
+    # hp: direzione esiste sempre ed è unica (aka freccia è una retta con 0, 1, 2 teste)
+
+    # Cosa abbiamo
+    # bbox 2 punti senza conoscenza del tipo di freccia
+    # cosa ci serve: bbox 4 punti + come è orientata la freccia + dove sono le teste
+    # come ottenere la testa:
+
+    # hp: rete (fatta da noi o **già fatta**) che tira fuori test* e cod* della freccia da una bbox 2 punti
+    # freccia -> retta che passa per test* o cod* (easy)
+    # bbox 4 punti -> la costruiamo noi a partire da testa e coda con offset decisi da noi (iperparametri)
 
     vertices, other_vertices = bbox_vertices(bbox1=bbox, bbox2=bbox)
 
-    if direction == 'vertically':
+    if arrow_head in ['down', 'up']:
         if arrow_head == 'down':
             left = [vertices[0], vertices[3]]
             right = [vertices[1], vertices[2]]
@@ -198,6 +231,7 @@ def bbox_split(bbox: ImageBoundingBox, direction: str, ratios: List[float], arro
 
     return boxes
 
+
 def bbox_relative_position(first_bbox: ImageBoundingBox, second_bbox: ImageBoundingBox) -> str:
     """
     Determines the relative position of a second bounding box with respect to a first bounding box.
@@ -212,7 +246,6 @@ def bbox_relative_position(first_bbox: ImageBoundingBox, second_bbox: ImageBound
              - "down": The second bounding box is below the first bounding box.
              - "up": The second bounding box is above the first bounding box.
     """
-    
 
     if second_bbox.top_left_x > first_bbox.top_left_x:
         return "right"

@@ -27,7 +27,7 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
     element_arrow_overlap_threshold: float = 0.1  # TODO find optimal threshold
     element_arrow_distance_threshold: float = 20.  # TODO find optimal threshold
     ratios = [0.2, 0.6, 0.2]  # Source, Middle, Target
-    
+
     # For text digitalization
     processor = TrOCRProcessor.from_pretrained("microsoft/trocr-small-handwritten")
     model = VisionEncoderDecoderModel.from_pretrained("microsoft/trocr-small-handwritten")
@@ -53,7 +53,7 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
     def _compute_text_associations(self, diagram_id: str, element_bboxes: List[ImageBoundingBox],
                                    arrow_bboxes: List[ImageBoundingBox],
                                    text_bboxes: List[ImageBoundingBox]) -> Tuple[
-        Dict[ImageBoundingBox, List[ImageBoundingBox]], Dict[ImageBoundingBox, List[ImageBoundingBox]]]:
+            Dict[ImageBoundingBox, List[ImageBoundingBox]], Dict[ImageBoundingBox, List[ImageBoundingBox]]]:
 
         element_text_associations: Dict[ImageBoundingBox, List[ImageBoundingBox]] = defaultdict(list)
         arrow_text_associations: Dict[ImageBoundingBox, List[ImageBoundingBox]] = defaultdict(list)
@@ -103,7 +103,7 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
               model to extract the text.
             - The extracted text is stripped of leading and trailing whitespace before being returned.
         """
-        
+
         tensor = image.as_tensor()  # [C, H, W], torch.Tensor
 
         # Get bounding box as integers
@@ -133,7 +133,8 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
 
         return generated_text.strip()
 
-    def _compute_relations(self, diagram_id: str, element_bboxes: List[ImageBoundingBox], arrow_bboxes: List[ImageBoundingBox]) -> List[ObjectRelation]:
+    def _compute_relations(self, diagram_id: str, element_bboxes: List[ImageBoundingBox],
+                           arrow_bboxes: List[ImageBoundingBox]) -> List[ObjectRelation]:
         """
             Computes the relationships between elements and arrows in a diagram based on their bounding boxes.
             Args:
@@ -153,7 +154,7 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
         ret: List[ObjectRelation] = []
         for arrow in arrow_bboxes:
             overlaps = []
-            arrow_pointing = "right" # TODO: "right", "left", "up" or "down"
+            arrow_pointing = "right"  # TODO: "right", "left", "up" or "down"
             for idx, elem in enumerate(element_bboxes):
                 overlap_score = bbox_overlap(bbox1=elem, bbox2=arrow)
                 if overlap_score > self.element_arrow_overlap_threshold:
@@ -172,11 +173,19 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
             # If we have at least two overlaps AND we have at least one of each overlap type (e.g. up/down or left/right)
             if len(overlaps) >= 2 and len(set([overlap[2] for overlap in overlaps])) >= 2:
                 if arrow_pointing == "right" or "left":
-                    source_id = list(filter((lambda element : element[2] == "left" if arrow_pointing == "right" else "right"), overlaps))[0][0]
-                    target_id = list(filter((lambda element : element[2] == "right" if arrow_pointing == "right" else "left"), overlaps))[0][0]
+                    source_id = list(
+                        filter((lambda element: element[2] == "left" if arrow_pointing == "right" else "right"),
+                               overlaps))[0][0]
+                    target_id = list(
+                        filter((lambda element: element[2] == "right" if arrow_pointing == "right" else "left"),
+                               overlaps))[0][0]
                 else:
-                    source_id = list(filter((lambda element : element[2] == "up" if arrow_pointing == "down" else "down"), overlaps))[0][0]
-                    target_id = list(filter((lambda element : element[2] == "down" if arrow_pointing == "down" else "up"), overlaps))[0][0]
+                    source_id = list(
+                        filter((lambda element: element[2] == "up" if arrow_pointing == "down" else "down"), overlaps))[
+                        0][0]
+                    target_id = list(
+                        filter((lambda element: element[2] == "down" if arrow_pointing == "down" else "up"), overlaps))[
+                        0][0]
             elif len(set([overlap[2] for overlap in overlaps])) == 1:
                 element = overlaps[0]
                 if arrow_pointing == "right" or arrow_pointing == "left":
@@ -201,6 +210,22 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
 
     def _element_text_type(self, diagram_id: str, element_bbox: ImageBoundingBox,
                            text_bbox: ImageBoundingBox) -> ElementTextTypeOutcome:
+
+        """
+        Computes the relation between a text and an element
+        Args:
+            diagram_id (str): The identifier of the diagram being processed
+            element_bbox (ImageBoundingBox): The bbox (2 points) of the element associated to the text
+            text_bbox (ImageBoundingBox): The bbox (2 points) of the text associated to the element
+        Returns:
+            ElementTextTypeOutcome:
+            Position of the text with respect to the element (INNER, OUTER) or no relation (DISCARD)
+        Notes:
+            - The function assumes that then there is a relation  if there is an overlap between the bboxes or the
+            distance is below a certain threshold
+            - Only if there is no overlap, the distance is taken into account
+            - The bboxes are assumed to be 2 points
+        """
 
         logger.debug('Computing overlap element-text...')
         overlap_text: float = bbox_overlap(bbox1=element_bbox, bbox2=text_bbox)
@@ -227,6 +252,21 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
 
     def _arrow_text_type(self, diagram_id: str, arrow_bbox: ImageBoundingBox,
                          text_bbox: ImageBoundingBox) -> ArrowTextTypeOutcome:
+        """
+        Computes the relation between an arrow and a text
+        Args:
+            diagram_id (str): The identifier of the diagram being processed
+            arrow_bbox (ImageBoundingBox): The bbox of the arrow associated to the text
+            text_bbox (ImageBoundingBox): The bbox of the text associated to the element
+        Returns:
+            ArrowTextTypeOutcome:
+            Position of the text with respect to the arrow (INNER, SOURCE, MIDDLE, TARGET) or no relation (DISCARD)
+        Notes:
+            - While it is technically possible to pass 2 points bboxes as parameters, to have more accurate results,
+            it is suggested to use 4 points bboxes
+            - The function assumes that there is a relation if there is overlap between the bboxes
+            or the distance is below a certain threshold
+        """
 
         logger.debug('Computing vertices arrow-text...')
         arrow_bbox_vertices, text_bbox_vertices = bbox_vertices(bbox1=arrow_bbox, bbox2=text_bbox)
@@ -240,19 +280,19 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
         logger.debug(f'Overlap percentage arrow-text is {overlap_text}')
 
         logger.debug('Computing distance arrow-text...')
-        distance = arrow_poly.distance(text_poly)
+        distance = arrow_poly.distance(text_poly)  # distance = 0 if overlap_text > 0
         logger.debug(f'Distance arrow-text is {distance}')
 
         outcome: ArrowTextTypeOutcome = ArrowTextTypeOutcome.INNER
+
         if distance > self.arrow_text_distance_threshold:
             outcome = ArrowTextTypeOutcome.DISCARD
         if distance == 0 and overlap_text == 1:
             outcome = ArrowTextTypeOutcome.INNER
 
-        direction: str = 'vertically'  # TODO 'vertically' or 'horizontally'
         arrow_head: str = 'down'  # TODO 'up', 'down', 'left', or 'right'
         logger.debug('Computing arrow splits...')
-        splits = bbox_split(bbox=arrow_bbox, direction=direction, ratios=self.ratios, arrow_head=arrow_head)
+        splits = bbox_split(bbox=arrow_bbox, ratios=self.ratios, arrow_head=arrow_head)
         source, middle, target = splits[0], splits[1], splits[2]
         source_poly = Polygon(source)
         middle_poly = Polygon(middle)
@@ -272,7 +312,6 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
             intersection_target = target_poly.intersection(text_poly)
             inter_area_target = intersection_target.area
             if max_inter_area < inter_area_target:
-                max_inter_area = inter_area_target
                 outcome = ArrowTextTypeOutcome.TARGET
 
         if 0 < distance <= self.arrow_text_distance_threshold:
@@ -285,7 +324,6 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
                 outcome = ArrowTextTypeOutcome.MIDDLE
             target_distance = target_poly.distance(text_poly)
             if min_distance > target_distance:
-                min_distance = target_distance
                 outcome = ArrowTextTypeOutcome.TARGET
 
         logger.debug(f'Outcome {outcome} for overlapping arrow-text')

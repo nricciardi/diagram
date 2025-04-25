@@ -28,11 +28,10 @@ class TestUtils(unittest.TestCase):
 
         box1: torch.Tensor = torch.tensor([5, 10, 8, 1], dtype=torch.float64)
         bbox1: ImageBoundingBox2Points = ImageBoundingBox2Points(category='node', box=box1, trust=1.0)
-        splits = bbox_split(bbox=bbox1, direction='vertically', ratios=[0.2, 0.6, 0.2], arrow_head='down')
+        splits = bbox_split(bbox=bbox1, ratios=[0.2, 0.6, 0.2], arrow_head='down')
         self.assertEqual(expected_target, splits[2])
         self.assertEqual(expected_middle, splits[1])
         self.assertEqual(expected_source, splits[0])
-
 
 
 if __name__ == '__main__':

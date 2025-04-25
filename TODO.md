@@ -62,9 +62,9 @@
    G   N   R
 - [ ] [ ] [ ] **Ottenere rappresentazione freccia** (as-is) (retta passante per test* o cod* da cui ottenere bbox 4 punti): provare [rete](https://link.springer.com/article/10.1007/s10032-020-00361-1) oppure trovarne un'altra (oppure piangere e farla noi)
   - [ ] Cercare testa e coda delle frecce (rete) [sgherro]
-- [x] [ ] [ ] Aggiornare docstring
+- [x] [x] [ ] Aggiornare docstring
 - [x] fil: refactor distanza in creazione relazioni
-- [ ] sav: togliere direzioni
+- [x] sav: togliere direzioni
 - [x] fil: togliere direzioni
 - [ ] [ ] [ ] ipotesi/assunzioni, a linguaggio naturale come funziona, problemi e idee (8 direzione/posizione/... freccia)
   - [ ] Aggiornare il readme (assunzioni fatte, struttura overview sistema, estrattore con tutti i passaggi), rimuovere i file md inutili
