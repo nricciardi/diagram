@@ -97,7 +97,62 @@ TODO: definire gli attributi interni, probabilmente un tensore `content` con i p
 
 Nella pratica viene usata la classe _concreta_ `UnifiedDiagramRepresentation` per la rappresentazione degli elementi del diagramma.
 
-TODO: definire gli attributi interni, probabilmente un tensore `content` o qualcosa del genere
+TODO: definire gli attributi interni, probabilmente un tensore `content` o qualcosa del genere 
+
+#### Extractor 
+
+![Extractor](doc/assets/images/flowchart-extractor.png)
+
+##### Preprocessing 
+
+TODO
+
+##### Object Detection 
+
+TODO
+
+##### Text digitization 
+
+TODO
+
+##### Preliminary text association 
+
+TODO 
+
+##### Elements relations building 
+
+TODO
+
+##### Nodes-Texts association 
+
+Computes the relation between a text and an element based on their bboxes
+
+Assumptions:
+- there is a relation if the bboxes overlap or if their distance is lower than a certain threshold
+  - the distance is taken into account only if there is no overlap
+- 2 points bboxes 
+
+Algorithm:
+1. Compute the overlap between the element bbox and the text bbox
+   - If there is not overlap, compute the distance between the bboxes
+2. Based on the overlap (and possibly the distance) decide if there is a relation (e.g., the position of the text with respect to the element) or not
+
+Problems:
+- if we switch to 4 points bboxes, the overlap (and maybe distance) computation won't work 
+  - this is because the functions (written by us) for those tasks exploit the fact that 2 points bboxes are axis-aligned
+
+Idea:
+- if we switch to 4 points bboxes, change the functions for the overlap and distance computations (there are some already defined functions that can be adapted to our case)
+
+##### Arrows-Texts association 
+
+TODO
+
+##### Diagram Representation building 
+
+TODO
+
+
 
 
 #### Transducer

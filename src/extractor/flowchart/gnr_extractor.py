@@ -221,8 +221,8 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
             ElementTextTypeOutcome:
             Position of the text with respect to the element (INNER, OUTER) or no relation (DISCARD)
         Notes:
-            - The function assumes that then there is a relation  if there is an overlap between the bboxes or the
-            distance is below a certain threshold
+            - The function assumes that then there is a relation if there is an overlap between the bboxes or the
+            distance is lower than a certain threshold
             - Only if there is no overlap, the distance is taken into account
             - The bboxes are assumed to be 2 points
         """
@@ -265,7 +265,7 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
             - While it is technically possible to pass 2 points bboxes as parameters, to have more accurate results,
             it is suggested to use 4 points bboxes
             - The function assumes that there is a relation if there is overlap between the bboxes
-            or the distance is below a certain threshold
+            or the distance is lower than a certain threshold
         """
 
         logger.debug('Computing vertices arrow-text...')
