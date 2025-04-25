@@ -126,31 +126,38 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
         for arrow in arrow_bboxes:
             overlaps = []
             # TODO: Distance bucket
-            elements_direction = "horizontally" # TODO: "horizontally" or "vertically"
             arrow_pointing = "right" # TODO: "right", "left", "up" or "down"
             for idx, elem in enumerate(element_bboxes):
                 overlap_score = bbox_overlap(bbox1=elem, bbox2=arrow)
                 if overlap_score > self.element_arrow_overlap_threshold:
-                    relative_position = bbox_relative_position(first_bbox=arrow, second_bbox=elem, direction=elements_direction)
+                    relative_position = bbox_relative_position(first_bbox=arrow, second_bbox=elem)
                     overlaps.append((idx, overlap_score, relative_position))
-                else:
+                distance = bbox_distance(bbox1=elem, bbox2=arrow)
+                if self.element_arrow_distance_threshold > distance:
+                    relative_position = bbox_relative_position(first_bbox=arrow, second_bbox=elem)
+                    distance_score = (distance / self.element_arrow_distance_threshold) + 1
+                    overlaps.append((idx, distance_score, relative_position))
                     pass
 
             overlaps.sort(key=lambda x: x[1], reverse=True)
+            source_id = target_id = None
 
             # If we have at least two overlaps AND we have at least one of each overlap type (e.g. up/down or left/right)
             if len(overlaps) >= 2 and len(set([overlap[2] for overlap in overlaps])) >= 2:
-                if elements_direction == "horizontally":
+                if arrow_pointing == "right" or "left":
                     source_id = list(filter((lambda element : element[2] == "left" if arrow_pointing == "right" else "right"), overlaps))[0][0]
                     target_id = list(filter((lambda element : element[2] == "right" if arrow_pointing == "right" else "left"), overlaps))[0][0]
-                elif elements_direction == "vertically":
+                else:
                     source_id = list(filter((lambda element : element[2] == "up" if arrow_pointing == "down" else "down"), overlaps))[0][0]
                     target_id = list(filter((lambda element : element[2] == "down" if arrow_pointing == "down" else "up"), overlaps))[0][0]
-                else:
-                    logger.warning("elements_direction doesn't have a viable type; ignoring for now")
-                    continue
             elif len(set([overlap[2] for overlap in overlaps])) == 1:
-                pass
+                element = overlaps[0]
+                if arrow_pointing == "right" or arrow_pointing == "left":
+                    source_id = element[0] if element[2] == ("left" if arrow_pointing == "right" else "right") else None
+                    target_id = element[0] if element[2] == ("right" if arrow_pointing == "right" else "left") else None
+                elif arrow_pointing == "up" or arrow_pointing == "down":
+                    source_id = element[0] if element[2] == ("up" if arrow_pointing == "down" else "down") else None
+                    target_id = element[0] if element[2] == ("down" if arrow_pointing == "down" else "up") else None
             elif len(overlaps) == 1:
                 source_id = overlaps[0][0]
                 target_id = overlaps[0][0]
