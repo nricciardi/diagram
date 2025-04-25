@@ -24,6 +24,8 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
     element_text_overlap_threshold: float = 0.5  # TODO find optimal threshold
     element_text_distance_threshold: float = 10  # TODO find optimal threshold
     arrow_text_distance_threshold: float = 10  # TODO find optimal threshold
+    element_arrow_overlap_threshold: float = 0.1  # TODO find optimal threshold
+    element_arrow_distance_threshold: float = 20.  # TODO find optimal threshold
     ratios = [0.2, 0.6, 0.2]  # Source, Middle, Target
     
     # For text digitalization
@@ -108,10 +110,9 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
         cropped_image = to_pil_image(cropped_tensor)
 
         logger.debug("Analyzing the text found...")
-        # Run OCR
         pixel_values = self.processor(images=cropped_image, return_tensors="pt").pixel_values
         generated_ids = self.model.generate(pixel_values)
-        generated_text = self.processor.batch_decode(generated_ids, skip_special_tokens=True)[0]
+        generated_text: str = self.processor.batch_decode(generated_ids, skip_special_tokens=True)[0]
         logger.debug(f"Text found is '{generated_text}'")
 
         return generated_text.strip()
@@ -119,30 +120,37 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
     def _compute_relations(self, diagram_id: str, element_bboxes: List[ImageBoundingBox],
                            arrow_bboxes: List[ImageBoundingBox]) -> List[ObjectRelation]:
         ret: List[ObjectRelation] = []
-        OVERLAP_SCORE: float = 0.1
+        """
+        self.element_arrow_distance_threshold
+        """
         for arrow in arrow_bboxes:
             overlaps = []
-            arrow_direction = "horizontally" # TODO: "horizontally" or "vertically"
+            # TODO: Distance bucket
+            elements_direction = "horizontally" # TODO: "horizontally" or "vertically"
             arrow_pointing = "right" # TODO: "right", "left", "up" or "down"
             for idx, elem in enumerate(element_bboxes):
-                overlap_score = bbox_overlap(bbox1=arrow, bbox2=elem)
-                if overlap_score > OVERLAP_SCORE:
-                    relative_position = bbox_relative_position(first_bbox=arrow, second_bbox=elem, direction=arrow_direction)
+                overlap_score = bbox_overlap(bbox1=elem, bbox2=arrow)
+                if overlap_score > self.element_arrow_overlap_threshold:
+                    relative_position = bbox_relative_position(first_bbox=arrow, second_bbox=elem, direction=elements_direction)
                     overlaps.append((idx, overlap_score, relative_position))
+                else:
+                    pass
 
             overlaps.sort(key=lambda x: x[1], reverse=True)
 
             # If we have at least two overlaps AND we have at least one of each overlap type (e.g. up/down or left/right)
             if len(overlaps) >= 2 and len(set([overlap[2] for overlap in overlaps])) >= 2:
-                if arrow_direction == "horizontally":
+                if elements_direction == "horizontally":
                     source_id = list(filter((lambda element : element[2] == "left" if arrow_pointing == "right" else "right"), overlaps))[0][0]
                     target_id = list(filter((lambda element : element[2] == "right" if arrow_pointing == "right" else "left"), overlaps))[0][0]
-                elif arrow_direction == "vertically":
+                elif elements_direction == "vertically":
                     source_id = list(filter((lambda element : element[2] == "up" if arrow_pointing == "down" else "down"), overlaps))[0][0]
                     target_id = list(filter((lambda element : element[2] == "down" if arrow_pointing == "down" else "up"), overlaps))[0][0]
                 else:
-                    logger.debug("arrow_direction doesn't have a viable type; ignoring for now")
+                    logger.warning("elements_direction doesn't have a viable type; ignoring for now")
                     continue
+            elif len(set([overlap[2] for overlap in overlaps])) == 1:
+                pass
             elif len(overlaps) == 1:
                 source_id = overlaps[0][0]
                 target_id = overlaps[0][0]

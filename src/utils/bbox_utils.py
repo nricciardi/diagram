@@ -23,23 +23,28 @@ def bbox_distance(bbox1: ImageBoundingBox, bbox2: ImageBoundingBox) -> float:
     return distance
 
 
-def bbox_overlap(bbox1: ImageBoundingBox, bbox2: ImageBoundingBox) -> float:
+def bbox_overlap(bbox1: ImageBoundingBox, bbox2: ImageBoundingBox, two_wrt_one: bool = True) -> float:
     """
-    Check how much of bbox2 is overlapped to bbox1
+    Returns the percentage of how much of bbox2 is overlapped to bbox1
     """
     x_left: float = max(bbox1.top_left_x, bbox2.top_left_x)
     y_top: float = min(bbox1.top_left_y, bbox2.top_left_y)
     x_right: float = min(bbox1.bottom_right_x, bbox2.bottom_right_x)
     y_bottom: float = max(bbox1.bottom_right_y, bbox2.bottom_right_y)
 
-    intersection_area: float = max(0, x_right - x_left) * max(0, y_top - y_bottom)
-    area_element: float = (bbox1.bottom_right_x - bbox1.top_left_x) * (
+    intersection_area: float = max(0., x_right - x_left) * max(0., y_top - y_bottom)
+    area_bbox1: float = (bbox1.bottom_right_x - bbox1.top_left_x) * (
             bbox1.top_left_y - bbox1.bottom_right_y)
-    area_text: float = (bbox2.bottom_right_x - bbox2.top_left_x) * (
+    area_bbox2: float = (bbox2.bottom_right_x - bbox2.top_left_x) * (
             bbox2.top_left_y - bbox2.bottom_right_y)
 
-    overlap_text: float = intersection_area / area_text
-    return overlap_text
+    if area_bbox2 <= 0 and two_wrt_one:
+        raise ValueError("bbox2 is an invalid bbox")
+    elif area_bbox1 <= 0 and not two_wrt_one:
+        raise ValueError("bbox1 is an invalid bbox")
+
+    overlap_percentage: float = intersection_area / (area_bbox2 if two_wrt_one else area_bbox1)
+    return overlap_percentage
 
 
 def bbox_vertices(bbox1: ImageBoundingBox, bbox2: ImageBoundingBox) -> Tuple[
