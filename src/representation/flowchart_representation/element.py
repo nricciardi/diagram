@@ -18,7 +18,16 @@ class FlowchartElementCategory(Enum):
 @dataclass(frozen=True, slots=True)
 class Element:
     """
-    Flowchart element
+    Represents a flowchart element with a category and associated text.
+    Attributes:
+        category (str): The category or type of the flowchart element.
+        inner_text (List[str]): A list of strings representing the inner text of the element.
+        outer_text (List[str]): A list of strings representing the outer text of the element.
+    Methods:
+        to_dict() -> dict:
+            Converts the Element instance into a dictionary representation.
+        from_dict(data: dict) -> 'Element':
+            Populates the Element instance from a dictionary representation.
     """
 
     category: str

@@ -16,8 +16,24 @@ class FlowchartRelationCategory(Enum):
 @dataclass(frozen=True, slots=True)
 class Relation:
     """
-    Flowchart relation
+    A class representing a relation in a flowchart representation.
+    Attributes:
+        category (str): The category of the relation.
+        source_id (Optional[int]): The ID of the source node in the relation.
+        target_id (Optional[int]): The ID of the target node in the relation.
+        inner_text (List[str]): A list of strings representing the inner text of the relation.
+        source_text (List[str]): A list of strings representing the text near the source node.
+        target_text (List[str]): A list of strings representing the text near the target node.
+        middle_text (List[str]): A list of strings representing the middle text of the relation.
+    Methods:
+        to_dict() -> dict:
+            Converts the Relation object into a dictionary representation.
+        from_dict(data: dict) -> 'Relation':
+            Populates the Relation object from a dictionary representation.
+        get_text() -> str:
+            Retrieves the concatenated inner text of the relation.
     """
+    
 
     category: str
     source_id: Optional[int]

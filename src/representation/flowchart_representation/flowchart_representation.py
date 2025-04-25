@@ -9,8 +9,17 @@ from src.representation.flowchart_representation.relation import Relation
 @dataclass(frozen=True)
 class FlowchartRepresentation(DiagramRepresentation):
     """
-    Flowchart representation
+    A class representing a flowchart diagram, which consists of elements and relations.
+    Attributes:
+        elements (List[Element]): A list of elements in the flowchart.
+        relations (List[Relation]): A list of relations between the elements in the flowchart.
+    Methods:
+        dump(output_path: str):
+            Serializes the flowchart representation to a JSON file at the specified output path.
+        load(input_path: str) -> 'FlowchartRepresentation':
+            Loads a flowchart representation from a JSON file at the specified input path.
     """
+    
 
     elements: List[Element]
     relations: List[Relation]

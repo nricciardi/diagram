@@ -88,6 +88,22 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
         return element_text_associations, arrow_text_associations
 
     def _digitalize_text(self, diagram_id: str, image: Image, text_bbox: ImageBoundingBox) -> str:
+        """
+        Extracts and digitalizes text from a specified region of an image.
+        Args:
+            diagram_id (str): The identifier of the diagram being processed.
+            image (Image): The input image containing the diagram.
+            text_bbox (ImageBoundingBox): The bounding box specifying the region of the image 
+                where the text is located.
+        Returns:
+            str: The extracted and digitalized text from the specified region of the image.
+        Notes:
+            - The method processes the image tensor to crop the region defined by the bounding box.
+            - The cropped region is converted to a PIL image and passed through a text recognition 
+              model to extract the text.
+            - The extracted text is stripped of leading and trailing whitespace before being returned.
+        """
+        
         tensor = image.as_tensor()  # [C, H, W], torch.Tensor
 
         # Get bounding box as integers
@@ -117,15 +133,26 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
 
         return generated_text.strip()
 
-    def _compute_relations(self, diagram_id: str, element_bboxes: List[ImageBoundingBox],
-                           arrow_bboxes: List[ImageBoundingBox]) -> List[ObjectRelation]:
+    def _compute_relations(self, diagram_id: str, element_bboxes: List[ImageBoundingBox], arrow_bboxes: List[ImageBoundingBox]) -> List[ObjectRelation]:
+        """
+            Computes the relationships between elements and arrows in a diagram based on their bounding boxes.
+            Args:
+                diagram_id (str): The identifier of the diagram being processed.
+                element_bboxes (List[ImageBoundingBox]): A list of bounding boxes representing the elements in the diagram.
+                arrow_bboxes (List[ImageBoundingBox]): A list of bounding boxes representing the arrows in the diagram.
+            Returns:
+                ist[ObjectRelation]: A list of object relations, where each relation specifies the category of the arrow
+                                        and the indices of the source and target elements it connects.
+            Notes:
+                - The function calculates overlaps and distances between arrows and elements to determine relationships.
+                - Arrows are assumed to point in one of four directions: "right", "left", "up", or "down".
+                - Relationships are determined based on overlap scores, distance thresholds, and relative positions.
+                - If multiple overlaps exist, the function prioritizes overlaps with distinct relative positions.
+                - If only one overlap exists, the source and target indices may point to the same element.
+        """
         ret: List[ObjectRelation] = []
-        """
-        self.element_arrow_distance_threshold
-        """
         for arrow in arrow_bboxes:
             overlaps = []
-            # TODO: Distance bucket
             arrow_pointing = "right" # TODO: "right", "left", "up" or "down"
             for idx, elem in enumerate(element_bboxes):
                 overlap_score = bbox_overlap(bbox1=elem, bbox2=arrow)

@@ -9,7 +9,14 @@ from core.image.bbox.bbox import ImageBoundingBox
 
 def bbox_distance(bbox1: ImageBoundingBox, bbox2: ImageBoundingBox) -> float:
     """
-    Use Pythagoras' theorem to compute the distance between two bboxes
+    Calculate the shortest distance between two bounding boxes using Pythagoras' theorem.
+    This function computes the Euclidean distance between all pairs of vertices from 
+    two bounding boxes and returns the smallest distance.
+    Args:
+        bbox1 (ImageBoundingBox): The first bounding box.
+        bbox2 (ImageBoundingBox): The second bounding box.
+    Returns:
+        float: The shortest Euclidean distance between the two bounding boxes.
     """
     bbox1_vertices, bbox2_vertices = bbox_vertices(bbox1=bbox1, bbox2=bbox2)
 
@@ -25,7 +32,25 @@ def bbox_distance(bbox1: ImageBoundingBox, bbox2: ImageBoundingBox) -> float:
 
 def bbox_overlap(bbox1: ImageBoundingBox, bbox2: ImageBoundingBox, two_wrt_one: bool = True) -> float:
     """
-    Returns the percentage of how much of bbox2 is overlapped to bbox1
+    Calculates the overlap percentage between two bounding boxes.
+    This function computes the percentage of overlap between two bounding boxes
+    (`bbox1` and `bbox2`). The overlap is calculated as the area of intersection
+    divided by the area of one of the bounding boxes, depending on the value of
+    `two_wrt_one`.
+    Args:
+        bbox1 (ImageBoundingBox): The first bounding box.
+        bbox2 (ImageBoundingBox): The second bounding box.
+        two_wrt_one (bool, optional): If True, the overlap is calculated as the
+            intersection area divided by the area of `bbox2`. If False, the overlap
+            is calculated as the intersection area divided by the area of `bbox1`.
+            Defaults to True.
+    Returns:
+        float: The percentage of overlap between the two bounding boxes.
+    Raises:
+        ValueError: If `bbox2` is invalid (has zero or negative area) and
+            `two_wrt_one` is True.
+        ValueError: If `bbox1` is invalid (has zero or negative area) and
+            `two_wrt_one` is False.
     """
     x_left: float = max(bbox1.top_left_x, bbox2.top_left_x)
     y_top: float = min(bbox1.top_left_y, bbox2.top_left_y)
@@ -47,11 +72,19 @@ def bbox_overlap(bbox1: ImageBoundingBox, bbox2: ImageBoundingBox, two_wrt_one: 
     return overlap_percentage
 
 
-def bbox_vertices(bbox1: ImageBoundingBox, bbox2: ImageBoundingBox) -> Tuple[
-        List[Tuple[float, float]], List[Tuple[float, float]]]:
+def bbox_vertices(bbox1: ImageBoundingBox, bbox2: ImageBoundingBox) -> Tuple[List[Tuple[float, float]], List[Tuple[float, float]]]:
     """
-    Returns the vertices (as a list of coordinates (x, y) for each point) of two bboxes
+    Computes the vertices of two bounding boxes and returns them as lists of coordinate tuples.
+    Args:
+        bbox1 (ImageBoundingBox): The first bounding box, containing attributes for its corner coordinates.
+        bbox2 (ImageBoundingBox): The second bounding box, containing attributes for its corner coordinates.
+    Returns:
+        Tuple[List[Tuple[float, float]], List[Tuple[float, float]]]: 
+            A tuple containing two lists:
+            - The first list contains the vertices of `bbox1` as (x, y) coordinate tuples.
+            - The second list contains the vertices of `bbox2` as (x, y) coordinate tuples.
     """
+    
     bbox1_vertices: List[Tuple[float, float]] = [(bbox1.top_left_x, bbox1.top_left_y),
                                                  (bbox1.top_right_x, bbox1.top_right_y),
                                                  (bbox1.bottom_right_x, bbox1.bottom_right_y),
@@ -65,13 +98,41 @@ def bbox_vertices(bbox1: ImageBoundingBox, bbox2: ImageBoundingBox) -> Tuple[
 
 
 def interpolate(p1: Tuple[float, float], p2: Tuple[float, float], t: float) -> np.ndarray:
+    """
+    Linearly interpolates between two points in 2D space.
+    Parameters:
+        p1 (Tuple[float, float]): The first point as a tuple of (x, y) coordinates.
+        p2 (Tuple[float, float]): The second point as a tuple of (x, y) coordinates.
+        t (float): The interpolation factor, where 0 <= t <= 1. 
+                   A value of 0 returns p1, a value of 1 returns p2, 
+                   and values in between return a point along the line segment.
+    Returns:
+        np.ndarray: The interpolated point as a NumPy array of shape (2,).
+    """
+    
     return (1 - t) * np.array(p1) + t * np.array(p2)
 
 
 def bbox_split(bbox: ImageBoundingBox, direction: str, ratios: List[float], arrow_head: str) -> List[List[Tuple]]:
     """
-    Splits the arrow bbox into three parts along the given direction and according to the given ratios
+    Splits a bounding box into smaller sub-boxes based on the specified direction, ratios, and arrow head orientation.
+    Args:
+        bbox (ImageBoundingBox): The bounding box to be split, defined by its vertices.
+        direction (str): The direction of the split, either 'vertically' or 'horizontally'.
+        ratios (List[float]): A list of ratios that determine the size of each sub-box along the split direction.
+                              The sum of the ratios should equal 1.
+        arrow_head (str): The orientation of the arrow head, which determines the order of the split.
+                          For vertical splits, it can be 'down' or 'up'.
+                          For horizontal splits, it can be 'right' or 'left'.
+    Returns:
+        List[List[Tuple]]: A list of sub-boxes, where each sub-box is represented as a list of tuples.
+                           Each tuple corresponds to a vertex of the sub-box in clockwise order.
+    Raises:
+        ValueError: If the direction is not 'vertically' or 'horizontally'.
+                    If the arrow_head is not valid for the given direction.
+                    If the sum of ratios does not equal 1.
     """
+    
 
     vertices, other_vertices = bbox_vertices(bbox1=bbox, bbox2=bbox)
 
@@ -139,9 +200,19 @@ def bbox_split(bbox: ImageBoundingBox, direction: str, ratios: List[float], arro
 
 def bbox_relative_position(first_bbox: ImageBoundingBox, second_bbox: ImageBoundingBox) -> str:
     """
-    Returns the relative position of the second_bbox w.r.t. first_bbox
-    Output may be "right" or "left" or "up" or "down".
+    Determines the relative position of a second bounding box with respect to a first bounding box.
+    Args:
+        first_bbox (ImageBoundingBox): The reference bounding box.
+        second_bbox (ImageBoundingBox): The bounding box whose position is to be determined.
+    Returns:
+        str: A string indicating the relative position of the second bounding box.
+             Possible values are:
+             - "right": The second bounding box is to the right of the first bounding box.
+             - "left": The second bounding box is to the left of the first bounding box.
+             - "down": The second bounding box is below the first bounding box.
+             - "up": The second bounding box is above the first bounding box.
     """
+    
 
     if second_bbox.top_left_x > first_bbox.top_left_x:
         return "right"

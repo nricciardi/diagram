@@ -10,12 +10,13 @@ from src.representation.flowchart_representation.flowchart_representation import
 from core.transducer.outcome import TransducerOutcome
 from core.transducer.transducer import Transducer
 
-
-class FlowchartRelation:
-    pass
-
-
 class FlowchartToMermaidTransducer(Transducer):
+    """
+    Converts flowchart representations into Mermaid.js syntax.
+    This transducer is specifically designed to handle flowchart diagrams and their elements, transforming them into
+    a textual representation compatible with Mermaid.
+    """
+    
 
     def __init__(self, identifier: str):
         super().__init__(identifier)
@@ -69,6 +70,24 @@ class FlowchartToMermaidTransducer(Transducer):
                 raise ValueError(f"Unknown flowchart relation category: {category}")
 
     def transduce(self, diagram_id: str, diagram_representation: DiagramRepresentation) -> TransducerOutcome:
+        """
+        Transforms a diagram representation into a Mermaid flowchart representation.
+        Args:
+            diagram_id (str): The unique identifier for the diagram.
+            diagram_representation (DiagramRepresentation): The representation of the diagram to be transduced.
+                Must be an instance of `FlowchartRepresentation`.
+        Returns:
+            TransducerOutcome: An object containing the transduced diagram's ID, the Mermaid flowchart payload,
+            and the markup language used ("mermaid").
+        Raises:
+            AssertionError: If `diagram_representation` is not an instance of `FlowchartRepresentation`.
+        Notes:
+            - The method constructs a Mermaid flowchart by iterating over the elements and relations
+              in the `diagram_representation`.
+            - Each element is wrapped with its category and inner text, while relations are formatted
+              with their source, category, and target.
+        """
+        
         assert isinstance(diagram_representation, FlowchartRepresentation)
 
         body: str = "flowchart TD\n"
