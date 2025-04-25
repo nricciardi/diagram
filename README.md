@@ -147,6 +147,17 @@ Inoltre, è necessario specificare i diagram ID supportati, implementando il rel
 L'id dell'extractor è usato per configurazioni avanzate dell'orchestratore, ad esempio quando si hanno più estrattori 
 e si vuole esplicitamente usarne solo un sotto-insieme.
 
+### Representation
+
+`DiagramRepresentation` classe astratta generale per le rappresentazioni dei diagrammi. Si suppone solo che queste rappresentazioni possano essere salvate e successivamente ricaricate.
+
+#### Flowchart Representation
+`FlowchartRepresentation` classe concreta per la rappresentazione dei diagrammi di flusso/graph diagrams.
+
+Costituita da:
+    1. **Elements**: lista di elementi del diagramma (nodi e frecce), con attributi `category`, `inner_text` e `outer_text` (per il testo associato).
+    2. **Relations**: lista di relazioni tra gli elementi, con attributi `category`, `source_id` e `target_id` (per i nodi associati) e gli attributi che legano il testo alla relazione in base alla loro posizione relativa.
+
 ## Dataset
 
 Source: https://github.com/bernhardschaefer/handwritten-diagram-datasets
