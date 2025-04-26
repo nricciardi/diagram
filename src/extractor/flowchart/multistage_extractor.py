@@ -125,6 +125,24 @@ class MultistageFlowchartExtractor(MultiStageExtractor, ABC):
         """
 
     def _build_elements(self, diagram_id: str, image: Image, elements_texts_associations: Dict[ImageBoundingBox, List[ImageBoundingBox]]) -> List[Element]:
+        """
+        Constructs a list of Element objects by associating each detected diagram element with its related texts.
+
+        Args:
+            diagram_id (str): A unique identifier for the diagram from which elements are being extracted.
+            image (Image): The source image of the diagram.
+            elements_texts_associations (Dict[ImageBoundingBox, List[ImageBoundingBox]]):
+                A mapping between element bounding boxes and lists of associated text bounding boxes.
+
+        Returns:
+            List[Element]: A list of Element instances, each containing the extracted inner and outer texts.
+
+        Raises:
+            ValueError: If an unreachable statement is encountered during text association classification.
+
+        Notes:
+            Discarded texts are collected and preserved for potential future processing but are not used in element creation.
+        """
 
         bucket_of_discarded_texts: List[ImageBoundingBox] = []      # kept for future use
         elements: List[Element] = []
@@ -156,6 +174,26 @@ class MultistageFlowchartExtractor(MultiStageExtractor, ABC):
 
 
     def _build_relations(self, diagram_id: str, image: Image, objects_relations: List[ObjectRelation], arrow_texts_associations: Dict[ImageBoundingBox, List[ImageBoundingBox]]) -> List[Relation]:
+        """
+        Constructs a list of Relation objects by associating diagram object relations with their corresponding texts.
+
+        Args:
+            diagram_id (str): A unique identifier for the diagram from which relations are being extracted.
+            image (Image): The source image of the diagram.
+            objects_relations (List[ObjectRelation]):
+                A list of object relations indicating connections between elements (such as source and target nodes).
+            arrow_texts_associations (Dict[ImageBoundingBox, List[ImageBoundingBox]]):
+                A mapping between arrow bounding boxes and lists of associated text bounding boxes.
+
+        Returns:
+            List[Relation]: A list of Relation instances, each containing categorized texts such as inner, source, middle, and target texts.
+
+        Raises:
+            ValueError: If an unreachable statement is encountered during text association classification.
+
+        Notes:
+            Discarded texts are collected and preserved for potential future processing but are not used in relation creation.
+        """
 
         bucket_of_discarded_texts: List[ImageBoundingBox] = []      # kept for future use
         relations: List[Relation] = []
@@ -167,7 +205,7 @@ class MultistageFlowchartExtractor(MultiStageExtractor, ABC):
 
             for arrow_bbox, associated_text_bboxes in arrow_texts_associations.items():
                 for associated_text_bbox in associated_text_bboxes:
-                    outcome = self._element_text_type(diagram_id, arrow_bbox, associated_text_bbox)
+                    outcome = self._arrow_text_type(diagram_id, arrow_bbox, associated_text_bbox)
 
                     if outcome == ElementTextTypeOutcome.DISCARD:
                         logger.debug(f"{associated_text_bbox} discarded")

@@ -52,8 +52,26 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
 
     def _compute_text_associations(self, diagram_id: str, element_bboxes: List[ImageBoundingBox],
                                    arrow_bboxes: List[ImageBoundingBox],
-                                   text_bboxes: List[ImageBoundingBox]) -> Tuple[
-            Dict[ImageBoundingBox, List[ImageBoundingBox]], Dict[ImageBoundingBox, List[ImageBoundingBox]]]:
+                                   text_bboxes: List[ImageBoundingBox])\
+            -> Tuple[Dict[ImageBoundingBox, List[ImageBoundingBox]], Dict[ImageBoundingBox, List[ImageBoundingBox]]]:
+
+        """
+        All text bboxes are assigned to the nearest element bbox or arrow bbox, ignoring distance itself.
+        In other words, distance may be also huge. After, pruning is supposed.
+
+        Args:
+            diagram_id (str): The identifier of the diagram being processed
+            element_bboxes (List[ImageBoundingBox]): The bounding boxes of the elements
+            arrow_bboxes (List[ImageBoundingBox]): The bounding boxes of the arrows
+            text_bboxes (List[ImageBoundingBox]): The bounding boxes of the texts
+        Returns:
+            Tuple[Dict[ImageBoundingBox, List[ImageBoundingBox]], Dict[ImageBoundingBox, List[ImageBoundingBox]]]:
+
+            Two dictionaries (A, B):
+
+            - A: each element bbox (key) is mapped with its list of texts bboxes (value)
+            - B: each arrows bbox (key) is mapped with its list of texts bboxes (value)
+        """
 
         element_text_associations: Dict[ImageBoundingBox, List[ImageBoundingBox]] = defaultdict(list)
         arrow_text_associations: Dict[ImageBoundingBox, List[ImageBoundingBox]] = defaultdict(list)

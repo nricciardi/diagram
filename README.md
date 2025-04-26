@@ -66,7 +66,7 @@ graph LR;
 Infine, il linguaggio di markup è compilato con il relativo compilatore.
 
 
-## System structure
+## Core System Structure
 
 [Non è presente il path perché in caso di refactor so che ci dimenticheremmo di fare refactor anche di questa parte, usate il finder per cercare le classi quando non chiare] 
 
@@ -95,101 +95,14 @@ TODO: definire gli attributi interni, probabilmente un tensore `content` con i p
 
 `DiagramRepresentation` classe astratta generale per le rappresentazioni dei diagrammi.
 
-Nella pratica viene usata la classe _concreta_ `UnifiedDiagramRepresentation` per la rappresentazione degli elementi del diagramma.
-
-TODO: definire gli attributi interni, probabilmente un tensore `content` o qualcosa del genere 
-
-#### Extractor 
-
-![Extractor](doc/assets/images/flowchart-extractor.png)
-
-##### Preprocessing 
-
-TODO
-
-##### Object Detection 
-
-TODO
-
-##### Text digitization 
-
-TODO
-
-##### Preliminary text association 
-
-TODO 
-
-##### Elements relations building 
-
-TODO
-
-##### Nodes-Texts association 
-
-Computes the relation between a text and an element based on their bboxes
-
-Assumptions:
-- there is a relation if the bboxes overlap or if their distance is lower than a certain threshold
-    - the overlap is expressed as a percentage
-    - the distance is taken into account only if there is no overlap
-- 2 points bboxes 
-
-Algorithm:
-1. Compute the overlap between the element bbox and the text bbox
-   - If there is not overlap, compute the distance between the bboxes
-2. Based on the overlap (and possibly the distance) decide if there is a relation (e.g., the position of the text with respect to the element) or not
-
-Problem:
-- if we switch to 4 points bboxes, the overlap (and maybe distance) computation won't work 
-  - this is because the functions (written by us) for those tasks exploit the fact that 2 points bboxes are axis-aligned
-
-Idea:
-- if we switch to 4 points bboxes, change the functions for the overlap and distance computations (there are some already defined functions that can be adapted to our case)
-
-##### Arrows-Texts association 
-
-Computes the relation between a text and an arrow based on their bboxes
-
-Assumptions:
-- there is a relation if the bboxes overlap or if their distance is lower than a certain threshold
-  - the overlap is expressed as a percentage 
-  - if there is overlap, then the distance is 0
-- 4 points bboxes 
-- the arrow is a straight line with 0, 1 or 2 heads (e.g., there exists always a direction and it's unique)
-- knowledge of the arrow's direction (e.g., where the arrow's head is/where the arrow points)
-  - in case of multiple heads (or no heads at all), a random one (among the two possible for the arrow's direction) is given
-  - 4 directions (`up`, `down`, `left`, `right`)
-
-Algorithm:
-1. Compute the overlap percentage and the distance between the bboxes
-2. Split the arrow in three parts (SOURCE, MIDDLE, TARGET)
-3. Choose the part with the highest overlap (or the lowest distance) with respect to the text
-
-Problems:
-- We don't have 4 points bboxes 
-- Difficult to compute 4 directions when we have slanting arrows 
-- We don't know where the arrow head(s) is (are)
-
-Ideas:
-- Find a network that, given a 2 points bbox of an arrow, returns its head(s) and tail(s)
-  - In this case, the arrow is just a straight line connecting the head(s) and the tail(s)
-  - We can build the 4 points bbox starting from head(s) and tail(s) using offsets (hyperparameters)
-    - We basically move the points of a certain amount (decided by us) along x and y to "rotate" the bbox 
-- Compute the direction of the arrow using 8 possibilities instead of 4
-  - Divide the bbox in 9 parts and compute the overlap percentage of the arrow with each part, then return 
-  a "dictionary" of {direction: overlap_percentage} couples
-
-##### Diagram Representation building 
-
-TODO
-
-
+Per ogni famiglia o tipologia di diagramma si definisce una specifica rappresentazione, la quale viene prodotta dagli extractor e utilizzata dai transducer.  
 
 
 #### Transducer
 
 `Transducer` classe astratta da ereditare per costruire i propri trasduttori.
 
-Ogni trasduttore, by default, supporta solo `UnifiedDiagramRepresentation`.
+Ogni trasduttore supporta un sotto-insieme delle possibili `DiagramRepresentation`.
 
 L'id del trasduttore è usato per configurazioni avanzate dell'orchestratore, ad esempio quando si vuole ottenere 
 solo un sotto-insieme dei possibili outcome.
@@ -232,16 +145,129 @@ Inoltre, è necessario specificare i diagram ID supportati, implementando il rel
 L'id dell'extractor è usato per configurazioni avanzate dell'orchestratore, ad esempio quando si hanno più estrattori 
 e si vuole esplicitamente usarne solo un sotto-insieme.
 
-### Representation
 
-`DiagramRepresentation` classe astratta generale per le rappresentazioni dei diagrammi. Si suppone solo che queste rappresentazioni possano essere salvate e successivamente ricaricate.
 
-#### Flowchart Representation
+## Flowchart/Graph Implementation
+
+### Flowchart Representation
+
 `FlowchartRepresentation` classe concreta per la rappresentazione dei diagrammi di flusso/graph diagrams.
 
 Costituita da:
-    1. **Elements**: lista di elementi del diagramma (nodi e frecce), con attributi `category`, `inner_text` e `outer_text` (per il testo associato).
-    2. **Relations**: lista di relazioni tra gli elementi, con attributi `category`, `source_id` e `target_id` (per i nodi associati) e gli attributi che legano il testo alla relazione in base alla loro posizione relativa.
+
+1. **Elements**: lista di elementi del diagramma (nodi e frecce), con attributi `category`, `inner_text` e `outer_text` (per il testo associato).
+2. **Relations**: lista di relazioni tra gli elementi, con attributi `category`, `source_id` e `target_id` (per i nodi associati) e gli attributi che legano il testo alla relazione in base alla loro posizione relativa.
+
+
+### Flowchart/Graph Extractor 
+
+![Extractor](doc/assets/images/flowchart-extractor.png)
+
+#### Preprocessing 
+
+TODO
+
+#### Object Detection 
+
+TODO
+
+#### Text digitization 
+
+TODO
+
+#### Preliminary text association 
+
+Preliminary text association wants to assign all text bboxes to an element or an arrow, in order to attribute it as element/arrow text in next steps.  
+
+Therefore, all text bboxes are assigned to the _nearest_ element bbox or arrow bbox, _ignoring distance_ itself.
+In other words, distance may be also huge.
+
+Associations _pruning_ is supposed in a second moment, in order to remove improbable associations.
+
+Algorithm follows a basic idea: iterate over text bboxes and find the nearest element/arrow bbox.
+
+#### Elements relations building 
+
+TODO
+
+#### Nodes-Texts association 
+
+Computes the relation between a text and an element based on their bboxes
+
+Assumptions:
+
+- there is a relation if the bboxes overlap or if their distance is lower than a certain threshold
+    - the overlap is expressed as a percentage
+    - the distance is taken into account only if there is no overlap
+- 2 points bboxes 
+
+Algorithm:
+
+1. Compute the overlap between the element bbox and the text bbox
+   - If there is no overlap, compute the distance between the bboxes
+2. Based on the overlap (and possibly the distance) decide if there is a relation (e.g., the position of the text with respect to the element) or not
+
+Problem:
+
+- if we switch to 4 points bboxes, the overlap (and maybe distance) computation won't work 
+  - this is because the functions (written by us) for those tasks exploit the fact that 2 points bboxes are axis-aligned
+
+Idea:
+
+- if we switch to 4 points bboxes, change the functions for the overlap and distance computations (there are some already defined functions that can be adapted to our case)
+
+#### Arrows-Texts association 
+
+Computes the relation between a text and an arrow based on their bboxes
+
+Assumptions:
+
+- there is a relation if the bboxes overlap or if their distance is lower than a certain threshold
+  - the overlap is expressed as a percentage 
+  - if there is overlap, then the distance is 0
+- 4 points bboxes 
+- the arrow is a straight line with 0, 1 or 2 heads (e.g., there exists always a direction and it's unique)
+- knowledge of the arrow's direction (e.g., where the arrow's head is/where the arrow points)
+  - in case of multiple heads (or no heads at all), a random one (among the two possible for the arrow's direction) is given
+  - 4 directions (`up`, `down`, `left`, `right`)
+
+Algorithm:
+
+1. Compute the overlap percentage and the distance between the bboxes
+2. Split the arrow in three parts (SOURCE, MIDDLE, TARGET)
+3. Choose the part with the highest overlap (or the lowest distance) with respect to the text
+
+Problems:
+
+- We don't have 4 points bboxes 
+- Difficult to compute 4 directions when we have slanting arrows 
+- We don't know where the arrow head(s) is (are)
+
+Ideas:
+
+- Find a network that, given 2 points bbox of an arrow, returns its head(s) and tail(s)
+  - In this case, the arrow is just a straight line connecting the head(s) and the tail(s)
+  - We can build the 4 points bbox starting from head(s) and tail(s) using offsets (hyperparameters)
+    - We basically move the points of a certain amount (decided by us) along x and y to "rotate" the bbox 
+- Compute the direction of the arrow using 8 possibilities instead of 4
+  - Divide the bbox in 9 parts and compute the overlap percentage of the arrow with each part, then return 
+  a "dictionary" of {direction: overlap_percentage} couples
+
+#### Diagram Representation building 
+
+The _`build_elements` method is responsible for constructing a structured list of Element objects from a diagram image.
+
+Each Element corresponds to a detected visual object (e.g., a shape, component, or region) and is associated with relevant text annotations.
+This association enriches the semantic understanding of diagram elements.
+
+Classify its relationship to the element (`INNER`, `OUTER`, or `DISCARD`) using the `_element_text_type` method.
+
+Discarded text bounding boxes are collected but **not used** now, enabling potential future enhancements or reprocessing.
+
+The _`build_relations` method constructs a structured list of Relation objects that describe connections between diagram elements. 
+Relations are enriched with associated texts, such as labels near arrows or connectors.
+
+`_arrow_text_type` method is used to classify the association of each text as `INNER`, `SOURCE`, `MIDDLE`, or `TARGET`.
 
 ## Dataset
 
