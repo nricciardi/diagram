@@ -107,3 +107,41 @@ https://arxiv.org/pdf/2106.12614
 
 
 ### Nic
+
+Dobbiamo "modificare" il dataloader del classificatore (o comunque lo script per l'assegnamento delle classi) affinché:
+
+- Se l’etichetta originale è "flowchart" -> nuova etichetta "flowchart"
+- Se l’etichetta originale è "graph" -> nuova etichetta "graph"
+- Tutte le altre immagini (class diagram, circuiti, schemi scolastici, ...) -> nuova etichetta "other" 
+
+Visto che abbiamo molte più immagini di "other" piuttosto che flowchart e graph dobbiamo fare data augmentation per oversampling:
+
+- Flippare orizzontalmente le immagini
+- Duplicare con un po' di rumore
+- Sostituire il colore nero con altri colori (ci interessano solo le forme)
+
+
+Reti pre-addestrate: ResNet18, ResNet50, EfficientNetB0 o MobileNetV2.
+
+```python
+import torch
+
+model = torch.hub.load('pytorch/vision:v0.10.0', 'resnet18', pretrained=True)
+```
+
+Possiamo cambiare solo l’ultimo strato per predire 3 classi.
+
+Possiamo poi provare:
+
+- Regressione lineare
+- KNN
+- Tree
+- Fully connected
+
+Fully connected forse è quella più **vendibile** come fatta da noi.
+
+
+
+
+
+

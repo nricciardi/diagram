@@ -62,13 +62,13 @@
    G   N   R
 - [ ] [ ] [ ] **Ottenere rappresentazione freccia** (as-is) (retta passante per test* o cod* da cui ottenere bbox 4 punti): provare [rete](https://link.springer.com/article/10.1007/s10032-020-00361-1) oppure trovarne un'altra (oppure piangere e farla noi)
   - [ ] Cercare testa e coda delle frecce (rete) [sgherro]
-- [x] [x] [ ] Aggiornare docstring
+- [x] [x] [x] Aggiornare docstring
 - [x] fil: refactor distanza in creazione relazioni
 - [x] sav: togliere direzioni
 - [x] fil: togliere direzioni
-- [ ] [x] [ ] ipotesi/assunzioni, a linguaggio naturale come funziona, problemi e idee (8 direzione/posizione/... freccia)
+- [x] ipotesi/assunzioni, a linguaggio naturale come funziona, problemi e idee (8 direzione/posizione/... freccia)
   - [ ] Aggiornare il readme (assunzioni fatte, struttura overview sistema, estrattore con tutti i passaggi), rimuovere i file md inutili
-- [ ] [ ] [ ] **Classifier** ("da zero"): Capire come fare il classifier (guardare paper di reti già fatte possibilmente su diagrammi)
+- [ ] [ ] [x] **Classifier** ("da zero"): Capire come fare il classifier (guardare paper di reti già fatte possibilmente su diagrammi)
   - Classi: `graph`, `flowchart`, `other` (circuiti, class diagram, diagrammi scolastici)
   - Dataset:
     - FA, FAB, ...
