@@ -37,7 +37,9 @@ magari con un thresholding meno aggressivo per evitare di perdere del testo o de
 
 ### Sav
 
-
+Open-source pre-trained networks:
+- [detecron2](https://github.com/facebookresearch/detectron2.git)
+  - Should integrate DETR
 
 
 
@@ -74,8 +76,30 @@ Cercare testa e coda delle frecce (rete)
 
 ### Sav
 
+#### CNN approach
 
+Arrow R-CNN for handwritten diagram recognition
 
+Cons:
+- Apparently the network is not available
+
+Pros:
+- Seems to be the only one that suits our needs 
+- We have the [paper](https://link.springer.com/article/10.1007/s10032-020-00361-1) 
+  - we have the architecture
+  - we have the datasets
+  - we can "rebuild" and "re-train" the network from scratch (maybe we can use this as one of the "made-by-us" networks?)
+
+#### Non-network approach
+
+[Approach without network](https://stackoverflow.com/questions/66901546/finding-keypoints-in-an-handwritten-arrow)
+
+Cons:
+- Probably needs some adjustments
+
+Pros:
+- No CNN to train (maybe could be a disadvantage?)
+- Few pre-packed opencv functions
 
 
 ### Nic
