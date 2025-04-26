@@ -129,7 +129,8 @@ Computes the relation between a text and an element based on their bboxes
 
 Assumptions:
 - there is a relation if the bboxes overlap or if their distance is lower than a certain threshold
-  - the distance is taken into account only if there is no overlap
+    - the overlap is expressed as a percentage
+    - the distance is taken into account only if there is no overlap
 - 2 points bboxes 
 
 Algorithm:
@@ -137,7 +138,7 @@ Algorithm:
    - If there is not overlap, compute the distance between the bboxes
 2. Based on the overlap (and possibly the distance) decide if there is a relation (e.g., the position of the text with respect to the element) or not
 
-Problems:
+Problem:
 - if we switch to 4 points bboxes, the overlap (and maybe distance) computation won't work 
   - this is because the functions (written by us) for those tasks exploit the fact that 2 points bboxes are axis-aligned
 
@@ -146,7 +147,36 @@ Idea:
 
 ##### Arrows-Texts association 
 
-TODO
+Computes the relation between a text and an arrow based on their bboxes
+
+Assumptions:
+- there is a relation if the bboxes overlap or if their distance is lower than a certain threshold
+  - the overlap is expressed as a percentage 
+  - if there is overlap, then the distance is 0
+- 4 points bboxes 
+- the arrow is a straight line with 0, 1 or 2 heads (e.g., there exists always a direction and it's unique)
+- knowledge of the arrow's direction (e.g., where the arrow's head is/where the arrow points)
+  - in case of multiple heads (or no heads at all), a random one (among the two possible for the arrow's direction) is given
+  - 4 directions (`up`, `down`, `left`, `right`)
+
+Algorithm:
+1. Compute the overlap percentage and the distance between the bboxes
+2. Split the arrow in three parts (SOURCE, MIDDLE, TARGET)
+3. Choose the part with the highest overlap (or the lowest distance) with respect to the text
+
+Problems:
+- We don't have 4 points bboxes 
+- Difficult to compute 4 directions when we have slanting arrows 
+- We don't know where the arrow head(s) is (are)
+
+Ideas:
+- Find a network that, given a 2 points bbox of an arrow, returns its head(s) and tail(s)
+  - In this case, the arrow is just a straight line connecting the head(s) and the tail(s)
+  - We can build the 4 points bbox starting from head(s) and tail(s) using offsets (hyperparameters)
+    - We basically move the points of a certain amount (decided by us) along x and y to "rotate" the bbox 
+- Compute the direction of the arrow using 8 possibilities instead of 4
+  - Divide the bbox in 9 parts and compute the overlap percentage of the arrow with each part, then return 
+  a "dictionary" of {direction: overlap_percentage} couples
 
 ##### Diagram Representation building 
 

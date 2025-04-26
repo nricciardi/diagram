@@ -144,29 +144,6 @@ def bbox_split(bbox: ImageBoundingBox, ratios: List[float], arrow_head: str) -> 
     if abs(sum(ratios) - 1.0) > 1e-6:
         raise ValueError(f'Sum of ratios should equal 1, got {sum(ratios)} instead')
 
-    # bbox 4 points (not aligned)
-    # posizione testa freccia (4 direzioni)
-    # 2 teste -> me ne dai una a caso
-
-    # testa freccia serve per distinguere source e target (4 direzioni)
-    # direzione serve per capire lungo quali lati tagliere
-
-    # Riccio's improvement
-    # testa freccia fa entrambe (4 direzioni)
-
-    # Adesso
-    # testa freccia: 0, 1, 2 -> 1 OK, 0/2 -> me ne dai una a caso
-    # hp: direzione esiste sempre ed è unica (aka freccia è una retta con 0, 1, 2 teste)
-
-    # Cosa abbiamo
-    # bbox 2 punti senza conoscenza del tipo di freccia
-    # cosa ci serve: bbox 4 punti + come è orientata la freccia + dove sono le teste
-    # come ottenere la testa:
-
-    # hp: rete (fatta da noi o **già fatta**) che tira fuori test* e cod* della freccia da una bbox 2 punti
-    # freccia -> retta che passa per test* o cod* (easy)
-    # bbox 4 punti -> la costruiamo noi a partire da testa e coda con offset decisi da noi (iperparametri)
-
     vertices, other_vertices = bbox_vertices(bbox1=bbox, bbox2=bbox)
 
     if arrow_head in ['down', 'up']:

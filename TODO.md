@@ -66,7 +66,7 @@
 - [x] fil: refactor distanza in creazione relazioni
 - [x] sav: togliere direzioni
 - [x] fil: togliere direzioni
-- [ ] [ ] [ ] ipotesi/assunzioni, a linguaggio naturale come funziona, problemi e idee (8 direzione/posizione/... freccia)
+- [ ] [x] [ ] ipotesi/assunzioni, a linguaggio naturale come funziona, problemi e idee (8 direzione/posizione/... freccia)
   - [ ] Aggiornare il readme (assunzioni fatte, struttura overview sistema, estrattore con tutti i passaggi), rimuovere i file md inutili
 - [ ] [ ] [ ] **Classifier** ("da zero"): Capire come fare il classifier (guardare paper di reti già fatte possibilmente su diagrammi)
   - Classi: `graph`, `flowchart`, `other` (circuiti, class diagram, diagrammi scolastici)
