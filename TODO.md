@@ -79,7 +79,7 @@
 - [ ] [ ] [ ] **Object detection** (fine-tuning): trovare reti già fatte (possibilmente sui diagrammi o simili)
   - Dataset: FA, FAB, ...
 - [x] nic: mandare mail allo sgherro
-- [ ] sav: complete classifier dataset
+- [x] sav: complete classifier dataset
 
 
 Per lo sgherro (in base alla priorità):

@@ -22,9 +22,15 @@ if __name__ == "__main__":
     fcb_test_path = "/Users/saverionapolitano/PycharmProjects/diagram/dataset/source/fcb/test"
     fcb_train_path = "/Users/saverionapolitano/PycharmProjects/diagram/dataset/source/fcb/train"
 
-    fcb_scan_val_path = "/Users/saverionapolitano/PycharmProjects/diagram/dataset/source/fcb_scan/val"
-    fcb_scan_test_path = "/Users/saverionapolitano/PycharmProjects/diagram/dataset/source/fcb_scan/test"
-    fcb_scan_train_path = "/Users/saverionapolitano/PycharmProjects/diagram/dataset/source/fcb_scan/train"
+    circuit_path = "/Users/saverionapolitano/PycharmProjects/diagram/dataset/source/circuit"
+
+    class_path = "/Users/saverionapolitano/PycharmProjects/diagram/dataset/source/class"
+
+    school_path = "/Users/saverionapolitano/PycharmProjects/diagram/dataset/source/school"
+
+    bpmn_val_path = "/Users/saverionapolitano/PycharmProjects/diagram/dataset/source/hdBPMN-icdar2021/val"
+    bpmn_test_path = "/Users/saverionapolitano/PycharmProjects/diagram/dataset/source/hdBPMN-icdar2021/test"
+    bpmn_train_path = "/Users/saverionapolitano/PycharmProjects/diagram/dataset/source/hdBPMN-icdar2021/train"
 
     fa_val_file_names = [f for f in listdir(fa_val_path)]
     fa_test_file_names = [f for f in listdir(fa_test_path)]
@@ -59,19 +65,36 @@ if __name__ == "__main__":
     fc_json = fca_json
     fc_json.update(fcb_json)
 
+    circuit_file_names = [f for f in listdir(circuit_path)]
+
+    class_file_names = [f for f in listdir(class_path)]
+
+    school_file_names = [f for f in listdir(school_path)]
+
+    circuit_json = annotate(circuit_file_names, 'other')
+
+    class_json = annotate(class_file_names, 'other')
+
+    school_json = annotate(school_file_names, 'other')
+
+    bpmn_val_file_names = [f for f in listdir(bpmn_val_path)]
+    bpmn_test_file_names = [f for f in listdir(bpmn_test_path)]
+    bpmn_train_file_names = [f for f in listdir(bpmn_train_path)]
+
+    bpmn_val_json = annotate(bpmn_val_file_names, 'other')
+    bpmn_test_json = annotate(bpmn_test_file_names, 'other')
+    bpmn_train_json = annotate(bpmn_train_file_names, 'other')
+
+    bpmn_json = bpmn_val_json
+    bpmn_json.update(bpmn_test_json)
+    bpmn_json.update(bpmn_train_json)
+
     labels_json = fa_json
     labels_json.update(fc_json)
+    labels_json.update(circuit_json)
+    labels_json.update(class_json)
+    labels_json.update(school_json)
+    labels_json.update(bpmn_json)
 
     with open('/Users/saverionapolitano/PycharmProjects/diagram/dataset/classifier/labels.json', 'w') as labels:
         json.dump(labels_json, labels, separators=(',\n', ': '))
-
-    fcb_scan_val_file_names = [f for f in listdir(fcb_scan_val_path)]
-    fcb_scan_test_file_names = [f for f in listdir(fcb_scan_test_path)]
-    fcb_scan_train_file_names = [f for f in listdir(fcb_scan_train_path)]
-
-    fcb_scan_json = annotate(fcb_scan_val_file_names, 'flowchart')
-    fcb_scan_test_json = annotate(fcb_scan_test_file_names, 'flowchart')
-    fcb_scan_train_json = annotate(fcb_scan_train_file_names, 'flowchart')
-
-    fcb_scan_json.update(fcb_scan_test_json)
-    fcb_scan_json.update(fcb_scan_train_json)
