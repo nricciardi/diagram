@@ -68,7 +68,7 @@
 - [x] fil: togliere direzioni
 - [x] ipotesi/assunzioni, a linguaggio naturale come funziona, problemi e idee (8 direzione/posizione/... freccia)
   - [ ] Aggiornare il readme (assunzioni fatte, struttura overview sistema, estrattore con tutti i passaggi), rimuovere i file md inutili
-- [ ] [ ] [x] **Classifier** ("da zero"): Capire come fare il classifier (guardare paper di reti già fatte possibilmente su diagrammi)
+- [x] [ ] [x] **Classifier** ("da zero"): Capire come fare il classifier (guardare paper di reti già fatte possibilmente su diagrammi)
   - Classi: `graph`, `flowchart`, `other` (circuiti, class diagram, diagrammi scolastici)
   - Dataset:
     - FA, FAB, ...

@@ -6,8 +6,10 @@
 
 ### Fil
 
+Forse qui si può evitare la binarizzazione... Non so. C'è il grosso problema del fixed size per la CNN,
+a meno che non si spacchetti un'immagine in più immagini e le si mandino in batch.
 
-
+Per le altre cose, direi comunque una normalizzazione dei pixel.
 
 
 ### Sav
@@ -31,7 +33,9 @@ magari con un thresholding meno aggressivo per evitare di perdere del testo o de
 
 ### Fil
 
-
+Ho cercato - ma non trovato - reti che riconoscessero semplici oggetti geometrici, forse perchè è un problema
+risolto con la geometria.
+Io tenterei con una CNN anche qui, perchè il dataset è piccolo.
 
 
 
@@ -70,9 +74,20 @@ Cercare testa e coda delle frecce (rete)
 
 ### Fil
 
+Senza scendere nell'approccio rete, si potrebbe fare qualcosa di puramente geometrico.
+Non so quanto sia fattibile, ma:
+  1. Trovare il countour della freccia (insieme di punti del contorno) che con OpenCV possono essere collassati (si tengono solo i keypoints)
+  2. Trovare la zona dell'immagine con un keypoint che ha un certo angolo dagli altri due (20°-60°) (se si hanno solo i punti 'focali', ma lo dice Chat)
+  3. Dire che lì c'è la punta della freccia.
 
+In codice:
+```python
+# Preprocessing
+contours, _ = cv2.findContours(edges, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+```
 
-
+E' da rifinire e da tenere magari per far vedere alla Rita che non abbiamo cacciato reti a fiumi;
+  non datemi delle sberle.
 
 ### Sav
 

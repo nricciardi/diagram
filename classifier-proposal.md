@@ -6,8 +6,12 @@
 
 ### Fil
 
+Concordo sul colore (irrilevante). Io più che scala di grigi penserei addirittura Binarizzazione fin da subito.
+Ma oltre a quello che dice Chat non saprei proprio che altro dire (che Nicola non abbia già scritto.)
 
-
+La Data Augmentation direi sia assolutamente necessaria; qualcosa come piccole rotazioni e flip dei diagrammi lungo gli
+assi (tanto si scazza solo il testo che in teoria non è usato). PROTIP: Mettere anche nel dataset del classifier
+diagrammi già compilati dei diversi tipi.
 
 
 ### Sav
@@ -96,8 +100,17 @@ https://arxiv.org/pdf/2106.12614
 
 ### Fil
 
+Dopo aver guardato un po' in giro, pare proprio che le CNN funzionano bene per queste caratteristiche di task:
 
+    1. Dataset piccolo (~1000 elementi)
+    2. Riconoscimento di feature locali (e non di strutture globali)
+    3. Molto più veloce di un ViT.
 
+Il ViT potrebbe essere un'overkill - richiede almeno 100x la dimensione del dataset, ed è efficace per catturare 
+relazioni globali all'interno dell'immagine.
+Io proverei con una struttura di rete già rodata (tipo ResNet) provando a cambiare qualche valore nei layer o a
+modificare cose semplici. Oppure partire da una CNN già rodata e capirne la filosofia, ma secondo me qualche paio
+di layer convolutivo può essere sufficiente.
 
 
 ### Sav
