@@ -91,6 +91,29 @@ Per lo sgherro (in base alla priorità):
 5. (Dataset)
 
 
+## Lunedì 12/05
+
+- [ ] nic: Doppio clustering
+- [ ] nic: riportare cose dette con zini
+- sav[ ] fil[ ] togliere pianto previo controllo
+- [ ] fil: paper (abstract, introduzione, architettura(classifier(preprocessing, ...), extractor(preprocessing, bbox, ...), transducer, compiler))
+- [ ] object detection extractor
+  - [ ] sav (linka la guida): Capire come far funzionare i nodi con vscode
+  - [ ] sav: Far funzionare dataloader per object detection
+  - [ ] sav: Primo esperimento import torchvision e allenare _da zero_ sui nostri dati
+  - [ ] Secondo esperimento import torchvision e non allenare da zero (qualche resnet) -> fine tuning
+
+
+
+
+
+
+
+
+
+
+
+
 ## Lunedì 05/05
 
 - [ ] Preprocessing extractor [sgherro]
