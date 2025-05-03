@@ -52,7 +52,9 @@ TODO
 
 % Extractor
 \section{Extractor Module}
-TODO
+The Extractor is the key component of the D.I.A.G.R.A.M. system, able to transform the raw diagram image into a structured, category-agnostic representation.
+The Extractor recognizes the diagram's components, such as shapes, lines, and text, through an object detection network, and organizes them into a unified format. This representation serves as the foundation for the subsequent Transducer module, which converts the structured data into a domain-specific markup language.
+
 \subsection{Preprocessing}
 TODO
 \subsection{Bounding Box Detection}
@@ -62,11 +64,13 @@ TODO
 
 % Transducer
 \section{Transducer Module}
-TODO
+The Transducer is responsible for converting the unified, agnostic representation of a diagram into a domain-specific markup language. 
+This transformation enables the subsequent Compiler module to generate high-quality visual outputs.
 
 % Compiler
 \section{Compiler Module}
-TODO
+The Compiler module is the final stage of the D.I.A.G.R.A.M. pipeline. 
+Its primary role is to take the structured representation of the diagram, expressed in a markup language (e.g., Mermaid.js), and generate a high-quality, editable diagram in a visual format such as PNG. 
 
 \section{Experiments}
 \subsection{Dataset}
