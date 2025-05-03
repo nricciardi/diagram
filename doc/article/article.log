@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.5) (preloaded format=pdflatex 2023.7.3)  3 MAY 2025 16:06
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.5) (preloaded format=pdflatex 2023.7.3)  3 MAY 2025 16:14
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -478,8 +478,18 @@ File: example-image.pdf Graphic file (type pdf)
 Package pdftex.def Info: example-image.pdf  used on input line 36.
 (pdftex.def)             Requested size: 252.0pt x 189.00398pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 69--73
+Underfull \hbox (badness 10000) in paragraph at lines 72--74
 []\OT1/ptm/m/n/10 The Com-piler mod-ule is the fi-nal stage of the
+ []
+
+
+Underfull \hbox (badness 4266) in paragraph at lines 72--74
+\OT1/ptm/m/n/10 struc-tured rep-re-sen-ta-tion of the di-a-gram, ex-pressed in
+ []
+
+
+Underfull \hbox (badness 2753) in paragraph at lines 72--74
+\OT1/ptm/m/n/10 a markup lan-guage (e.g., Mer-maid.js), and gen-er-ate a
  []
 
 [1{C:/Users/filip/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}{C:/Users/fi
@@ -524,7 +534,7 @@ b><C:/Users/filip/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmbi8a.p
 fb><C:/Users/filip/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmr8a.p
 fb><C:/Users/filip/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmri8a.
 pfb>
-Output written on article.pdf (2 pages, 81331 bytes).
+Output written on article.pdf (2 pages, 81378 bytes).
 PDF statistics:
  119 PDF objects out of 1000 (max. 8388607)
  21 named destinations out of 1000 (max. 500000)
