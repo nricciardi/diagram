@@ -1,0 +1,90 @@
+\documentclass[conference]{IEEEtran}
+
+\usepackage{graphicx}
+\usepackage{amsmath, amssymb}
+\usepackage{hyperref}
+\usepackage{caption}
+\usepackage{cite}
+\usepackage{float}
+
+\title{D.I.A.G.R.A.M.: Development of Image Analysis for Graph Recognition And Modeling}
+
+\author{
+    \IEEEauthorblockN{Filippo Garagnani, Saverio Napolitano, Nicola Ricciardi}
+    \IEEEauthorblockA{
+        'Computer Vision and Cognitive System' course \\
+        \textit{Università di Modena e Reggio Emilia}
+    }
+}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+This report describes D.I.A.G.R.A.M., a system for diagram recognition and generation. We present its architecture, the logic behind deterministic algorithms and the training of its deep learning components. The project aims to transform visual diagram input into structured representations.
+\end{abstract}
+
+\section{Introduction}
+Diagrams are crucial in education, documentation, and many other fields. Developing a system that automatically understands and generates diagrams may reveal helpful for having high-quality, easily editable representations. This, however, poses challenges involving classification, shape detection, structure interpretation and symbolic representation. Our project proposes a modular architecture to tackle these tasks.
+
+\section{System Architecture}
+Figure~\ref{fig:pipeline} illustrates the full pipeline, composed of four main modules: the Classifier, Extractor, Transducer, and Compiler. Each module is designed to process and transform the handwritten diagram image progressively toward a structured output.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\linewidth]{example-image}
+\caption{Overview of the D.I.A.G.R.A.M. system architecture.}
+\label{fig:pipeline}
+\end{figure}
+
+The Classifier is able to recognize the category of the hand-written diagram that the user submitted as input. This is necessary in order for the system to know to which Extractor pass the data. This module is able to apply object detection and semantic recognition to represent the diagram in a unified way. After that, the representation is sent to the Transducer, which converts the data in a Markup language of choice. The Markup language content is therefore sent to the Compiler, thus generating the high-quality and editable diagram in .png format.
+
+
+% Classifier
+\section{Classifier Module}
+TODO
+\subsection{Preprocessing}
+TODO
+
+\subsection{Model}
+TODO
+
+% Extractor
+\section{Extractor Module}
+TODO
+\subsection{Preprocessing}
+TODO
+\subsection{Bounding Box Detection}
+TODO
+\subsection{Content Recognition}
+TODO
+
+% Transducer
+\section{Transducer Module}
+TODO
+
+% Compiler
+\section{Compiler Module}
+TODO
+
+\section{Experiments}
+\subsection{Dataset}
+TODO
+
+\subsection{Metrics}
+TODO
+
+\subsection{Results}
+TODO
+
+\section{Discussion}
+TODO
+
+\section{Conclusion and Future Work}
+TODO
+
+\bibliographystyle{IEEEtran}
+\bibliography{references}
+
+\end{document}
