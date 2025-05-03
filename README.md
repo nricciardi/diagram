@@ -173,7 +173,20 @@ TODO
 
 #### Text digitization 
 
-TODO
+The task of getting a string from an image with handwritten text has already been solved in various ways. The main Deep Learning models
+achieving this task are:
+
+| Model | Library | Type | Size | Speed | Accuracy | Language Support | HuggingFace Hosted | Handwriting Support | Notes |
+   | ------ | ------- | ------ | ------ | ------ | ------- | ------ | ------ |  ------ | ------- |
+   | microsoft/trocr-small | Transformer (TrOCR) | ~100 MB | Medium | High (printed) | English (mostly) | ✅ Yes | ❌ (use -handwritten version) | Great for clean, printed text
+microsoft/trocr-small-handwritten | Transformer (TrOCR) | ~100 MB | Medium | High (handwriting) | English | ✅ Yes | ✅ Yes | Optimized for handwriting
+keras-io/ocr-crnn | CNN + RNN | ~30 MB | Fast | Medium-High | Latin-based only | ✅ Yes | ❌ | Lightweight, but needs TF setup
+easyocr | CNN + RNN + CTC | ~60 MB | Fast | Good | 80+ languages | ❌ No (pip only) | ✅ Yes | Easiest to use, great multilingual support
+
+In order to keep an high accuracy, we decided to employ the `microsoft/trocr-small-handwritten` model, whose weights are available on HuggingFace.
+
+After getting a text bbox, the algorithm crops the image and passes it to the model, which returns a string.
+The string is then assigned as the value to the text bbox.
 
 #### Preliminary text association 
 

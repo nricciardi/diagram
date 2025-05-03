@@ -95,7 +95,7 @@ Per lo sgherro (in base alla priorità):
 
 - [ ] nic: Doppio clustering
 - [ ] nic: riportare cose dette con zini
-- sav[ ] fil[ ] togliere pianto previo controllo
+- sav[ ] fil[x] togliere pianto.md previo controllo
 - [ ] fil: paper (abstract, introduzione, architettura(classifier(preprocessing, ...), extractor(preprocessing, bbox, ...), transducer, compiler))
 - [ ] object detection extractor
   - [ ] sav (linka la guida): Capire come far funzionare i nodi con vscode

@@ -152,9 +152,3 @@ Possiamo poi provare:
 - Fully connected
 
 Fully connected forse è quella più **vendibile** come fatta da noi.
-
-
-
-
-
-
