@@ -20,7 +20,7 @@ for m, n in matches:
     if m.distance < RATIO_THRESHOLD * n.distance:
         good.append(m)
 
-# Copmute the homography - finds the matches
+# Compute the homography - finds the matches
 if len(good) > 1:
     src_pts = np.float32([kp1[m.queryIdx].pt for m in good]).reshape(-1, 1, 2)
     dst_pts = np.float32([kp2[m.trainIdx].pt for m in good]).reshape(-1, 1, 2)
