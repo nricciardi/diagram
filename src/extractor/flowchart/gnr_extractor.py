@@ -11,9 +11,7 @@ from src.extractor.flowchart.multistage_extractor import MultistageFlowchartExtr
     ElementTextTypeOutcome, ObjectRelation
 from src.utils.bbox_utils import bbox_overlap, bbox_distance, bbox_vertices, bbox_split, bbox_relative_position
 from src.wellknown_diagram import WellKnownDiagram
-
-from torchvision.transforms.functional import to_pil_image
-from transformers import TrOCRProcessor, VisionEncoderDecoderModel
+from src.extractor.text_extraction.text_extractor import TrOCRTextExtractorSmall
 
 logger = logging.getLogger(__name__)
 
@@ -27,10 +25,7 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
     element_arrow_overlap_threshold: float = 0.1  # TODO find optimal threshold
     element_arrow_distance_threshold: float = 20.  # TODO find optimal threshold
     ratios = [0.2, 0.6, 0.2]  # Source, Middle, Target
-
-    # For text digitalization
-    processor = TrOCRProcessor.from_pretrained("microsoft/trocr-small-handwritten")
-    model = VisionEncoderDecoderModel.from_pretrained("microsoft/trocr-small-handwritten")
+    text_digitizer = TrOCRTextExtractorSmall()
 
     def compatible_diagrams(self) -> List[str]:
         return [
@@ -122,31 +117,8 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
             - The extracted text is stripped of leading and trailing whitespace before being returned.
         """
 
-        tensor = image.as_tensor()  # [C, H, W], torch.Tensor
-
-        # Get bounding box as integers
-        left = int(min(text_bbox.top_left_x, text_bbox.bottom_left_x))
-        right = int(max(text_bbox.top_right_x, text_bbox.bottom_right_x))
-        top = int(min(text_bbox.top_left_y, text_bbox.top_right_y))
-        bottom = int(max(text_bbox.bottom_left_y, text_bbox.bottom_right_y))
-
-        _, H, W = tensor.shape
-        left = max(0, left)
-        right = min(W, right)
-        top = max(0, top)
-        bottom = min(H, bottom)
-
-        cropped_tensor = tensor[:, top:bottom, left:right]
-        if cropped_tensor.ndim == 2:
-            cropped_tensor = cropped_tensor.unsqueeze(0).repeat(3, 1, 1)
-        elif cropped_tensor.shape[0] == 1:
-            cropped_tensor = cropped_tensor.repeat(3, 1, 1)
-        cropped_image = to_pil_image(cropped_tensor)
-
         logger.debug("Analyzing the text found...")
-        pixel_values = self.processor(images=cropped_image, return_tensors="pt").pixel_values
-        generated_ids = self.model.generate(pixel_values)
-        generated_text: str = self.processor.batch_decode(generated_ids, skip_special_tokens=True)[0]
+        generated_text: str = self.text_digitizer.extract_text(image=image, bbox=text_bbox)
         logger.debug(f"Text found is '{generated_text}'")
 
         return generated_text.strip()
