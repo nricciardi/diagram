@@ -95,11 +95,12 @@ Per lo sgherro (in base alla priorità):
 
 - [ ] nic: Doppio clustering
 - [ ] nic: riportare cose dette con zini
-- sav[ ] fil[x] togliere pianto.md previo controllo
+- sav[x] fil[x] togliere pianto.md previo controllo
 - [ ] fil: paper (abstract, introduzione, architettura(classifier(preprocessing, ...), extractor(preprocessing, bbox, ...), transducer, compiler))
 - [ ] object detection extractor
-  - [ ] sav (linka la guida): Capire come far funzionare i nodi con vscode
-  - [ ] sav: Far funzionare dataloader per object detection
+  - [x] sav (linka la guida): Capire come far funzionare i nodi con vscode
+    - [Guide](https://ailb-web.ing.unimore.it/coldfront/documentation/Zf44P) + Gibbo's file
+  - [x] sav: Far funzionare dataloader per object detection
   - [ ] sav: Primo esperimento import torchvision e allenare _da zero_ sui nostri dati
   - [ ] Secondo esperimento import torchvision e non allenare da zero (qualche resnet) -> fine tuning
 
