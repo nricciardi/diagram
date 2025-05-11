@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.5) (preloaded format=pdflatex 2023.7.3)  5 MAY 2025 15:46
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.5) (preloaded format=pdflatex 2023.7.3)  11 MAY 2025 22:50
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -472,7 +472,7 @@ Package hyperref Info: Link coloring OFF on input line 20.
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: float package is loaded.
 Package caption Info: End \AtBeginDocument code.
-<overview.png, id=92, 647.90054pt x 208.31827pt>
+<overview.png, id=96, 647.90054pt x 208.31827pt>
 File: overview.png Graphic file (type png)
 <use overview.png>
 Package pdftex.def Info: overview.png  used on input line 37.
@@ -492,11 +492,61 @@ Underfull \hbox (badness 2753) in paragraph at lines 53--55
 \OT1/ptm/m/n/10 a markup lan-guage (e.g., Mer-maid.js), and gen-er-ate a
  []
 
+
+Underfull \hbox (badness 10000) in paragraph at lines 68--69
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 71--72
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 75--76
+
+ []
+
 [1{C:/Users/filip/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}{C:/Users/fi
 lip/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/base/8r.enc}
 
 
  <./overview.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 77--78
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 79--80
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 82--83
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 85--86
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 88--89
+
+ []
+
+LaTeX Font Info:    Trying to load font information for U+msa on input line 100
+.
+(C:\Users\filip\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsa.fd
+File: umsa.fd 2013/01/14 v3.01 AMS symbols A
+)
+LaTeX Font Info:    Trying to load font information for U+msb on input line 100
+.
+
+(C:\Users\filip\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsb.fd
+File: umsb.fd 2013/01/14 v3.01 AMS symbols B
+)
 No file article.bbl.
 
 ** Conference Paper **
@@ -509,32 +559,30 @@ Before submitting the final camera ready copy, remember to:
  uses only Type 1 fonts and that every step in the generation
  process uses the appropriate paper size.
 
-[2
-
-] (article.aux)
+[2] (article.aux)
  ***********
 LaTeX2e <2023-06-01> patch level 1
 L3 programming layer <2023-06-16>
  ***********
 Package rerunfilecheck Info: File `article.out' has not changed.
-(rerunfilecheck)             Checksum: 3F13BB961F0F9C40AEB8F8D888E0616B;2914.
+(rerunfilecheck)             Checksum: A9938A20D21FE1D559221DCFE30AA0FA;3369.
  ) 
 Here is how much of TeX's memory you used:
- 11827 strings out of 476037
- 190418 string characters out of 5779846
+ 11886 strings out of 476037
+ 191419 string characters out of 5779846
  1872763 words of memory out of 5000000
- 32427 multiletter control sequences out of 15000+600000
- 542754 words of font info for 82 fonts, out of 8000000 for 9000
+ 32462 multiletter control sequences out of 15000+600000
+ 548713 words of font info for 99 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 75i,8n,79p,590b,437s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 75i,8n,79p,630b,438s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <C:/Users/filip/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmb8a.pf
 b><C:/Users/filip/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmbi8a.p
 fb><C:/Users/filip/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmr8a.p
 fb><C:/Users/filip/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmri8a.
 pfb>
-Output written on article.pdf (2 pages, 197263 bytes).
+Output written on article.pdf (2 pages, 205254 bytes).
 PDF statistics:
- 135 PDF objects out of 1000 (max. 8388607)
- 26 named destinations out of 1000 (max. 500000)
- 182 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 141 PDF objects out of 1000 (max. 8388607)
+ 28 named destinations out of 1000 (max. 500000)
+ 190 words of extra memory for PDF output out of 10000 (max. 10000000)
 

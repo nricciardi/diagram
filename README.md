@@ -82,7 +82,7 @@ Usare `Diagram.DIAGRAM_TYPE.value` per ottenere l'ID stringa.
 
 `Classifier` classe astratta che rappresenta il componente classificatore.
 
-Il metodo `classify` prende in input un oggetto `Image` e restituisce il digram ID.
+Il metodo `classify` prende in input un oggetto `Image` e restituisce il diagram ID.
 
 ##### Image
 
