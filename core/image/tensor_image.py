@@ -1,8 +1,9 @@
-from torchvision.io import decode_image, read_image
+from torchvision.io import read_image
 
 from core.image.image import Image
 from dataclasses import dataclass
 from torch import Tensor
+
 
 @dataclass
 class TensorImage(Image):
