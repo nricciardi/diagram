@@ -219,6 +219,11 @@ Algorithm:
 1. Compute the overlap between the element bbox and the text bbox
    - If there is no overlap, compute the distance between the bboxes
 2. Based on the overlap (and possibly the distance) decide if there is a relation (e.g., the position of the text with respect to the element) or not
+   - The overlap is expressed as a percentage and compared with a (very high) threshold 
+     - If the overlap is greater than the threshold -> inner text 
+     - If the overlap is lower than the threshold -> outer_text 
+     - If there is no overlap and the distance is lower than a (very low) threshold -> outer_text 
+     - If there is no overlap and the distance is higher than a (very low) threshold -> discarded 
 
 Problem:
 
@@ -247,7 +252,7 @@ Assumptions:
 Algorithm:
 
 1. Compute the overlap percentage and the distance between the bboxes
-2. Split the arrow in three parts (SOURCE, MIDDLE, TARGET)
+2. Split the arrow in three parts (SOURCE, MIDDLE, TARGET) -> MIDDLE will be greather than SOURCE and TARGET
 3. Choose the part with the highest overlap (or the lowest distance) with respect to the text
 
 Problems:
