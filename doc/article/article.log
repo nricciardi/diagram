@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.5) (preloaded format=pdflatex 2023.7.3)  12 MAY 2025 14:46
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.5) (preloaded format=pdflatex 2023.7.3)  12 MAY 2025 15:07
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -472,7 +472,7 @@ Package hyperref Info: Link coloring OFF on input line 20.
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: float package is loaded.
 Package caption Info: End \AtBeginDocument code.
-<overview.png, id=96, 647.90054pt x 208.31827pt>
+<overview.png, id=100, 647.90054pt x 208.31827pt>
 File: overview.png Graphic file (type png)
 <use overview.png>
 Package pdftex.def Info: overview.png  used on input line 37.
@@ -536,30 +536,31 @@ Underfull \hbox (badness 10000) in paragraph at lines 88--89
 
  []
 
-LaTeX Font Info:    Trying to load font information for U+msa on input line 100
+LaTeX Font Info:    Trying to load font information for U+msa on input line 107
 .
 (C:\Users\filip\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 100
+LaTeX Font Info:    Trying to load font information for U+msb on input line 107
 .
 
 (C:\Users\filip\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-<text_digitization_results_1.png, id=112, 679.338pt x 585.387pt>
+<text_digitization_results_1.png, id=116, 679.338pt x 585.387pt>
 File: text_digitization_results_1.png Graphic file (type png)
 <use text_digitization_results_1.png>
-Package pdftex.def Info: text_digitization_results_1.png  used on input line 11
-7.
+Package pdftex.def Info: text_digitization_results_1.png  used on input line 12
+4.
 (pdftex.def)             Requested size: 252.0pt x 217.14359pt.
-<text_digitization_results_2.png, id=113, 685.1196pt x 548.5293pt>
+<text_digitization_results_2.png, id=117, 685.1196pt x 548.5293pt>
 File: text_digitization_results_2.png Graphic file (type png)
 <use text_digitization_results_2.png>
-Package pdftex.def Info: text_digitization_results_2.png  used on input line 12
-4.
+Package pdftex.def Info: text_digitization_results_2.png  used on input line 13
+1.
 (pdftex.def)             Requested size: 252.0pt x 201.75577pt.
 
+[2 <./text_digitization_results_1.png> <./text_digitization_results_2.png>]
 No file article.bbl.
 
 ** Conference Paper **
@@ -572,31 +573,39 @@ Before submitting the final camera ready copy, remember to:
  uses only Type 1 fonts and that every step in the generation
  process uses the appropriate paper size.
 
-[2 <./text_digitization_results_1.png> <./text_digitization_results_2.png>]
-(article.aux)
+[3
+
+] (article.aux)
  ***********
 LaTeX2e <2023-06-01> patch level 1
 L3 programming layer <2023-06-16>
  ***********
-Package rerunfilecheck Info: File `article.out' has not changed.
-(rerunfilecheck)             Checksum: F7EEA13B8FA5DE72C387165969D5C485;3389.
+
+
+Package rerunfilecheck Warning: File `article.out' has changed.
+(rerunfilecheck)                Rerun to get outlines right
+(rerunfilecheck)                or use package `bookmark'.
+
+Package rerunfilecheck Info: Checksums for `article.out':
+(rerunfilecheck)             Before: 418D4F069A68DF60BEEE52E753BC561F;3497
+(rerunfilecheck)             After:  9FA118C3F849063663D5048061BE2F92;3638.
  ) 
 Here is how much of TeX's memory you used:
- 11904 strings out of 476037
- 192047 string characters out of 5779846
+ 11908 strings out of 476037
+ 192097 string characters out of 5779846
  1872763 words of memory out of 5000000
- 32478 multiletter control sequences out of 15000+600000
+ 32479 multiletter control sequences out of 15000+600000
  548713 words of font info for 99 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 75i,8n,79p,630b,438s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 75i,8n,79p,630b,437s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <C:/Users/filip/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmb8a.pf
 b><C:/Users/filip/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmbi8a.p
 fb><C:/Users/filip/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmr8a.p
 fb><C:/Users/filip/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmri8a.
 pfb>
-Output written on article.pdf (2 pages, 375668 bytes).
+Output written on article.pdf (3 pages, 377135 bytes).
 PDF statistics:
- 149 PDF objects out of 1000 (max. 8388607)
- 30 named destinations out of 1000 (max. 500000)
- 200 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 159 PDF objects out of 1000 (max. 8388607)
+ 33 named destinations out of 1000 (max. 500000)
+ 208 words of extra memory for PDF output out of 10000 (max. 10000000)
 
