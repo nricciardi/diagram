@@ -83,7 +83,7 @@ if __name__ == "__main__":
             annotations = [annotation for annotation in json_content["annotations"] if annotation["image_id"] == image_id and annotation["category"] == "text" and annotation["text"] != None]
             image = TensorImage.from_str(file_path)
             for annotation in annotations:
-                if random.random() * (1 / len(annotation["text"]) ** 3) < 0.025:    
+                if random.random() * (1 / len(annotation["text"])) < 0.02:    
                     if ground_truths_glob.count(annotation["text"]) >= 1:
                         continue
                     x, y, w, h = annotation["bbox"]
