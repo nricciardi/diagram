@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.5) (preloaded format=pdflatex 2023.7.3)  12 MAY 2025 13:05
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.5) (preloaded format=pdflatex 2023.7.3)  12 MAY 2025 14:19
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -547,12 +547,18 @@ LaTeX Font Info:    Trying to load font information for U+msb on input line 100
 (C:\Users\filip\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-<text_digitization_results_1.png, id=111, 722.7pt x 585.387pt>
+<text_digitization_results_1.png, id=112, 679.338pt x 585.387pt>
 File: text_digitization_results_1.png Graphic file (type png)
 <use text_digitization_results_1.png>
 Package pdftex.def Info: text_digitization_results_1.png  used on input line 11
 7.
-(pdftex.def)             Requested size: 252.0pt x 204.12033pt.
+(pdftex.def)             Requested size: 252.0pt x 217.14359pt.
+<text_digitization_results_2.png, id=113, 685.1196pt x 548.5293pt>
+File: text_digitization_results_2.png Graphic file (type png)
+<use text_digitization_results_2.png>
+Package pdftex.def Info: text_digitization_results_2.png  used on input line 12
+4.
+(pdftex.def)             Requested size: 252.0pt x 201.75577pt.
 
 No file article.bbl.
 
@@ -566,7 +572,8 @@ Before submitting the final camera ready copy, remember to:
  uses only Type 1 fonts and that every step in the generation
  process uses the appropriate paper size.
 
-[2 <./text_digitization_results_1.png>] (article.aux)
+[2 <./text_digitization_results_1.png> <./text_digitization_results_2.png>]
+(article.aux)
  ***********
 LaTeX2e <2023-06-01> patch level 1
 L3 programming layer <2023-06-16>
@@ -575,10 +582,10 @@ Package rerunfilecheck Info: File `article.out' has not changed.
 (rerunfilecheck)             Checksum: A9938A20D21FE1D559221DCFE30AA0FA;3369.
  ) 
 Here is how much of TeX's memory you used:
- 11895 strings out of 476037
- 191733 string characters out of 5779846
+ 11904 strings out of 476037
+ 192047 string characters out of 5779846
  1872763 words of memory out of 5000000
- 32470 multiletter control sequences out of 15000+600000
+ 32478 multiletter control sequences out of 15000+600000
  548713 words of font info for 99 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  75i,8n,79p,630b,438s stack positions out of 10000i,1000n,20000p,200000b,200000s
@@ -587,9 +594,9 @@ b><C:/Users/filip/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmbi8a.p
 fb><C:/Users/filip/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmr8a.p
 fb><C:/Users/filip/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmri8a.
 pfb>
-Output written on article.pdf (2 pages, 291885 bytes).
+Output written on article.pdf (2 pages, 374539 bytes).
 PDF statistics:
- 145 PDF objects out of 1000 (max. 8388607)
- 29 named destinations out of 1000 (max. 500000)
- 195 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 149 PDF objects out of 1000 (max. 8388607)
+ 30 named destinations out of 1000 (max. 500000)
+ 200 words of extra memory for PDF output out of 10000 (max. 10000000)
 
