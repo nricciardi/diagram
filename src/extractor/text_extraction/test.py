@@ -12,6 +12,8 @@ import json, torch
 if __name__ == "__main__":
     # Create instances of the text extractors
     
+    
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     # small_extractor = TrOCRTextExtractorSmall()
     # base_extractor = TrOCRTextExtractorBase()
     # small_handwritten = TrOCRTextExtractionSmallHandwritten()

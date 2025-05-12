@@ -54,12 +54,12 @@ The Compiler module is the final stage of the D.I.A.G.R.A.M. pipeline.
 Its primary role is to take the structured representation of the diagram, expressed in a markup language (e.g., Mermaid.js), and generate a high-quality diagram in a visual format such as PNG. 
 
 % 
-% Graph Diagram
+% Flowchart Diagram
 %
-\section{Graph Diagram Recognition}
+\section{Flowchart Diagram Recognition}
 
 \subsection{Internal Representation}
-In order to pass data through the components of the pipeline in a unified way, it was necessary to decide upon an internal representation of the graph diagram. It consists of \textbf{elements} and \textbf{relations}. The latter are linked to at least one element. Every element has a \textit{category} and possibly some \textit{inner} and \textit{outer text}. Every relation has a \textit{category} too, either a \textit{source} or \textit{target element} or both, and possibly \textit{text} related to it.
+In order to pass data through the components of the pipeline in a unified way, it was necessary to decide upon an internal representation of the flowchart diagram. It consists of \textbf{elements} and \textbf{relations}. The latter are linked to at least one element. Every element has a \textit{category} and possibly some \textit{inner} and \textit{outer text}. Every relation has a \textit{category} too, either a \textit{source} or \textit{target element} or both, and possibly \textit{text} related to it.
 
 This internal representation is generated from the image provided by the user by the Extractor module, while it is parsed and converted to a markup language of choice by the Transducer. 
 
@@ -103,14 +103,14 @@ In order to choose an appropriate model, some tests were done over our specific 
 \hline
 microsoft-trocr-small-printed & 1.392 & 0.150 & 7133 \\
 % microsoft-trocr-base-printed & 1.286 & 0.081 & 3594 \\
-microsoft-trocr-small-handwritten & 1.346 & 0.100  & 3947 \\
-microsoft-trocr-base-handwritten & 1.549 & 0.057 & 3003 \\
+microsoft-trocr-small-handwritten & \textbf{1.346} & 0.100  & 3947 \\
+microsoft-trocr-base-handwritten & 1.549 & \textbf{0.057} & \textbf{3003} \\
 \hline
 \end{tabular}
 \label{tab:text_digitization}
 \end{table}
 
-Some examples of the different models applied to our graph diagram dataset can be seen in Figure~\ref{fig:text_digitization_results_1} and in Figure~\ref{fig:text_digitization_results_2}.
+Some examples of the different models applied to our flowchart diagram dataset can be seen in Figure~\ref{fig:text_digitization_results_1} and in Figure~\ref{fig:text_digitization_results_2}.
 
 \begin{figure}[H]
 \centering

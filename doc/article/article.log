@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.5) (preloaded format=pdflatex 2023.7.3)  12 MAY 2025 14:19
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.5) (preloaded format=pdflatex 2023.7.3)  12 MAY 2025 14:46
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -579,7 +579,7 @@ LaTeX2e <2023-06-01> patch level 1
 L3 programming layer <2023-06-16>
  ***********
 Package rerunfilecheck Info: File `article.out' has not changed.
-(rerunfilecheck)             Checksum: A9938A20D21FE1D559221DCFE30AA0FA;3369.
+(rerunfilecheck)             Checksum: F7EEA13B8FA5DE72C387165969D5C485;3389.
  ) 
 Here is how much of TeX's memory you used:
  11904 strings out of 476037
@@ -594,7 +594,7 @@ b><C:/Users/filip/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmbi8a.p
 fb><C:/Users/filip/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmr8a.p
 fb><C:/Users/filip/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmri8a.
 pfb>
-Output written on article.pdf (2 pages, 374539 bytes).
+Output written on article.pdf (2 pages, 375668 bytes).
 PDF statistics:
  149 PDF objects out of 1000 (max. 8388607)
  30 named destinations out of 1000 (max. 500000)
