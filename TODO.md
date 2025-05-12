@@ -136,7 +136,4 @@ Per lo sgherro (in base alla priorità):
 - [ ] Parallelizzare extractor
 - [ ] Possibile deadline
 - [ ] Docker con cli d2, dipendenze python 
-
-
-
-
+- [ ] Finetunare la rete di text digitization
