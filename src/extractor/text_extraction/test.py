@@ -3,17 +3,19 @@ import sys, os
 sys.path.append(os.path.dirname("."))
 sys.path.append(os.path.dirname("/"))
 
-from src.extractor.text_extraction.text_extractor import TrOCRTextExtractorSmall, TrOCRTextExtractorBase, TrOCRTextExtractionSmallHandwritten
+from src.extractor.text_extraction.text_extractor import TrOCRTextExtractorSmall, TrOCRTextExtractorBase, TrOCRTextExtractionSmallHandwritten, TrOCRTextExtractorBaseHandwritten
 from src.extractor.text_extraction.text_extractor import TextExtractor
 from core.image.tensor_image import TensorImage, Image
 from core.image.bbox.bbox2p import ImageBoundingBox2Points, ImageBoundingBox
-import os, json, torch
+import json, torch
 
 if __name__ == "__main__":
     # Create instances of the text extractors
+    
     # small_extractor = TrOCRTextExtractorSmall()
     # base_extractor = TrOCRTextExtractorBase()
-    small_handwritten = TrOCRTextExtractionSmallHandwritten()
+    # small_handwritten = TrOCRTextExtractionSmallHandwritten()
+    base_handwritten = TrOCRTextExtractorBaseHandwritten()
     
     json_path = os.path.join(os.path.dirname(__file__), "../../../dataset/source/fa/test.json")
     with open(json_path, 'r') as json_file:
@@ -34,7 +36,7 @@ if __name__ == "__main__":
             for annotation in annotations:
                 x, y, w, h = annotation["bbox"]
                 text_bbox = ImageBoundingBox2Points("text", torch.Tensor([x, y, x + w, y + h]), 1)
-                metric = small_handwritten.compute_metrics([image], [text_bbox], [annotation["text"]])
+                metric = base_handwritten.compute_metrics([image], [text_bbox], [annotation["text"]])
                 partial_metric.append(metric)
             base_metrics.append({
                 "hamming": sum([metric["hamming"] for metric in partial_metric]) / len(partial_metric),
@@ -57,3 +59,5 @@ if __name__ == "__main__":
         "euclidean": sum([metric["euclidean"] for metric in base_metrics]) / len(base_metrics),
     }
     print("Base Extractor Average Metrics:" + str(base_avg_metrics))
+    
+    

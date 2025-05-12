@@ -102,14 +102,22 @@ In order to choose an appropriate model, some tests were done over our specific 
 \textbf{Model} & \textbf{Hamming} & \textbf{Cosine} & \textbf{Euclidean} \\
 \hline
 microsoft-trocr-small-printed & 1.392 & 0.150 & 7133 \\
-microsoft-trocr-base-printed & 1.286 & 0.081 & 3594 \\
+% microsoft-trocr-base-printed & 1.286 & 0.081 & 3594 \\
 microsoft-trocr-small-handwritten & 1.346 & 0.100  & 3947 \\
-microsoft-trocr-base-handwritten & --- & --- & --- \\
-% Add more models as needed
+microsoft-trocr-base-handwritten & 1.549 & 0.057 & 3003 \\
 \hline
 \end{tabular}
 \label{tab:text_digitization}
 \end{table}
+
+Some examples of the different models applied to our graph diagram dataset can be seen in Figure~\ref{fig:text_digitization_results_1}.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\linewidth]{text_digitization_results_1.png}
+\caption{Some random results of the text digitization over the proposed models.}
+\label{fig:text_digitization_results_1}
+\end{figure}
 
 \section{Discussion}
 TODO

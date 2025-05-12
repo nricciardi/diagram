@@ -259,3 +259,31 @@ class TrOCRTextExtractionSmallHandwritten(TextExtractor):
         
         def compute_embedding(self, text: str) -> torch.Tensor:
             return self.processor.tokenizer(text, return_tensors="pt").input_ids
+        
+class TrOCRTextExtractorBaseHandwritten(TextExtractor):
+    
+            def __init__(self):
+                self.processor = TrOCRProcessor.from_pretrained("microsoft/trocr-base-handwritten")
+                self.model = VisionEncoderDecoderModel.from_pretrained("microsoft/trocr-base-handwritten")
+                self.model.eval()
+                self.model.to("cuda" if torch.cuda.is_available() else "cpu")
+            
+            def extract_text(self, image: Image, text_bbox: ImageBoundingBox) -> str:
+                """
+                Extracts text from the given image using the TrOCR model.
+        
+                Args:
+                    image (Image): The image object containing the file.
+        
+                Returns:
+                    str: The extracted text.
+                """
+                
+                cropped_image = self.crop_image(image, text_bbox)
+                pixel_values = self.processor(images=cropped_image, return_tensors="pt").pixel_values
+                generated_ids = self.model.generate(pixel_values)
+                generated_text: str = self.processor.batch_decode(generated_ids, skip_special_tokens=True)[0]
+                return generated_text.strip()
+            
+            def compute_embedding(self, text: str) -> torch.Tensor:
+                return self.processor.tokenizer(text, return_tensors="pt").input_ids
