@@ -147,6 +147,7 @@ Dataset:
 
 Classifier:
 
+**Fil**:
 - Adeguare pipeline: 8 ore
 - Preprocessing: 
   - Padding bianco centrato e fissare una dimensione dell'immagini: (sotto-metodo di preprocessing) 4 ore 
@@ -157,6 +158,7 @@ Classifier:
 - Test: 4 giorni
 
 
+**Sav**:
 Object detection:
 
 - Preprocessing: 2 giorni
@@ -164,6 +166,7 @@ Object detection:
 - Test: 4 giorni
 
 
+**Nic**:
 Frecce (trovare direzione, testa, coda):
 
 - Costruzione Downsampling+upsampling network per predire una matrice di valori (+ softmax) per sapere dove è la testa e dove è la coda
