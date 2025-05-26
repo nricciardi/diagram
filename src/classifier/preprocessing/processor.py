@@ -1,4 +1,4 @@
-from core.classifier.preprocessing.processor import Processor, MultiProcessor
+from core.preprocessing.processor import Processor, MultiProcessor
 from core.image.image import Image
 from core.image.tensor_image import TensorImage
 

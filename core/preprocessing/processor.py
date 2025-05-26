@@ -34,6 +34,7 @@ class MultiProcessor(Processor):
         Process the input image using all processors in the list.
 
         Args:
+            debug:
             image: The input image to be processed.
 
         Returns:
