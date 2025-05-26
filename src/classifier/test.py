@@ -9,5 +9,5 @@ import matplotlib.pyplot as plt
 
 if __name__ == "__main__":
     processor = GNRMultiProcessor()
-    image = TensorImage.from_str("test_resources/logo-wikipedia.png")
+    image = TensorImage.from_str("test_resources/handwritten_diagram.jpg")
     image = processor.process(image, debug=True)
