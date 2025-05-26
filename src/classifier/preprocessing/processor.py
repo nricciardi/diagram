@@ -22,11 +22,13 @@ class GrayScaleProcessor(Processor):
         
         if len(image_np.shape) != 3:
             return image
+        elif image_np.shape[0] == 1:
+            gray_image = image_np[0]
         elif image_np.shape[0] == 3:
             image_np = np.transpose(image_np, (1, 2, 0))
             gray_image = cv2.cvtColor(image_np, cv2.COLOR_RGB2GRAY)
-        
-        assert gray_image.shape == image_np.shape[:2], f"Expected shape {image_np.shape[:2]}, but got {gray_image.shape}"
+            assert gray_image.shape == image_np.shape[:2], f"Expected shape {image_np.shape[:2]}, but got {gray_image.shape}"
+            
         return TensorImage(torch.from_numpy(gray_image))
 
 class PadderProcessor(Processor):
@@ -42,7 +44,14 @@ class PadderProcessor(Processor):
             if image_np.shape[0] == 1:
                 image_np = image_np[0]
         h, w = image_np.shape
-        assert h <= self.target_size[0] and w <= self.target_size[1], f"Image size {image_np.shape} is larger than target size {self.target_size}"
+        
+        if h > self.target_size[0] or w > self.target_size[1]:
+            scale_factor = min(self.target_size[0] / h, self.target_size[1] / w)
+            new_h = int(h * scale_factor)
+            new_w = int(w * scale_factor)
+            image_np = cv2.resize(image_np, (new_w, new_h), interpolation=cv2.INTER_AREA)
+            h, w = image_np.shape
+            
         diff_h = self.target_size[0] - h
         diff_w = self.target_size[1] - w
 

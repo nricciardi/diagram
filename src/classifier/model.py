@@ -16,7 +16,7 @@ class ClassifierCNN(nn.Module):
             """
             A convolutional layer followed by ReLU activation and max pooling.
             """
-            def __init__(self, in_channels: int, out_channels: int, kernel_size: int = 3, stride: int = 1, padding: int = 1, kernel_pool_size: int = 2, pool_stride: int = 2, pool_padding: int = 0):
+            def __init__(self, in_channels: int, out_channels: int, kernel_size: int = 3, stride: int = 1, padding: int = 1, kernel_pool_size: int = 3, pool_stride: int = 3, pool_padding: int = 0):
                 super(ConvLayer, self).__init__()
                 self.conv = nn.Conv2d(in_channels, out_channels, kernel_size=kernel_size, stride=stride, padding=padding)
                 self.relu = nn.ReLU()
@@ -44,15 +44,14 @@ class ClassifierCNN(nn.Module):
         
         self.conv1 = ConvLayer(1, 2)
         self.conv2 = ConvLayer(2, 4)
-        self.conv3 = ConvLayer(4, 8)
-        self.fc1 = LinearLayer(64*8*8, 512)
+        self.fc1 = LinearLayer(729 * 64, 512)
         self.fc2 = LinearLayer(512, 128)
         self.fc3 = LinearLayer(128, num_classes)
-        self.sequential = nn.Sequential(
+        self.convSeq = nn.Sequential(
             self.conv1,
-            self.conv2,
-            self.conv3,
-            nn.Flatten(),
+            self.conv2
+        )
+        self.linSeq = nn.Sequential(
             self.fc1,
             self.fc2,
             self.fc3,
@@ -67,7 +66,9 @@ class ClassifierCNN(nn.Module):
         
         :return: Output tensor.
         """
-        x = self.sequential(x)
+        x = x.unsqueeze(1)
+        x = self.convSeq(x)
+        x = self.linSeq(x.view(x.size(0), -1))
         return x
     
     def load(self, path: str):
