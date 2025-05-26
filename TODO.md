@@ -137,3 +137,52 @@ Per lo sgherro (in base alla priorità):
 - [ ] Possibile deadline
 - [ ] Docker con cli d2, dipendenze python 
 - [ ] Finetunare la rete di text digitization
+
+
+
+# Programma
+
+Dataset: 
+- Data augmentation: 2 giorni
+
+Classifier:
+
+**Fil**:
+- Adeguare pipeline: 8 ore
+- Preprocessing: 
+  - Padding bianco centrato e fissare una dimensione dell'immagini: (sotto-metodo di preprocessing) 4 ore 
+  - Rimozione quadretti con filtro mediano: (sotto-metodo di preprocessing) 4 ore 
+  - Binarizzazione bianco nero (Otsu): (sotto-metodo di preprocessing) 4 ore 
+  - Geometrizzazione per riallineare le immagini: (sotto-metodo di preprocessing) 8 ore 
+- Modello: 4 giorni
+- Test: 4 giorni
+
+
+**Sav**:
+Object detection:
+
+- Preprocessing: 2 giorni
+- Modello: 4 giorni
+- Test: 4 giorni
+
+
+**Nic**:
+Frecce (trovare direzione, testa, coda):
+
+- Costruzione Downsampling+upsampling network per predire una matrice di valori (+ softmax) per sapere dove è la testa e dove è la coda
+- Test: 4+4 giorni
+- Costruzione classificatore testa/no testa + sliding window
+- Test: 4+4
+
+
+- Fine tuning finale + cose a contorno: 5 giorni
+
+----
+356 ore
+15gg*uomo per finire il progetto
+4gg per fare il paper
+2gg slide
+
+
+
+

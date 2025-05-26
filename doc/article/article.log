@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.5) (preloaded format=pdflatex 2023.7.3)  12 MAY 2025 15:07
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.5) (preloaded format=pdflatex 2023.7.3)  12 MAY 2025 19:49
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -472,7 +472,7 @@ Package hyperref Info: Link coloring OFF on input line 20.
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: float package is loaded.
 Package caption Info: End \AtBeginDocument code.
-<overview.png, id=100, 647.90054pt x 208.31827pt>
+<overview.png, id=112, 647.90054pt x 208.31827pt>
 File: overview.png Graphic file (type png)
 <use overview.png>
 Package pdftex.def Info: overview.png  used on input line 37.
@@ -536,31 +536,76 @@ Underfull \hbox (badness 10000) in paragraph at lines 88--89
 
  []
 
-LaTeX Font Info:    Trying to load font information for U+msa on input line 107
+
+Underfull \hbox (badness 10000) in paragraph at lines 91--92
+
+ []
+
+
+Underfull \vbox (badness 1769) has occurred while \output is active []
+
+<spectral_clustering.png, id=127, 484.9317pt x 585.387pt>
+File: spectral_clustering.png Graphic file (type png)
+<use spectral_clustering.png>
+Package pdftex.def Info: spectral_clustering.png  used on input line 119.
+(pdftex.def)             Requested size: 150.0pt x 181.07507pt.
+<arrow_double_clustering_clusters.png, id=128, 484.9317pt x 585.387pt>
+File: arrow_double_clustering_clusters.png Graphic file (type png)
+<use arrow_double_clustering_clusters.png>
+Package pdftex.def Info: arrow_double_clustering_clusters.png  used on input li
+ne 126.
+(pdftex.def)             Requested size: 150.0pt x 181.07507pt.
+
+Underfull \vbox (badness 7133) has occurred while \output is active []
+
+ [2 <./spectral_clustering.png>]
+<arrow_double_clustering_direction.png, id=142, 484.9317pt x 585.387pt>
+File: arrow_double_clustering_direction.png Graphic file (type png)
+<use arrow_double_clustering_direction.png>
+Package pdftex.def Info: arrow_double_clustering_direction.png  used on input l
+ine 136.
+(pdftex.def)             Requested size: 150.0pt x 181.07507pt.
+<templates.png, id=144, 209.583pt x 281.1303pt>
+File: templates.png Graphic file (type png)
+<use templates.png>
+Package pdftex.def Info: templates.png  used on input line 145.
+(pdftex.def)             Requested size: 50.0pt x 67.06512pt.
+<template_matching_fail.png, id=146, 480.5955pt x 570.933pt>
+File: template_matching_fail.png Graphic file (type png)
+<use template_matching_fail.png>
+Package pdftex.def Info: template_matching_fail.png  used on input line 154.
+(pdftex.def)             Requested size: 150.0pt x 178.1896pt.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 165
 .
+
 (C:\Users\filip\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 107
+LaTeX Font Info:    Trying to load font information for U+msb on input line 165
 .
 
 (C:\Users\filip\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-<text_digitization_results_1.png, id=116, 679.338pt x 585.387pt>
+Overfull \hbox (1.94206pt too wide) in paragraph at lines 165--175
+ [][] 
+ []
+
+<text_digitization_results_1.png, id=150, 679.338pt x 585.387pt>
 File: text_digitization_results_1.png Graphic file (type png)
 <use text_digitization_results_1.png>
-Package pdftex.def Info: text_digitization_results_1.png  used on input line 12
-4.
+Package pdftex.def Info: text_digitization_results_1.png  used on input line 18
+1.
 (pdftex.def)             Requested size: 252.0pt x 217.14359pt.
-<text_digitization_results_2.png, id=117, 685.1196pt x 548.5293pt>
+<text_digitization_results_2.png, id=151, 685.1196pt x 548.5293pt>
 File: text_digitization_results_2.png Graphic file (type png)
 <use text_digitization_results_2.png>
-Package pdftex.def Info: text_digitization_results_2.png  used on input line 13
-1.
+Package pdftex.def Info: text_digitization_results_2.png  used on input line 18
+8.
 (pdftex.def)             Requested size: 252.0pt x 201.75577pt.
-
-[2 <./text_digitization_results_1.png> <./text_digitization_results_2.png>]
+[3 <./arrow_double_clustering_clusters.png> <./arrow_double_clustering_directio
+n.png> <./templates.png> <./template_matching_fail.png> <./text_digitization_re
+sults_1.png>]
 No file article.bbl.
 
 ** Conference Paper **
@@ -573,28 +618,21 @@ Before submitting the final camera ready copy, remember to:
  uses only Type 1 fonts and that every step in the generation
  process uses the appropriate paper size.
 
-[3
+[4
 
-] (article.aux)
+ <./text_digitization_results_2.png>] (article.aux)
  ***********
 LaTeX2e <2023-06-01> patch level 1
 L3 programming layer <2023-06-16>
  ***********
-
-
-Package rerunfilecheck Warning: File `article.out' has changed.
-(rerunfilecheck)                Rerun to get outlines right
-(rerunfilecheck)                or use package `bookmark'.
-
-Package rerunfilecheck Info: Checksums for `article.out':
-(rerunfilecheck)             Before: 418D4F069A68DF60BEEE52E753BC561F;3497
-(rerunfilecheck)             After:  9FA118C3F849063663D5048061BE2F92;3638.
+Package rerunfilecheck Info: File `article.out' has not changed.
+(rerunfilecheck)             Checksum: 6ECC84F598C9E543F88CE9C68E05F72D;3940.
  ) 
 Here is how much of TeX's memory you used:
- 11908 strings out of 476037
- 192097 string characters out of 5779846
+ 11967 strings out of 476037
+ 193699 string characters out of 5779846
  1872763 words of memory out of 5000000
- 32479 multiletter control sequences out of 15000+600000
+ 32525 multiletter control sequences out of 15000+600000
  548713 words of font info for 99 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  75i,8n,79p,630b,437s stack positions out of 10000i,1000n,20000p,200000b,200000s
@@ -603,9 +641,9 @@ b><C:/Users/filip/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmbi8a.p
 fb><C:/Users/filip/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmr8a.p
 fb><C:/Users/filip/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmri8a.
 pfb>
-Output written on article.pdf (3 pages, 377135 bytes).
+Output written on article.pdf (4 pages, 657357 bytes).
 PDF statistics:
- 159 PDF objects out of 1000 (max. 8388607)
- 33 named destinations out of 1000 (max. 500000)
- 208 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 203 PDF objects out of 1000 (max. 8388607)
+ 46 named destinations out of 1000 (max. 500000)
+ 257 words of extra memory for PDF output out of 10000 (max. 10000000)
 
