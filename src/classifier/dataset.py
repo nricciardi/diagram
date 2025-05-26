@@ -41,4 +41,4 @@ class DatasetClassifier(Dataset):
         """
         image: Image = TensorImage.from_str(self.base_image_path + self.images[idx])
         image = self.preprocessor.process(image)
-        return image, self.labels[idx]
+        return image.as_tensor(), self.labels[idx]
