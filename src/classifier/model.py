@@ -68,7 +68,6 @@ class ClassifierCNN(nn.Module):
         :return: Output tensor.
         """
         x = self.sequential(x)
-        x = torch.argmax(x, dim=1)
         return x
     
     def load(self, path: str):

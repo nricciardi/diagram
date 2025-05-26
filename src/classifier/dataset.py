@@ -1,6 +1,7 @@
 from torch.utils.data import Dataset
 from core.image.tensor_image import TensorImage, Image
 import json
+from src.classifier.preprocessing.processor import Processor, GNRMultiProcessor
 
 class DatasetClassifier(Dataset):
     """
@@ -10,19 +11,20 @@ class DatasetClassifier(Dataset):
     :param labels: A list of labels corresponding to the images.
     """
     
-    def __init__(self, json_path: str = "dataset/classifier/labels.json", base_image_path: str = "dataset/classifier/all/"):
+    def __init__(self, preprocessor: Processor = GNRMultiProcessor(), json_path: str = "dataset/classifier/labels.json", base_image_path: str = "dataset/classifier/all/"):
         """
         Initialize the dataset with images and labels.
         
         :param json_path: Path to the JSON file containing image paths and labels.
         """
         self.base_image_path = base_image_path
+        self.preprocessor = preprocessor
         with open(json_path, 'r') as f:
             data = json.load(f)
         
         self.images = []
         self.labels = []
-        for key, value in data:
+        for key, value in data.items():
             self.images.append(key)
             self.labels.append(value)
     
@@ -37,5 +39,6 @@ class DatasetClassifier(Dataset):
         
         :return: A tuple containing the image tensor and its corresponding label.
         """
-        image: Image = TensorImage().from_str(self.base_image_path + self.images[idx])
-        return self.images[idx], self.labels[idx]
+        image: Image = TensorImage.from_str(self.base_image_path + self.images[idx])
+        image = self.preprocessor.process(image)
+        return image, self.labels[idx]
