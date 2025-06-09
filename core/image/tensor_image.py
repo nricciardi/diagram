@@ -13,7 +13,7 @@ class TensorImage(Image):
 
     @staticmethod
     def from_str(path: str) -> 'Image':
-        if (path.lower().endswith('.png') or path.lower().endswith('.jpeg')):
+        if (path.lower().endswith('.png') or path.lower().endswith('.jpeg') or path.lower().endswith('.jpg')):
             return TensorImage(read_image(path))
         if (path.lower().endswith('.bmp')):
             np_img = cv2.imread(path)
