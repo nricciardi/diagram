@@ -22,11 +22,26 @@ class DatasetClassifier(Dataset):
         with open(json_path, 'r') as f:
             data = json.load(f)
         
+        freqs = {}
+        self.classes = {}
         self.images = []
         self.labels = []
+        idx = 0
         for key, value in data.items():
             self.images.append(key)
             self.labels.append(value)
+            if value not in self.classes:
+                self.classes[value] = idx
+                idx += 1
+            freqs[self.classes[value]] = freqs.get(self.classes[value], 0) + 1
+        weights = [freqs[classId] for classId in self.classes.values()]
+
+        # Calculate the inverse of the weights
+        total = sum(weights)
+        freqs = [w / total for w in weights]
+        inv_freqs = [1 / w for w in freqs]
+        sum_inv = sum(inv_freqs)
+        self.weights = [w / sum_inv for w in inv_freqs]
     
     def __len__(self):
         return len(self.images)
