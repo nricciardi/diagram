@@ -14,9 +14,15 @@ class TensorImage(Image):
     @staticmethod
     def from_str(path: str) -> 'Image':
         if (path.lower().endswith('.png') or path.lower().endswith('.jpeg') or path.lower().endswith('.jpg')):
-            return TensorImage(read_image(path))
+            tensor = read_image(path)
+            if tensor.shape[0] == 4:
+                tensor = tensor[:3, :, :]
+            return TensorImage(tensor)
         if (path.lower().endswith('.bmp')):
             np_img = cv2.imread(path)
+            if np_img.shape[2] == 4:
+                np_img = cv2.cvtColor(np_img, cv2.COLOR_BGRA2BGR)
+            assert np_img.shape[2] == 3, f"Expected 3D numpy array, but got {np_img.ndim}D array for image {path}"
             tensor = torch.from_numpy(np_img).permute(2, 0, 1)
             return TensorImage(tensor)
             
