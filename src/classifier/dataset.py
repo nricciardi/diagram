@@ -1,6 +1,6 @@
 from torch.utils.data import Dataset
 from core.image.tensor_image import TensorImage, Image
-import json
+import json, random
 from src.classifier.preprocessing.processor import Processor, GNRMultiProcessor
 
 class DatasetClassifier(Dataset):
@@ -11,7 +11,7 @@ class DatasetClassifier(Dataset):
     :param labels: A list of labels corresponding to the images.
     """
     
-    def __init__(self, preprocessor: Processor = GNRMultiProcessor(), json_path: str = "dataset/classifier/labels.json", base_image_path: str = "dataset/classifier/all/"):
+    def __init__(self, preprocessor: Processor = GNRMultiProcessor(), json_path: str = "dataset/classifier/labels.json", base_image_path: str = "dataset/classifier/all/", undersample_classes: list[str] = []):
         """
         Initialize the dataset with images and labels.
         
@@ -28,6 +28,8 @@ class DatasetClassifier(Dataset):
         self.labels = []
         idx = 0
         for key, value in data.items():
+            if value in undersample_classes and random.random() < 0.4:
+                continue
             self.images.append(key)
             self.labels.append(value)
             if value not in self.classes:

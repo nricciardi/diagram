@@ -145,23 +145,24 @@ class GNRClassifier(Classifier):
         self.model.load(path)
 
     
-    def evaluate(self, dataset: DatasetClassifier = DatasetClassifier(), visual_output: bool = False, verbose: bool = False) -> float:
+    def evaluate(self, dataset: DatasetClassifier = DatasetClassifier(), visual_output: bool = False, subset_percentage: float = 0.1) -> float:
         """
         Evaluate the model on the provided dataset.
         
         :param dataset: The dataset to evaluate the model on.
         :param visual_output: If True, will visualize some predictions.
-        :param verbose: If True, will print detailed evaluation information.
+        :param subset_percentage: The percentage of the dataset to use for evaluation. Defaults to 10%.
         :return: The accuracy of the model on the dataset.
         """
 
-        subset_size = int(0.1 * len(dataset))
+        subset_size = int(subset_percentage * len(dataset))
         _, subset = random_split(dataset, [len(dataset) - subset_size, subset_size])
         dataloader = DataLoader(subset, batch_size=32, shuffle=True)
 
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.model.to(device)
 
+        # Computw the accuracy of the model on the dataset
         self.model.eval()
         correct = 0
         total = 0
@@ -185,6 +186,8 @@ class GNRClassifier(Classifier):
         accuracy = 100 * correct / total
         classes_names = {k: v for v, k in self.classes.items()}
         print(f"Accuracy of the model on the dataset: {accuracy:.2f}%")
+
+        # If visual_output is True, plot the confusion matrix
         if visual_output:
             import matplotlib.pyplot as plt
 
@@ -194,4 +197,5 @@ class GNRClassifier(Classifier):
             disp.plot(ax=ax, cmap=plt.cm.Blues, values_format='d')
             plt.title("Confusion Matrix")
             plt.show()
+            plt.waitforbuttonpress()
         return accuracy
