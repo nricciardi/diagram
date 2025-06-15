@@ -6,6 +6,8 @@
 \usepackage{caption}
 \usepackage{cite}
 \usepackage{float}
+\usepackage{algorithm}
+\usepackage{algorithmic}
 
 \title{D.I.A.G.R.A.M.: Development of Image Analysis for Graph Recognition And Modeling}
 
@@ -101,18 +103,31 @@ It had two Convolutional layers, each followed by a batch normalization and then
 The output of the second layer was then flattened and passed through a fully connected layer which downsized the features to 128, followed by a ReLU activation function. Other two fully connected layer brought the number of output features down to the number of classes.
 Then, a softmax activation function was applied to the output layer, in order to obtain the probabilities of each class.
 The model was trained on our own dataset, with only three possible output classes: 'flowchart', 'graph' and 'other'; it was trained for 10 epochs, with an AdamW optimizer (with a learning rate of 1e-3) and a standard CrossEntropy Loss function.
+\\
 
 We first tried such a small network because the features that had to be recognized were very simple, down to the basic shapes of the diagram elements.
-However, the results showed a non-decreasing value of the loss function of 0.9 - better than $-ln(3) \seq 1.1$, which is random guessing, but still not satisfactory.
+However, the results showed a non-decreasing value of the loss function of 0.9 - better than $-ln(3) \simeq 1.1$, which is random guessing, but still not satisfactory.
+\\
 
 Judging this to be a problem in architecture size, we then tried adding another CNN layer with 16 filters; this one too followed by a batch normalization and a max pooling layer.
 The rest of the net was untouched; we also decreased the learning rate to 1e-4, in order to avoid overshooting the minimum of the loss function.
 The results, however, didn't show any kind of improvement, with the loss function still being around 0.9.
+\\
 
 While analyzing the predictions, we came up with what was actually the problem: the dataset was heavily unbalanced, with the 'other' class being the most represented one, shadowing the other two classes.
 In order to solve this problem, we decided to use a weighted CrossEntropy Loss function, with the weights being inversely proportional to the number of samples in each class.
 
-TODO: Scrivi l'algoritmo
+\begin{algorithm}
+	\caption{Cross-Entropy weight computation}
+	\begin{algorithmic}[1]
+		\REQUIRE The classes' frequencies $f_1$, $f_2$, ..., $f_c$
+		\STATE $S \gets \sum_{i = 1}^c f_i$
+		\STATE $f_i \gets (f_i / S)^{-1}$
+		\STATE $S \gets \sum_{i = 1}^c f_i$
+		\STATE $f_i \gets f_i / S$
+		\RETURN $f_1$, $f_2$, ..., $f_c$
+	\end{algorithmic}
+\end{algorithm}
 
 This final approach showed a significant improvement in the results, with the loss function decreasing to around 0.6 after 10 epochs of training, with a global accuracy score of 97\% in the validation set.
 
@@ -186,7 +201,9 @@ In order to choose an appropriate model, some tests were done over our specific 
 \hline
 microsoft-trocr-small-printed & 1.392 & 0.150 & 7133 \\
 % microsoft-trocr-base-printed & 1.286 & 0.081 & 3594 \\
-microsoft-trocr-small-handwritten & \textbf{1.346} & 0.100  & 3947 \\ \hline \textbf{microsoft-trocr-base-handwritten} & 1.549 & \textbf{0.057} & \textbf{3003} \\
+microsoft-trocr-small-handwritten & \textbf{1.346} & 0.100  & 3947 \\ 
+\hline 
+\textbf{microsoft-trocr-base-handwritten} & 1.549 & \textbf{0.057} & \textbf{3003} \\
 \hline
 \end{tabular}
 \label{tab:text_digitization}
