@@ -163,11 +163,13 @@ class PerspectiveCorrectionProcessor(Processor):
         return TensorImage(tensor)
 
 class GNRMultiProcessor(MultiProcessor):
-    def __init__(self, processors: list[Processor] = [
-            GrayScaleProcessor(), 
-            OtsuThresholdProcessor(), 
-            MedianFilterProcessor(), 
-            PerspectiveCorrectionProcessor(), 
-            PadderProcessor()]
-        ):
+    def __init__(self, processors: list[Processor] = None):
+        if processors is None:
+            processors = [
+                GrayScaleProcessor(), 
+                OtsuThresholdProcessor(), 
+                MedianFilterProcessor(), 
+                PerspectiveCorrectionProcessor(), 
+                PadderProcessor()
+            ]
         super().__init__(processors)

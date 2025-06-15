@@ -30,4 +30,4 @@ if __name__ == "__main__":
 
     dataset = DatasetClassifier()
     classifier = GNRClassifier(dataset.classes, model_path="src/classifier/classifier.pth")
-    classifier.evaluate(visual_output=True, subset_percentage=0.25)
+    classifier.evaluate(visual_output=True, subset_percentage=1)

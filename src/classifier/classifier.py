@@ -20,18 +20,18 @@ class GNRClassifier(Classifier):
     :param classes: A dictionary mapping class indices to class names. Defaults to a predefined set of classes. IT'S HIGHLY RECCOMMENDED TO PASS IT AS DATASET.classes!
     :param processor: The image processor to use for preprocessing images. Defaults to GNRMultiProcessor.
     """
-    def __init__(self, classes: dict[int, str] = None, model_path: str = "", processor: Processor = GNRMultiProcessor()):
+    def __init__(self, classes: dict[int, str] = None, model_path: str = None, processor: Processor = GNRMultiProcessor()):
         super().__init__()
         if classes is None:
             classes = {
-                0: "flowchart",
-                1: "graph",
+                0: "graph",
+                1: "flowchart",
                 2: "other"
             }
             print("No classes provided, using default classes! Are you sure? It may cause unexpected behaviour.")
         self.classes = classes
         self.model : ClassifierCNN = None
-        if model_path == "":
+        if model_path is None:
             self.model = ClassifierCNN(num_classes=len(classes.keys()))
         else:
             self.model = ClassifierCNN(num_classes=len(classes.keys()))
@@ -199,3 +199,7 @@ class GNRClassifier(Classifier):
             plt.show()
             plt.waitforbuttonpress()
         return accuracy
+    
+    @staticmethod
+    def get_default():
+        pass
