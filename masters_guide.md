@@ -145,7 +145,6 @@ quantunque gradi vuol che giù sia messa.
 Sempre dinanzi a lui ne stanno molte;
 vanno a vicenda ciascuna al giudizio;
 dicono e odono, e poi son giù volte. 
-
 ```
 
 ![Alt text](doc/assets/images/dylan.png "Prossimamente in edicola")
