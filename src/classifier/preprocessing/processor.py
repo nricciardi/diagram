@@ -22,15 +22,17 @@ class GrayScaleProcessor(Processor):
         
         if len(image_np.shape) != 3:
             return image
+        elif image_np.shape[0] == 1:
+            gray_image = image_np[0]
         elif image_np.shape[0] == 3:
             image_np = np.transpose(image_np, (1, 2, 0))
             gray_image = cv2.cvtColor(image_np, cv2.COLOR_RGB2GRAY)
-        
-        assert gray_image.shape == image_np.shape[:2], f"Expected shape {image_np.shape[:2]}, but got {gray_image.shape}"
+            assert gray_image.shape == image_np.shape[:2], f"Expected shape {image_np.shape[:2]}, but got {gray_image.shape}"
+            
         return TensorImage(torch.from_numpy(gray_image))
 
 class PadderProcessor(Processor):
-    def __init__(self, target_size: tuple[int, int] = (1028, 1028)):
+    def __init__(self, target_size: tuple[int, int] = Processor.BASE_SHAPE):
         super().__init__()
         self.target_size = target_size
 
@@ -38,9 +40,18 @@ class PadderProcessor(Processor):
         image_np = image.as_tensor().detach().cpu().numpy()
         image_np = image_np.astype(np.uint8)
         
+        if len(image_np.shape) != 2:
+            if image_np.shape[0] == 1:
+                image_np = image_np[0]
         h, w = image_np.shape
-        assert len(image_np.shape) == 2, f"Expected 2D image, but got {image_np.shape}"
-        assert h <= self.target_size[0] and w <= self.target_size[1], f"Image size {image_np.shape} is larger than target size {self.target_size}"
+        
+        if h > self.target_size[0] or w > self.target_size[1]:
+            scale_factor = min(self.target_size[0] / h, self.target_size[1] / w)
+            new_h = int(h * scale_factor)
+            new_w = int(w * scale_factor)
+            image_np = cv2.resize(image_np, (new_w, new_h), interpolation=cv2.INTER_AREA)
+            h, w = image_np.shape
+            
         diff_h = self.target_size[0] - h
         diff_w = self.target_size[1] - w
 
@@ -86,8 +97,77 @@ class OtsuThresholdProcessor(Processor):
         
         assert thresh.shape == image_np.shape, f"Expected shape {image_np.shape}, but got {thresh.shape}"
         return TensorImage(torch.from_numpy(thresh))
+
+class PerspectiveCorrectionProcessor(Processor):
+    def __init__(self, output_size=None):
+        super().__init__()
+        self.output_size = None
+        if output_size is not None:
+            self.output_size = (int(output_size[0]), int(output_size[1]))
         
+    def _order_points(self, pts: np.ndarray) -> np.ndarray:
+        """
+        Order the points in the following order: top-left, top-right, bottom-right, bottom-left.
+        Args:
+            pts: The input points to be ordered.
+        Returns:
+            The ordered points.
+        """
+        rect = np.zeros((4, 2), dtype="float32")
+        s = pts.sum(axis=1)
+        rect[0] = pts[np.argmin(s)]  # Top-left
+        rect[2] = pts[np.argmax(s)]  # Bottom-right
+
+        diff = np.diff(pts, axis=1)
+        rect[1] = pts[np.argmin(diff)]  # Top-right
+        rect[3] = pts[np.argmax(diff)]  # Bottom-left
+
+        return rect
+    
+    def process(self, image: Image) -> Image:
+        gray = image.as_tensor().detach().cpu().numpy()
+
+        thresh = gray.astype(np.uint8)
+
+        contours, _ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+        if not contours:
+            # raise ValueError("No contours found in the image")
+            return image  # No contours found, return original image
+
+        largest_contour = max(contours, key=cv2.contourArea)
+
+        epsilon = 0.02 * cv2.arcLength(largest_contour, True)
+        approx = cv2.approxPolyDP(largest_contour, epsilon, True)
+
+        if len(approx) != 4:
+            # raise ValueError(f"Expected 4 corners, got {len(approx)}")
+            return image  # Not enough corners found, return original image
+
+        pts = approx.reshape(4, 2)
+        rect = self._order_points(pts)
+        if self.output_size is None:
+            output_1 = int(Processor.BASE_SHAPE[0] / 1.2)
+            output_2 = int(output_1 * (gray.shape[0] / gray.shape[1]))
+            self.output_size = (output_1, output_2)
+        dst = np.array([
+            [0, 0],
+            [self.output_size[0] - 1, 0],
+            [self.output_size[0] - 1, self.output_size[1] - 1],
+            [0, self.output_size[1] - 1]
+        ], dtype="float32")
+
+        M = cv2.getPerspectiveTransform(rect, dst)
+        warped = cv2.warpPerspective(gray, M, (self.output_size[0], self.output_size[1]))
+
+        tensor = torch.from_numpy(warped).unsqueeze(0).float()
+        return TensorImage(tensor)
 
 class GNRMultiProcessor(MultiProcessor):
-    def __init__(self, processors: list[Processor] = [GrayScaleProcessor(), OtsuThresholdProcessor(), PadderProcessor(), MedianFilterProcessor()]):
+    def __init__(self, processors: list[Processor] = [
+            GrayScaleProcessor(), 
+            OtsuThresholdProcessor(), 
+            MedianFilterProcessor(), 
+            PerspectiveCorrectionProcessor(), 
+            PadderProcessor()]
+        ):
         super().__init__(processors)

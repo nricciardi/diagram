@@ -6,6 +6,8 @@ class Processor(ABC):
     """
     Abstract base class for processing data.
     """
+    
+    BASE_SHAPE = (512, 512)
 
     @abstractmethod
     def process(self, image: Image) -> Image:
