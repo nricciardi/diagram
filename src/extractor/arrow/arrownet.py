@@ -40,4 +40,5 @@ class ArrowNet(nn.Module):
         x = self.encoder(x)
         x = self.bottleneck(x)
         x = self.decoder(x)
+
         return torch.sigmoid(x)  # probability [0, 1]

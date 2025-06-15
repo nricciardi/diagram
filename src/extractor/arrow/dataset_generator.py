@@ -2,6 +2,7 @@ import os
 import json
 import argparse
 from PIL import Image
+import shutil
 from tqdm import tqdm
 
 ARROW_CATEGORY = 6
@@ -15,7 +16,7 @@ def extract_patch(img, center, patch_size):
     bottom = top + patch_size
     return img.crop((left, top, right, bottom)), (left, top, right, bottom)
 
-def main(coco_json_path, images_dir, output_dir, output_name, patch_size):
+def main(coco_json_path, images_dir, output_dir, output_name):
     with open(coco_json_path, 'r', encoding='utf-8') as f:
         coco = json.load(f)
 
@@ -51,24 +52,15 @@ def main(coco_json_path, images_dir, output_dir, output_name, patch_size):
             print(f"Image file {image_path} not found")
             continue
 
-        img = Image.open(image_path).convert("RGB")
+        shutil.copy2(image_path, os.path.join(output_dir, output_name))
 
         for point, label in zip([head, tail], ["head", "tail"]):
-            patch_img, bbox = extract_patch(img, point, patch_size)
-            patch_filename = f"{os.path.splitext(image_filename)[0]}_ann{ann['id']}_{label}.png"
-            patch_path = os.path.join(patch_output, patch_filename)
-            patch_img.save(patch_path)
-
-            left, top, _, _ = bbox
-            target_x = point[0] - left
-            target_y = point[1] - top
+            target_x = point[0]
+            target_y = point[1]
 
             patches_info.append({
-                "original_image": image_filename,
-                "patch_file": patch_filename,
+                "image": image_filename,
                 "label": label,
-                "bbox_in_original_image": bbox,
-                "original_target_point": point,
                 "arrow_id": ann['id'],
                 "target_x": target_x,
                 "target_y": target_y
@@ -82,6 +74,7 @@ def main(coco_json_path, images_dir, output_dir, output_name, patch_size):
     print(f"Patches saved into {patch_output}")
     print(f"JSON file saved into {output_json}")
 
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Estrai patch testa/coda frecce da dataset COCO-like.")
     parser.add_argument("--coco_json", required=True, help="Path al file JSON in formato COCO-like.")
@@ -90,4 +83,4 @@ if __name__ == "__main__":
     parser.add_argument("--output_name", required=True, help="Output names.")
     args = parser.parse_args()
 
-    main(args.coco_json, args.images_dir, args.output_dir, args.output_name, args.patch_size)
+    main(args.coco_json, args.images_dir, args.output_dir, args.output_name)

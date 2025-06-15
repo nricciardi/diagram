@@ -9,36 +9,22 @@ from src.dataset.extractor.arrow_dataset import ArrowDataset
 from src.extractor.arrow.arrownet import ArrowNet
 
 
-def create_heatmap(coords, image_size, sigma=2):
-    """
-    coords: tuple (x, y)
-    image_size: (H, W)
-    sigma: spread del gaussiano
-    """
-    H, W = image_size
-    x, y = coords
-    xx, yy = torch.meshgrid(torch.arange(H), torch.arange(W), indexing='ij')
-    heatmap = torch.exp(-((xx - y)**2 + (yy - x)**2) / (2 * sigma**2))
-
-    return heatmap
-
-
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 def train(model: ArrowNet, loader: DataLoader[ArrowDataset], num_epochs: int):
 
     optimizer = torch.optim.Adam(model.parameters(), lr=1e-3)
-    criterion = nn.BCELoss()
+    criterion = nn.MSELoss()
 
     for epoch in range(num_epochs):
         model.train()
         running_loss = 0.0
 
         for images, heatmaps in loader:
-            images = images.to(DEVICE)  # (B, 1, H, W)
-            heatmaps = heatmaps.to(DEVICE)  # (B, 1, H, W)
+            images = images.to(DEVICE).float()  # (B, H, W)
+            heatmaps = heatmaps.to(DEVICE)  # (B, H, W)
 
-            outputs = model(images)  # (B, 1, H, W)
+            outputs = model(images)  # (B, H, W)
             loss = criterion(outputs, heatmaps)
 
             optimizer.zero_grad()
@@ -57,7 +43,7 @@ def main():
     parser.add_argument("--patch_size", type=int, default=64, help="Dimensione delle patch quadrate.")
     parser.add_argument("--n_epochs", type=int, default=10, help="N. epochs")
     parser.add_argument("--batch_size", type=int, default=8, help="Batch size")
-    parser.add_argument("--arrow_type", required=True, type=str, help="Arrow type 'head' or 'tail'")
+    parser.add_argument("--arrow_type", choices=["head", "tail"], required=True, type=str, help="Arrow type 'head' or 'tail'")
     parser.add_argument("--output", required=True, type=str, help="Output file in which save weights")
 
     args = parser.parse_args()
@@ -67,22 +53,10 @@ def main():
 
     train(model, train_loader, args.n_epochs)
 
-    torch.save(model, args.output)
+    torch.save(model.state_dict(), args.output)
 
 
 if __name__ == '__main__':
-    # --info_file
-    # /home/nricciardi/Repositories/diagram/dataset/source/fa/train.json
-    # --images_dir
-    # /home/nricciardi/Repositories/diagram/dataset/source/fa/train
-    # --patch_size
-    # 64
-    # --n_epochs
-    # 10
-    # --arrow_type
-    # head
-    # --output
-    # test.pth
 
-    # --info_file /home/nricciardi/Repositories/diagram/dataset/source/fa/train.json --images_dir /home/nricciardi/Repositories/diagram/dataset/source/fa/train --patch_size 64 --n_epochs 10 --arrow_type head --output test.pth
+    # --info_file /home/nricciardi/Repositories/diagram/dataset/arrow/train.json --images_dir /home/nricciardi/Repositories/diagram/dataset/arrow/train --patch_size 64 --n_epochs 10 --arrow_type head --output test.pth
     main()
