@@ -17,7 +17,8 @@ class TextExtractor(ABC):
         Extracts text from the given file.
 
         Args:
-            file_path (str): The path to the file from which to extract text.
+            image (Image): The image object containing the image.
+            text_bbox (ImageBoundingBox): The bounding box containing the text to extract.
 
         Returns:
             str: The extracted text.
