@@ -8,6 +8,7 @@ from torchvision.utils import draw_bounding_boxes
 from torchmetrics.detection.mean_ap import MeanAveragePrecision
 
 from src.dataset.extractor.dataset import ObjectDetectionDataset
+from torch.utils.data import random_split
 
 import logging
 
@@ -19,12 +20,22 @@ def collate_fn(batch):
 
 
 # Setup paths
-annotations_file = "/Users/saverionapolitano/PycharmProjects/diagram/dataset/extractor/labels.json"
-img_dir = "/Users/saverionapolitano/PycharmProjects/diagram/dataset/extractor/flow_graph_diagrams"
+annotations_file = "dataset/extractor/labels.json"
+img_dir = "dataset/extractor/flow_graph_diagrams/"
 
 # Create dataset and dataloader
 dataset = ObjectDetectionDataset(annotations_file, img_dir)
-dataloader = DataLoader(dataset, batch_size=4, shuffle=True, collate_fn=collate_fn)
+
+dataset_size: int = len(dataset)
+test_size: int = int(0.2 * dataset_size)
+val_size: int = int(0.2 * dataset_size)
+train_size: int = dataset_size - (test_size + val_size)
+
+train_dataset, val_dataset, test_dataset = random_split(dataset, [train_size, val_size, test_size])
+
+train_dataloader = DataLoader(train_dataset, batch_size=4, shuffle=True, collate_fn=collate_fn)
+val_dataloader = DataLoader(val_dataset, batch_size=4, shuffle=True, collate_fn=collate_fn)
+test_dataloader = DataLoader(test_dataset, batch_size=4, shuffle=True, collate_fn=collate_fn)
 
 # Load model
 model = fasterrcnn_resnet50_fpn(weights="DEFAULT")  # fine-tuning
@@ -44,9 +55,10 @@ optimizer = torch.optim.SGD(params, lr=0.005, momentum=0.9, weight_decay=0.0005)
 # Training loop
 model.train()
 epochs = 100
-min_loss = 10000000
+final_loss: float = 0.0
 for epoch in range(epochs):
-    for images, targets in dataloader:
+    running_loss = 0.0
+    for images, targets in train_dataloader:
         images = [img.to(device) for img in images]
 
         targets = [{k: v.to(device) for k, v in t.items()} for t in targets]
@@ -58,13 +70,35 @@ for epoch in range(epochs):
         losses.backward()
         optimizer.step()
 
-        logger.debug(f"Loss: {losses.item():.4f} at step {epoch + 1}")
-        if losses.item() < min_loss:
-            min_loss = losses.item()
-            torch.save(model.state_dict(), "best_model.pth")  # save the best weights
+        running_loss += losses.item()
 
-logger.debug(f"Best loss: {min_loss:.4f}")
 
+    final_loss = running_loss
+    logger.debug(f"Loss: {running_loss:.4f} at step {epoch + 1}")
+
+logger.debug(f"Final loss: {final_loss:.4f}")
+torch.save(model.state_dict(), "final_model.pth")  # save the final weights
+
+# Evaluation (basic AP computation with torchmetrics)
+metric = MeanAveragePrecision()
+
+# Evaluate over dataset
+model.eval()
+with torch.no_grad():
+    for images, targets in val_dataloader:
+        images = [img.to(device) for img in images]
+        targets = [{k: v.to(device) for k, v in t.items()} for t in targets]
+        outputs = model(images)
+
+        # Format predictions and targets for metric
+        metric.update(outputs, targets)
+
+metrics = metric.compute()
+logger.debug("\nEvaluation metrics:")
+for k, v in metrics.items():
+    logger.debug(f"{k}: {v:.4f}")
+
+"""
 # Inference & visualization
 model.eval()
 img, target = dataset[0]
@@ -80,22 +114,4 @@ drawn = draw_bounding_boxes(img_cpu, boxes=boxes, labels=[str(l.item()) for l in
 plt.imshow(to_pil_image(drawn))
 plt.axis('off')
 plt.show()
-
-# Evaluation (basic AP computation with torchmetrics)
-metric = MeanAveragePrecision()
-
-# Evaluate over dataset
-model.eval()
-with torch.no_grad():
-    for images, targets in dataloader:
-        images = [img.to(device) for img in images]
-        targets = [{k: v.to(device) for k, v in t.items()} for t in targets]
-        outputs = model(images)
-
-        # Format predictions and targets for metric
-        metric.update(outputs, targets)
-
-metrics = metric.compute()
-logger.debug("\nEvaluation metrics:")
-for k, v in metrics.items():
-    logger.debug(f"{k}: {v:.4f}")
+"""
