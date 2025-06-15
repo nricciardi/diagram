@@ -1,4 +1,4 @@
-from typing import List, Type
+from typing import List, Type, override
 
 from src.wellknown_diagram import WellKnownDiagram
 from core.representation.representation import DiagramRepresentation
@@ -14,12 +14,14 @@ class FlowchartToD2Transducer(Transducer):
     def __init__(self, identifier: str):
         super().__init__(identifier)
 
+    @override
     def compatible_diagrams(self) -> List[str]:
         return [
             WellKnownDiagram.FLOW_CHART.value,
             WellKnownDiagram.GRAPH_DIAGRAM.value,
         ]
 
+    @override
     def compatible_representations(self) -> List[Type[DiagramRepresentation]]:
         return [FlowchartRepresentation]
 

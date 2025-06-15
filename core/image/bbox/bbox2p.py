@@ -4,15 +4,13 @@ from dataclasses import dataclass
 
 @dataclass(frozen=True)
 class ImageBoundingBox2Points(ImageBoundingBox):
-    class ImageBoundingBox2Points:
-        """
-        A class representing a bounding box for an image, defined by two points: 
-        the top-left and bottom-right corners.
-        This class provides properties to access the coordinates of the four corners 
-        of the bounding box (top-left, top-right, bottom-left, bottom-right) in terms 
-        of their x and y values.
-        """
-    
+    """
+    A class representing a bounding box for an image, defined by two points:
+    the top-left and bottom-right corners.
+    This class provides properties to access the coordinates of the four corners
+    of the bounding box (top-left, top-right, bottom-left, bottom-right) in terms
+    of their x and y values.
+    """
 
     @property
     def top_left_x(self) -> float:

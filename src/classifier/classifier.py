@@ -1,3 +1,5 @@
+from typing import List, override
+
 from core.classifier.classifier import Classifier
 from core.image.image import Image
 from src.classifier.preprocessing.processor import GNRMultiProcessor, Processor
@@ -10,6 +12,9 @@ import torch.optim as optim
 import torch.nn as nn
 import torch
 from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
+
+from src.wellknown_diagram import WellKnownDiagram
+
 
 class GNRClassifier(Classifier):
     
@@ -24,9 +29,9 @@ class GNRClassifier(Classifier):
         super().__init__()
         if classes is None:
             classes = {
-                0: "graph",
+                0: "graph",     # TODO: WellKnownDiagram.GRAPH_DIAGRAM.value,
                 1: "flowchart",
-                2: "other"
+                2: "other"      # TODO: None
             }
             print("No classes provided, using default classes! Are you sure? It may cause unexpected behaviour.")
         self.classes = classes
@@ -37,9 +42,15 @@ class GNRClassifier(Classifier):
             self.model = ClassifierCNN(num_classes=len(classes.keys()))
             self.model.load(model_path)
         self.processor = processor
+
+    @override
+    def compatible_diagrams(self) -> List[str]:
+        return [
+            WellKnownDiagram.FLOW_CHART.value,
+            WellKnownDiagram.GRAPH_DIAGRAM.value,
+        ]
     
-    
-    def classify(self, image: Image) -> str:
+    def classify(self, image: Image) -> str:        # TODO: Optional[str]
         """
         Classify the image using the model and processor.
         

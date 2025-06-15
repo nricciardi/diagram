@@ -7,6 +7,7 @@ from core.extractor.multistage_extractor.multistage_extractor import MultiStageE
 from core.image.bbox.bbox import ImageBoundingBox
 from core.image.image import Image
 from core.representation.representation import DiagramRepresentation
+from src.extractor.arrow.arrow import Arrow
 from src.representation.flowchart_representation.element import Element
 from src.representation.flowchart_representation.flowchart_representation import FlowchartRepresentation
 from src.representation.flowchart_representation.relation import Relation
@@ -105,7 +106,7 @@ class MultistageFlowchartExtractor(MultiStageExtractor, ABC):
         """
 
     @abstractmethod
-    def _compute_relations(self, diagram_id: str, element_bboxes: List[ImageBoundingBox], arrow_bboxes: List[ImageBoundingBox]) -> List[ObjectRelation]:
+    def _compute_relations(self, diagram_id: str, element_bboxes: List[ImageBoundingBox], arrow_bboxes: List[Arrow]) -> List[ObjectRelation]:
         """
         Compute relations between elements and arrows
 
@@ -119,7 +120,7 @@ class MultistageFlowchartExtractor(MultiStageExtractor, ABC):
         """
 
     @abstractmethod
-    def _arrow_text_type(self, diagram_id: str, arrow_bbox: ImageBoundingBox, text_bbox: ImageBoundingBox) -> ArrowTextTypeOutcome:
+    def _arrow_text_type(self, diagram_id: str, arrow: Arrow, text_bbox: ImageBoundingBox) -> ArrowTextTypeOutcome:
         """
         Return if text of arrow is inner, outer or must be discarded
         """

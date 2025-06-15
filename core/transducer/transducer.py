@@ -19,3 +19,10 @@ class Transducer(IdentifiableMixin, CompatibleDiagramsMixin, CompatibleRepresent
         :return:
         """
 
+    @abstractmethod
+    def compatible_diagrams(self) -> List[str]:
+        raise NotImplemented()
+
+    @abstractmethod
+    def compatible_representations(self) -> List[Type[DiagramRepresentation]]:
+        raise NotImplemented()

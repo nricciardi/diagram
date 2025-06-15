@@ -7,6 +7,7 @@ from shapely.geometry import Polygon
 
 from core.image.bbox.bbox import ImageBoundingBox
 from core.image.image import Image
+from src.extractor.arrow.arrow import Arrow
 from src.extractor.flowchart.multistage_extractor import MultistageFlowchartExtractor, ArrowTextTypeOutcome, \
     ElementTextTypeOutcome, ObjectRelation
 from src.utils.bbox_utils import bbox_overlap, bbox_distance, bbox_vertices, bbox_split, bbox_relative_position
@@ -118,13 +119,13 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
         """
 
         logger.debug("Analyzing the text found...")
-        generated_text: str = self.text_digitizer.extract_text(image=image, bbox=text_bbox)
+        generated_text: str = self.text_digitizer.extract_text(image=image, bbox=text_bbox)     # TODO: why Unexpected argument
         logger.debug(f"Text found is '{generated_text}'")
 
         return generated_text.strip()
 
     def _compute_relations(self, diagram_id: str, element_bboxes: List[ImageBoundingBox],
-                           arrow_bboxes: List[ImageBoundingBox]) -> List[ObjectRelation]:
+                           arrow_bboxes: List[Arrow]) -> List[ObjectRelation]:
         """
             Computes the relationships between elements and arrows in a diagram based on their bounding boxes.
             Args:
@@ -141,6 +142,10 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
                 - If multiple overlaps exist, the function prioritizes overlaps with distinct relative positions.
                 - If only one overlap exists, the source and target indices may point to the same element.
         """
+
+        # TODO: si passa da arrow_bbox a 2 punti a testa e coda della freccia
+        # TODO: non ci sarà più right left, bisogna ottenere testa e coda di ogni freccia e
+
         ret: List[ObjectRelation] = []
         for arrow in arrow_bboxes:
             overlaps = []
@@ -240,10 +245,10 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
         logger.debug(f'Outcome {outcome.value} for overlapping element-text')
         return outcome
 
-    def _arrow_text_type(self, diagram_id: str, arrow_bbox: ImageBoundingBox,
-                         text_bbox: ImageBoundingBox) -> ArrowTextTypeOutcome:
+    def _arrow_text_type(self, diagram_id: str, arrow: Arrow, text_bbox: ImageBoundingBox) -> ArrowTextTypeOutcome:
         """
         Computes the relation between an arrow and a text
+
         Args:
             diagram_id (str): The identifier of the diagram being processed
             arrow_bbox (ImageBoundingBox): The bbox of the arrow associated to the text
@@ -257,6 +262,8 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
             - The function assumes that there is a relation if there is overlap between the bboxes
             or the distance is lower than a certain threshold
         """
+
+        # TODO: si passa da arrow_bbox a 2 punti a testa e coda della freccia
 
         logger.debug('Computing vertices arrow-text...')
         arrow_bbox_vertices, text_bbox_vertices = bbox_vertices(bbox1=arrow_bbox, bbox2=text_bbox)

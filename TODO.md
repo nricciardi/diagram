@@ -117,16 +117,63 @@ Per lo sgherro (in base alla priorità):
 
 ## Lunedì 05/05
 
-- [ ] Preprocessing extractor [sgherro]
+- [x] Preprocessing extractor ~~[sgherro]~~ GRANDE FILLO
 - [ ] Object detection -> nodi, frecce, testo [sgherro]
 - [ ] Classifier
-  - [ ] Preprocessing [sgherro]
-    - [ ] Definire quali fare -> chiedendo al dottorando
-    - [ ] Togliere rumore (gaussian filter) [filter]
-  - [ ] Classifier: Raddrizzare immagini [geom]
-  - [ ] Togliere il background (e.g. togliere quadretti) [e.g. Otsu]
+  - [ ] Preprocessing ~~[sgherro]~~ GRANDE FILLO
+    - [x] Definire quali fare -> chiedendo al dottorando
+    - [x] Togliere rumore (gaussian filter) [filter]
+  - [x] Classifier: Raddrizzare immagini [geom]
+  - [x] Togliere il background (e.g. togliere quadretti) [e.g. Otsu]
   - [ ] Rete classificatrice
-    - [ ] Definire -> chiedendo al dottorando
+    - [x] Definire -> ~~chiedendo al dottorando~~
+
+
+## Domenica 22/06
+
+- [ ] F: Master guide
+- [ ] F. Downsampling/upsampling classifier
+- [ ] F: Classi prese in input dal classifier
+- [ ] F: print -> log
+- [ ] N: Fix extractor (tra cui aggiungere i metodi astratti per transduer e extractor)
+- [ ] N: Identificazione testa e coda frecce da bbox 2 punti
+- [ ] S: Finetuning object detection singola senza Otsu e filtro mediano (se va male farne due)
+
+
+Scegliere se andare a fare spionaggio
+
+
+## Domenica 29/06
+
+- [ ] _compute_relations in extractor
+- [ ] _arrow_text_type in extractor
+- [ ] Finetuning threshold extractor
+
+
+## Deadline codice 01/07
+
+- [ ] Testing
+
+## Deadline paper e presentazione 07/07
+
+- [ ] Paper
+- [ ] Presentazione
+
+## Deadline e presa della Bastiglia 14/07
+
+- [ ] Presentazione orale
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -134,10 +181,10 @@ Per lo sgherro (in base alla priorità):
 
 - [ ] Ottimizzare digitalizzazione testo passando il batch di bbox (extractor)
 - [ ] Parallelizzare extractor
-- [ ] Possibile deadline
+- [x] Possibile deadline
 - [ ] Docker con cli d2, dipendenze python 
 - [ ] Finetunare la rete di text digitization
-
+- [ ] GUI
 
 
 # Programma

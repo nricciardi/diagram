@@ -1,5 +1,7 @@
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
+from typing import List
+
 from core.image.image import Image
 
 
@@ -15,3 +17,6 @@ class Classifier(ABC):
         :return: the most probable diagram type (diagram id)
         """
 
+    @abstractmethod
+    def compatible_diagrams(self) -> List[str]:
+        raise NotImplemented()

@@ -1,4 +1,4 @@
-from typing import List, Type
+from typing import List, Type, override
 import sys, os
 
 from src.representation.flowchart_representation.element import FlowchartElementCategory
@@ -21,12 +21,14 @@ class FlowchartToMermaidTransducer(Transducer):
     def __init__(self, identifier: str):
         super().__init__(identifier)
 
+    @override
     def compatible_diagrams(self) -> List[str]:
         return [
             WellKnownDiagram.FLOW_CHART.value,
             WellKnownDiagram.GRAPH_DIAGRAM.value,
         ]
 
+    @override
     def compatible_representations(self) -> List[Type[DiagramRepresentation]]:
         return [
             FlowchartRepresentation,
