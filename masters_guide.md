@@ -44,6 +44,12 @@ E' letteralmente come se fossa una mv l'scp.
 Il punto 5 sarebbe dovuto chiamarsi 666. Per ignoti motivi, io ci ho impiegato lacrime, sangue e rituali sacrificali per riuscire a creare un ambiente con Conda. In ogni modo, caccia un:
 
 ```bash
+$ conda init
+```
+
+Poi riavvia la sessione. Caccia poi:
+
+```bash
 $ conda create --name <nome_env> python=3.11
 $ conda activate <nome_env>
 $ conda install -r requirements.txt
