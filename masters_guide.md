@@ -17,7 +17,7 @@ Una volta attivata la VPN, puoi connetterti al cluster con un ssh:
 $ ssh <aimagelab-username>@ailb-login-02.ing.unimore.it
 ```
 
-*Nota*: il nome utente nostro di solito è prima lettera del nome e cognome. Es. Tu sarai SNapolitano.
+*Nota*: il nome utente nostro di solito è prima lettera del nome e cognome. Es. Tu sarai snapolitano.
 
 ---
 
