@@ -119,7 +119,7 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
         """
 
         logger.debug("Analyzing the text found...")
-        generated_text: str = self.text_digitizer.extract_text(image=image, bbox=text_bbox)     # TODO: why Unexpected argument
+        generated_text: str = self.text_digitizer.extract_text(image, text_bbox)
         logger.debug(f"Text found is '{generated_text}'")
 
         return generated_text.strip()

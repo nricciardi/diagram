@@ -35,8 +35,8 @@ def main(coco_json_path, images_dir, output_dir, output_name):
         if not keypoints or len(keypoints) < 6:
             continue
 
-        head = keypoints[:2]
-        tail = keypoints[3:5]
+        tail = keypoints[:2]
+        head = keypoints[3:5]
 
         if head == [0.0, 0.0] or tail == [0.0, 0.0]:
             continue

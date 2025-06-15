@@ -53,30 +53,15 @@ class ArrowDataset(Dataset):
 
     def __crop_patch(self, image: torch.tensor, center_x: float, center_y: float):
 
-        C, H, W = image.shape
         half_size = self.patch_size // 2
 
-        cx = int(round(center_x))
-        cy = int(round(center_y))
+        center_x: int = int(round(center_x))
+        center_y: int = int(round(center_y))
 
-        x1 = cx - half_size
-        y1 = cy - half_size
+        x1 = center_x - half_size
+        y1 = center_y - half_size
         x2 = x1 + self.patch_size
         y2 = y1 + self.patch_size
-
-        # Padding if patch is greater than image itself
-        pad_left = max(0, -x1)
-        pad_top = max(0, -y1)
-        pad_right = max(0, x2 - W)
-        pad_bottom = max(0, y2 - H)
-
-        if pad_left > 0 or pad_top > 0 or pad_right > 0 or pad_bottom > 0:
-            image = F.pad(image, (pad_left, pad_right, pad_top, pad_bottom), mode='constant', value=0)
-
-        x1 += pad_left
-        y1 += pad_top
-        x2 += pad_left
-        y2 += pad_top
 
         patch = image[:, y1:y2, x1:x2]
         return patch
@@ -104,30 +89,24 @@ class ArrowDataset(Dataset):
         image = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)    # (H, W)
         image = torch.from_numpy(image).unsqueeze(0)
 
-        crop_image = self.__crop_patch(image, target_x, target_y)    # (1, patch_size, patch_size)
-        crop_image = crop_image.squeeze()
+        image = self.__crop_patch(image, target_x, target_y)    # (1, patch_size, patch_size)
+        image = image.squeeze()
 
-        center_x = random.randint(0, self.output_image_size - 1)
-        center_y = random.randint(0, self.output_image_size - 1)
+        center_x = random.randint(image.shape[1] // 2 + 1, self.output_image_size - image.shape[1] // 2 - 1)
+        center_y = random.randint(image.shape[0] // 2 + 1, self.output_image_size - image.shape[0] // 2 - 1)
 
         label = self.__compute_heatmap(center_x, center_y, self.output_image_size)
 
+        outcome = torch.zeros(self.output_image_size, self.output_image_size, dtype=torch.uint8)
 
-        h, w = crop_image.shape
-
-        margin_x = self.output_image_size - w
-        margin_y = self.output_image_size - h
-
-        center_x = random.randint(w // 2, margin_x + w // 2)
-        center_y = random.randint(h // 2, margin_y + h // 2)
+        h, w = image.shape
 
         top_left_x = center_x - w // 2
         top_left_y = center_y - h // 2
 
-        image = torch.zeros(self.output_image_size, self.output_image_size, dtype=torch.uint8)
-        image[top_left_y:top_left_y + h, top_left_x:top_left_x + w] = crop_image
+        outcome[top_left_y:top_left_y + h, top_left_x:top_left_x + w] = image
 
-        return image, label
+        return outcome, label
 
 
 def overlay_grayscale_red_torch(base_img: torch.Tensor, red_overlay: torch.Tensor, alpha: float = 0.5):
@@ -163,11 +142,11 @@ if __name__ == '__main__':
         "/home/nricciardi/Repositories/diagram/dataset/arrow/head/train.json",
         "/home/nricciardi/Repositories/diagram/dataset/arrow/head/train",
         64,
-        128,
+        256,
         2
     )
 
-    image, label = dataset.__getitem__(0)
+    image, label = dataset.__getitem__(3)
 
     overlay_grayscale_red_torch(image, label)
 
