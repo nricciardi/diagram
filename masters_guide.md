@@ -39,6 +39,8 @@ $ scp -r path_locale <your-aimagelab-username>@ailb-login-02.ing.unimore.it:/wor
 
 E' letteralmente come se fossa una mv l'scp.
 
+*Nota*: La scp va fatta da un terminale locale della tua macchina, non su un terminale del cluster.
+
 ### 5) L'orrore virtuale
 
 Il punto 5 sarebbe dovuto chiamarsi 666. Per ignoti motivi, io ci ho impiegato lacrime, sangue e rituali sacrificali per riuscire a creare un ambiente con Conda. In ogni modo, caccia un:
@@ -52,7 +54,7 @@ Poi riavvia la sessione. Caccia poi:
 ```bash
 $ conda create --name <nome_env> python=3.11
 $ conda activate <nome_env>
-$ conda install -r requirements.txt
+$ pip install -r requirements.txt
 ```
 
 *Nota*: Non sono sicurissimo che noi avessimo detto 3.11 come versione Python. Metti quella che vuoi.
@@ -85,17 +87,15 @@ L'interno sarà più o meno:
     #SBATCH --mem=16G
 
     module load cuda/11.8
-    source /usr/local/anaconda3/etc/profile.d/conda.sh
-    conda activate <nome_env>
 
     python3 /work/cvcs2025/garagnani_napolitano_ricciardi/.../training_script.py
 ```
 
 Ovviamente modifica i parametri come meglio credi.
 
-*Nota*: Dopo pulisci i file di output e di errore, grazieeee
+*Nota*: Visto che avete fatto le directory elitarie, potete tenervi tutta la spazzatura che esce dai .err e .out
 
-*Nota 2*: Attento a come indichi i percorsi dei file nei file .py. Il codice viene eseguito dalla root del progetto, quindi se indichi un percorso relativo, devi partire da lì.
+*Nota 2*: Attento a come indichi i percorsi dei file nei file .py. Il codice viene eseguito da dove viene eseguito, quindi se indichi un percorso relativo, devi partire da lì.
 
 ### 7) Lancio del giavellotto
 
