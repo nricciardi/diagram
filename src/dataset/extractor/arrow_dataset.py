@@ -10,12 +10,15 @@ from torch.utils.data import Dataset
 import random
 
 import matplotlib.pyplot as plt
+
+from src.extractor.arrow.arrow import Arrow
 from src.extractor.arrow.dataset_generator import ARROW_CATEGORY
 
 
-class ArrowType(Enum):
+class ContentType(Enum):
     HEAD = "head"
     TAIL = "tail"
+    OTHER = "other"
 
 
 
@@ -24,46 +27,52 @@ class ArrowDataset(Dataset):
     Dataset class for fine-tuning the object detection network
     """
 
-    def __init__(self, arrow_type: str, info_file: str, image_dir: str, patch_size: int, output_image_size: int, sigma: float = 2):
-        """
+    def __init__(self, content_type: str, info_file: str, image_dir: str, patch_size: int, output_image_size: int, sigma: float = 2):
 
-        Args:
-            arrow_type: 'head' or 'tail'
-            info_file:
-            image_dir:
-            patch_size:
-        """
-
-        assert(arrow_type == ArrowType.HEAD.value or arrow_type == ArrowType.TAIL.value)
         assert(patch_size <= output_image_size)
 
+        self.content_type = content_type
         self.output_image_size = output_image_size
         self.sigma = sigma
-        self.arrow_type = arrow_type
         self.patch_size = patch_size
         with open(info_file, 'r') as f:
-
-            self.info = [annotation for annotation in json.load(f) if annotation["label"] == arrow_type]
+            self.info = []
+            for annotation in json.load(f):
+                if content_type == ContentType.OTHER.value or annotation["label"] == content_type:
+                    self.info.append(annotation)
 
         self.image_dir = image_dir
 
     def __len__(self):
         return len(self.info)
 
-
-    def __crop_patch(self, image: torch.tensor, center_x: float, center_y: float):
-
+    def __crop_patch(self, image: torch.Tensor, center_x: float, center_y: float):
         half_size = self.patch_size // 2
+        center_x = int(round(center_x))
+        center_y = int(round(center_y))
 
-        center_x: int = int(round(center_x))
-        center_y: int = int(round(center_y))
+        # bounding box of image
+        x1_img = center_x - half_size
+        y1_img = center_y - half_size
+        x2_img = center_x + half_size
+        y2_img = center_y + half_size
 
-        x1 = center_x - half_size
-        y1 = center_y - half_size
-        x2 = x1 + self.patch_size
-        y2 = y1 + self.patch_size
+        # bounding box of patch
+        x1_patch = max(0, -x1_img)
+        y1_patch = max(0, -y1_img)
+        x2_patch = self.patch_size - max(0, x2_img - image.shape[1])
+        y2_patch = self.patch_size - max(0, y2_img - image.shape[0])
 
-        patch = image[:, y1:y2, x1:x2]
+        # Clipping image
+        x1_img = max(0, x1_img)
+        y1_img = max(0, y1_img)
+        x2_img = min(image.shape[1], x2_img)
+        y2_img = min(image.shape[0], y2_img)
+
+        patch = torch.ones(self.patch_size, self.patch_size) * 255  # white
+
+        patch[y1_patch:y2_patch, x1_patch:x2_patch] = image[y1_img:y2_img, x1_img:x2_img]
+
         return patch
 
     def __compute_heatmap(self, center_x: int, center_y: int, size: int):
@@ -80,24 +89,30 @@ class ArrowDataset(Dataset):
 
         annotation = self.info[idx]
 
-        target_x: int = int(annotation["target_x"])
-        target_y: int = int(annotation["target_y"])
-
         image_path = os.path.join(self.image_dir, annotation["image"])
 
         # Load image from file (grayscale assumed)
         image = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)    # (H, W)
         image = torch.from_numpy(image).unsqueeze(0)
 
-        image = self.__crop_patch(image, target_x, target_y)    # (1, patch_size, patch_size)
+        if self.content_type == ContentType.HEAD.value or self.content_type == ContentType.TAIL.value:
+            target_x: int = int(annotation["target_x"])
+            target_y: int = int(annotation["target_y"])
+        elif self.content_type == ContentType.OTHER.value:
+            target_x: int = random.randint(0, image.shape[1] - 1)
+            target_y: int = random.randint(0, image.shape[0] - 1)
+        else:
+            raise ValueError("invalid content type")
+
         image = image.squeeze()
+        image = self.__crop_patch(image, target_x, target_y)    # (1, patch_size, patch_size)
 
         center_x = random.randint(image.shape[1] // 2 + 1, self.output_image_size - image.shape[1] // 2 - 1)
         center_y = random.randint(image.shape[0] // 2 + 1, self.output_image_size - image.shape[0] // 2 - 1)
 
         label = self.__compute_heatmap(center_x, center_y, self.output_image_size)
 
-        outcome = torch.zeros(self.output_image_size, self.output_image_size, dtype=torch.uint8)
+        outcome = torch.ones(self.output_image_size, self.output_image_size, dtype=torch.uint8) * 255   # white
 
         h, w = image.shape
 
@@ -138,7 +153,7 @@ def overlay_grayscale_red_torch(base_img: torch.Tensor, red_overlay: torch.Tenso
 
 if __name__ == '__main__':
     dataset = ArrowDataset(
-        ArrowType.HEAD.value,
+        ContentType.HEAD.value,
         "/home/nricciardi/Repositories/diagram/dataset/arrow/head/train.json",
         "/home/nricciardi/Repositories/diagram/dataset/arrow/head/train",
         64,
