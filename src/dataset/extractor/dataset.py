@@ -11,6 +11,9 @@ import torch
 class ObjectDetectionDataset(Dataset):
     """
     Dataset class for fine-tuning the object detection network
+
+    :param annotations_file: path to the labels file
+    :param img_dir: path to the images directory
     """
 
     def __init__(self, annotations_file, img_dir, transform=None, target_transform=None):
@@ -25,7 +28,16 @@ class ObjectDetectionDataset(Dataset):
 
     def __getitem__(self, idx) -> Tuple[t.Image, Dict]:
         """
+        Get an item from the dataset
+
+        :param idx: The index of the item to retrieve
+
+        :return: A tuple containing the image tensor and a dictionary containing label and other stuff.
+
+
         See https://docs.pytorch.org/tutorials/intermediate/torchvision_tutorial.html
+
+
         """
         images: List[Dict] = self.labels['images']
         img_annotations: List[Dict] = [img_annotation for img_annotation in self.labels['annotations'] if
@@ -33,15 +45,7 @@ class ObjectDetectionDataset(Dataset):
         img_path = os.path.join(self.img_dir, images[idx]['file_name'])
         image = read_image(str(img_path), ImageReadMode.RGB).float() / 255.0
         target: Dict = {}
-        # 1st version following the tutorial
-        # boxes: t.BoundingBoxes = t.BoundingBoxes(data=[img_annotation['bbox'] for img_annotation in img_annotations],
-        #                                        format=t.BoundingBoxFormat.XYXY,
-        #                                       canvas_size=(images[idx]['height'], images[idx]['width']))
 
-        # 2nd version (chat)
-        # boxes = torch.tensor([img_annotation['bbox'] for img_annotation in img_annotations])
-
-        # 3rd version (chat)
         boxes = torch.tensor([ann['bbox'] for ann in img_annotations], dtype=torch.float32)
         if boxes.numel() == 0:
             boxes = torch.empty((0, 4), dtype=torch.float32)
