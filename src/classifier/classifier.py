@@ -14,7 +14,9 @@ import torch
 from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
 
 from src.wellknown_diagram import WellKnownDiagram
+import logging
 
+logger = logging.getLogger(__name__)
 
 class GNRClassifier(Classifier):
     
@@ -97,7 +99,7 @@ class GNRClassifier(Classifier):
             running_loss = 0.0
             for i, (images, labels) in enumerate(train_dataloader):
                 if (i + 1) % 20 == 0 and verbose:
-                    print(f"Epoch [{epoch + 1}/{epochs}], Step [{i + 1}/{len(train_dataloader)}]")
+                    logger.log(f"Epoch [{epoch + 1}/{epochs}], Step [{i + 1}/{len(train_dataloader)}]")
 
                 optimizer.zero_grad()
                 
@@ -111,7 +113,7 @@ class GNRClassifier(Classifier):
                 running_loss += loss.item()
                 
             if verbose:
-                print(f"Epoch [{epoch + 1}/{epochs}], Step [{i + 1}/{len(train_dataloader)}], Loss: {running_loss / len(train_dataloader) :.4f}")
+                logger.log(f"Epoch [{epoch + 1}/{epochs}], Step [{i + 1}/{len(train_dataloader)}], Loss: {running_loss / len(train_dataloader) :.4f}")
                 
         ### Testing loop
         self.model.eval()
@@ -125,7 +127,7 @@ class GNRClassifier(Classifier):
                 _, predicted = torch.max(outputs.data, 1)
                 total += labels.size(0)
                 correct += (predicted == labels).sum().item()
-        print(f"Validation Accuracy: {100 * correct / total:.2f}%")
+        logger.log(f"Validation Accuracy: {100 * correct / total:.2f}%")
     
     
     def save_model(self, path: str = ""):
@@ -196,7 +198,7 @@ class GNRClassifier(Classifier):
         
         accuracy = 100 * correct / total
         classes_names = {k: v for v, k in self.classes.items()}
-        print(f"Accuracy of the model on the dataset: {accuracy:.2f}%")
+        logger.log(f"Accuracy of the model on the dataset: {accuracy:.2f}%")
 
         # If visual_output is True, plot the confusion matrix
         if visual_output:
