@@ -216,5 +216,43 @@ python3 <path/to/py-script.py> [parameters]
 > Per esempio: `export PYTHONPATH=/work/cvcs2025/garagnani_napolitano_ricciardi/` se la directory (aka modulo Python) è in `/work/cvcs2025/garagnani_napolitano_ricciardi/src`
 
 
+## 4. Configura VSCode
 
+1. Installa le estensioni *Microsoft*:
 
+- Remote - SSH
+- Remote - SSH: Editing Configuration Files
+- Python
+- Pylance
+
+2. Connettiti al cluster via SSH:
+
+```
+F1 da tastiera
+Remote-SSH: Connect to Host
+<Invio>
+ssh <aimagelab-username>@ailb-login-02.ing.unimore.it
+```
+
+3. Creare file `bash.sh` nella root del progetto con all'interno:
+
+```
+srun -Q --immediate=10 -w <host> --partition=all_serial --account=<account> --gres=gpu:1 --time 60:00 --pty bash
+```
+
+dove `host` è il frontend node a cui si è connessi.
+
+4. Assegna i permessi di esecuzione:
+
+```bash
+chmod u+x bash.sh
+```
+
+5. Aggiungere ai settings `.vscode` del progetto:
+
+```bash
+"terminal.integrated.automationProfile.linux": { "path": "$projectFolder/bash.sh" }
+```
+
+6. Restart VSCode
+7. Premere il pulsante in basso a sinistra e connettersi all'host remoto

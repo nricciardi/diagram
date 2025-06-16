@@ -1,0 +1,1 @@
+srun -Q --immediate=10 -w ailb-login-02.ing.unimore.it --partition=all_serial --account=cvcs2025 --gres=gpu:1 --time 60:00 --pty bash
