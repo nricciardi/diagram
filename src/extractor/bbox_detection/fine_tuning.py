@@ -30,6 +30,8 @@ def fine_tune():
     # Create dataset and dataloader
     dataset = ObjectDetectionDataset(annotations_file, img_dir)
 
+    print("Dataset loaded")
+
     dataset_size: int = len(dataset)
     # test_size: int = int(0.2 * dataset_size)
     val_size: int = int(0.2 * dataset_size)
@@ -52,6 +54,8 @@ def fine_tune():
     num_classes = 10  # number of classes (state, final state, text, arrow, connection, data, decision, process,
     # terminator) + 1 (for background)
     model.roi_heads.box_predictor = FastRCNNPredictor(in_features, num_classes)
+
+    print("Model loaded")
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     model.to(device)
@@ -82,10 +86,12 @@ def fine_tune():
 
 
         final_loss = running_loss
-        logger.debug(f"Loss: {running_loss:.4f} at step {epoch + 1}")
-        torch.save(model.state_dict(), "model.pth")
+        #logger.debug(f"Loss: {running_loss:.4f} at step {epoch + 1}")
+        print(f"Loss: {running_loss:.4f} at step {epoch + 1}")
+        #torch.save(model.state_dict(), "model.pth")
 
-    logger.debug(f"Final loss: {final_loss:.4f}")
+    #logger.debug(f"Final loss: {final_loss:.4f}")
+    print(f"Final loss: {final_loss:.4f}")
     torch.save(model.state_dict(), "model.pth")  # save the final weights
 
     # Evaluation (basic AP computation with torchmetrics)
@@ -103,9 +109,11 @@ def fine_tune():
             metric.update(outputs, targets)
 
     metrics = metric.compute()
-    logger.debug("\nEvaluation metrics:")
+    #logger.debug("\nEvaluation metrics:")
+    print("Evaluation metrics:")
     for k, v in metrics.items():
-        logger.debug(f"{k}: {v:.4f}")
+        #logger.debug(f"{k}: {v:.4f}")
+        print(f"{k}: {v:.4f}")
 
     """
     # Inference & visualization
