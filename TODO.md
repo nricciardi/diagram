@@ -132,8 +132,8 @@ Per lo sgherro (in base alla priorità):
 ## Domenica 22/06
 
 - [x] F: Master guide
-- [ ] F. Downsampling/upsampling classifier
-- [ ] F: Classi prese in input dal classifier
+- [x] F. Downsampling/upsampling classifier
+- [x] F: Classi prese in input dal classifier
 - [x] F: print -> log
 - [ ] N: Fix extractor (tra cui aggiungere i metodi astratti per transduer e extractor)
 - [ ] N: Identificazione testa e coda frecce da bbox 2 punti

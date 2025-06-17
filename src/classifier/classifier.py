@@ -1,4 +1,4 @@
-from typing import List, override
+from typing import List, override, Optional
 
 from core.classifier.classifier import Classifier
 from core.image.image import Image
@@ -17,6 +17,7 @@ from src.wellknown_diagram import WellKnownDiagram
 import logging
 
 logger = logging.getLogger(__name__)
+recognizable_diagrams = [WellKnownDiagram.GRAPH_DIAGRAM, WellKnownDiagram.FLOW_CHART,  WellKnownDiagram.OTHER]
 
 class GNRClassifier(Classifier):
     
@@ -27,21 +28,20 @@ class GNRClassifier(Classifier):
     :param classes: A dictionary mapping class indices to class names. Defaults to a predefined set of classes. IT'S HIGHLY RECCOMMENDED TO PASS IT AS DATASET.classes!
     :param processor: The image processor to use for preprocessing images. Defaults to GNRMultiProcessor.
     """
-    def __init__(self, classes: dict[int, str] = None, model_path: str = None, processor: Processor = GNRMultiProcessor()):
+    def __init__(self, classes: list[WellKnownDiagram] = None, model_path: str = None, processor: Processor = GNRMultiProcessor()):
         super().__init__()
         if classes is None:
-            classes = {
-                0: "graph",     # TODO: WellKnownDiagram.GRAPH_DIAGRAM.value,
-                1: "flowchart",
-                2: "other"      # TODO: None
-            }
-            print("No classes provided, using default classes! Are you sure? It may cause unexpected behaviour.")
+            classes = recognizable_diagrams
+        else:
+            for cls in classes:
+                if cls not in recognizable_diagrams:
+                    raise ValueError(f"Class {cls} is not a recognized diagram type. Use one of {recognizable_diagrams}.")
         self.classes = classes
         self.model : ClassifierCNN = None
         if model_path is None:
-            self.model = ClassifierCNN(num_classes=len(classes.keys()))
+            self.model = ClassifierCNN(num_classes=len(classes))
         else:
-            self.model = ClassifierCNN(num_classes=len(classes.keys()))
+            self.model = ClassifierCNN(num_classes=len(classes))
             self.model.load(model_path)
         self.processor = processor
 
@@ -52,7 +52,7 @@ class GNRClassifier(Classifier):
             WellKnownDiagram.GRAPH_DIAGRAM.value,
         ]
     
-    def classify(self, image: Image) -> str:        # TODO: Optional[str]
+    def classify(self, image: Image) -> Optional[str]:
         """
         Classify the image using the model and processor.
         
@@ -64,6 +64,9 @@ class GNRClassifier(Classifier):
         image = self.processor.process(image)
         y = self.model.forward(image.as_tensor())
         _, predicted = torch.max(y, dim=1)
+        predicted = predicted.item()
+        if self.classes[predicted] == WellKnownDiagram.OTHER:
+            return None
         return self.classes[predicted.item()]
     
     
@@ -73,7 +76,7 @@ class GNRClassifier(Classifier):
         Train the model using the provided dataset.
         """
 
-        label_to_index = self.classes
+        label_to_index = [cls.value for cls in self.classes]
         assert self.classes == dataset.classes 
         
         ### Prepare the dataset
@@ -99,12 +102,12 @@ class GNRClassifier(Classifier):
             running_loss = 0.0
             for i, (images, labels) in enumerate(train_dataloader):
                 if (i + 1) % 20 == 0 and verbose:
-                    logger.log(f"Epoch [{epoch + 1}/{epochs}], Step [{i + 1}/{len(train_dataloader)}]")
+                    logger.info(f"Epoch [{epoch + 1}/{epochs}], Step [{i + 1}/{len(train_dataloader)}]")
 
                 optimizer.zero_grad()
                 
                 outputs = self.model(images.float().to(device))
-                labels = torch.tensor([label_to_index[label] for label in labels], dtype=torch.long).to(device)
+                labels = torch.tensor([label_to_index.index(label) for label in labels], dtype=torch.long).to(device)
                 
                 loss = criterion(outputs, labels)
                 loss.backward()
@@ -113,7 +116,7 @@ class GNRClassifier(Classifier):
                 running_loss += loss.item()
                 
             if verbose:
-                logger.log(f"Epoch [{epoch + 1}/{epochs}], Step [{i + 1}/{len(train_dataloader)}], Loss: {running_loss / len(train_dataloader) :.4f}")
+                logger.info(f"Epoch [{epoch + 1}/{epochs}], Step [{i + 1}/{len(train_dataloader)}], Loss: {running_loss / len(train_dataloader) :.4f}")
                 
         ### Testing loop
         self.model.eval()
@@ -127,7 +130,7 @@ class GNRClassifier(Classifier):
                 _, predicted = torch.max(outputs.data, 1)
                 total += labels.size(0)
                 correct += (predicted == labels).sum().item()
-        logger.log(f"Validation Accuracy: {100 * correct / total:.2f}%")
+        logger.info(f"Validation Accuracy: {100 * correct / total:.2f}%")
     
     
     def save_model(self, path: str = ""):
@@ -184,7 +187,7 @@ class GNRClassifier(Classifier):
             all_labels = []
             for images, labels in dataloader:
 
-                labels = torch.tensor([self.classes[label] for label in labels], dtype=torch.long).to(device)
+                labels = torch.tensor([self.classes[label].value for label in labels], dtype=torch.long).to(device)
                 images = images.float().to(device)
                 outputs = self.model(images)
                 _, predicted = torch.max(outputs.data, 1)
@@ -198,7 +201,7 @@ class GNRClassifier(Classifier):
         
         accuracy = 100 * correct / total
         classes_names = {k: v for v, k in self.classes.items()}
-        logger.log(f"Accuracy of the model on the dataset: {accuracy:.2f}%")
+        logger.info(f"Accuracy of the model on the dataset: {accuracy:.2f}%")
 
         # If visual_output is True, plot the confusion matrix
         if visual_output:
@@ -214,5 +217,9 @@ class GNRClassifier(Classifier):
         return accuracy
     
     @staticmethod
-    def get_default():
-        pass
+    def get_default() -> 'GNRClassifier':
+        return GNRClassifier(
+            classes=recognizable_diagrams,
+            model_path="src/classifier/model.pth",
+            processor=GNRMultiProcessor()
+        )

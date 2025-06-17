@@ -3,6 +3,8 @@ from core.image.tensor_image import TensorImage, Image
 import json, random
 from src.classifier.preprocessing.processor import Processor, GNRMultiProcessor
 
+from src.wellknown_diagram import WellKnownDiagram
+
 class DatasetClassifier(Dataset):
     """
     A custom dataset class for image classification tasks.
@@ -44,6 +46,9 @@ class DatasetClassifier(Dataset):
         inv_freqs = [1 / w for w in freqs]
         sum_inv = sum(inv_freqs)
         self.weights = [w / sum_inv for w in inv_freqs]
+        self.classes = list(set([
+            WellKnownDiagram.from_string(label) for label in self.labels
+        ]))
     
     def __len__(self):
         return len(self.images)
