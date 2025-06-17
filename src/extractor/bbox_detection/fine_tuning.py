@@ -42,8 +42,8 @@ def fine_tune():
 
     train_dataset, val_dataset = random_split(dataset, [train_size, val_size])
 
-    train_dataloader = DataLoader(train_dataset, batch_size=4, shuffle=True, collate_fn=collate_fn)
-    val_dataloader = DataLoader(val_dataset, batch_size=4, shuffle=True, collate_fn=collate_fn)
+    train_dataloader = DataLoader(train_dataset, batch_size=32, shuffle=True, collate_fn=collate_fn)
+    val_dataloader = DataLoader(val_dataset, batch_size=32, shuffle=True, collate_fn=collate_fn)
     # test_dataloader = DataLoader(test_dataset, batch_size=4, shuffle=True, collate_fn=collate_fn)
 
 
@@ -66,7 +66,7 @@ def fine_tune():
 
     # Training loop
     model.train()
-    epochs = 100
+    epochs = 10
     final_loss: float = 0.0
     for epoch in range(epochs):
         running_loss = 0.0
