@@ -67,7 +67,31 @@ This internal representation is generated from the image provided by the user by
 
 \subsection{Classifier Module}
 \subsubsection{Preprocessing}
-TODO \\
+Due to the fact that various kinds of diagrams' images could be submitted to the system, it was decided to streamline a unified preprocessing pipeline in order to reduce the differences that our classifier model had to handle. A few problems were analyzed and the final preprocessing pipeline for the classifier module is composed of the following operators, in order:
+\begin{itemize}
+	\item \textbf{Gray Scaling}: In order to remove colors from images, which was deemed an useless information for classifying diagrams.
+	\item \textbf{Otsu Thresholding}: To binarize the image and reducing the information to handle.
+	\item \textbf{Median Filtering}: Some images in our dataset - and in the use-case - were taken on checkered notebooks. The application of a median filter, with kernel size equal to three, totally removed these.
+	\item \textbf{Perspective Correction}: The diagrams' images, sometimes, didn't occupy the full photo frame. Finding four keypoints (if possible) and stretching the image helped to fully employ the frame.
+	\item \textbf{Padding}: This was necessary in order to keep the same net for every image. Changes in resolution would have implied changes in the number of paramters of the MLP layers.
+\end{itemize}
+
+Figure~\ref{fig:classifier_preprocessing} shows the step-by-step process of preparing an input image for the network.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=250pt]{classifier_preprocessing.png}
+	\caption{
+		The operations applied by the preprocessing module.
+		\textbf{(a)}: The raw image, still colored.
+		\textbf{(b)}: The image in gray scale.
+		\textbf{(c)}: The binarized image, thanks to Otsu.
+		\textbf{(d)}: The median filter result. Some previous thin lines are now no more.
+		\textbf{(e)}: The image with a perspective correction.
+		\textbf{(f)}: The image in a standard size, ready to enter the network.
+	}
+	\label{fig:classifier_preprocessing}
+\end{figure}
 
 \subsubsection{Model}
 TODO \\
@@ -135,59 +159,9 @@ This final approach showed a significant improvement in the results, with the lo
 TODO
 
 \subsection{Arrow Orientation}
-As we've seen in the previous section, the need to find the exact position of an arrow's head arises.
-The first algorithmic approach proposed to solve this task - called \textit{Double Clustering} - was as follows: 
-\begin{enumerate}
-	\item Apply a clustering algorithm to the bounding box.
-	\item Suppose that the biggest cluster belongs to the arrow; the other clusters are thought to contain useless elements for this task, and can be discarded.
-	\item Find the keypoints of the arrow using SIFT.
-	\item Find the two keypoints inside the arrow with maximum distance. Assume that these two points are closely related to the two ends of the arrow.
-	\item Run a template matching procedure inside the two clusters to find the head of the arrow.
-\end{enumerate}
+As we've seen in the previous section, the need to find the exact position of an arrow's head arises (see \textbf{Appendix A} for a full overview of the first approach).
 
-For Step (1), we tried to employ both Spectral Clustering (see Figure~\ref{fig:spectral_clustering}) and DBSCan (see Figure~\ref{fig:arrow_double_clustering_clusters}).
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=150pt]{spectral_clustering.png}
-\caption{The result of Spectral Clustering to one instance of an arrow bounding box in our dataset.}
-\label{fig:spectral_clustering}
-\end{figure}
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=150pt]{arrow_double_clustering_clusters.png}
-\caption{The result of DBScan to one instance of an arrow bounding box in our dataset.}
-\label{fig:arrow_double_clustering_clusters}
-\end{figure}
-
-For Step (3), we used SIFT in order to find keypoints and some descriptors for them - necessary for the later template matching.
-During Step (4), we were able to correctly deduce the overall direction of the arrow (see Figure~\ref{fig:arrow_double_clustering_direction}).
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=150pt]{arrow_double_clustering_direction.png}
-\caption{The estimated direction of the arrow, finding the points that maximize the distance inside the cluster.}
-\label{fig:arrow_double_clustering_direction}
-\end{figure}
-
-For Step (5), we had previously hand-picked some templates (see Figure~\ref{fig:templates}).
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=50pt]{templates.png}
-\caption{An example of hand-picked template with SIFT descriptors.}
-\label{fig:templates}
-\end{figure}
-
-However, this approach didn't work as expected (see Figure~\ref{fig:template_matching_fail}). [TODO: Spiegare perchè].
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=150pt]{template_matching_fail.png}
-\caption{The overall result of the algorithm.}
-\label{fig:template_matching_fail}
-\end{figure}
+TODO: Current approach.
 
 \subsection{Text Digitization}
 In order to choose an appropriate model, some tests were done over our specific dataset employing some different, pre-made models. The average results over the dataset are shown in Table~\ref{tab:text_digitization}.
@@ -233,5 +207,63 @@ TODO
 
 \bibliographystyle{IEEEtran}
 \bibliography{references}
+
+\begin{appendices}
+
+\section{Double Clustering}
+The first algorithmic approach proposed to solve this task - called \textit{Double Clustering} - was as follows: 
+\begin{enumerate}
+	\item Apply a clustering algorithm to the bounding box.
+	\item Suppose that the biggest cluster belongs to the arrow; the other clusters are thought to contain useless elements for this task, and can be discarded.
+	\item Find the keypoints of the arrow using SIFT.
+	\item Find the two keypoints inside the arrow with maximum distance. Assume that these two points are closely related to the two ends of the arrow.
+	\item Run a template matching procedure inside the two clusters to find the head of the arrow.
+\end{enumerate}
+
+For Step (1), we tried to employ both Spectral Clustering (see Figure~\ref{fig:spectral_clustering}) and DBSCan (see Figure~\ref{fig:arrow_double_clustering_clusters}).
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=150pt]{spectral_clustering.png}
+	\caption{The result of Spectral Clustering to one instance of an arrow bounding box in our dataset.}
+	\label{fig:spectral_clustering}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=150pt]{arrow_double_clustering_clusters.png}
+	\caption{The result of DBScan to one instance of an arrow bounding box in our dataset.}
+	\label{fig:arrow_double_clustering_clusters}
+\end{figure}
+
+For Step (3), we used SIFT in order to find keypoints and some descriptors for them - necessary for the later template matching.
+During Step (4), we were able to correctly deduce the overall direction of the arrow (see Figure~\ref{fig:arrow_double_clustering_direction}).
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=150pt]{arrow_double_clustering_direction.png}
+	\caption{The estimated direction of the arrow, finding the points that maximize the distance inside the cluster.}
+	\label{fig:arrow_double_clustering_direction}
+\end{figure}
+
+For Step (5), we had previously hand-picked some templates (see Figure~\ref{fig:templates}).
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=50pt]{templates.png}
+	\caption{An example of hand-picked template with SIFT descriptors.}
+	\label{fig:templates}
+\end{figure}
+
+However, this approach didn't work as expected (see Figure~\ref{fig:template_matching_fail}). [TODO: Spiegare perchè].
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=150pt]{template_matching_fail.png}
+	\caption{The overall result of the algorithm.}
+	\label{fig:template_matching_fail}
+\end{figure}
+
+\end{appendices}
 
 \end{document}
