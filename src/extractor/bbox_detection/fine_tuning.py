@@ -19,99 +19,111 @@ def collate_fn(batch):
     return tuple(zip(*batch))
 
 
-# Setup paths
-annotations_file = "dataset/extractor/labels.json"
-img_dir = "dataset/extractor/flow_graph_diagrams/"
+def fine_tune():
+    # Setup paths
+    # annotations_file = "dataset/extractor/labels.json"
+    # img_dir = "dataset/extractor/flow_graph_diagrams/"
 
-# Create dataset and dataloader
-dataset = ObjectDetectionDataset(annotations_file, img_dir)
+    annotations_file = "extractor/labels.json"
+    img_dir = "extractor/flow_graph_diagrams/"
 
-dataset_size: int = len(dataset)
-test_size: int = int(0.2 * dataset_size)
-val_size: int = int(0.2 * dataset_size)
-train_size: int = dataset_size - (test_size + val_size)
+    # Create dataset and dataloader
+    dataset = ObjectDetectionDataset(annotations_file, img_dir)
 
-train_dataset, val_dataset, test_dataset = random_split(dataset, [train_size, val_size, test_size])
+    dataset_size: int = len(dataset)
+    # test_size: int = int(0.2 * dataset_size)
+    val_size: int = int(0.2 * dataset_size)
+    # train_size: int = dataset_size - (test_size + val_size)
+    train_size: int = dataset_size - val_size
 
-train_dataloader = DataLoader(train_dataset, batch_size=4, shuffle=True, collate_fn=collate_fn)
-val_dataloader = DataLoader(val_dataset, batch_size=4, shuffle=True, collate_fn=collate_fn)
-test_dataloader = DataLoader(test_dataset, batch_size=4, shuffle=True, collate_fn=collate_fn)
+    # train_dataset, val_dataset, test_dataset = random_split(dataset, [train_size, val_size, test_size])
 
-# Load model
-model = fasterrcnn_resnet50_fpn(weights="DEFAULT")  # fine-tuning
-# model = fasterrcnn_resnet50_fpn(weights=None, weights_backbone=None) # from scratch
-in_features = model.roi_heads.box_predictor.cls_score.in_features
-num_classes = 10  # number of classes (state, final state, text, arrow, connection, data, decision, process,
-# terminator) + 1 (for background)
-model.roi_heads.box_predictor = FastRCNNPredictor(in_features, num_classes)
+    train_dataset, val_dataset = random_split(dataset, [train_size, val_size])
 
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-model.to(device)
-
-# Optimizer
-params = [p for p in model.parameters() if p.requires_grad]
-optimizer = torch.optim.SGD(params, lr=0.005, momentum=0.9, weight_decay=0.0005)
-
-# Training loop
-model.train()
-epochs = 100
-final_loss: float = 0.0
-for epoch in range(epochs):
-    running_loss = 0.0
-    for images, targets in train_dataloader:
-        images = [img.to(device) for img in images]
-
-        targets = [{k: v.to(device) for k, v in t.items()} for t in targets]
-
-        loss_dict = model(images, targets)
-        losses = sum(loss for loss in loss_dict.values())
-
-        optimizer.zero_grad()
-        losses.backward()
-        optimizer.step()
-
-        running_loss += losses.item()
+    train_dataloader = DataLoader(train_dataset, batch_size=4, shuffle=True, collate_fn=collate_fn)
+    val_dataloader = DataLoader(val_dataset, batch_size=4, shuffle=True, collate_fn=collate_fn)
+    # test_dataloader = DataLoader(test_dataset, batch_size=4, shuffle=True, collate_fn=collate_fn)
 
 
-    final_loss = running_loss
-    logger.debug(f"Loss: {running_loss:.4f} at step {epoch + 1}")
+    # Load model
+    model = fasterrcnn_resnet50_fpn(weights="DEFAULT")  # fine-tuning
+    # model = fasterrcnn_resnet50_fpn(weights=None, weights_backbone=None) # from scratch
+    in_features = model.roi_heads.box_predictor.cls_score.in_features
+    num_classes = 10  # number of classes (state, final state, text, arrow, connection, data, decision, process,
+    # terminator) + 1 (for background)
+    model.roi_heads.box_predictor = FastRCNNPredictor(in_features, num_classes)
 
-logger.debug(f"Final loss: {final_loss:.4f}")
-torch.save(model.state_dict(), "final_model.pth")  # save the final weights
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    model.to(device)
 
-# Evaluation (basic AP computation with torchmetrics)
-metric = MeanAveragePrecision()
+    # Optimizer
+    params = [p for p in model.parameters() if p.requires_grad]
+    optimizer = torch.optim.SGD(params, lr=0.005, momentum=0.9, weight_decay=0.0005)
 
-# Evaluate over dataset
-model.eval()
-with torch.no_grad():
-    for images, targets in val_dataloader:
-        images = [img.to(device) for img in images]
-        targets = [{k: v.to(device) for k, v in t.items()} for t in targets]
-        outputs = model(images)
+    # Training loop
+    model.train()
+    epochs = 100
+    final_loss: float = 0.0
+    for epoch in range(epochs):
+        running_loss = 0.0
+        for images, targets in train_dataloader:
+            images = [img.to(device) for img in images]
 
-        # Format predictions and targets for metric
-        metric.update(outputs, targets)
+            targets = [{k: v.to(device) for k, v in t.items()} for t in targets]
 
-metrics = metric.compute()
-logger.debug("\nEvaluation metrics:")
-for k, v in metrics.items():
-    logger.debug(f"{k}: {v:.4f}")
+            loss_dict = model(images, targets)
+            losses = sum(loss for loss in loss_dict.values())
 
-"""
-# Inference & visualization
-model.eval()
-img, target = dataset[0]
-img = img.to(device)
-with torch.no_grad():
-    prediction = model([img])[0]
+            optimizer.zero_grad()
+            losses.backward()
+            optimizer.step()
 
-# Draw predictions
-img_cpu = img.cpu()
-boxes = prediction['boxes']
-labels = prediction['labels']
-drawn = draw_bounding_boxes(img_cpu, boxes=boxes, labels=[str(l.item()) for l in labels], width=2)
-plt.imshow(to_pil_image(drawn))
-plt.axis('off')
-plt.show()
-"""
+            running_loss += losses.item()
+
+
+        final_loss = running_loss
+        logger.debug(f"Loss: {running_loss:.4f} at step {epoch + 1}")
+        torch.save(model.state_dict(), "model.pth")
+
+    logger.debug(f"Final loss: {final_loss:.4f}")
+    torch.save(model.state_dict(), "model.pth")  # save the final weights
+
+    # Evaluation (basic AP computation with torchmetrics)
+    metric = MeanAveragePrecision()
+
+    # Evaluate over dataset
+    model.eval()
+    with torch.no_grad():
+        for images, targets in val_dataloader:
+            images = [img.to(device) for img in images]
+            targets = [{k: v.to(device) for k, v in t.items()} for t in targets]
+            outputs = model(images)
+
+            # Format predictions and targets for metric
+            metric.update(outputs, targets)
+
+    metrics = metric.compute()
+    logger.debug("\nEvaluation metrics:")
+    for k, v in metrics.items():
+        logger.debug(f"{k}: {v:.4f}")
+
+    """
+    # Inference & visualization
+    model.eval()
+    img, target = dataset[0]
+    img = img.to(device)
+    with torch.no_grad():
+        prediction = model([img])[0]
+    
+    # Draw predictions
+    img_cpu = img.cpu()
+    boxes = prediction['boxes']
+    labels = prediction['labels']
+    drawn = draw_bounding_boxes(img_cpu, boxes=boxes, labels=[str(l.item()) for l in labels], width=2)
+    plt.imshow(to_pil_image(drawn))
+    plt.axis('off')
+    plt.show()
+    """
+
+if __name__ == '__main__':
+    fine_tune()
