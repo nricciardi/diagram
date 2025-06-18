@@ -84,7 +84,6 @@ class ArrowDataset(Dataset):
 
         return heatmap
 
-
     def __getitem__(self, idx: int) -> Tuple[torch.tensor, torch.tensor]:
 
         annotation = self.info[idx]
