@@ -17,7 +17,7 @@ dataset_dir=$base_dir/dataset
 
 export PYTHONPATH=$base_dir
 
-python3 $base_dir/src/extractor/arrow/train.py --train_info_file $dataset_dir/train.json --train_images_dir $dataset_dir/train \
+python3 $base_dir/src/extractor/arrow/train_test.py --train_info_file $dataset_dir/train.json --train_images_dir $dataset_dir/train \
 --test_info_file $dataset_dir/test.json --test_images_dir $dataset_dir/test \
 --patch_size 64 --n_epochs 10 \
 --batch_size 8 --output $base_dir/test.pth
