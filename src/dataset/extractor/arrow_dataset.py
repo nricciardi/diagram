@@ -51,27 +51,27 @@ class ArrowDataset(Dataset):
         center_x = int(round(center_x))
         center_y = int(round(center_y))
 
-        # bounding box of image
+        H, W = image.shape
+
         x1_img = center_x - half_size
         y1_img = center_y - half_size
         x2_img = center_x + half_size
         y2_img = center_y + half_size
 
-        # bounding box of patch
         x1_patch = max(0, -x1_img)
         y1_patch = max(0, -y1_img)
-        x2_patch = self.patch_size - max(0, x2_img - image.shape[1])
-        y2_patch = self.patch_size - max(0, y2_img - image.shape[0])
+        x2_patch = self.patch_size - max(0, x2_img - W)
+        y2_patch = self.patch_size - max(0, y2_img - H)
 
-        # Clipping image
         x1_img = max(0, x1_img)
         y1_img = max(0, y1_img)
-        x2_img = min(image.shape[1], x2_img)
-        y2_img = min(image.shape[0], y2_img)
+        x2_img = min(W, x2_img)
+        y2_img = min(H, y2_img)
 
-        patch = torch.ones(self.patch_size, self.patch_size) * 255  # white
-
-        patch[y1_patch:y2_patch, x1_patch:x2_patch] = image[y1_img:y2_img, x1_img:x2_img]
+        patch = torch.ones((self.patch_size, self.patch_size), dtype=image.dtype, device=image.device) * 255
+        cropped = image[y1_img:y2_img, x1_img:x2_img]
+        if cropped.shape[0] > 0 and cropped.shape[1] > 0:
+            patch[y1_patch:y2_patch, x1_patch:x2_patch] = cropped
 
         return patch
 
