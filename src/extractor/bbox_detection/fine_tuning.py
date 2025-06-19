@@ -1,10 +1,9 @@
-import matplotlib.pyplot as plt
+
 import torch
 from torch.utils.data import DataLoader
 from torchvision.models.detection import fasterrcnn_resnet50_fpn
 from torchvision.models.detection.faster_rcnn import FastRCNNPredictor
-from torchvision.transforms.functional import to_pil_image
-from torchvision.utils import draw_bounding_boxes
+
 from torchmetrics.detection.mean_ap import MeanAveragePrecision
 
 from src.dataset.extractor.dataset import ObjectDetectionDataset
@@ -20,6 +19,7 @@ def collate_fn(batch):
 
 
 def fine_tune():
+    print("Entered fine_tune() function")
     # Setup paths
     # annotations_file = "dataset/extractor/labels.json"
     # img_dir = "dataset/extractor/flow_graph_diagrams/"
@@ -94,44 +94,7 @@ def fine_tune():
     print(f"Final loss: {final_loss:.4f}")
     torch.save(model.state_dict(), "model.pth")  # save the final weights
 
-    # Evaluation (basic AP computation with torchmetrics)
-    metric = MeanAveragePrecision()
-
-    # Evaluate over dataset
-    model.eval()
-    with torch.no_grad():
-        for images, targets in val_dataloader:
-            images = [img.to(device) for img in images]
-            targets = [{k: v.to(device) for k, v in t.items()} for t in targets]
-            outputs = model(images)
-
-            # Format predictions and targets for metric
-            metric.update(outputs, targets)
-
-    metrics = metric.compute()
-    #logger.debug("\nEvaluation metrics:")
-    print("Evaluation metrics:")
-    for k, v in metrics.items():
-        #logger.debug(f"{k}: {v:.4f}")
-        print(f"{k}: {v:.4f}")
-
-    """
-    # Inference & visualization
-    model.eval()
-    img, target = dataset[0]
-    img = img.to(device)
-    with torch.no_grad():
-        prediction = model([img])[0]
-    
-    # Draw predictions
-    img_cpu = img.cpu()
-    boxes = prediction['boxes']
-    labels = prediction['labels']
-    drawn = draw_bounding_boxes(img_cpu, boxes=boxes, labels=[str(l.item()) for l in labels], width=2)
-    plt.imshow(to_pil_image(drawn))
-    plt.axis('off')
-    plt.show()
-    """
 
 if __name__ == '__main__':
+    print("Entered main")
     fine_tune()

@@ -36,8 +36,6 @@ class ObjectDetectionDataset(Dataset):
 
 
         See https://docs.pytorch.org/tutorials/intermediate/torchvision_tutorial.html
-
-
         """
         images: List[Dict] = self.labels['images']
         img_annotations: List[Dict] = [img_annotation for img_annotation in self.labels['annotations'] if
