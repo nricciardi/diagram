@@ -16,15 +16,44 @@ class ObjectDetectionDataset(Dataset):
     :param img_dir: path to the images directory
     """
 
-    def __init__(self, annotations_file, img_dir, transform=None, target_transform=None):
+    def __init__(self, annotations_file, img_dir, transform=None, target_transform=None, synthetic_bbox_size: int = 64):
         with open(annotations_file, 'r') as f:
             self.labels = json.load(f)
         self.img_dir = img_dir
         self.transform = transform
         self.target_transform = target_transform
+        self.synthetic_bbox_size = synthetic_bbox_size
 
     def __len__(self):
         return len(self.labels['images'])
+
+
+    def generate_synthetic_bbox(self, image: torch.Tensor, center_x: int, center_y: int) -> Tuple[int, int, int, int]:
+        """
+        Given an image, produce a synthetic bbox centered on position
+
+        Returns:
+            [x, y, width, height]
+        """
+
+        _, H, W = image.shape
+
+        assert center_x < W
+        assert center_y < H
+
+        half_bbox = self.synthetic_bbox_size // 2
+
+        x = max(0, center_x - half_bbox)
+        y = max(0, center_y - half_bbox)
+
+        x2 = min(W, center_x + half_bbox)
+        y2 = min(H, center_y + half_bbox)
+
+        width = x2 - x
+        height = y2 - y
+
+        return x, y, width, height
+
 
     def __getitem__(self, idx) -> Tuple[t.Image, Dict]:
         """
