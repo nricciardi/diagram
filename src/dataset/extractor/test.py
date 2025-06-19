@@ -16,7 +16,8 @@ class TestObjectDetectionDataset(unittest.TestCase):
         self.assertEqual(self.dataset.__len__(), 1391)
 
     def test_get_item(self):
-        image, target = self.dataset.__getitem__(0)
+        for i in range(self.dataset.__len__()):
+            image, target = self.dataset.__getitem__(i)
         im = cv2.imread(
             '/Users/saverionapolitano/PycharmProjects/diagram/dataset/extractor/flow_graph_diagrams/writer018_fa_001.png', cv2.IMREAD_COLOR)
         tensor_im = torch.from_numpy(im)

@@ -4,8 +4,6 @@ from torch.utils.data import DataLoader
 from torchvision.models.detection import fasterrcnn_resnet50_fpn
 from torchvision.models.detection.faster_rcnn import FastRCNNPredictor
 
-from torchmetrics.detection.mean_ap import MeanAveragePrecision
-
 from src.dataset.extractor.dataset import ObjectDetectionDataset
 from torch.utils.data import random_split
 
@@ -25,7 +23,7 @@ def fine_tune():
     # img_dir = "dataset/extractor/flow_graph_diagrams/"
 
     annotations_file = "extractor/labels.json"
-    img_dir = "extractor/flow_graph_diagrams/"
+    img_dir = "extractor/flow_graph_diagrams"
 
     # Create dataset and dataloader
     dataset = ObjectDetectionDataset(annotations_file, img_dir)
@@ -51,8 +49,8 @@ def fine_tune():
     model = fasterrcnn_resnet50_fpn(weights="DEFAULT")  # fine-tuning
     # model = fasterrcnn_resnet50_fpn(weights=None, weights_backbone=None) # from scratch
     in_features = model.roi_heads.box_predictor.cls_score.in_features
-    num_classes = 10  # number of classes (state, final state, text, arrow, connection, data, decision, process,
-    # terminator) + 1 (for background)
+    num_classes = 12  # number of classes (state, final state, text, arrow, connection, data, decision, process,
+    # terminator, arrow_head, arrow_tail) + 1 (for background)
     model.roi_heads.box_predictor = FastRCNNPredictor(in_features, num_classes)
 
     print("Model loaded")
