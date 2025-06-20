@@ -10,6 +10,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import matplotlib.patches as patches
 
+
 class ObjectDetectionDataset(Dataset):
     """
     Dataset class for fine-tuning the object detection network
@@ -35,7 +36,7 @@ class ObjectDetectionDataset(Dataset):
     def __len__(self):
         return len(self.images)
 
-    def generate_synthetic_bbox(self, image: torch.Tensor, center_x: int, center_y: int) -> List[int]:
+    def generate_synthetic_bbox(self, image: torch.Tensor, center_x: int, center_y: int, img_id: int) -> List[int]:
         """
         Given an image, produce a synthetic bbox centered on position
 
@@ -46,7 +47,7 @@ class ObjectDetectionDataset(Dataset):
         _, H, W = image.shape
 
         if center_x >= W or center_y >= H:
-            raise ValueError(f"center_x: {center_x}, W: {W}, center_y: {center_y}, H: {H}")
+            raise ValueError(f"center_x: {center_x}, H: {H}, center_y: {center_y}, W: {W}, img_id: {img_id}")
 
         half_bbox = self.synthetic_bbox_size // 2
 
@@ -77,7 +78,7 @@ class ObjectDetectionDataset(Dataset):
         else:
             raise TypeError("image_tensor must be a torch.Tensor")
 
-        plt.imshow(image_np)
+        # plt.imshow(image_np)
 
         head_x = keypoints[3]
         head_y = keypoints[4]
@@ -85,8 +86,8 @@ class ObjectDetectionDataset(Dataset):
         tail_x = keypoints[0]
         tail_y = keypoints[1]
 
-        plt.scatter([tail_x], [tail_y], c='red', s=20, label="Keypoints")
-        plt.scatter([head_x], [head_y], c='blue', s=20, label="Keypoints")
+        # plt.scatter([tail_x], [tail_y], c='red', s=20, label="Keypoints")
+        # plt.scatter([head_x], [head_y], c='blue', s=20, label="Keypoints")
 
         # Draw bounding box if provided
         # if bbox is not None and len(bbox) == 4:
@@ -94,9 +95,9 @@ class ObjectDetectionDataset(Dataset):
         #     rect = patches.Rectangle((x, y), w, h,
         #                              linewidth=2, edgecolor='lime', facecolor='none', label="BBox")
 
-        plt.axis('on')
-        plt.legend()
-        plt.show(block=True)
+        # plt.axis('on')
+        # plt.legend()
+        # plt.show()
 
     def __getitem__(self, image_id) -> Tuple[t.Image, Dict]:
         """
@@ -114,7 +115,7 @@ class ObjectDetectionDataset(Dataset):
                                        img_annotation['image_id'] == image_id]
 
         img_path = os.path.join(self.img_dir, self.images[image_id]['file_name'])
-        image: torch.Tensor = read_image(str(img_path), ImageReadMode.RGB)#.float() / 255.0
+        image: torch.Tensor = read_image(str(img_path), ImageReadMode.RGB)  # .float() / 255.0
         target: Dict = {}
 
         category_ids: List[int] = [img_annotation['category_id'] for img_annotation in img_annotations]
@@ -123,15 +124,15 @@ class ObjectDetectionDataset(Dataset):
         for img_annotation in img_annotations:
             if img_annotation['category_id'] == 4:  # arrow
                 keypoints: List[float] = img_annotation['keypoints']
-                if image_id == 168:
-                    self.plot_image_with_keypoints_and_bbox(image_tensor=image, keypoints=keypoints, bbox=img_annotation['bbox'])
+                # if image_id == 168: self.plot_image_with_keypoints_and_bbox(image_tensor=image,
+                # keypoints=keypoints, bbox=img_annotation['bbox'])
 
                 bbox_head: List[int] = self.generate_synthetic_bbox(image=image, center_x=int(keypoints[3]),
-                                                                    center_y=int(keypoints[4]))
+                                                                    center_y=int(keypoints[4]), img_id=image_id)
                 category_ids.append(10)
                 bboxes.append(bbox_head)
                 bbox_tail: List[int] = self.generate_synthetic_bbox(image=image, center_x=int(keypoints[0]),
-                                                                    center_y=int(keypoints[1]))
+                                                                    center_y=int(keypoints[1]), img_id=image_id)
                 category_ids.append(11)
                 bboxes.append(bbox_tail)
 
@@ -159,6 +160,7 @@ class ObjectDetectionDataset(Dataset):
         return t.Image(image), target
 
 
+"""
 if __name__ == '__main__':
 
     import cv2
@@ -167,7 +169,8 @@ if __name__ == '__main__':
 
     BASE_DIR = "/home/nricciardi/Repositories/diagram"
 
-    dataset = ObjectDetectionDataset(f"{BASE_DIR}/dataset/extractor/labels.json", f"{BASE_DIR}/dataset/extractor/flow_graph_diagrams")
+    dataset = ObjectDetectionDataset(f"{BASE_DIR}/dataset/extractor/labels.json",
+                                     f"{BASE_DIR}/dataset/extractor/flow_graph_diagrams")
 
     # for _ in dataset:
     #     pass
@@ -177,9 +180,11 @@ if __name__ == '__main__':
         for annotation in info["annotations"]:
             if annotation["category"] == "arrow":
                 print(annotation)
-                image_file_name = info["images"][annotation["image_id"]]["file_name"]  # not always true... check id instead
+                image_file_name = info["images"][annotation["image_id"]][
+                    "file_name"]  # not always true... check id instead
 
-                image = read_image(f'{BASE_DIR}/dataset/extractor/flow_graph_diagrams/{image_file_name}', ImageReadMode.RGB)
+                image = read_image(f'{BASE_DIR}/dataset/extractor/flow_graph_diagrams/{image_file_name}',
+                                   ImageReadMode.RGB)
 
                 head_x = annotation["keypoints"][3]
                 head_y = annotation["keypoints"][4]
@@ -195,3 +200,4 @@ if __name__ == '__main__':
                 outcome = dataset.generate_synthetic_bbox(image, tail_x, tail_y)
 
                 break
+"""
