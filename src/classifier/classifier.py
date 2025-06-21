@@ -14,10 +14,16 @@ import torch
 from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
 
 from src.wellknown_diagram import WellKnownDiagram
-import logging
+import logging, sys
 
 logger = logging.getLogger(__name__)
-recognizable_diagrams = [WellKnownDiagram.GRAPH_DIAGRAM, WellKnownDiagram.FLOW_CHART,  WellKnownDiagram.OTHER]
+handler = logging.StreamHandler(sys.stdout)
+formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+handler.setFormatter(formatter)
+
+logger.handlers.clear()
+logger.addHandler(handler)
+recognizable_diagrams = [WellKnownDiagram.FLOW_CHART, WellKnownDiagram.GRAPH_DIAGRAM,  WellKnownDiagram.OTHER]
 
 class GNRClassifier(Classifier):
     
@@ -102,7 +108,7 @@ class GNRClassifier(Classifier):
             running_loss = 0.0
             for i, (images, labels) in enumerate(train_dataloader):
                 if (i + 1) % 20 == 0 and verbose:
-                    logger.info(f"Epoch [{epoch + 1}/{epochs}], Step [{i + 1}/{len(train_dataloader)}]")
+                    print(f"Epoch [{epoch + 1}/{epochs}], Step [{i + 1}/{len(train_dataloader)}]")
 
                 optimizer.zero_grad()
                 
@@ -116,7 +122,7 @@ class GNRClassifier(Classifier):
                 running_loss += loss.item()
                 
             if verbose:
-                logger.info(f"Epoch [{epoch + 1}/{epochs}], Step [{i + 1}/{len(train_dataloader)}], Loss: {running_loss / len(train_dataloader) :.4f}")
+                print(f"Epoch [{epoch + 1}/{epochs}], Step [{i + 1}/{len(train_dataloader)}], Loss: {running_loss / len(train_dataloader) :.4f}")
                 
         ### Testing loop
         self.model.eval()
@@ -125,7 +131,7 @@ class GNRClassifier(Classifier):
         with torch.no_grad():
             for images, labels in val_dataloader:
                 outputs = self.model(images.float().to(device))
-                labels = torch.tensor([label_to_index[label] for label in labels], dtype=torch.long).to(device)
+                labels = torch.tensor([label_to_index.index(label) for label in labels], dtype=torch.long).to(device)
 
                 _, predicted = torch.max(outputs.data, 1)
                 total += labels.size(0)
@@ -187,7 +193,7 @@ class GNRClassifier(Classifier):
             all_labels = []
             for images, labels in dataloader:
 
-                labels = torch.tensor([self.classes[label].value for label in labels], dtype=torch.long).to(device)
+                labels = torch.tensor([self.classes.index(WellKnownDiagram.from_string(label)) for label in labels], dtype=torch.long).to(device)
                 images = images.float().to(device)
                 outputs = self.model(images)
                 _, predicted = torch.max(outputs.data, 1)
@@ -200,15 +206,15 @@ class GNRClassifier(Classifier):
             self.last_confusion_labels = all_labels
         
         accuracy = 100 * correct / total
-        classes_names = {k: v for v, k in self.classes.items()}
-        logger.info(f"Accuracy of the model on the dataset: {accuracy:.2f}%")
+        classes_names = self.classes
+        print(f"Accuracy of the model on the dataset: {accuracy:.2f}%")
 
         # If visual_output is True, plot the confusion matrix
         if visual_output:
             import matplotlib.pyplot as plt
 
             cm = confusion_matrix(all_labels, all_preds)
-            disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=[classes_names[i] for i in range(len(self.classes))])
+            disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=[classes_names[i].value for i in range(len(self.classes))])
             fig, ax = plt.subplots(figsize=(6, 6))
             disp.plot(ax=ax, cmap=plt.cm.Blues, values_format='d')
             plt.title("Confusion Matrix")

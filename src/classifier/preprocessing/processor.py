@@ -19,9 +19,9 @@ class ReverseProcessor(Processor):
         """
         image_np = image.as_tensor().detach().cpu().numpy()
         if len(image_np.shape) == 2:
-            return TensorImage(torch.from_numpy(image_np[::-1, ::-1]))
+            return TensorImage(torch.from_numpy(image_np[::-1, ::-1].copy()))
         elif len(image_np.shape) == 3:
-            return TensorImage(torch.from_numpy(image_np[:, ::-1, ::-1]))
+            return TensorImage(torch.from_numpy(image_np[:, ::-1, ::-1].copy()))
         else:
             raise ValueError(f"Unsupported image shape: {image_np.shape}")
 
