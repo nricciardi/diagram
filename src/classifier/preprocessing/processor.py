@@ -6,6 +6,25 @@ import numpy as np
 import cv2
 import torch
 
+class ReverseProcessor(Processor):
+    def __init__(self):
+        super().__init__()
+
+    def process(self, image: Image) -> Image:
+        """
+        Reverse the image tensor.
+        
+        :param image: The input image to be processed.
+        :return: The processed image with reversed tensor.
+        """
+        image_np = image.as_tensor().detach().cpu().numpy()
+        if len(image_np.shape) == 2:
+            return TensorImage(torch.from_numpy(image_np[::-1, ::-1]))
+        elif len(image_np.shape) == 3:
+            return TensorImage(torch.from_numpy(image_np[:, ::-1, ::-1]))
+        else:
+            raise ValueError(f"Unsupported image shape: {image_np.shape}")
+
 class GrayScaleProcessor(Processor):
     def __init__(self):
         super().__init__()
