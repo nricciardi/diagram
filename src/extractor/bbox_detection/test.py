@@ -20,14 +20,16 @@ def load_model(weights_path, device):
     return model
 
 def infer(model):
-    annotations_file = "/Users/saverionapolitano/PycharmProjects/diagram/dataset/extractor/labels.json"
-    img_dir = "/Users/saverionapolitano/PycharmProjects/diagram/dataset/extractor/flow_graph_diagrams"
+    #annotations_file = "/Users/saverionapolitano/PycharmProjects/diagram/dataset/extractor/labels.json"
+    #img_dir = "/Users/saverionapolitano/PycharmProjects/diagram/dataset/extractor/flow_graph_diagrams"
+    annotations_file = "/Users/saverionapolitano/PycharmProjects/diagram/dataset/source/hdBPMN-icdar2021/train.json"
+    img_dir = "/Users/saverionapolitano/PycharmProjects/diagram/dataset/source/hdBPMN-icdar2021/train"
     # Create dataset and dataloader
     dataset = ObjectDetectionDataset(annotations_file, img_dir)
 
     # Inference & visualization
     model.eval()
-    img, target = dataset[0]
+    img, target = dataset[1] # 208, 104, 164, 280, 283, 1046
     img = img.to(device)
     with torch.no_grad():
         prediction = model([img])[0]
@@ -43,5 +45,5 @@ def infer(model):
 
 if __name__ == '__main__':
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-    model = load_model('model.pth', device)
+    model = load_model('model_100.pth', device)
     infer(model)

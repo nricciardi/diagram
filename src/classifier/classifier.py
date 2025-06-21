@@ -226,6 +226,6 @@ class GNRClassifier(Classifier):
     def get_default() -> 'GNRClassifier':
         return GNRClassifier(
             classes=recognizable_diagrams,
-            model_path="src/classifier/model.pth",
+            model_path="src/classifier/model_10.pth",
             processor=GNRMultiProcessor()
         )

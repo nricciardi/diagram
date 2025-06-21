@@ -115,15 +115,15 @@ class ObjectDetectionDataset(Dataset):
                                        img_annotation['image_id'] == image_id]
 
         img_path = os.path.join(self.img_dir, self.images[image_id]['file_name'])
-        image: torch.Tensor = read_image(str(img_path), ImageReadMode.RGB)  # .float() / 255.0
+        image: torch.Tensor = read_image(str(img_path), ImageReadMode.RGB).float() / 255.0
         target: Dict = {}
 
         category_ids: List[int] = [img_annotation['category_id'] for img_annotation in img_annotations]
         bboxes: List[List[int]] = [ann['bbox'] for ann in img_annotations]
-
+        keyp: List[List[float]] = []
         for img_annotation in img_annotations:
+            keypoints: List[float] = img_annotation['keypoints']
             if img_annotation['category_id'] == 4:  # arrow
-                keypoints: List[float] = img_annotation['keypoints']
                 # if image_id == 168: self.plot_image_with_keypoints_and_bbox(image_tensor=image,
                 # keypoints=keypoints, bbox=img_annotation['bbox'])
 
@@ -135,6 +135,7 @@ class ObjectDetectionDataset(Dataset):
                                                                     center_y=int(keypoints[1]), img_id=image_id)
                 category_ids.append(11)
                 bboxes.append(bbox_tail)
+            keyp.append(keypoints)
 
         boxes: torch.Tensor = torch.tensor(bboxes, dtype=torch.float32)
         if boxes.numel() == 0:
@@ -151,6 +152,7 @@ class ObjectDetectionDataset(Dataset):
         target['image_id']: torch.Tensor = torch.tensor([image_id])
         target['area']: torch.Tensor = area
         target['iscrowd']: torch.Tensor = iscrowd
+        target['keypoints']: torch.Tensor = torch.tensor(keyp, dtype=torch.float32)
 
         if self.transform:
             image = self.transform(image)
