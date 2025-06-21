@@ -120,7 +120,9 @@ class ObjectDetectionDataset(Dataset):
 
         category_ids: List[int] = [img_annotation['category_id'] for img_annotation in img_annotations]
         bboxes: List[List[int]] = [ann['bbox'] for ann in img_annotations]
-        keyp: List[List[float]] = []
+        areas: List[int] = [img_annotation['area'] for img_annotation in img_annotations]
+        iscwd: List[int] = [img_annotation['iscrowd'] for img_annotation in img_annotations]
+        keyp: List[List[float]] = [img_annotation['keypoints'] for img_annotation in img_annotations]
         for img_annotation in img_annotations:
             keypoints: List[float] = img_annotation['keypoints']
             if img_annotation['category_id'] == 4:  # arrow
@@ -131,11 +133,16 @@ class ObjectDetectionDataset(Dataset):
                                                                     center_y=int(keypoints[4]), img_id=image_id)
                 category_ids.append(10)
                 bboxes.append(bbox_head)
+                areas.append(img_annotation['area'])
+                iscwd.append(img_annotation['iscrowd'])
+                keyp.append(keypoints)
                 bbox_tail: List[int] = self.generate_synthetic_bbox(image=image, center_x=int(keypoints[0]),
                                                                     center_y=int(keypoints[1]), img_id=image_id)
                 category_ids.append(11)
                 bboxes.append(bbox_tail)
-            keyp.append(keypoints)
+                areas.append(img_annotation['area'])
+                iscwd.append(img_annotation['iscrowd'])
+                keyp.append(keypoints)
 
         boxes: torch.Tensor = torch.tensor(bboxes, dtype=torch.float32)
         if boxes.numel() == 0:
@@ -145,11 +152,11 @@ class ObjectDetectionDataset(Dataset):
 
         labels: torch.Tensor = torch.tensor(category_ids, dtype=torch.int64)
         # label = 0 -> background
-        area: torch.Tensor = torch.tensor([img_annotation['area'] for img_annotation in img_annotations])
-        iscrowd: torch.Tensor = torch.tensor([img_annotation['iscrowd'] for img_annotation in img_annotations])
+        area: torch.Tensor = torch.tensor(areas, dtype=torch.float32)
+        iscrowd: torch.Tensor = torch.tensor(iscwd, dtype=torch.uint8)
         target['boxes']: torch.Tensor = boxes
         target['labels']: torch.Tensor = labels
-        target['image_id']: torch.Tensor = torch.tensor([image_id])
+        target['image_id']: torch.Tensor = torch.tensor([image_id], dtype=torch.int64)
         target['area']: torch.Tensor = area
         target['iscrowd']: torch.Tensor = iscrowd
         target['keypoints']: torch.Tensor = torch.tensor(keyp, dtype=torch.float32)

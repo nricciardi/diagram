@@ -103,18 +103,35 @@ def fine_tune():
             outputs = model(images)
 
             # Format predictions and targets for torchmetrics
-            preds = [{k: v.detach().cpu() for k, v in o.items()} for o in outputs]
-            gts = [{k: v.detach().cpu() for k, v in t.items()} for t in targets]
+            preds = []
+            gts = []
 
-            metric.update(preds, gts)
+            for o, t in zip(outputs, targets):
+                pred = {k: v.detach().cpu() for k, v in o.items()}
+                gt = {k: v.detach().cpu() for k, v in t.items()}
+
+                # Skip if no boxes (torchmetrics will crash)
+                if gt["boxes"].nelement() == 0 or pred["boxes"].nelement() == 0:
+                    continue
+
+                preds.append(pred)
+                gts.append(gt)
+
+            if preds and gts:
+                metric.update(preds, gts)
 
     eval_results = metric.compute()
     print(f"Evaluation:")
     for k, v in eval_results.items():
-        print(f"  {k}: {v:.4f}")
+        if k == "classes":
+             print(f"  {k}: {v}")
+        else:
+            print(f"  {k}: {v.item():.4f}")
 
     err_x: torch.Tensor = torch.tensor(0.0)
+    err_x = err_x.to(device)
     err_y: torch.Tensor = torch.tensor(0.0)
+    err_y = err_y.to(device)
     for images, targets in val_dataloader:
         images = [img.to(device) for img in images]
         targets = [{k: v.to(device) for k, v in t.items()} for t in targets]
@@ -122,20 +139,28 @@ def fine_tune():
             for i, label in enumerate(target['labels']):
                 if label == torch.tensor(10, dtype=torch.int64): # head
                     bbox: torch.Tensor = target['boxes'][i, :]
+                    #bbox.to(device)
                     keypoints: torch.Tensor = target['keypoints'][i, :]
+                    #keypoints.to(device)
                     pred_center_x: torch.Tensor = (bbox[0] + bbox[2]) / 2.0
+                    #pred_center_x.to(device)
                     err_x += abs(keypoints[3] - pred_center_x)
                     pred_center_y: torch.Tensor = (bbox[1] + bbox[3]) / 2.0
+                    pred_center_y.to(device)
                     err_y += abs(keypoints[4] - pred_center_y)
                 if label == torch.tensor(11, dtype=torch.int64): # tail
                     bbox: torch.Tensor = target['boxes'][i, :]
+                    #bbox.to(device)
                     keypoints: torch.Tensor = target['keypoints'][i, :]
+                    #keypoints.to(device)
                     pred_center_x: torch.Tensor = (bbox[0] + bbox[2]) / 2.0
+                    #pred_center_x.to(device)
                     err_x += abs(keypoints[0] - pred_center_x)
                     pred_center_y: torch.Tensor = (bbox[1] + bbox[3]) / 2.0
+                    pred_center_y.to(device)
                     err_y += abs(keypoints[1] - pred_center_y)
 
-    print(f"Average error along x: {(err_x/val_size):.4f}, Average error along y: {(err_y/val_size):.4f}")
+    print(f"Average error along x: {(err_x.item()/val_size):.4f}, Average error along y: {(err_y.item()/val_size):.4f}")
 
 
 
