@@ -91,10 +91,10 @@ Figure~\ref{fig:classifier_preprocessing} shows the step-by-step process of prep
 		\textbf{(f)}: The image in a standard size, ready to enter the network.
 	}
 	\label{fig:classifier_preprocessing}
-\end{figure}
+\end{figure} 
 
 \subsubsection{Model}
-TODO \\
+Since it was assumed that classifying two types of diagrams - with a third 'other' class - was a quite simple task, a small network was deemed enough. The model consists of three convolutional blocks - each containing a convolutional layer, followed by a batch normalization and a max-pooling layer - then followed by three linear layers (for a more detailed overview, see Appendix~\ref{classification_net}). The output vector of the MLP contains three features - one for each class that this specific classifier needs to address. In order to determine the prediction, the softmax function is then applied. As later seen in section~\ref{exp:classifier}, a weighted Cross-Entropy loss is then used to train the model.  \\
 
 \subsection{Extractor Module}
 \subsubsection{Preprocessing}
@@ -122,6 +122,7 @@ After a text box is assigned to a relation, some computation is needed to fully 
 \section{Experiments}
 
 \subsection{Classifier}
+\label{exp:classifier}
 The first architecture explored for the Classifier module was a Convolutional Neural Network (CNN) following AlexNet's architecture, but smaller in size.
 It had two Convolutional layers, each followed by a batch normalization and then by a max pooling layers. The first layer had only 4 filters, while the second one had 8.
 The output of the second layer was then flattened and passed through a fully connected layer which downsized the features to 128, followed by a ReLU activation function. Other two fully connected layer brought the number of output features down to the number of classes.
@@ -159,7 +160,7 @@ This final approach showed a significant improvement in the results, with the lo
 TODO
 
 \subsection{Arrow Orientation}
-As we've seen in the previous section, the need to find the exact position of an arrow's head arises (see \textbf{Appendix A} for a full overview of the first approach).
+As we've seen in the previous section, the need to find the exact position of an arrow's head arises (see \textbf{Appendix~\ref{double_clustering}} for a full overview of the first approach).
 
 TODO: Current approach.
 
@@ -211,6 +212,7 @@ TODO
 \begin{appendices}
 
 \section{Double Clustering}
+\label{double_clustering}
 The first algorithmic approach proposed to solve this task - called \textit{Double Clustering} - was as follows: 
 \begin{enumerate}
 	\item Apply a clustering algorithm to the bounding box.
@@ -263,6 +265,30 @@ However, this approach didn't work as expected (see Figure~\ref{fig:template_mat
 	\caption{The overall result of the algorithm.}
 	\label{fig:template_matching_fail}
 \end{figure}
+
+\section{The Classification Network}
+\label{classification_net}
+
+\begin{table}[h]
+	\centering
+	\caption{Classification Network Details}
+	\label{tab:classification-architecture}
+	\begin{tabular}{|c|c|c|c|}
+		\hline
+		\textbf{Conv Layer} & \textbf{Output Channels} & \textbf{Kernel Size} & \textbf{Pool Kernel Size} \\
+		\hline 
+		1 & 8 & 2 & 3 \\
+		2 & 16 & 2  & 3 \\
+		3 & 24 & 3  & 2 \\
+		\hline
+		\textbf{Linear Layer} & \textbf{Output Features} & \textbf{Droput Rate} & \textbf{Activation Function} \\
+		\hline 
+		1 & 2048 & 0.2 & ReLU \\
+		2 & 128 & 0.2 & ReLU \\
+		3 & 3 & 0.2 & ReLU \\
+		\hline
+	\end{tabular}
+\end{table}
 
 \end{appendices}
 
