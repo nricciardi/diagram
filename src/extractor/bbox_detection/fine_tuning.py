@@ -3,6 +3,7 @@ import torch
 from torch.utils.data import DataLoader
 from torchvision.models.detection import fasterrcnn_resnet50_fpn
 from torchvision.models.detection.faster_rcnn import FastRCNNPredictor
+from torchmetrics.detection.mean_ap import MeanAveragePrecision
 
 from src.dataset.extractor.dataset import ObjectDetectionDataset
 from torch.utils.data import random_split
@@ -40,8 +41,8 @@ def fine_tune():
 
     train_dataset, val_dataset = random_split(dataset, [train_size, val_size])
 
-    train_dataloader = DataLoader(train_dataset, batch_size=32, shuffle=True, collate_fn=collate_fn)
-    val_dataloader = DataLoader(val_dataset, batch_size=32, shuffle=True, collate_fn=collate_fn)
+    train_dataloader = DataLoader(train_dataset, batch_size=4, shuffle=True, collate_fn=collate_fn)
+    val_dataloader = DataLoader(val_dataset, batch_size=4, shuffle=True, collate_fn=collate_fn)
     # test_dataloader = DataLoader(test_dataset, batch_size=4, shuffle=True, collate_fn=collate_fn)
 
 
@@ -64,7 +65,7 @@ def fine_tune():
 
     # Training loop
     model.train()
-    epochs = 10
+    epochs = 100
     final_loss: float = 0.0
     for epoch in range(epochs):
         running_loss = 0.0
@@ -86,11 +87,56 @@ def fine_tune():
         final_loss = running_loss
         #logger.debug(f"Loss: {running_loss:.4f} at step {epoch + 1}")
         print(f"Loss: {running_loss:.4f} at step {epoch + 1}")
-        #torch.save(model.state_dict(), "model.pth")
+        #torch.save(model.state_dict(), "model_10.pth")
 
-    #logger.debug(f"Final loss: {final_loss:.4f}")
-    print(f"Final loss: {final_loss:.4f}")
     torch.save(model.state_dict(), "model.pth")  # save the final weights
+
+    # === Evaluation ===
+    model.eval()
+
+    metric = MeanAveragePrecision()
+    with torch.no_grad():
+        for images, targets in val_dataloader:
+            images = [img.to(device) for img in images]
+            targets = [{k: v.to(device) for k, v in t.items()} for t in targets]
+
+            outputs = model(images)
+
+            # Format predictions and targets for torchmetrics
+            preds = [{k: v.detach().cpu() for k, v in o.items()} for o in outputs]
+            gts = [{k: v.detach().cpu() for k, v in t.items()} for t in targets]
+
+            metric.update(preds, gts)
+
+    eval_results = metric.compute()
+    print(f"Evaluation:")
+    for k, v in eval_results.items():
+        print(f"  {k}: {v:.4f}")
+
+    err_x: torch.Tensor = torch.tensor(0.0)
+    err_y: torch.Tensor = torch.tensor(0.0)
+    for images, targets in val_dataloader:
+        images = [img.to(device) for img in images]
+        targets = [{k: v.to(device) for k, v in t.items()} for t in targets]
+        for target in targets:
+            for i, label in enumerate(target['labels']):
+                if label == torch.tensor(10, dtype=torch.int64): # head
+                    bbox: torch.Tensor = target['boxes'][i, :]
+                    keypoints: torch.Tensor = target['keypoints'][i, :]
+                    pred_center_x: torch.Tensor = (bbox[0] + bbox[2]) / 2.0
+                    err_x += abs(keypoints[3] - pred_center_x)
+                    pred_center_y: torch.Tensor = (bbox[1] + bbox[3]) / 2.0
+                    err_y += abs(keypoints[4] - pred_center_y)
+                if label == torch.tensor(11, dtype=torch.int64): # tail
+                    bbox: torch.Tensor = target['boxes'][i, :]
+                    keypoints: torch.Tensor = target['keypoints'][i, :]
+                    pred_center_x: torch.Tensor = (bbox[0] + bbox[2]) / 2.0
+                    err_x += abs(keypoints[0] - pred_center_x)
+                    pred_center_y: torch.Tensor = (bbox[1] + bbox[3]) / 2.0
+                    err_y += abs(keypoints[1] - pred_center_y)
+
+    print(f"Average error along x: {(err_x/val_size):.4f}, Average error along y: {(err_y/val_size):.4f}")
+
 
 
 if __name__ == '__main__':
