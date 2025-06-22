@@ -3,6 +3,7 @@ from collections import defaultdict
 from dataclasses import dataclass
 from typing import List, Tuple, Dict, Optional, override
 
+import torch
 from shapely.geometry import Polygon
 from torchvision.models.detection import FasterRCNN
 
@@ -11,7 +12,7 @@ from core.image.image import Image
 from src.extractor.arrow.arrow import Arrow
 from src.extractor.flowchart.multistage_extractor import MultistageFlowchartExtractor, ArrowTextTypeOutcome, \
     ElementTextTypeOutcome, ObjectRelation
-from src.flowchart_element_category import FlowchartElementCategory
+from src.flowchart_element_category import FlowchartElementCategoryIndex, Lookup
 from src.utils.bbox_utils import bbox_overlap, bbox_distance, bbox_vertices, bbox_split, bbox_relative_position, distance_bbox_point
 from src.wellknown_diagram import WellKnownDiagram
 from src.extractor.text_extraction.text_extractor import TrOCRTextExtractorSmall
@@ -43,23 +44,26 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
 
     @override
     def _is_arrow_category(self, diagram_id: str, category: str) -> bool:
-        return category == FlowchartElementCategory.ARROW.value
+        return category == Lookup.table[FlowchartElementCategoryIndex.ARROW.value]
 
     @override
     def _is_element_category(self, diagram_id: str, category: str) -> bool:
-        pass        # TODO
+        return category not in [Lookup.table[FlowchartElementCategoryIndex.ARROW.value],
+                                Lookup.table[FlowchartElementCategoryIndex.ARROW_TAIL.value],
+                                Lookup.table[FlowchartElementCategoryIndex.ARROW_HEAD.value],
+                                Lookup.table[FlowchartElementCategoryIndex.TEXT.value]]
 
     @override
     def _is_text_category(self, diagram_id: str, category: str) -> bool:
-        return category == FlowchartElementCategory.TEXT.value
+        return category == Lookup.table[FlowchartElementCategoryIndex.TEXT.value]
 
     @override
     def _is_arrow_head_category(self, diagram_id: str, category: str) -> bool:
-        return category == FlowchartElementCategory.ARROW_HEAD.value
+        return category == Lookup.table[FlowchartElementCategoryIndex.ARROW_HEAD.value]
 
     @override
     def _is_arrow_tail_category(self, diagram_id: str, category: str) -> bool:
-        return category == FlowchartElementCategory.ARROW_TAIL.value
+        return category == Lookup.table[FlowchartElementCategoryIndex.ARROW_TAIL.value]
 
     def _preprocess(self, diagram_id: str, image: Image) -> Image:
         pass
@@ -175,7 +179,7 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
 
             ret.append(
                 ObjectRelation(
-                    category=FlowchartElementCategory.ARROW.value,
+                    category=Lookup.table[FlowchartElementCategoryIndex.ARROW.value],
                     source=source,
                     target=target,
                 )
@@ -308,4 +312,8 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
 
     @override
     def _extract_diagram_objects(self, diagram_id: str, image: Image) -> List[ImageBoundingBox]:
-        pass    # TODO: model.predict() -> tensors -> List[ImageBoundingBox] ([nic] -> List, List, List)
+        prediction = self.bbox_detector(image.as_tensor())
+        bboxes: List[ImageBoundingBox] = []
+        for box, label, score in zip(prediction['boxes'], prediction['labels'], prediction['scores']):
+            bboxes.append(ImageBoundingBox(Lookup.table[label.item()], box, score.item()))
+        return bboxes
