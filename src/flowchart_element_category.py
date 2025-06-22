@@ -1,7 +1,10 @@
 from enum import IntEnum
+from typing import Dict
+from src.representation.flowchart_representation.element import FlowchartElementCategory
+from src.representation.flowchart_representation.relation import FlowchartRelationCategory
 
 
-class FlowchartElementCategory(IntEnum):
+class FlowchartElementCategoryIndex(IntEnum):
     STATE = 1
     FINAL_STATE = 2
     TEXT = 3
@@ -14,4 +17,19 @@ class FlowchartElementCategory(IntEnum):
     ARROW_HEAD = 10
     ARROW_TAIL = 11
 
-    # TODO: head/tail sono corretti?
+
+class Lookup:
+    table: Dict[int, str] = {FlowchartElementCategoryIndex.PROCESS.value: FlowchartElementCategory.PROCESS.value,
+                             FlowchartElementCategoryIndex.DECISION.value: FlowchartElementCategory.DECISION.value,
+                             FlowchartElementCategoryIndex.TERMINATOR.value: FlowchartElementCategory.TERMINAL.value,
+                             FlowchartElementCategoryIndex.DATA.value: FlowchartElementCategory.INPUT_OUTPUT.value,
+                             FlowchartElementCategoryIndex.CONNECTION.value: FlowchartElementCategory.CIRCLE.value,
+                             FlowchartElementCategoryIndex.ARROW.value: FlowchartRelationCategory.ARROW.value,
+                             FlowchartElementCategoryIndex.STATE.value: FlowchartElementCategory.CIRCLE.value,
+                             FlowchartElementCategoryIndex.FINAL_STATE.value: FlowchartElementCategory.CIRCLE.value,
+                             FlowchartElementCategoryIndex.TEXT.value: "text",
+                             FlowchartElementCategoryIndex.ARROW_HEAD.value: "head",
+                             FlowchartElementCategoryIndex.ARROW_TAIL.value: "tail"
+                             }
+
+print("CircleNode" in [s.value for s in FlowchartElementCategory])
