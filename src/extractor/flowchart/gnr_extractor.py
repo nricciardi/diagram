@@ -12,7 +12,7 @@ from src.extractor.arrow.arrow import Arrow
 from src.extractor.flowchart.multistage_extractor import MultistageFlowchartExtractor, ArrowTextTypeOutcome, \
     ElementTextTypeOutcome, ObjectRelation
 from src.flowchart_element_category import FlowchartElementCategory
-from src.utils.bbox_utils import bbox_overlap, bbox_distance, bbox_vertices, bbox_split, bbox_relative_position
+from src.utils.bbox_utils import bbox_overlap, bbox_distance, bbox_vertices, bbox_split, bbox_relative_position, distance_bbox_point
 from src.wellknown_diagram import WellKnownDiagram
 from src.extractor.text_extraction.text_extractor import TrOCRTextExtractorSmall
 
@@ -151,73 +151,35 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
                 element_bboxes (List[ImageBoundingBox]): A list of bounding boxes representing the elements in the diagram.
                 arrows (List[Arrow]): A list of arrows in the diagram.
             Returns:
-                ist[ObjectRelation]: A list of object relations, where each relation specifies the category of the arrow
+                List[ObjectRelation]: A list of object relations, where each relation specifies the category of the arrow
                                         and the indices of the source and target elements it connects.
-            Notes:
-                - The function calculates overlaps and distances between arrows and elements to determine relationships.
-                - Arrows are assumed to point in one of four directions: "right", "left", "up", or "down".
-                - Relationships are determined based on overlap scores, distance thresholds, and relative positions.
-                - If multiple overlaps exist, the function prioritizes overlaps with distinct relative positions.
-                - If only one overlap exists, the source and target indices may point to the same element.
         """
 
-        # TODO: si passa da arrow_bbox a 2 punti a testa e coda della freccia
-        # TODO: non ci sarà più right left, bisogna ottenere testa e coda di ogni freccia e
-
         ret: List[ObjectRelation] = []
-        for arrow in arrow_bboxes:
-            overlaps = []
-            arrow_pointing = "right"  # TODO: "right", "left", "up" or "down"
-            for idx, elem in enumerate(element_bboxes):
-                overlap_score = bbox_overlap(bbox1=elem, bbox2=arrow)
-                if overlap_score > self.element_arrow_overlap_threshold:
-                    relative_position = bbox_relative_position(first_bbox=arrow, second_bbox=elem)
-                    overlaps.append((idx, overlap_score, relative_position))
-                distance = bbox_distance(bbox1=elem, bbox2=arrow)
-                if self.element_arrow_distance_threshold > distance:
-                    relative_position = bbox_relative_position(first_bbox=arrow, second_bbox=elem)
-                    distance_score = (distance / self.element_arrow_distance_threshold) + 1
-                    overlaps.append((idx, distance_score, relative_position))
-                    pass
 
-            overlaps.sort(key=lambda x: x[1], reverse=True)
-            source_id = target_id = None
+        for arrow in arrows:
 
-            # If we have at least two overlaps AND we have at least one of each overlap type (e.g. up/down or left/right)
-            if len(overlaps) >= 2 and len(set([overlap[2] for overlap in overlaps])) >= 2:
-                if arrow_pointing == "right" or "left":
-                    source_id = list(
-                        filter((lambda element: element[2] == "left" if arrow_pointing == "right" else "right"),
-                               overlaps))[0][0]
-                    target_id = list(
-                        filter((lambda element: element[2] == "right" if arrow_pointing == "right" else "left"),
-                               overlaps))[0][0]
-                else:
-                    source_id = list(
-                        filter((lambda element: element[2] == "up" if arrow_pointing == "down" else "down"), overlaps))[
-                        0][0]
-                    target_id = list(
-                        filter((lambda element: element[2] == "down" if arrow_pointing == "down" else "up"), overlaps))[
-                        0][0]
-            elif len(set([overlap[2] for overlap in overlaps])) == 1:
-                element = overlaps[0]
-                if arrow_pointing == "right" or arrow_pointing == "left":
-                    source_id = element[0] if element[2] == ("left" if arrow_pointing == "right" else "right") else None
-                    target_id = element[0] if element[2] == ("right" if arrow_pointing == "right" else "left") else None
-                elif arrow_pointing == "up" or arrow_pointing == "down":
-                    source_id = element[0] if element[2] == ("up" if arrow_pointing == "down" else "down") else None
-                    target_id = element[0] if element[2] == ("down" if arrow_pointing == "down" else "up") else None
-            elif len(overlaps) == 1:
-                source_id = overlaps[0][0]
-                target_id = overlaps[0][0]
-            else:
-                continue
+            target = source = None
+            distance_head_min = distance_tail_min = None
+            for i, element in enumerate(element_bboxes):
+                element_bbox: ImageBoundingBox = element
+                distance_element_head: float = distance_bbox_point(bbox=element_bbox, point_x=arrow.x_head, point_y=arrow.y_head)
+                if distance_element_head < self.element_arrow_distance_threshold and (distance_head_min is None or distance_element_head < distance_head_min):
+                    target = i
+                    distance_head_min = distance_element_head
 
-            ret.append(ObjectRelation(
-                category=arrow.category,
-                source_index=source_id,
-                target_index=target_id
-            ))
+                distance_element_tail: float = distance_bbox_point(bbox=element_bbox, point_x=arrow.x_tail, point_y=arrow.y_tail)
+                if distance_element_tail < self.element_arrow_distance_threshold and (distance_tail_min is None or distance_element_tail < distance_tail_min):
+                    source = i
+                    distance_tail_min = distance_element_tail
+
+            ret.append(
+                ObjectRelation(
+                    category=FlowchartElementCategory.ARROW.value,
+                    source=source,
+                    target=target,
+                )
+            )
 
         return ret
 
