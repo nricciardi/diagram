@@ -260,3 +260,16 @@ def IoU(first_bbox: ImageBoundingBox, second_bbox: ImageBoundingBox) -> float:
         return 0.0
 
     return intersection / union
+
+def distance_bbox_point(bbox: ImageBoundingBox, point_x: float, point_y: float) -> float:
+    """
+    Calculates the shortest distance from a point to a bounding box.
+    Args:
+        bbox (ImageBoundingBox): The bounding box.
+        point (Tuple[float, float]): The point as a tuple of (x, y) coordinates.
+    Returns:
+        float: The shortest distance from the point to the bounding box.
+    """
+    x = max(bbox.top_left_x, min(point_x, bbox.bottom_right_x))
+    y = max(bbox.bottom_right_y, min(point_y, bbox.top_left_y))
+    return math.sqrt((x - point_x) ** 2 + (y - point_y) ** 2)
