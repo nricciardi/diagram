@@ -233,3 +233,30 @@ def bbox_relative_position(first_bbox: ImageBoundingBox, second_bbox: ImageBound
             return "down"
         else:
             return "up"
+
+def IoU(first_bbox: ImageBoundingBox, second_bbox: ImageBoundingBox) -> float:
+    """
+    Computes the Intersection over Union (IoU) of two bounding boxes.
+    Args:
+        first_bbox (ImageBoundingBox): The first bounding box.
+        second_bbox (ImageBoundingBox): The second bounding box.
+    Returns:
+        float: The IoU value, which is the ratio of the area of intersection to the area of union.
+    """
+    x_left = max(first_bbox.top_left_x, second_bbox.top_left_x)
+    y_top = min(first_bbox.top_left_y, second_bbox.top_left_y)
+    x_right = min(first_bbox.bottom_right_x, second_bbox.bottom_right_x)
+    y_bottom = max(first_bbox.bottom_right_y, second_bbox.bottom_right_y)
+
+    inter_width = max(0.0, x_right - x_left)
+    inter_height = max(0.0, y_top - y_bottom)
+    intersection = inter_width * inter_height
+
+    area1 = (first_bbox.bottom_right_x - first_bbox.top_left_x) * (first_bbox.top_left_y - first_bbox.bottom_right_y)
+    area2 = (second_bbox.bottom_right_x - second_bbox.top_left_x) * (second_bbox.top_left_y - second_bbox.bottom_right_y)
+    union = area1 + area2 - intersection
+
+    if union <= 0:
+        return 0.0
+
+    return intersection / union
