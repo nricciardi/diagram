@@ -5,6 +5,9 @@ import sys
 import logging
 from pathlib import Path
 
+import torch
+from torchvision.models.detection import fasterrcnn_resnet50_fpn
+
 from core.classifier.classifier import Classifier
 from core.extractor.extractor import Extractor
 from core.image.image import Image
@@ -136,6 +139,17 @@ def main(classifier: Classifier, extractors: List[Extractor], inputs_paths: List
         outputs_dir_path=outputs_dir_path
     )
 
+def load_model(weights_path, device):
+    # Load the model architecture
+    model = fasterrcnn_resnet50_fpn(pretrained=False, num_classes=12)
+
+    # Load the saved weights
+    model.load_state_dict(torch.load(weights_path, map_location=device))
+
+    # Set to evaluation mode
+    model.to(device)
+    model.eval()
+    return model
 
 if __name__ == '__main__':
     args = parse_args()
@@ -166,7 +180,7 @@ if __name__ == '__main__':
     classifier = GNRClassifier(model_path=args.classifier)
     extractors = [
         GNRFlowchartExtractor(
-            bbox_detector=..., # TODO: in `args.bbox_detector` there is the weights file path
+            bbox_detector=load_model(args.bbox_detector, torch.device('cuda' if torch.cuda.is_available() else 'cpu')),
             identifier="gnr-flowchart-extractor",
             bbox_trust_threshold=0.7,
             parallelization=args.parallelize
