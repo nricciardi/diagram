@@ -57,9 +57,9 @@ class MultistageFlowchartExtractor(MultiStageExtractor, ABC):
         arrow_tail_bboxes: List[ImageBoundingBox] = [bbox for bbox in bboxes if self._is_arrow_tail_category(diagram_id, bbox.category)]
         text_bboxes: List[ImageBoundingBox] = [bbox for bbox in bboxes if self._is_text_category(diagram_id, bbox.category)]
 
-        elements_texts_associations, arrows_texts_associations = self._compute_text_associations(diagram_id, element_bboxes, arrow_bboxes, text_bboxes)
-
         arrows: List[Arrow] = compute_arrows(arrow_bboxes, arrow_head_bboxes, arrow_tail_bboxes)
+
+        elements_texts_associations, arrows_texts_associations = self._compute_text_associations(diagram_id, element_bboxes, arrows, text_bboxes)
 
         objects_relations: List[ObjectRelation] = self._compute_relations(diagram_id, element_bboxes, arrows)
 
@@ -78,28 +78,28 @@ class MultistageFlowchartExtractor(MultiStageExtractor, ABC):
 
 
     @abstractmethod
-    def _is_arrow_category(self, diagram_id: str, category: int) -> bool:
+    def _is_arrow_category(self, diagram_id: str, category: str) -> bool:
         raise NotImplemented()
 
     @abstractmethod
-    def _is_arrow_head_category(self, diagram_id: str, category: int) -> bool:
+    def _is_arrow_head_category(self, diagram_id: str, category: str) -> bool:
         raise NotImplemented()
 
     @abstractmethod
-    def _is_arrow_tail_category(self, diagram_id: str, category: int) -> bool:
+    def _is_arrow_tail_category(self, diagram_id: str, category: str) -> bool:
         raise NotImplemented()
 
     @abstractmethod
-    def _is_element_category(self, diagram_id: str, category: int) -> bool:
+    def _is_element_category(self, diagram_id: str, category: str) -> bool:
         raise NotImplemented()
 
     @abstractmethod
-    def _is_text_category(self, diagram_id: str, category: int) -> bool:
+    def _is_text_category(self, diagram_id: str, category: str) -> bool:
         raise NotImplemented()
 
     @abstractmethod
-    def _compute_text_associations(self, diagram_id: str, element_bboxes: List[ImageBoundingBox], arrow_bboxes: List[ImageBoundingBox],
-                                   text_bboxes: List[ImageBoundingBox]) -> Tuple[Dict[ImageBoundingBox, List[ImageBoundingBox]], Dict[ImageBoundingBox, List[ImageBoundingBox]]]:
+    def _compute_text_associations(self, diagram_id: str, element_bboxes: List[ImageBoundingBox], arrows: List[Arrow],
+                                   text_bboxes: List[ImageBoundingBox]) -> Tuple[Dict[ImageBoundingBox, List[ImageBoundingBox]], Dict[Arrow, List[ImageBoundingBox]]]:
         """
         For each text bbox, associate non-text object having the minimum distance
 
@@ -118,7 +118,7 @@ class MultistageFlowchartExtractor(MultiStageExtractor, ABC):
         """
 
     @abstractmethod
-    def _compute_relations(self, diagram_id: str, element_bboxes: List[ImageBoundingBox], arrow_bboxes: List[Arrow]) -> List[ObjectRelation]:
+    def _compute_relations(self, diagram_id: str, element_bboxes: List[ImageBoundingBox], arrows: List[Arrow]) -> List[ObjectRelation]:
         """
         Compute relations between elements and arrows
 
@@ -186,7 +186,7 @@ class MultistageFlowchartExtractor(MultiStageExtractor, ABC):
         return elements
 
 
-    def _build_relations(self, diagram_id: str, image: Image, objects_relations: List[ObjectRelation], arrow_texts_associations: Dict[ImageBoundingBox, List[ImageBoundingBox]]) -> List[Relation]:
+    def _build_relations(self, diagram_id: str, image: Image, objects_relations: List[ObjectRelation], arrow_texts_associations: Dict[Arrow, List[ImageBoundingBox]]) -> List[Relation]:
         """
         Constructs a list of Relation objects by associating diagram object relations with their corresponding texts.
 
@@ -216,9 +216,9 @@ class MultistageFlowchartExtractor(MultiStageExtractor, ABC):
             middle_text: List[str] = []
             target_text: List[str] = []
 
-            for arrow_bbox, associated_text_bboxes in arrow_texts_associations.items():
+            for arrow, associated_text_bboxes in arrow_texts_associations.items():
                 for associated_text_bbox in associated_text_bboxes:
-                    outcome = self._arrow_text_type(diagram_id, arrow_bbox, associated_text_bbox)
+                    outcome = self._arrow_text_type(diagram_id, arrow, associated_text_bbox)
 
                     if outcome == ElementTextTypeOutcome.DISCARD:
                         logger.debug(f"{associated_text_bbox} discarded")

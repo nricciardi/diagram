@@ -32,7 +32,7 @@ class ImageBoundingBox(ABC):
         ValueError: If the `trust` attribute is not between 0 and 1.
     """
 
-    category: int
+    category: str
     box: Tensor
     trust: float
 

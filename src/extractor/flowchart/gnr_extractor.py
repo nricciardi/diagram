@@ -42,23 +42,23 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
         ]
 
     @override
-    def _is_arrow_category(self, diagram_id: str, category: int) -> bool:
+    def _is_arrow_category(self, diagram_id: str, category: str) -> bool:
         return category == FlowchartElementCategory.ARROW.value
 
     @override
-    def _is_element_category(self, diagram_id: str, category: int) -> bool:
+    def _is_element_category(self, diagram_id: str, category: str) -> bool:
         pass        # TODO
 
     @override
-    def _is_text_category(self, diagram_id: str, category: int) -> bool:
+    def _is_text_category(self, diagram_id: str, category: str) -> bool:
         return category == FlowchartElementCategory.TEXT.value
 
     @override
-    def _is_arrow_head_category(self, diagram_id: str, category: int) -> bool:
+    def _is_arrow_head_category(self, diagram_id: str, category: str) -> bool:
         return category == FlowchartElementCategory.ARROW_HEAD.value
 
     @override
-    def _is_arrow_tail_category(self, diagram_id: str, category: int) -> bool:
+    def _is_arrow_tail_category(self, diagram_id: str, category: str) -> bool:
         return category == FlowchartElementCategory.ARROW_TAIL.value
 
     def _preprocess(self, diagram_id: str, image: Image) -> Image:
