@@ -65,7 +65,7 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
         pass
 
     def _compute_text_associations(self, diagram_id: str, element_bboxes: List[ImageBoundingBox],
-                                   arrow_bboxes: List[ImageBoundingBox],
+                                   arrows: List[Arrow],
                                    text_bboxes: List[ImageBoundingBox])\
             -> Tuple[Dict[ImageBoundingBox, List[ImageBoundingBox]], Dict[ImageBoundingBox, List[ImageBoundingBox]]]:
 
@@ -76,7 +76,7 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
         Args:
             diagram_id (str): The identifier of the diagram being processed
             element_bboxes (List[ImageBoundingBox]): The bounding boxes of the elements
-            arrow_bboxes (List[ImageBoundingBox]): The bounding boxes of the arrows
+            arrows (List[Arrow]): The arrows
             text_bboxes (List[ImageBoundingBox]): The bounding boxes of the texts
         Returns:
             Tuple[Dict[ImageBoundingBox, List[ImageBoundingBox]], Dict[ImageBoundingBox, List[ImageBoundingBox]]]:
@@ -143,13 +143,13 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
         return generated_text.strip()
 
     def _compute_relations(self, diagram_id: str, element_bboxes: List[ImageBoundingBox],
-                           arrow_bboxes: List[Arrow]) -> List[ObjectRelation]:
+                           arrows: List[Arrow]) -> List[ObjectRelation]:
         """
             Computes the relationships between elements and arrows in a diagram based on their bounding boxes.
             Args:
                 diagram_id (str): The identifier of the diagram being processed.
                 element_bboxes (List[ImageBoundingBox]): A list of bounding boxes representing the elements in the diagram.
-                arrow_bboxes (List[ImageBoundingBox]): A list of bounding boxes representing the arrows in the diagram.
+                arrows (List[Arrow]): A list of arrows in the diagram.
             Returns:
                 ist[ObjectRelation]: A list of object relations, where each relation specifies the category of the arrow
                                         and the indices of the source and target elements it connects.
@@ -269,7 +269,7 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
 
         Args:
             diagram_id (str): The identifier of the diagram being processed
-            arrow_bbox (ImageBoundingBox): The bbox of the arrow associated to the text
+            arrow (Arrow): The bbox of the arrow associated to the text
             text_bbox (ImageBoundingBox): The bbox of the text associated to the element
         Returns:
             ArrowTextTypeOutcome:
