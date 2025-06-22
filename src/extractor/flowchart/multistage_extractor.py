@@ -37,7 +37,7 @@ class ArrowTextTypeOutcome(Enum):
     DISCARD = "discard"
 
 
-@dataclass
+@dataclass(kw_only=True)
 class MultistageFlowchartExtractor(MultiStageExtractor, ABC):
 
     parallelization: bool = False

@@ -1,7 +1,7 @@
 from enum import IntEnum
 
 
-class Category(IntEnum):
+class FlowchartElementCategory(IntEnum):
     STATE = 1
     FINAL_STATE = 2
     TEXT = 3
@@ -11,5 +11,7 @@ class Category(IntEnum):
     DECISION = 7
     PROCESS = 8
     TERMINATOR = 9
+    ARROW_HEAD = 10
+    ARROW_TAIL = 11
 
-    # TODO: head/tail
+    # TODO: head/tail sono corretti?

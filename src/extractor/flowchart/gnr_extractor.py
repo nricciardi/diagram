@@ -1,7 +1,7 @@
 import logging
 from collections import defaultdict
 from dataclasses import dataclass
-from typing import List, Tuple, Dict, Optional
+from typing import List, Tuple, Dict, Optional, override
 
 from shapely.geometry import Polygon
 from torchvision.models.detection import FasterRCNN
@@ -11,6 +11,7 @@ from core.image.image import Image
 from src.extractor.arrow.arrow import Arrow
 from src.extractor.flowchart.multistage_extractor import MultistageFlowchartExtractor, ArrowTextTypeOutcome, \
     ElementTextTypeOutcome, ObjectRelation
+from src.flowchart_element_category import FlowchartElementCategory
 from src.utils.bbox_utils import bbox_overlap, bbox_distance, bbox_vertices, bbox_split, bbox_relative_position
 from src.wellknown_diagram import WellKnownDiagram
 from src.extractor.text_extraction.text_extractor import TrOCRTextExtractorSmall
@@ -18,8 +19,9 @@ from src.extractor.text_extraction.text_extractor import TrOCRTextExtractorSmall
 logger = logging.getLogger(__name__)
 
 
-@dataclass
+@dataclass(kw_only=True)
 class GNRFlowchartExtractor(MultistageFlowchartExtractor):
+
     bbox_detector: FasterRCNN
 
     element_precedent_over_arrow_in_text_association: bool = True
@@ -32,20 +34,32 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
 
     text_digitizer = TrOCRTextExtractorSmall()
 
+    @override
     def compatible_diagrams(self) -> List[str]:
         return [
             WellKnownDiagram.GRAPH_DIAGRAM.value,
             WellKnownDiagram.FLOW_CHART.value,
         ]
 
-    def _is_arrow_category(self, diagram_id: str, category: str) -> bool:
-        pass
+    @override
+    def _is_arrow_category(self, diagram_id: str, category: int) -> bool:
+        return category == FlowchartElementCategory.ARROW.value
 
-    def _is_element_category(self, diagram_id: str, category: str) -> bool:
-        pass
+    @override
+    def _is_element_category(self, diagram_id: str, category: int) -> bool:
+        pass        # TODO
 
-    def _is_text_category(self, diagram_id: str, category: str) -> bool:
-        pass
+    @override
+    def _is_text_category(self, diagram_id: str, category: int) -> bool:
+        return category == FlowchartElementCategory.TEXT.value
+
+    @override
+    def _is_arrow_head_category(self, diagram_id: str, category: int) -> bool:
+        return category == FlowchartElementCategory.ARROW_HEAD.value
+
+    @override
+    def _is_arrow_tail_category(self, diagram_id: str, category: int) -> bool:
+        return category == FlowchartElementCategory.ARROW_TAIL.value
 
     def _preprocess(self, diagram_id: str, image: Image) -> Image:
         pass
@@ -330,5 +344,6 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
         logger.debug(f'Outcome {outcome} for overlapping arrow-text')
         return outcome
 
+    @override
     def _extract_diagram_objects(self, diagram_id: str, image: Image) -> List[ImageBoundingBox]:
         pass    # TODO: model.predict() -> tensors -> List[ImageBoundingBox] ([nic] -> List, List, List)

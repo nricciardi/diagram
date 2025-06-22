@@ -4,6 +4,9 @@ import os
 import sys
 import logging
 from pathlib import Path
+
+from core.classifier.classifier import Classifier
+from core.extractor.extractor import Extractor
 from core.image.image import Image
 from core.image.tensor_image import TensorImage
 from core.orchestrator.orchestrator import Orchestrator
@@ -85,9 +88,22 @@ def parse_args():
         help="Set the logging level (default: info)"
     )
 
-    # Positional argument: list of input files
     parser.add_argument(
-        "input",
+        "--classifier",
+        type=str,
+        required=True,
+        help="(GNR)Classifier weights"
+    )
+
+    parser.add_argument(
+        "--bbox-detector",
+        type=str,
+        required=True,
+        help="Bounding box detector weights"
+    )
+
+    parser.add_argument(
+        "--input",
         nargs='+',
         type=str,
         help="List of input files from the local file system (required)"
@@ -96,14 +112,13 @@ def parse_args():
     return parser.parse_args()
 
 
-def main(inputs_paths: List[str], parallelization: bool, then_compile: bool, outputs_dir_path: Optional[str]):
+def main(classifier: Classifier, extractors: List[Extractor], inputs_paths: List[str], parallelization: bool, then_compile: bool, outputs_dir_path: Optional[str]):
+
     images: List[Image] = [TensorImage.from_str(path) for path in inputs_paths]
 
     orchestrator = Orchestrator(
-        classifier=GNRClassifier(),
-        extractors=[
-            GNRFlowchartExtractor("gnr-flowchart-extractor", bbox_trust_threshold=0.7, parallelization=parallelization)
-        ],
+        classifier=classifier,
+        extractors=extractors,
         transducers=[
             FlowchartToMermaidTransducer("flowchart-to-mermaid-transducer"),
             FlowchartToD2Transducer("flowchart-to-d2-transducer"),
@@ -147,7 +162,20 @@ if __name__ == '__main__':
         logger.info(f"- Output directory: {args.outputs_dir_path}")
     logger.info(f"- Input files: {args.input}")
 
+
+    classifier = GNRClassifier(model_path=args.classifier)
+    extractors = [
+        GNRFlowchartExtractor(
+            bbox_detector=..., # TODO: in `args.bbox_detector` there is the weights file path
+            identifier="gnr-flowchart-extractor",
+            bbox_trust_threshold=0.7,
+            parallelization=args.parallelize
+        )
+    ]
+
     main(
+        classifier=classifier,
+        extractors=extractors,
         inputs_paths=args.input,
         parallelization=args.parallelize,
         then_compile=args.then_compile,
