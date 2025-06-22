@@ -1,18 +1,13 @@
 import json
 import os
 from enum import Enum
-from typing import Tuple, Dict, List
+from typing import Tuple
 import cv2
 import torch
-import torch.nn.functional as F
-from numpy.ma.core import anomalies
 from torch.utils.data import Dataset
 import random
 
 import matplotlib.pyplot as plt
-
-from src.extractor.arrow.arrow import Arrow
-from src.extractor.arrow.dataset_generator import ARROW_CATEGORY
 
 
 class ContentType(Enum):

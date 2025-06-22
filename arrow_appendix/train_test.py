@@ -2,12 +2,11 @@ import argparse
 
 import torch
 import torch.nn as nn
-from torch.optim.optimizer import required
 from torch.utils.data import DataLoader
 import matplotlib.pyplot as plt
 
 from src.dataset.extractor.arrow_dataset import ArrowDataset, ContentType
-from src.extractor.arrow.arrownet import ArrowNet
+from arrow_appendix.arrownet import ArrowNet
 
 
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
