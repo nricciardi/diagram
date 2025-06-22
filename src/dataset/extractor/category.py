@@ -11,3 +11,5 @@ class Category(IntEnum):
     DECISION = 7
     PROCESS = 8
     TERMINATOR = 9
+
+    # TODO: head/tail

@@ -135,9 +135,8 @@ Per lo sgherro (in base alla priorità):
 - [x] F. Downsampling/upsampling classifier
 - [x] F: Classi prese in input dal classifier
 - [x] F: print -> log
-- [ ] N: Fix extractor (tra cui aggiungere i metodi astratti per transduer e extractor)
-- [ ] N: Identificazione testa e coda frecce da bbox 2 punti
-- [ ] S: Finetuning object detection singola senza Otsu e filtro mediano (se va male farne due)
+- [x] N: Identificazione testa e coda frecce da bbox 2 punti
+- [x] S: Finetuning object detection singola senza Otsu e filtro mediano (se va male farne due)
 
 
 Scegliere se andare a fare spionaggio
@@ -145,9 +144,12 @@ Scegliere se andare a fare spionaggio
 
 ## Domenica 29/06
 
-- [ ] _compute_relations in extractor
-- [ ] _arrow_text_type in extractor
-- [ ] Finetuning threshold extractor
+- [ ] Fil: _compute_relations in extractor
+- [ ] Sav: _arrow_text_type in extractor
+- [ ] Chat: Finetuning threshold extractor
+- [ ] N: Fix extractor (tra cui aggiungere i metodi astratti per transduer e extractor)
+- [ ] Togliere i TODO nel progetto, togliere percorsi assoluti
+
 
 
 ## Deadline codice 01/07

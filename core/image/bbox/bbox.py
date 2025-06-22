@@ -8,7 +8,7 @@ class ImageBoundingBox(ABC):
     """
     Abstract base class representing an image bounding box.
     Attributes:
-        category (str): The category or label associated with the bounding box.
+        category (int): The category or label associated with the bounding box.
         box (Tensor): The tensor representation of the bounding box coordinates.
         trust (float): A confidence score for the bounding box, must be between 0 and 1.
     Methods:
@@ -31,9 +31,8 @@ class ImageBoundingBox(ABC):
     Raises:
         ValueError: If the `trust` attribute is not between 0 and 1.
     """
-    
-    
-    category: str
+
+    category: int
     box: Tensor
     trust: float
 

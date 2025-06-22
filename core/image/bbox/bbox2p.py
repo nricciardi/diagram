@@ -1,5 +1,7 @@
 from core.image.bbox.bbox import ImageBoundingBox
 from dataclasses import dataclass
+import torch
+from typing import Self
 
 
 @dataclass(frozen=True)
@@ -43,4 +45,3 @@ class ImageBoundingBox2Points(ImageBoundingBox):
     @property
     def bottom_right_y(self) -> float:
         return float(self.box[3])
-

@@ -4,6 +4,7 @@ from dataclasses import dataclass
 from typing import List, Tuple, Dict, Optional
 
 from shapely.geometry import Polygon
+from torchvision.models.detection import FasterRCNN
 
 from core.image.bbox.bbox import ImageBoundingBox
 from core.image.image import Image
@@ -19,6 +20,8 @@ logger = logging.getLogger(__name__)
 
 @dataclass
 class GNRFlowchartExtractor(MultistageFlowchartExtractor):
+    bbox_detector: FasterRCNN
+
     element_precedent_over_arrow_in_text_association: bool = True
     element_text_overlap_threshold: float = 0.5  # TODO find optimal threshold
     element_text_distance_threshold: float = 10  # TODO find optimal threshold
@@ -26,6 +29,7 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
     element_arrow_overlap_threshold: float = 0.1  # TODO find optimal threshold
     element_arrow_distance_threshold: float = 20.  # TODO find optimal threshold
     ratios = [0.2, 0.6, 0.2]  # Source, Middle, Target
+
     text_digitizer = TrOCRTextExtractorSmall()
 
     def compatible_diagrams(self) -> List[str]:
@@ -327,4 +331,4 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
         return outcome
 
     def _extract_diagram_objects(self, diagram_id: str, image: Image) -> List[ImageBoundingBox]:
-        pass
+        pass    # TODO: model.predict() -> tensors -> List[ImageBoundingBox] ([nic] -> List, List, List)
