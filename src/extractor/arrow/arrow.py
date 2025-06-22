@@ -1,9 +1,10 @@
 from dataclasses import dataclass
-from typing import Set, List
+from typing import List
 
 import torch
 from matplotlib.image import BboxImage
 
+from core.image.bbox.bbox import ImageBoundingBox
 from core.image.bbox.bbox2p import ImageBoundingBox2Points
 
 
@@ -15,10 +16,10 @@ class Arrow:
     x_tail: int
     y_tail: int
 
-    bbox: ImageBoundingBox2Points
+    bbox: ImageBoundingBox
 
 
-def compute_arrows(arrow_bboxes: List[ImageBoundingBox2Points], head_bboxes: List[ImageBoundingBox2Points], tail_bboxes: List[ImageBoundingBox2Points]) -> Set[Arrow]:
+def compute_arrows(arrow_bboxes: List[ImageBoundingBox], head_bboxes: List[ImageBoundingBox], tail_bboxes: List[ImageBoundingBox]) -> List[Arrow]:
     """
     arrow_bboxes: bboxes of arrows
     arrow_bboxes: bboxes of arrow heads

@@ -7,7 +7,7 @@ from core.extractor.multistage_extractor.multistage_extractor import MultiStageE
 from core.image.bbox.bbox import ImageBoundingBox
 from core.image.image import Image
 from core.representation.representation import DiagramRepresentation
-from src.extractor.arrow.arrow import Arrow
+from src.extractor.arrow.arrow import Arrow, compute_arrows
 from src.representation.flowchart_representation.element import Element
 from src.representation.flowchart_representation.flowchart_representation import FlowchartRepresentation
 from src.representation.flowchart_representation.relation import Relation
@@ -53,11 +53,15 @@ class MultistageFlowchartExtractor(MultiStageExtractor, ABC):
 
         element_bboxes: List[ImageBoundingBox] = [bbox for bbox in bboxes if self._is_element_category(diagram_id, bbox.category)]
         arrow_bboxes: List[ImageBoundingBox] = [bbox for bbox in bboxes if self._is_arrow_category(diagram_id, bbox.category)]
+        arrow_head_bboxes: List[ImageBoundingBox] = [bbox for bbox in bboxes if self._is_arrow_head_category(diagram_id, bbox.category)]
+        arrow_tail_bboxes: List[ImageBoundingBox] = [bbox for bbox in bboxes if self._is_arrow_tail_category(diagram_id, bbox.category)]
         text_bboxes: List[ImageBoundingBox] = [bbox for bbox in bboxes if self._is_text_category(diagram_id, bbox.category)]
 
         elements_texts_associations, arrows_texts_associations = self._compute_text_associations(diagram_id, element_bboxes, arrow_bboxes, text_bboxes)
 
-        objects_relations: List[ObjectRelation] = self._compute_relations(diagram_id, element_bboxes, arrow_bboxes)
+        arrows: List[Arrow] = compute_arrows(arrow_bboxes, arrow_head_bboxes, arrow_tail_bboxes)
+
+        objects_relations: List[ObjectRelation] = self._compute_relations(diagram_id, element_bboxes, arrows)
 
         elements: List[Element] = self._build_elements(diagram_id, image, elements_texts_associations)
 
@@ -70,19 +74,27 @@ class MultistageFlowchartExtractor(MultiStageExtractor, ABC):
 
 
     def __par_build_diagram_representation(self, diagram_id: str, image: Image, bboxes: List[ImageBoundingBox]) -> FlowchartRepresentation:
-        raise NotImplemented()      # TODO
+        raise NotImplemented()      # TODO: Backlog
 
 
     @abstractmethod
-    def _is_arrow_category(self, diagram_id: str, category: str) -> bool:
+    def _is_arrow_category(self, diagram_id: str, category: int) -> bool:
         raise NotImplemented()
 
     @abstractmethod
-    def _is_element_category(self, diagram_id: str, category: str) -> bool:
+    def _is_arrow_head_category(self, diagram_id: str, category: int) -> bool:
         raise NotImplemented()
 
     @abstractmethod
-    def _is_text_category(self, diagram_id: str, category: str) -> bool:
+    def _is_arrow_tail_category(self, diagram_id: str, category: int) -> bool:
+        raise NotImplemented()
+
+    @abstractmethod
+    def _is_element_category(self, diagram_id: str, category: int) -> bool:
+        raise NotImplemented()
+
+    @abstractmethod
+    def _is_text_category(self, diagram_id: str, category: int) -> bool:
         raise NotImplemented()
 
     @abstractmethod
