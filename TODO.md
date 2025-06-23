@@ -147,7 +147,7 @@ Scegliere se andare a fare spionaggio
 - [ ] Fil: _compute_relations in extractor
 - [ ] Sav: _arrow_text_type in extractor
 - [ ] Chat: Finetuning threshold extractor
-- [ ] N: Fix extractor (tra cui aggiungere i metodi astratti per transduer e extractor)
+- [x] N: Fix extractor (tra cui aggiungere i metodi astratti per transduer e extractor)
 - [ ] Togliere i TODO nel progetto, togliere percorsi assoluti
 
 
