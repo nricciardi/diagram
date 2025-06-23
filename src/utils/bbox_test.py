@@ -5,7 +5,8 @@ import torch
 from shapely import LineString
 
 from core.image.bbox.bbox2p import ImageBoundingBox2Points
-from src.utils.bbox_utils import bbox_distance, bbox_overlap, bbox_split, split_linestring_by_ratios, plot_segments
+from src.utils.bbox_utils import bbox_distance, bbox_overlap, bbox_split, split_linestring_by_ratios, plot_segments, \
+    plot_linestring
 
 
 class TestUtils(unittest.TestCase):
@@ -36,8 +37,9 @@ class TestUtils(unittest.TestCase):
         self.assertEqual(expected_source, splits[0])
 
     def test_split_linestring_by_ratios(self):
-        line = LineString([(0, 0), (10, 0)])
-        ratios = [0.2, 0.5, 0.3]
+        line = LineString([(0, 0), (5, 5), (10, 0)])
+        # plot_linestring(line)
+        ratios = [0.2, 0.6, 0.2]
         segments = split_linestring_by_ratios(line, ratios)
         plot_segments(segments)
         self.assertEqual(segments[0], LineString([[0, 0], [2, 0]]))

@@ -14,7 +14,7 @@ from src.extractor.arrow.arrow import Arrow
 from src.extractor.flowchart.multistage_extractor import MultistageFlowchartExtractor, ArrowTextTypeOutcome, \
     ElementTextTypeOutcome, ObjectRelation
 from src.flowchart_element_category import FlowchartElementCategoryIndex, Lookup
-from src.utils.bbox_utils import bbox_overlap, bbox_distance, bbox_vertices, bbox_relative_position, \
+from src.utils.bbox_utils import bbox_overlap, bbox_distance, bbox_vertices, \
     distance_bbox_point, split_linestring_by_ratios
 from src.wellknown_diagram import WellKnownDiagram
 from src.extractor.text_extraction.text_extractor import TrOCRTextExtractorSmall
@@ -233,7 +233,7 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
 
         logger.debug('Computing vertices arrow-text...')
         arrow_bbox_vertices, text_bbox_vertices = bbox_vertices(bbox1=arrow.bbox, bbox2=text_bbox)
-        arrow_line = LineString(coordinates=[[arrow.x_tail, arrow.x_tail], [arrow.x_head, arrow.y_head]])
+        arrow_line = LineString(coordinates=[[arrow.x_tail, arrow.y_tail], [arrow.x_head, arrow.y_head]])
         text_poly = Polygon(text_bbox_vertices)
 
         logger.debug('Computing distance arrow-text...')

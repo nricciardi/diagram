@@ -102,7 +102,7 @@ def bbox_vertices(bbox1: ImageBoundingBox, bbox2: ImageBoundingBox) -> \
     return bbox1_vertices, bbox2_vertices
 
 
-def split_linestring_by_ratios(line: LineString, ratios: List[float]) -> List[LineString]:
+def split_linestring_by_ratios(self, line: LineString, ratios: List[float]) -> List[LineString]:
     """
     Splits a LineString into segments based on provided ratios.
 
@@ -134,6 +134,7 @@ def split_linestring_by_ratios(line: LineString, ratios: List[float]) -> List[Li
         parts = sorted(parts, key=lambda seg: seg.project(Point(line.coords[0])))
 
         segments.append(parts[0])
+
         current_line = parts[1]
 
     segments.append(current_line)  # Add the final piece
@@ -158,146 +159,32 @@ def plot_segments(segments, line_title="LineString Segments"):
     ax.legend()
     plt.grid(True)
     plt.show()
-
-
-def interpolate(p1: Tuple[float, float], p2: Tuple[float, float], t: float) -> np.ndarray:
+def plot_linestring(linestring, color='blue', linewidth=2, show_points=False, point_color='red'):
     """
-    Linearly interpolates between two points in 2D space.
+    Plots a Shapely LineString using matplotlib.
+
     Parameters:
-        p1 (Tuple[float, float]): The first point as a tuple of (x, y) coordinates.
-        p2 (Tuple[float, float]): The second point as a tuple of (x, y) coordinates.
-        t (float): The interpolation factor, where 0 <= t <= 1. 
-                   A value of 0 returns p1, a value of 1 returns p2, 
-                   and values in between return a point along the line segment.
-    Returns:
-        np.ndarray: The interpolated point as a NumPy array of shape (2,).
+    - linestring (shapely.geometry.LineString): The LineString to plot.
+    - color (str): Color of the line.
+    - linewidth (int): Width of the line.
+    - show_points (bool): If True, show the vertices of the LineString.
+    - point_color (str): Color of the vertices, if shown.
     """
+    if not isinstance(linestring, LineString):
+        raise TypeError("Input must be a shapely.geometry.LineString")
 
-    return (1 - t) * np.array(p1) + t * np.array(p2)
+    x, y = linestring.xy
+    plt.plot(x, y, color=color, linewidth=linewidth)
 
+    if show_points:
+        plt.plot(x, y, 'o', color=point_color)
 
-def bbox_split(bbox: ImageBoundingBox, ratios: List[float], arrow_head: str) -> List[List[Tuple]]:
-    """
-    Splits a bounding box into smaller sub-boxes based on the specified direction, ratios, and arrow head orientation.
-    Args:
-        bbox (ImageBoundingBox): The bounding box to be split, defined by its vertices.
-        ratios (List[float]): A list of ratios that determine the size of each sub-box along the split direction.
-                              The sum of the ratios should equal 1.
-        arrow_head (str): The orientation of the arrow head, which determines the order of the split.
-                          For vertical splits, it can be 'down' or 'up'.
-                          For horizontal splits, it can be 'right' or 'left'.
-    Returns:
-        List[List[Tuple]]: A list of sub-boxes, where each sub-box is represented as a list of tuples.
-                           Each tuple corresponds to a vertex of the sub-box in clockwise order.
-    Raises:
-        ValueError: If the direction is not 'vertically' or 'horizontally'.
-                    If the arrow_head is not valid for the given direction.
-                    If the sum of ratios does not equal 1.
-    Notes:
-        - While it is technically possible to pass 2 points bboxes as parameters, to have more accurate results,
-        it is suggested to use 4 points bboxes
-        - Arrow_head is needed both to understand which sides to cut and to distinguish which split is the source
-        and which is the target
-        - In case of multiple heads (or no heads at all), a random one (among the two possible for the type of
-        split) should be passed
-    """
-
-    if arrow_head not in ['down', 'up', 'left', 'right']:
-        raise ValueError(f'Arrow_head should be down, up, left or right; got {arrow_head} instead')
-
-    if abs(sum(ratios) - 1.0) > 1e-6:
-        raise ValueError(f'Sum of ratios should equal 1, got {sum(ratios)} instead')
-
-    vertices, other_vertices = bbox_vertices(bbox1=bbox, bbox2=bbox)
-
-    if arrow_head in ['down', 'up']:
-        if arrow_head == 'down':
-            left = [vertices[0], vertices[3]]
-            right = [vertices[1], vertices[2]]
-        else:
-            left = [vertices[3], vertices[0]]
-            right = [vertices[2], vertices[1]]
-
-        boxes = []
-        t_start = 0
-
-        for ratio in ratios:
-            t_end = t_start + ratio
-
-            # Interpolate along the left and right edges
-            left_top = interpolate(left[0], left[1], t_start).tolist()
-            left_bottom = interpolate(left[0], left[1], t_end).tolist()
-            right_top = interpolate(right[0], right[1], t_start).tolist()
-            right_bottom = interpolate(right[0], right[1], t_end).tolist()
-
-            # Create sub-box (clockwise)
-            sub_box = [
-                tuple(left_top),
-                tuple(right_top),
-                tuple(right_bottom),
-                tuple(left_bottom)
-            ]
-            boxes.append(sub_box)
-
-            t_start = t_end
-    else:
-        if arrow_head == 'right':
-            top_edge = [vertices[0], vertices[1]]
-            bottom_edge = [vertices[3], vertices[2]]
-        else:
-            top_edge = [vertices[1], vertices[0]]
-            bottom_edge = [vertices[2], vertices[3]]
-
-        boxes = []
-        t_start = 0
-
-        for ratio in ratios:
-            t_end = t_start + ratio
-
-            # Interpolate on top and bottom edges
-            top_left = interpolate(top_edge[0], top_edge[1], t_start)
-            top_right = interpolate(top_edge[0], top_edge[1], t_end)
-            bottom_left = interpolate(bottom_edge[0], bottom_edge[1], t_start)
-            bottom_right = interpolate(bottom_edge[0], bottom_edge[1], t_end)
-
-            sub_box = [
-                tuple(top_left),
-                tuple(top_right),
-                tuple(bottom_right),
-                tuple(bottom_left)
-            ]
-            boxes.append(sub_box)
-
-            t_start = t_end
-
-    return boxes
-
-
-def bbox_relative_position(first_bbox: ImageBoundingBox, second_bbox: ImageBoundingBox) -> str:
-    """
-    Determines the relative position of a second bounding box with respect to a first bounding box.
-    Args:
-        first_bbox (ImageBoundingBox): The reference bounding box.
-        second_bbox (ImageBoundingBox): The bounding box whose position is to be determined.
-    Returns:
-        str: A string indicating the relative position of the second bounding box.
-             Possible values are:
-             - "right": The second bounding box is to the right of the first bounding box.
-             - "left": The second bounding box is to the left of the first bounding box.
-             - "down": The second bounding box is below the first bounding box.
-             - "up": The second bounding box is above the first bounding box.
-    """
-
-    if second_bbox.top_left_x > first_bbox.top_left_x:
-        return "right"
-    elif second_bbox.top_left_x < first_bbox.top_left_x:
-        return "left"
-    else:
-        if second_bbox.bottom_right_y < second_bbox.top_right_y:
-            return "down"
-        else:
-            return "up"
-
+    plt.xlabel("X")
+    plt.ylabel("Y")
+    plt.title("Shapely LineString Plot")
+    plt.axis('equal')
+    plt.grid(True)
+    plt.show()
 
 def IoU(first_bbox: ImageBoundingBox, second_bbox: ImageBoundingBox) -> float:
     """
