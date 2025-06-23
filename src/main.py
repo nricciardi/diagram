@@ -5,6 +5,9 @@ import sys
 import logging
 from pathlib import Path
 import torch
+
+sys.path.append(str(Path(__file__).resolve().parent.parent))
+
 from core.classifier.classifier import Classifier
 from core.extractor.extractor import Extractor
 from core.image.image import Image

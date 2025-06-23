@@ -175,8 +175,8 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
             ret.append(
                 ObjectRelation(
                     category=Lookup.table[FlowchartElementCategoryIndex.ARROW.value],
-                    source=source,
-                    target=target,
+                    source_index=source,
+                    target_index=target,
                 )
             )
 

@@ -13,7 +13,7 @@ class FlowchartToMermaidCompiler(Compiler):
     def compatible_markup_languages(self) -> List[str]:
         return [WellKnownMarkupLanguage.MERMAID.value]
 
-    def compile(self, payload: str, output_path: str, dump_markuplang_file: bool = True,
+    def compile(self, payload: str, output_path: str, dump_markuplang_file: bool = False,
                 markuplang_file_path: str | None = None):
         if dump_markuplang_file is True:
             with open(markuplang_file_path, 'w') as file:
