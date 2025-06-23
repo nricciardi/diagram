@@ -5,3 +5,4 @@
 *.pyc
 core/transducer/__pycache__/outcome.cpython-312.pyc
 *.pyc
+*.pth

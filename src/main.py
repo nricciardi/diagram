@@ -24,12 +24,6 @@ from src.compiler.d2.flowchart_compiler import FlowchartToD2Compiler
 from src.compiler.mermaid.flowchart_compiler import FlowchartToMermaidCompiler
 from src.wellknown_markuplang import WellKnownMarkupLanguage
 
-# Configure logging
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s [%(levelname)s] %(message)s",
-    handlers=[logging.StreamHandler(sys.stdout)]
-)
 logger = logging.getLogger(__name__)
 
 LOG_LEVELS = {
