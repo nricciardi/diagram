@@ -192,6 +192,7 @@ class TrOCRTextExtractorSmall(TextExtractor):
         Extracts text from the given image using the TrOCR model.
 
         Args:
+            text_bbox:
             image (Image): The image object containing the file.
 
         Returns:

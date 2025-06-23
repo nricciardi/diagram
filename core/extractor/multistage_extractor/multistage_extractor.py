@@ -25,6 +25,8 @@ class MultiStageExtractor(Extractor, ABC):
 
         bboxes = self._extract_diagram_objects(diagram_id, image)
 
+        logger.debug(f"{len(bboxes)} extracted")
+
         if self.bbox_trust_threshold is not None:
             bboxes = self._filter_bboxes(bboxes)
 

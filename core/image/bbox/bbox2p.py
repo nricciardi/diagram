@@ -45,3 +45,12 @@ class ImageBoundingBox2Points(ImageBoundingBox):
     @property
     def bottom_right_y(self) -> float:
         return float(self.box[3])
+
+    def area(self) -> float:
+        assert self.top_right_x >= self.top_left_x
+        # assert (self.top_right_x - self.top_left_x) == (self.bottom_right_x - self.bottom_left_x)
+
+        assert self.top_right_y <= self.bottom_right_y
+        # assert (self.top_right_y - self.bottom_right_y) == (self.top_left_y - self.bottom_left_y)
+
+        return (self.top_right_x - self.top_left_x) * (self.bottom_right_y - self.top_right_y)

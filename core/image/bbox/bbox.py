@@ -80,4 +80,6 @@ class ImageBoundingBox(ABC):
     def bottom_right_y(self) -> float:
         pass
 
-
+    @abstractmethod
+    def area(self) -> float:
+        pass

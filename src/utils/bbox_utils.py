@@ -62,10 +62,8 @@ def bbox_overlap(bbox1: ImageBoundingBox, bbox2: ImageBoundingBox, two_wrt_one: 
     y_bottom: float = max(bbox1.bottom_right_y, bbox2.bottom_right_y)
 
     intersection_area: float = max(0., x_right - x_left) * max(0., y_top - y_bottom)
-    area_bbox1: float = (bbox1.bottom_right_x - bbox1.top_left_x) * (
-            bbox1.top_left_y - bbox1.bottom_right_y)
-    area_bbox2: float = (bbox2.bottom_right_x - bbox2.top_left_x) * (
-            bbox2.top_left_y - bbox2.bottom_right_y)
+    area_bbox1: float = bbox1.area()
+    area_bbox2: float = bbox2.area()
 
     if area_bbox2 <= 0 and two_wrt_one:
         raise ValueError("bbox2 is an invalid bbox")

@@ -45,8 +45,10 @@ def configure_logger(level_name: str):
         format="%(asctime)s [%(levelname)s] %(message)s",
         handlers=[logging.StreamHandler(sys.stdout)]
     )
+
     logger = logging.getLogger(__name__)
     logger.debug(f"Logger configured with level: {level_name.upper()}")
+
     return logger
 
 
