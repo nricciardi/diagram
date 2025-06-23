@@ -4,7 +4,7 @@ from dataclasses import dataclass
 from typing import List, Tuple, Dict, Optional, override
 
 import torch
-from shapely.geometry import Polygon
+from shapely.geometry import Polygon, LineString
 from torchvision.models.detection import FasterRCNN
 
 from core.image.bbox.bbox import ImageBoundingBox
@@ -13,7 +13,8 @@ from src.extractor.arrow.arrow import Arrow
 from src.extractor.flowchart.multistage_extractor import MultistageFlowchartExtractor, ArrowTextTypeOutcome, \
     ElementTextTypeOutcome, ObjectRelation
 from src.flowchart_element_category import FlowchartElementCategoryIndex, Lookup
-from src.utils.bbox_utils import bbox_overlap, bbox_distance, bbox_vertices, bbox_split, bbox_relative_position, distance_bbox_point
+from src.utils.bbox_utils import bbox_overlap, bbox_distance, bbox_vertices, bbox_relative_position, \
+    distance_bbox_point, split_linestring_by_ratios
 from src.wellknown_diagram import WellKnownDiagram
 from src.extractor.text_extraction.text_extractor import TrOCRTextExtractorSmall
 
@@ -28,7 +29,8 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
     element_precedent_over_arrow_in_text_association: bool = True
     element_text_overlap_threshold: float = 0.5  # TODO find optimal threshold
     element_text_distance_threshold: float = 10  # TODO find optimal threshold
-    arrow_text_distance_threshold: float = 10  # TODO find optimal threshold
+    arrow_text_discard_distance_threshold: float = 10  # TODO find optimal threshold
+    arrow_text_inner_distance_threshold: float = 2 # TODO find optimal threshold
     element_arrow_overlap_threshold: float = 0.1  # TODO find optimal threshold
     element_arrow_distance_threshold: float = 20.  # TODO find optimal threshold
     ratios = [0.2, 0.6, 0.2]  # Source, Middle, Target
@@ -247,67 +249,39 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
             or the distance is lower than a certain threshold
         """
 
-        # TODO: si passa da arrow_bbox a 2 punti a testa e coda della freccia
-
         logger.debug('Computing vertices arrow-text...')
-        arrow_bbox_vertices, text_bbox_vertices = bbox_vertices(bbox1=arrow_bbox, bbox2=text_bbox)
-        arrow_poly = Polygon(arrow_bbox_vertices)
+        arrow_bbox_vertices, text_bbox_vertices = bbox_vertices(bbox1=arrow.bbox, bbox2=text_bbox)
+        arrow_line = LineString(coordinates=[[arrow.x_tail, arrow.x_tail], [arrow.x_head, arrow.y_head]])
         text_poly = Polygon(text_bbox_vertices)
-        logger.debug('Computing overlap percentage arrow-text...')
-        intersection = arrow_poly.intersection(text_poly)
-        inter_area = intersection.area
-        text_area = text_poly.area
-        overlap_text = inter_area / text_area
-        logger.debug(f'Overlap percentage arrow-text is {overlap_text}')
 
         logger.debug('Computing distance arrow-text...')
-        distance = arrow_poly.distance(text_poly)  # distance = 0 if overlap_text > 0
+        distance = arrow_line.distance(text_poly)
         logger.debug(f'Distance arrow-text is {distance}')
 
         outcome: ArrowTextTypeOutcome = ArrowTextTypeOutcome.INNER
 
-        if distance > self.arrow_text_distance_threshold:
+        if distance > self.arrow_text_discard_distance_threshold:
             outcome = ArrowTextTypeOutcome.DISCARD
-        if distance == 0 and overlap_text == 1:
-            outcome = ArrowTextTypeOutcome.INNER
 
-        arrow_head: str = 'down'  # TODO 'up', 'down', 'left', or 'right'
         logger.debug('Computing arrow splits...')
-        splits = bbox_split(bbox=arrow_bbox, ratios=self.ratios, arrow_head=arrow_head)
-        source, middle, target = splits[0], splits[1], splits[2]
-        source_poly = Polygon(source)
-        middle_poly = Polygon(middle)
-        target_poly = Polygon(target)
+        splits: List[LineString] = split_linestring_by_ratios(line=arrow_line, ratios=self.ratios)
+        source: LineString = splits[0]
+        middle: LineString = splits[1]
+        target: LineString = splits[2]
 
-        if distance == 0 and overlap_text < 1:
-            logger.debug('Computing intersection splits-text...')
-            intersection_source = source_poly.intersection(text_poly)
-            inter_area_source = intersection_source.area
-            max_inter_area = inter_area_source
-            outcome = ArrowTextTypeOutcome.SOURCE
-            intersection_middle = middle_poly.intersection(text_poly)
-            inter_area_middle = intersection_middle.area
-            if max_inter_area < inter_area_middle:
-                max_inter_area = inter_area_middle
-                outcome = ArrowTextTypeOutcome.MIDDLE
-            intersection_target = target_poly.intersection(text_poly)
-            inter_area_target = intersection_target.area
-            if max_inter_area < inter_area_target:
-                outcome = ArrowTextTypeOutcome.TARGET
-
-        if 0 < distance <= self.arrow_text_distance_threshold:
+        if self.arrow_text_inner_distance_threshold < distance <= self.arrow_text_discard_distance_threshold:
             logger.debug('Computing distance splits-text...')
-            min_distance = source_poly.distance(text_poly)
+            min_distance = source.distance(text_poly)
             outcome = ArrowTextTypeOutcome.SOURCE
-            middle_distance = middle_poly.distance(text_poly)
+            middle_distance = middle.distance(text_poly)
             if min_distance > middle_distance:
                 min_distance = middle_distance
                 outcome = ArrowTextTypeOutcome.MIDDLE
-            target_distance = target_poly.distance(text_poly)
+            target_distance = target.distance(text_poly)
             if min_distance > target_distance:
                 outcome = ArrowTextTypeOutcome.TARGET
 
-        logger.debug(f'Outcome {outcome} for overlapping arrow-text')
+        logger.debug(f'Outcome {outcome} for position arrow-text')
         return outcome
 
     @override

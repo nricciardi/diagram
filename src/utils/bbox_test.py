@@ -2,8 +2,10 @@ import unittest
 from typing import List, Tuple
 
 import torch
+from shapely import LineString
+
 from core.image.bbox.bbox2p import ImageBoundingBox2Points
-from src.utils.bbox_utils import bbox_distance, bbox_overlap, bbox_split
+from src.utils.bbox_utils import bbox_distance, bbox_overlap, bbox_split, split_linestring_by_ratios, plot_segments
 
 
 class TestUtils(unittest.TestCase):
@@ -32,6 +34,15 @@ class TestUtils(unittest.TestCase):
         self.assertEqual(expected_target, splits[2])
         self.assertEqual(expected_middle, splits[1])
         self.assertEqual(expected_source, splits[0])
+
+    def test_split_linestring_by_ratios(self):
+        line = LineString([(0, 0), (10, 0)])
+        ratios = [0.2, 0.5, 0.3]
+        segments = split_linestring_by_ratios(line, ratios)
+        plot_segments(segments)
+        self.assertEqual(segments[0], LineString([[0, 0], [2, 0]]))
+        self.assertEqual(segments[1], LineString([[2, 0], [7, 0]]))
+        self.assertEqual(segments[2], LineString([[7, 0], [10, 0]]))
 
 
 if __name__ == '__main__':

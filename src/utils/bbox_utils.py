@@ -4,6 +4,12 @@ import numpy as np
 
 from core.image.bbox.bbox import ImageBoundingBox
 
+from shapely.geometry import LineString
+from shapely.ops import split
+from shapely.geometry import Point
+import matplotlib.pyplot as plt
+import matplotlib.cm as cm
+
 
 def bbox_distance(bbox1: ImageBoundingBox, bbox2: ImageBoundingBox) -> float:
     """
@@ -70,8 +76,8 @@ def bbox_overlap(bbox1: ImageBoundingBox, bbox2: ImageBoundingBox, two_wrt_one: 
     return overlap_percentage
 
 
-def bbox_vertices(bbox1: ImageBoundingBox, bbox2: ImageBoundingBox) -> Tuple[
-        List[Tuple[float, float]], List[Tuple[float, float]]]:
+def bbox_vertices(bbox1: ImageBoundingBox, bbox2: ImageBoundingBox) -> \
+        Tuple[List[Tuple[float, float]], List[Tuple[float, float]]]:
     """
     Computes the vertices of two bounding boxes and returns them as lists of coordinate tuples.
     Args:
@@ -94,6 +100,64 @@ def bbox_vertices(bbox1: ImageBoundingBox, bbox2: ImageBoundingBox) -> Tuple[
                                                  (bbox2.bottom_left_x, bbox2.bottom_left_y)]
 
     return bbox1_vertices, bbox2_vertices
+
+
+def split_linestring_by_ratios(line: LineString, ratios: List[float]) -> List[LineString]:
+    """
+    Splits a LineString into segments based on provided ratios.
+
+    Parameters:
+    - line (LineString): Input line geometry.
+    - ratios (List[float]): List of float ratios summing to 1.0.
+
+    Returns:
+    - List[LineString]: Segmented line parts.
+    """
+    if not isinstance(line, LineString):
+        raise TypeError("Input must be a LineString.")
+    if not np.isclose(sum(ratios), 1.0):
+        raise ValueError("Ratios must sum to 1.0.")
+
+    total_length = line.length
+    distances = np.cumsum(ratios[:-1]) * total_length  # Exclude last ratio
+
+    split_points = [line.interpolate(d) for d in distances]
+
+    segments = []
+    current_line = line
+
+    for pt in split_points:
+        result = split(current_line, pt)
+        parts = list(result.geoms)  # Get actual geometries
+
+        # Sort by position along original line
+        parts = sorted(parts, key=lambda seg: seg.project(Point(line.coords[0])))
+
+        segments.append(parts[0])
+        current_line = parts[1]
+
+    segments.append(current_line)  # Add the final piece
+
+    return segments
+
+
+def plot_segments(segments, line_title="LineString Segments"):
+    fig, ax = plt.subplots()
+    colors = cm.get_cmap('tab10', len(segments))  # Use colormap with enough distinct colors
+
+    for i, seg in enumerate(segments):
+        x, y = seg.xy
+        ax.plot(x, y, label=f'Segment {i + 1}', color=colors(i), linewidth=3)
+
+        # Optional: add point labels at start of each segment
+        ax.text(x[0], y[0], f'{i + 1}', fontsize=12, ha='center', va='center',
+                bbox=dict(boxstyle='circle', facecolor='white', edgecolor='black'))
+
+    ax.set_title(line_title)
+    ax.set_aspect('equal')
+    ax.legend()
+    plt.grid(True)
+    plt.show()
 
 
 def interpolate(p1: Tuple[float, float], p2: Tuple[float, float], t: float) -> np.ndarray:
@@ -234,6 +298,7 @@ def bbox_relative_position(first_bbox: ImageBoundingBox, second_bbox: ImageBound
         else:
             return "up"
 
+
 def IoU(first_bbox: ImageBoundingBox, second_bbox: ImageBoundingBox) -> float:
     """
     Computes the Intersection over Union (IoU) of two bounding boxes.
@@ -253,13 +318,15 @@ def IoU(first_bbox: ImageBoundingBox, second_bbox: ImageBoundingBox) -> float:
     intersection = inter_width * inter_height
 
     area1 = (first_bbox.bottom_right_x - first_bbox.top_left_x) * (first_bbox.top_left_y - first_bbox.bottom_right_y)
-    area2 = (second_bbox.bottom_right_x - second_bbox.top_left_x) * (second_bbox.top_left_y - second_bbox.bottom_right_y)
+    area2 = (second_bbox.bottom_right_x - second_bbox.top_left_x) * (
+            second_bbox.top_left_y - second_bbox.bottom_right_y)
     union = area1 + area2 - intersection
 
     if union <= 0:
         return 0.0
 
     return intersection / union
+
 
 def distance_bbox_point(bbox: ImageBoundingBox, point_x: float, point_y: float) -> float:
     """
