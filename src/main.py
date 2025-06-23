@@ -93,6 +93,13 @@ def parse_args():
     )
 
     parser.add_argument(
+        "--device",
+        type=str,
+        default=DEVICE,
+        help="Set device"
+    )
+
+    parser.add_argument(
         "--classifier",
         type=str,
         required=True,
@@ -117,7 +124,7 @@ def parse_args():
     return parser.parse_args()
 
 
-def main(classifier: Classifier, extractors: List[Extractor], inputs_paths: List[str], parallelization: bool, then_compile: bool, outputs_dir_path: Optional[str]):
+def main(device: str, classifier: Classifier, extractors: List[Extractor], inputs_paths: List[str], parallelization: bool, then_compile: bool, outputs_dir_path: Optional[str]):
     images: List[Image] = [TensorImage.from_str(path) for path in inputs_paths]
 
     orchestrator = Orchestrator(
@@ -132,6 +139,8 @@ def main(classifier: Classifier, extractors: List[Extractor], inputs_paths: List
             FlowchartToD2Compiler("flowchart-to-d2-compiler")
         ],
     )
+
+    orchestrator.to_device(device)
 
     orchestrator.images2diagrams(
         images,
@@ -179,6 +188,7 @@ if __name__ == '__main__':
     ]
 
     main(
+        device=args.device,
         classifier=classifier,
         extractors=extractors,
         inputs_paths=args.input,

@@ -14,19 +14,23 @@ from core.image.image import Image
 from core.representation.representation import DiagramRepresentation
 from core.transducer.outcome import TransducerOutcome
 from core.transducer.transducer import Transducer
+from core.utils.to_device import ToDeviceMixin
 
 logger = logging.getLogger(__name__)
 
 
 @dataclass
-class Orchestrator:
+class Orchestrator(ToDeviceMixin):
+
     classifier: Classifier
     extractors: List[Extractor]
     transducers: List[Transducer]
     compilers: List[Compiler]
 
-    def __post_init__(self):
-        pass
+    def to_device(self, device: str):
+        self.classifier.to_device(device)
+        for extractor in self.extractors:
+            extractor.to_device(device)
 
     @classmethod
     def _build_output_path(cls, outputs_dir_path: str, diagram_id: str, markup_language: str, make_unique: bool = True, unique_strength: int = 8) -> str:
