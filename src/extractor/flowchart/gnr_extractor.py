@@ -8,6 +8,7 @@ from shapely.geometry import Polygon, LineString
 from torchvision.models.detection import FasterRCNN
 
 from core.image.bbox.bbox import ImageBoundingBox
+from core.image.bbox.bbox2p import ImageBoundingBox2Points
 from core.image.image import Image
 from src.extractor.arrow.arrow import Arrow
 from src.extractor.flowchart.multistage_extractor import MultistageFlowchartExtractor, ArrowTextTypeOutcome, \
@@ -289,5 +290,5 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
         prediction = self.bbox_detector(image.as_tensor())
         bboxes: List[ImageBoundingBox] = []
         for box, label, score in zip(prediction['boxes'], prediction['labels'], prediction['scores']):
-            bboxes.append(ImageBoundingBox(Lookup.table[label.item()], box, score.item()))
+            bboxes.append(ImageBoundingBox2Points(Lookup.table[label.item()], box, score.item()))
         return bboxes
