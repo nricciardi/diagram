@@ -277,10 +277,11 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
     @override
     def _extract_diagram_objects(self, diagram_id: str, image: Image) -> List[ImageBoundingBox]:
         image = image.as_tensor().unsqueeze(0).unsqueeze(0).float() / 255.0
-        prediction = self.bbox_detector(image)
+        predictions = self.bbox_detector(image)
         bboxes: List[ImageBoundingBox] = []
 
-        for box, label, score in zip(prediction['boxes'], prediction['labels'], prediction['scores']):
-            bboxes.append(ImageBoundingBox2Points(Lookup.table[label.item()], box, score.item()))
+        for prediction in predictions:
+            for box, label, score in zip(prediction['boxes'], prediction['labels'], prediction['scores']):
+                bboxes.append(ImageBoundingBox2Points(Lookup.table[label.item()], box, score.item()))
 
         return bboxes
