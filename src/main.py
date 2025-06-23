@@ -177,9 +177,10 @@ if __name__ == '__main__':
 
 
     classifier = GNRClassifier("gnr-classifier", model_path=args.classifier)
+    text_digitizer = TrOCRTextExtractorSmall()
     extractors = [
         GNRFlowchartExtractor(
-            text_digitizer=TrOCRTextExtractorSmall(),
+            text_digitizer=text_digitizer,
             bbox_detector=load_model(args.bbox_detector, torch.device(DEVICE)),
             identifier="gnr-flowchart-extractor",
             bbox_trust_threshold=0.7,

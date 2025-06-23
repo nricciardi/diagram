@@ -1,12 +1,14 @@
 import hashlib
 import os
 import logging
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from concurrent.futures import Future
 from concurrent.futures.process import ProcessPoolExecutor
 from datetime import datetime
 from typing import List, Dict, Optional
 from collections import defaultdict
+
+from core import DEVICE
 from core.classifier.classifier import Classifier
 from core.compiler.compiler import Compiler
 from core.extractor.extractor import Extractor
@@ -26,11 +28,14 @@ class Orchestrator(ToDeviceMixin):
     extractors: List[Extractor]
     transducers: List[Transducer]
     compilers: List[Compiler]
+    device: str = field(default=DEVICE)
 
     def to_device(self, device: str):
         self.classifier.to_device(device)
         for extractor in self.extractors:
             extractor.to_device(device)
+
+        self.device = device
 
     @classmethod
     def _build_output_path(cls, outputs_dir_path: str, diagram_id: str, markup_language: str, make_unique: bool = True, unique_strength: int = 8) -> str:
@@ -103,6 +108,8 @@ class Orchestrator(ToDeviceMixin):
         :param then_compile: True if compile outcomes
         :return: all transducer outcomes, based on extractors and transducers more than one outcome can be produced
         """
+
+        images: List[Image] = [image.to_device(self.device) for image in images]
 
         outcomes: List[TransducerOutcome] = []
         if parallelization:

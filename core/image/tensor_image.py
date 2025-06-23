@@ -10,6 +10,7 @@ from src import DEVICE
 
 @dataclass
 class TensorImage(Image):
+
     tensor: Tensor
 
     @staticmethod
@@ -30,3 +31,6 @@ class TensorImage(Image):
 
     def as_tensor(self) -> Tensor:
         return self.tensor
+
+    def to_device(self, device: str):
+        self.tensor = self.tensor.to(device)
