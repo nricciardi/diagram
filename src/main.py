@@ -106,6 +106,7 @@ def parse_args():
 
     parser.add_argument(
         "--input",
+        required=True,
         nargs='+',
         type=str,
         help="List of input files from the local file system (required)"
