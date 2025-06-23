@@ -1,12 +1,13 @@
 from abc import ABC, abstractmethod
 from core.image.image import Image
 from core.image.bbox.bbox import ImageBoundingBox
+from core.utils.to_device import ToDeviceMixin
 
 import torch
 from torchvision.transforms.functional import to_pil_image
 from transformers import TrOCRProcessor, VisionEncoderDecoderModel
 
-class TextExtractor(ABC):
+class TextExtractor(ToDeviceMixin, ABC):
     """
     Abstract base class for text extraction from various file formats.
     """
@@ -206,7 +207,7 @@ class TrOCRTextExtractorSmall(TextExtractor):
     def compute_embedding(self, text: str) -> torch.Tensor:
         return self.processor.tokenizer(text, return_tensors="pt").input_ids
     
-    def to(self, device: str):
+    def to_device(self, device: str):
         """
         Moves the model to the specified device.
 
