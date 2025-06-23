@@ -17,7 +17,7 @@ class ReverseProcessor(Processor):
         :param image: The input image to be processed.
         :return: The processed image with reversed tensor.
         """
-        image_np = image.as_tensor().detach().cpu().numpy()
+        image_np = image.as_tensor().detach().numpy()
         if len(image_np.shape) == 2:
             return TensorImage(torch.from_numpy(image_np[::-1, ::-1].copy()))
         elif len(image_np.shape) == 3:
@@ -36,7 +36,7 @@ class GrayScaleProcessor(Processor):
         :param image: The input image to be processed.
         :return: The processed image in grayscale.
         """
-        image_np = image.as_tensor().detach().cpu().numpy()
+        image_np = image.as_tensor().detach().numpy()
         image_np = image_np.astype(np.uint8)
         
         if len(image_np.shape) != 3:
@@ -56,7 +56,7 @@ class PadderProcessor(Processor):
         self.target_size = target_size
 
     def process(self, image: Image) -> Image:
-        image_np = image.as_tensor().detach().cpu().numpy()
+        image_np = image.as_tensor().detach().numpy()
         image_np = image_np.astype(np.uint8)
         
         if len(image_np.shape) != 2:
@@ -98,7 +98,7 @@ class MedianFilterProcessor(Processor):
 
     def process(self, image: Image) -> Image:
         
-        image_np = image.as_tensor().detach().cpu().numpy()
+        image_np = image.as_tensor().detach().numpy()
         image_np = image_np.astype(np.uint8)
         image_np = cv2.medianBlur(image_np, self.kernel_size)
         
@@ -109,7 +109,7 @@ class OtsuThresholdProcessor(Processor):
         super().__init__()
 
     def process(self, image: Image) -> Image:
-        image_np = image.as_tensor().detach().cpu().numpy()
+        image_np = image.as_tensor().detach().numpy()
         image_np = image_np.astype(np.uint8)
         
         _, thresh = cv2.threshold(image_np, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
@@ -144,7 +144,7 @@ class PerspectiveCorrectionProcessor(Processor):
         return rect
     
     def process(self, image: Image) -> Image:
-        gray = image.as_tensor().detach().cpu().numpy()
+        gray = image.as_tensor().detach().numpy()
 
         thresh = gray.astype(np.uint8)
 

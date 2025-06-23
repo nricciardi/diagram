@@ -209,8 +209,8 @@ class GNRClassifier(Classifier):
                 _, predicted = torch.max(outputs.data, 1)
                 total += labels.size(0)
                 correct += (predicted == labels).sum().item()
-                all_preds.extend(predicted.cpu().numpy())
-                all_labels.extend(labels.cpu().numpy())
+                all_preds.extend(predicted.numpy())
+                all_labels.extend(labels.numpy())
 
             self.last_confusion_preds = all_preds
             self.last_confusion_labels = all_labels
