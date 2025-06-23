@@ -1,5 +1,5 @@
 from typing import List, override, Optional
-
+from dataclasses import dataclass, field
 from core.classifier.classifier import Classifier
 from core.image.image import Image
 from src.classifier.preprocessing.processor import GNRMultiProcessor, Processor
@@ -25,6 +25,7 @@ logger.handlers.clear()
 logger.addHandler(handler)
 recognizable_diagrams = [WellKnownDiagram.FLOW_CHART, WellKnownDiagram.GRAPH_DIAGRAM,  WellKnownDiagram.OTHER]
 
+@dataclass
 class GNRClassifier(Classifier):
     
     """
@@ -34,23 +35,25 @@ class GNRClassifier(Classifier):
     :param classes: A dictionary mapping class indices to class names. Defaults to a predefined set of classes. IT'S HIGHLY RECCOMMENDED TO PASS IT AS DATASET.classes!
     :param processor: The image processor to use for preprocessing images. Defaults to GNRMultiProcessor.
     """
-    def __init__(self, classes: list[WellKnownDiagram] = None, model_path: str = None, processor: Processor = GNRMultiProcessor()):
-        super().__init__()
-        if classes is None:
-            classes = recognizable_diagrams
+
+    classes: Optional[list[WellKnownDiagram]] = field(default=None)
+    model_path: Optional[str] = field(default=None)
+    processor: Processor = GNRMultiProcessor()
+    model: Optional[ClassifierCNN] = None
+
+    def __post_init__(self):
+        if self.classes is None:
+            self.classes = recognizable_diagrams
         else:
-            for cls in classes:
+            for cls in self.classes:
                 if cls not in recognizable_diagrams:
                     raise ValueError(f"Class {cls} is not a recognized diagram type. Use one of {recognizable_diagrams}.")
-        self.classes = classes
-        self.model : ClassifierCNN = None
-        if model_path is None:
-            self.model = ClassifierCNN(num_classes=len(classes))
+
+        if self.model_path is None:
+            self.model = ClassifierCNN(num_classes=len(self.classes))
         else:
-            self.model = ClassifierCNN(num_classes=len(classes))
-            self.model.load(model_path)
-        self.processor = processor
-        self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+            self.model = ClassifierCNN(num_classes=len(self.classes))
+            self.model.load(self.model_path)
 
     @override
     def compatible_diagrams(self) -> List[str]:

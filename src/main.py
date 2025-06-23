@@ -176,10 +176,10 @@ if __name__ == '__main__':
     logger.info(f"- Input files: {args.input}")
 
 
-    classifier = GNRClassifier(model_path=args.classifier)
+    classifier = GNRClassifier("gnr-classifier", model_path=args.classifier)
     extractors = [
         GNRFlowchartExtractor(
-            text_digitizer=None, #TODO: TrOCRTextExtractorSmall(),
+            text_digitizer=TrOCRTextExtractorSmall(),
             bbox_detector=load_model(args.bbox_detector, torch.device(DEVICE)),
             identifier="gnr-flowchart-extractor",
             bbox_trust_threshold=0.7,

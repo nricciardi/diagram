@@ -40,10 +40,9 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
     element_arrow_distance_threshold: float = 20.  # TODO find optimal threshold
     ratios = [0.2, 0.6, 0.2]  # Source, Middle, Target
 
-    @staticmethod
     def to_device(self, device: str):
-        self.bbox_detector.to(device)
-        self.text_digitizer.to(device)
+        self.bbox_detector = self.bbox_detector.to(device)
+        self.text_digitizer = self.text_digitizer.to(device)
 
     @override
     def compatible_diagrams(self) -> List[str]:
