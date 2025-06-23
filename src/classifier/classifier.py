@@ -73,7 +73,7 @@ class GNRClassifier(Classifier):
         self.model.eval()
         self.model = self.model.to(self.device)
         image = self.processor.process(image)
-        tensor = image.as_tensor().unsqueeze(0).to(self.device)
+        tensor = image.as_tensor().to(self.device)
         y = self.model.forward(tensor.float())
         _, predicted = torch.max(y, dim=1)
         predicted = predicted.item()

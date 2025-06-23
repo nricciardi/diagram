@@ -50,7 +50,7 @@ class GrayScaleProcessor(Processor):
             gray_image = cv2.cvtColor(image_np, cv2.COLOR_RGB2GRAY)
             assert gray_image.shape == image_np.shape[:2], f"Expected shape {image_np.shape[:2]}, but got {gray_image.shape}"
         
-        tensor = torch.from_numpy(gray_image).to(device)
+        tensor = torch.from_numpy(gray_image).to(device).unsqueeze(0)
         return TensorImage(tensor)
 
 class PadderProcessor(Processor):
