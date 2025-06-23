@@ -17,7 +17,7 @@ from src.flowchart_element_category import FlowchartElementCategoryIndex, Lookup
 from src.utils.bbox_utils import bbox_overlap, bbox_distance, bbox_vertices, \
     distance_bbox_point, split_linestring_by_ratios
 from src.wellknown_diagram import WellKnownDiagram
-from src.extractor.text_extraction.text_extractor import TrOCRTextExtractorSmall
+from src.extractor.text_extraction.text_extractor import TrOCRTextExtractorSmall, TextExtractor
 
 logger = logging.getLogger(__name__)
 
@@ -25,6 +25,7 @@ logger = logging.getLogger(__name__)
 @dataclass(kw_only=True)
 class GNRFlowchartExtractor(MultistageFlowchartExtractor):
 
+    text_digitizer: TextExtractor
     bbox_detector: FasterRCNN
 
     element_precedent_over_arrow_in_text_association: bool = True
@@ -36,7 +37,6 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
     element_arrow_distance_threshold: float = 20.  # TODO find optimal threshold
     ratios = [0.2, 0.6, 0.2]  # Source, Middle, Target
 
-    text_digitizer = TrOCRTextExtractorSmall()
 
     @override
     def compatible_diagrams(self) -> List[str]:
