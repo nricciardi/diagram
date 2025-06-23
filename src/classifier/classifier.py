@@ -167,7 +167,7 @@ class GNRClassifier(Classifier):
         self.model.load(path)
 
     
-    def evaluate(self, dataset: DatasetClassifier = DatasetClassifier(), visual_output: bool = False, subset_percentage: float = 0.1) -> float:
+    def evaluate(self, dataset: DatasetClassifier = None, visual_output: bool = False, subset_percentage: float = 0.1) -> float:
         """
         Evaluate the model on the provided dataset.
         
@@ -176,6 +176,9 @@ class GNRClassifier(Classifier):
         :param subset_percentage: The percentage of the dataset to use for evaluation. Defaults to 10%.
         :return: The accuracy of the model on the dataset.
         """
+
+        if dataset is None:
+            dataset = DatasetClassifier()
 
         subset_size = int(subset_percentage * len(dataset))
         _, subset = random_split(dataset, [len(dataset) - subset_size, subset_size])
