@@ -25,6 +25,9 @@ class Orchestrator:
     transducers: List[Transducer]
     compilers: List[Compiler]
 
+    def __post_init__(self):
+        pass
+
     @classmethod
     def _build_output_path(cls, outputs_dir_path: str, diagram_id: str, markup_language: str, make_unique: bool = True, unique_strength: int = 8) -> str:
 
@@ -117,7 +120,7 @@ class Orchestrator:
 
         else:
             for index, image in enumerate(images):
-                logger.info(f"Elaborate image n. {index}")
+                logger.info(f"Elaborate image n. {index + 1}")
                 outcomes.extend(self.image2diagram(image, parallelization, then_compile=then_compile, outputs_dir_path=outputs_dir_path))
 
 

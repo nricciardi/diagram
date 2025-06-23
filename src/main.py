@@ -10,6 +10,7 @@ from core.extractor.extractor import Extractor
 from core.image.image import Image
 from core.image.tensor_image import TensorImage
 from core.orchestrator.orchestrator import Orchestrator
+from src import DEVICE
 from src.classifier.classifier import GNRClassifier
 from src.extractor.bbox_detection import load_model
 from src.extractor.flowchart.gnr_extractor import GNRFlowchartExtractor
@@ -117,7 +118,6 @@ def parse_args():
 
 
 def main(classifier: Classifier, extractors: List[Extractor], inputs_paths: List[str], parallelization: bool, then_compile: bool, outputs_dir_path: Optional[str]):
-
     images: List[Image] = [TensorImage.from_str(path) for path in inputs_paths]
 
     orchestrator = Orchestrator(
@@ -170,8 +170,8 @@ if __name__ == '__main__':
     classifier = GNRClassifier(model_path=args.classifier)
     extractors = [
         GNRFlowchartExtractor(
-            text_digitizer=None, #TrOCRTextExtractorSmall(),
-            bbox_detector=load_model(args.bbox_detector, torch.device('cuda' if torch.cuda.is_available() else 'cpu')),
+            text_digitizer=None, #TODO: TrOCRTextExtractorSmall(),
+            bbox_detector=load_model(args.bbox_detector, torch.device(DEVICE)),
             identifier="gnr-flowchart-extractor",
             bbox_trust_threshold=0.7,
             parallelization=args.parallelize

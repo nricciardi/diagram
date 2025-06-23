@@ -4,9 +4,10 @@ from typing import List
 from core.representation.representation import DiagramRepresentation
 from core.image.image import Image
 from core.utils.compatible_mixins import CompatibleDiagramsMixin, IdentifiableMixin
+from core.utils.to_device import ToDeviceMixin
 
 
-class Extractor(IdentifiableMixin, CompatibleDiagramsMixin, ABC):
+class Extractor(ToDeviceMixin, IdentifiableMixin, CompatibleDiagramsMixin, ABC):
 
     @abstractmethod
     def extract(self, diagram_id: str, image: Image) -> DiagramRepresentation:

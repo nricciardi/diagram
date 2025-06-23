@@ -1,10 +1,11 @@
 from torchvision.io import read_image
 import cv2
-
 from core.image.image import Image
 from dataclasses import dataclass
 from torch import Tensor
 import torch
+
+from src import DEVICE
 
 
 @dataclass

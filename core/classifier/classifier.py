@@ -3,10 +3,12 @@ from dataclasses import dataclass
 from typing import List
 
 from core.image.image import Image
+from core.utils.compatible_mixins import IdentifiableMixin, CompatibleDiagramsMixin
+from core.utils.to_device import ToDeviceMixin
 
 
 @dataclass
-class Classifier(ABC):
+class Classifier(ToDeviceMixin, IdentifiableMixin, CompatibleDiagramsMixin, ABC):
 
     @abstractmethod
     def classify(self, image: Image) -> str:

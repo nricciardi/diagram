@@ -2,7 +2,7 @@ import logging
 from collections import defaultdict
 from dataclasses import dataclass
 from typing import List, Tuple, Dict, Optional, override
-
+from src.classifier.preprocessing.processor import GrayScaleProcessor, MultiProcessor
 import torch
 from shapely.geometry import Polygon, LineString
 from torchvision.models.detection import FasterRCNN
@@ -28,6 +28,9 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
     text_digitizer: TextExtractor
     bbox_detector: FasterRCNN
 
+    preprocessor = MultiProcessor([
+        GrayScaleProcessor()
+    ])
     element_precedent_over_arrow_in_text_association: bool = True
     element_text_overlap_threshold: float = 0.5  # TODO find optimal threshold
     element_text_distance_threshold: float = 10  # TODO find optimal threshold
@@ -36,6 +39,7 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
     element_arrow_overlap_threshold: float = 0.1  # TODO find optimal threshold
     element_arrow_distance_threshold: float = 20.  # TODO find optimal threshold
     ratios = [0.2, 0.6, 0.2]  # Source, Middle, Target
+
 
 
     @override
@@ -69,7 +73,9 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
         return category == Lookup.table[FlowchartElementCategoryIndex.ARROW_TAIL.value]
 
     def _preprocess(self, diagram_id: str, image: Image) -> Image:
-        pass
+
+        image = self.preprocessor.process(image)
+        return image
 
     def _compute_text_associations(self, diagram_id: str, element_bboxes: List[ImageBoundingBox],
                                    arrows: List[Arrow], text_bboxes: List[ImageBoundingBox])\
@@ -268,8 +274,11 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
 
     @override
     def _extract_diagram_objects(self, diagram_id: str, image: Image) -> List[ImageBoundingBox]:
-        prediction = self.bbox_detector(image.as_tensor())
+        image = image.as_tensor().unsqueeze(0).unsqueeze(0).float() / 255.0
+        prediction = self.bbox_detector(image)
         bboxes: List[ImageBoundingBox] = []
+
         for box, label, score in zip(prediction['boxes'], prediction['labels'], prediction['scores']):
             bboxes.append(ImageBoundingBox2Points(Lookup.table[label.item()], box, score.item()))
+
         return bboxes

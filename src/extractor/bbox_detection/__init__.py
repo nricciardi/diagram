@@ -12,4 +12,5 @@ def load_model(weights_path, device):
     # Set to evaluation mode
     model.to(device)
     model.eval()
+
     return model

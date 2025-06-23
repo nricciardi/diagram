@@ -149,7 +149,7 @@ Scegliere se andare a fare spionaggio
 - [ ] Chat: Finetuning threshold extractor
 - [x] N: Fix extractor (tra cui aggiungere i metodi astratti per transduer e extractor)
 - [ ] Togliere i TODO nel progetto, togliere percorsi assoluti
-
+- [ ] Spostare preprocessor
 
 
 ## Deadline codice 01/07

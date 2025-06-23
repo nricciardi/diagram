@@ -72,9 +72,11 @@ class GNRClassifier(Classifier):
         y = self.model.forward(tensor.float())
         _, predicted = torch.max(y, dim=1)
         predicted = predicted.item()
+
         if self.classes[predicted] == WellKnownDiagram.OTHER:
             return None
-        return self.classes[predicted]
+
+        return self.classes[predicted].value
     
     
     def train(self, dataset: DatasetClassifier, epochs: int = 10, batch_size: int = 32, learning_rate: float = 1e-4, verbose: bool = True):
