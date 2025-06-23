@@ -6,4 +6,3 @@ python3 $1 \
 --input easy-flow.png \
 --outputs-dir-path ./outcome
 # --then-compile
-

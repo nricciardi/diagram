@@ -68,7 +68,7 @@ class GNRClassifier(Classifier):
         
         self.model.eval()
         image = self.processor.process(image)
-        y = self.model.forward(image.as_tensor())
+        y = self.model.forward(image.as_tensor().float())
         _, predicted = torch.max(y, dim=1)
         predicted = predicted.item()
         if self.classes[predicted] == WellKnownDiagram.OTHER:
