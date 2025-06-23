@@ -48,11 +48,9 @@ class Orchestrator(ToDeviceMixin):
         file_name = f"{diagram_id}__{markup_language}"
 
         if make_unique:
-            now_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")
-            hash_value = hashlib.md5(now_str.encode()).hexdigest()
-            unique = hash_value[:min(len(hash_value) - 1, unique_strength)]
+            now_str = datetime.now().strftime("%Y%m%d%H%M%S%f")
 
-            file_name += f"__{unique}"
+            file_name += f"__{now_str}"
 
         if markup_language not in self.extensions_lookup:
             raise ValueError("Unknown markup language")
@@ -141,7 +139,7 @@ class Orchestrator(ToDeviceMixin):
         else:
             for index, image in enumerate(images):
                 logger.info(f"Elaborate image n. {index + 1}")
-                outcomes.extend(self.image2diagram(image, parallelization, then_compile=then_compile, outputs_dir_path=outputs_dir_path))
+                outcomes.extend(self.image2diagram(image, parallelization, dump_markup=dump_markup, then_compile=then_compile, outputs_dir_path=outputs_dir_path))
 
 
         return outcomes
@@ -242,6 +240,8 @@ class Orchestrator(ToDeviceMixin):
                 outcome.diagram_id,
                 outcome.markup_language
             )
+
+            logger.info(f"Dump outcome: {file_path}")
 
             with open(file_path, "w") as file:
                 file.write(outcome.payload)
