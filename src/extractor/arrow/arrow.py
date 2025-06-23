@@ -3,6 +3,7 @@ from typing import List
 
 import torch
 from matplotlib.image import BboxImage
+from shapely import LineString, Polygon
 
 from core.image.bbox.bbox import ImageBoundingBox
 from core.image.bbox.bbox2p import ImageBoundingBox2Points
@@ -19,6 +20,14 @@ class Arrow:
 
     bbox: ImageBoundingBox
 
+    def is_self(self) -> bool:
+        pass
+
+    def distance_to_bbox(self, other: ImageBoundingBox) -> float:
+        arrow_line = LineString(coordinates=[[self.x_tail, self.y_tail], [self.x_head, self.y_head]])
+        other_poly = Polygon([[other.top_left_x, other.top_left_y], [other.top_right_x, other.top_right_y],
+                              [other.bottom_right_x, other.bottom_right_y], [other.bottom_left_x, other.bottom_left_y]])
+        return arrow_line.distance(other_poly)
 
 
 def get_most_certain_bbox(bboxes_part: List[ImageBoundingBox], arrow_bbox: ImageBoundingBox) -> tuple[ImageBoundingBox, int]:
