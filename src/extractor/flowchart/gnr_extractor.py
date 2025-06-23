@@ -80,9 +80,6 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
 
         image = self.preprocessor.process(image)
 
-        # TODO: workaround
-        image.tensor = image.tensor.unsqueeze(0)
-
         return image
 
     def _compute_text_associations(self, diagram_id: str, element_bboxes: List[ImageBoundingBox],
@@ -282,7 +279,7 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
 
     @override
     def _extract_diagram_objects(self, diagram_id: str, image: Image) -> List[ImageBoundingBox]:
-        image = image.as_tensor().unsqueeze(0).float() / 255.0      # unsqueeze(0) to fake a batch
+        image = image.as_tensor().unsqueeze(0).float() / 255.0      # unsqueeze(0) to fake a batch: (C=1, H, W) -> (1, C=1, H, W)
         predictions = self.bbox_detector(image)
         bboxes: List[ImageBoundingBox] = []
 
