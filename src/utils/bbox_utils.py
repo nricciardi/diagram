@@ -100,46 +100,61 @@ def bbox_vertices(bbox1: ImageBoundingBox, bbox2: ImageBoundingBox) -> \
     return bbox1_vertices, bbox2_vertices
 
 
-def split_linestring_by_ratios(line: LineString, ratios: List[float]) -> List[LineString]:
-    # TODO: Rifare (not working :-( )
+def insert_point_into_line(line: LineString, point, tol=1e-8):
     """
-    Splits a LineString into segments based on provided ratios.
+    Inserts a point into the LineString if it's not already a vertex.
+    Returns a new LineString with the point as a vertex.
+    """
+    coords = list(line.coords)
+    if point.distance(line) > tol:
+        raise ValueError("Point is not on the line.")
 
-    Parameters:
-    - line (LineString): Input line geometry.
-    - ratios (List[float]): List of float ratios summing to 1.0.
+    new_coords = []
+    inserted = False
+    for i in range(len(coords) - 1):
+        seg = LineString([coords[i], coords[i + 1]])
+        new_coords.append(coords[i])
+        if not inserted and seg.distance(point) < tol:
+            new_coords.append((point.x, point.y))
+            inserted = True
+    new_coords.append(coords[-1])
+    return LineString(new_coords)
 
-    Returns:
-    - List[LineString]: Segmented line parts.
+
+def split_linestring_by_ratios(line: LineString, ratios: List[float], tol=1e-8) -> List[LineString]:
+    """
+    Splits a LineString into segments based on ratios by inserting points.
+    Ensures reliable splits even when points fall on vertices.
     """
     if not isinstance(line, LineString):
         raise TypeError("Input must be a LineString.")
-    if not np.isclose(sum(ratios), 1.0):
+    if not np.isclose(sum(ratios), 1.0, atol=tol):
         raise ValueError("Ratios must sum to 1.0.")
 
     total_length = line.length
-    distances = np.cumsum(ratios[:-1]) * total_length  # Exclude last ratio
-
+    distances = np.cumsum(ratios[:-1]) * total_length
     split_points = [line.interpolate(d) for d in distances]
 
+    working_line = line
+    for pt in split_points:
+        working_line = insert_point_into_line(working_line, pt, tol=tol)
+
     segments = []
-    current_line = line
+    current_line = working_line
 
     for pt in split_points:
         result = split(current_line, pt)
-        parts = list(result.geoms)  # Get actual geometries
+        parts = list(result.geoms)
 
-        # Sort by position along original line
+        if len(parts) != 2:
+            raise RuntimeError(f"Split failed at {pt.wkt} even after insertion.")
+
         parts = sorted(parts, key=lambda seg: seg.project(Point(line.coords[0])))
-
         segments.append(parts[0])
-
         current_line = parts[1]
 
-    segments.append(current_line)  # Add the final piece
-
+    segments.append(current_line)
     return segments
-
 
 def plot_segments(segments, line_title="LineString Segments"):
     fig, ax = plt.subplots()
