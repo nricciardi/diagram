@@ -74,7 +74,7 @@ class GNRClassifier(Classifier):
         predicted = predicted.item()
         if self.classes[predicted] == WellKnownDiagram.OTHER:
             return None
-        return self.classes[predicted.item()]
+        return self.classes[predicted]
     
     
     def train(self, dataset: DatasetClassifier, epochs: int = 10, batch_size: int = 32, learning_rate: float = 1e-4, verbose: bool = True):
