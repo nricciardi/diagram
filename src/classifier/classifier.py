@@ -50,6 +50,7 @@ class GNRClassifier(Classifier):
             self.model = ClassifierCNN(num_classes=len(classes))
             self.model.load(model_path)
         self.processor = processor
+        self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     @override
     def compatible_diagrams(self) -> List[str]:
@@ -66,9 +67,9 @@ class GNRClassifier(Classifier):
         :return: The classification result.
         """
         
-        self.model.eval()
+        self.model.eval().to(self.device)
         image = self.processor.process(image)
-        tensor = image.as_tensor().unsqueeze(0)
+        tensor = image.as_tensor().unsqueeze(0).to(self.device)
         y = self.model.forward(tensor.float())
         _, predicted = torch.max(y, dim=1)
         predicted = predicted.item()
@@ -100,7 +101,7 @@ class GNRClassifier(Classifier):
         val_dataloader = DataLoader(val_dataset, batch_size=batch_size, shuffle=True)
         
         ### Prepare the optimizer and loss function
-        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        device = self.device
         optimizer = optim.AdamW(self.model.parameters(), lr=learning_rate)
         criterion = nn.CrossEntropyLoss(weight=torch.tensor(dataset.weights, dtype=torch.float32).to(device))
         self.model.to(device)
@@ -187,7 +188,7 @@ class GNRClassifier(Classifier):
         _, subset = random_split(dataset, [len(dataset) - subset_size, subset_size])
         dataloader = DataLoader(subset, batch_size=32, shuffle=True)
 
-        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        device = self.device
         self.model.to(device)
 
         # Computw the accuracy of the model on the dataset
@@ -235,3 +236,13 @@ class GNRClassifier(Classifier):
             model_path="src/classifier/classifier.pth",
             processor=GNRMultiProcessor()
         )
+    
+    def to_device(self, device: str):
+        """
+        Set to device
+
+        :param device:
+        :return:
+        """
+        self.device = torch.device(device)
+        self.model.to(self.device)
