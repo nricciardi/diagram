@@ -153,6 +153,8 @@ Scegliere se andare a fare spionaggio
 - [ ] N: Non va debug nei log
 - [ ] F: unsqueeze sul preprocessor grayscale
 - [ ] F: `"cuda" if torch.cuda.is_available() else "cpu"` nei text extractor -> usare to_device mixin (nostro)
+- [ ] Aggiungere opzione per scegliere il markup lang
+- [ ] Togliere warning
 
 
 ## Deadline codice 01/07

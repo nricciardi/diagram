@@ -181,6 +181,7 @@ class MultistageFlowchartExtractor(MultiStageExtractor, ABC):
                 if outcome == ElementTextTypeOutcome.DISCARD:
                     logger.debug(f"{associated_text_bbox} discarded")
                     bucket_of_discarded_texts.append(associated_text_bbox)
+                    continue
 
                 text = self._digitalize_text(diagram_id, image, associated_text_bbox)
 

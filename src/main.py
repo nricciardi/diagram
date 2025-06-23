@@ -82,7 +82,7 @@ def parse_args():
     parser.add_argument(
         "--outputs-dir-path",
         type=str,
-        default=None,
+        required=True,
         help="Path to the output directory for compiled results (required if --then-compile is enabled)"
     )
 

@@ -171,7 +171,7 @@ class Orchestrator(ToDeviceMixin):
 
         outcomes: List[TransducerOutcome] = []
         for diagram_representation in diagram_representations:
-            logger.info(f"Transduce {type(diagram_representation)} type...")
+            logger.info(f"Transduce {diagram_id} type...")
             o = self.__seq_transduce(diagram_id, diagram_representation)
 
             logger.info(f"Transduction done: {len(o)} outcomes")
@@ -289,7 +289,7 @@ class Orchestrator(ToDeviceMixin):
         with ProcessPoolExecutor() as executor:
             tasks: List[Future] = []
             for transducer in compatible_transducers:
-                logger.info(f"Transduce {type(diagram_representation)} type...")
+                logger.info(f"Transduce {diagram_id} type...")
                 tasks.append(
                     executor.submit(transducer.transduce, diagram_id, diagram_representation)
                 )
