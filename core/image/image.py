@@ -1,8 +1,10 @@
 from abc import ABC, abstractmethod
 from torch import Tensor
 
+from core.utils.to_device import ToDeviceMixin
 
-class Image(ABC):
+
+class Image(ToDeviceMixin, ABC):
     """
     Wrap class for images
     """
