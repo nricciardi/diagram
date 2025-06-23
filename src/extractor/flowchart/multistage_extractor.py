@@ -6,7 +6,6 @@ from dataclasses import dataclass
 from core.extractor.multistage_extractor.multistage_extractor import MultiStageExtractor
 from core.image.bbox.bbox import ImageBoundingBox
 from core.image.image import Image
-from core.representation.representation import DiagramRepresentation
 from src.extractor.arrow.arrow import Arrow, compute_arrows
 from src.representation.flowchart_representation.element import Element
 from src.representation.flowchart_representation.flowchart_representation import FlowchartRepresentation
@@ -98,12 +97,25 @@ class MultistageFlowchartExtractor(MultiStageExtractor, ABC):
         raise NotImplemented()
 
     @abstractmethod
-    def _compute_text_associations(self, diagram_id: str, element_bboxes: List[ImageBoundingBox], arrows: List[Arrow],
-                                   text_bboxes: List[ImageBoundingBox]) -> Tuple[Dict[ImageBoundingBox, List[ImageBoundingBox]], Dict[Arrow, List[ImageBoundingBox]]]:
+    def _compute_text_associations(self, diagram_id: str, element_bboxes: List[ImageBoundingBox],
+                                   arrows: List[Arrow], text_bboxes: List[ImageBoundingBox]) \
+            -> Tuple[Dict[ImageBoundingBox, List[ImageBoundingBox]], Dict[Arrow, List[ImageBoundingBox]]]:
         """
-        For each text bbox, associate non-text object having the minimum distance
+        All text bboxes are assigned to the nearest element bbox or arrow bbox, ignoring distance itself.
+        In other words, distance may be also huge. After, pruning is supposed.
 
-        :return: (elements associations, arrows associations)
+        Args:
+            diagram_id (str): The identifier of the diagram being processed
+            element_bboxes (List[ImageBoundingBox]): The bounding boxes of the elements
+            arrows (List[Arrow]): The arrows
+            text_bboxes (List[ImageBoundingBox]): The bounding boxes of the texts
+        Returns:
+            Tuple[Dict[ImageBoundingBox, List[ImageBoundingBox]], Dict[ImageBoundingBox, List[ImageBoundingBox]]]:
+
+            Two dictionaries (A, B):
+
+            - A: each element bbox (key) is mapped with its list of texts bboxes (value)
+            - B: each arrow (key) is mapped with its list of texts bboxes (value)
         """
 
     @abstractmethod

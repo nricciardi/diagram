@@ -7,17 +7,8 @@ from torchvision.models.detection import fasterrcnn_resnet50_fpn
 from src.dataset.extractor.dataset import ObjectDetectionDataset
 from torchvision.models.detection.faster_rcnn import FastRCNNPredictor
 
-def load_model(weights_path, device):
-    # Load the model architecture
-    model = fasterrcnn_resnet50_fpn(pretrained=False, num_classes=12)
+from src.extractor.bbox_detection import load_model
 
-    # Load the saved weights
-    model.load_state_dict(torch.load(weights_path, map_location=device))
-
-    # Set to evaluation mode
-    model.to(device)
-    model.eval()
-    return model
 
 def infer(model):
     #annotations_file = "/Users/saverionapolitano/PycharmProjects/diagram/dataset/extractor/labels.json"

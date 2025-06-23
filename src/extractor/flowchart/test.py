@@ -2,6 +2,8 @@ import unittest
 import torch
 import sys, os
 
+from src.extractor.bbox_detection.test import load_model
+
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../")))
 
 from core.image.bbox.bbox2p import ImageBoundingBox2Points
@@ -14,7 +16,7 @@ from src.extractor.flowchart.multistage_extractor import ElementTextTypeOutcome,
 class TestGNRFlowchartExtractor(unittest.TestCase):
 
     def setUp(self):
-        self.extractor = GNRFlowchartExtractor('test-extractor')
+        self.extractor = GNRFlowchartExtractor(identifier='test-extractor', bbox_detector=load_model())
 
     def test_compute_text_associations(self):
 

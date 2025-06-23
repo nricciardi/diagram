@@ -72,30 +72,11 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
         pass
 
     def _compute_text_associations(self, diagram_id: str, element_bboxes: List[ImageBoundingBox],
-                                   arrows: List[Arrow],
-                                   text_bboxes: List[ImageBoundingBox])\
-            -> Tuple[Dict[ImageBoundingBox, List[ImageBoundingBox]], Dict[ImageBoundingBox, List[ImageBoundingBox]]]:
-
-        """
-        All text bboxes are assigned to the nearest element bbox or arrow bbox, ignoring distance itself.
-        In other words, distance may be also huge. After, pruning is supposed.
-
-        Args:
-            diagram_id (str): The identifier of the diagram being processed
-            element_bboxes (List[ImageBoundingBox]): The bounding boxes of the elements
-            arrows (List[Arrow]): The arrows
-            text_bboxes (List[ImageBoundingBox]): The bounding boxes of the texts
-        Returns:
-            Tuple[Dict[ImageBoundingBox, List[ImageBoundingBox]], Dict[ImageBoundingBox, List[ImageBoundingBox]]]:
-
-            Two dictionaries (A, B):
-
-            - A: each element bbox (key) is mapped with its list of texts bboxes (value)
-            - B: each arrows bbox (key) is mapped with its list of texts bboxes (value)
-        """
+                                   arrows: List[Arrow], text_bboxes: List[ImageBoundingBox])\
+            -> Tuple[Dict[ImageBoundingBox, List[ImageBoundingBox]], Dict[Arrow, List[ImageBoundingBox]]]:
 
         element_text_associations: Dict[ImageBoundingBox, List[ImageBoundingBox]] = defaultdict(list)
-        arrow_text_associations: Dict[ImageBoundingBox, List[ImageBoundingBox]] = defaultdict(list)
+        arrow_text_associations: Dict[Arrow, List[ImageBoundingBox]] = defaultdict(list)
 
         for text_bbox in text_bboxes:
 
@@ -109,17 +90,17 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
                     minimum_element_text_bbox = element_bbox
 
             minimum_arrow_text_distance: float = float('inf')
-            minimum_arrow_text_bbox: Optional[ImageBoundingBox] = None
-            for arrow_bbox in arrow_bboxes:
-                arrow_text_distance: float = bbox_distance(text_bbox, arrow_bbox)
+            minimum_distance_arrow_to_text: Optional[Arrow] = None
+            for arrow in arrows:
+                arrow_text_distance: float = bbox_distance(text_bbox, arrow.bbox)
 
                 if arrow_text_distance < minimum_arrow_text_distance:
                     minimum_arrow_text_distance = arrow_text_distance
-                    minimum_arrow_text_bbox = arrow_bbox
+                    minimum_distance_arrow_to_text = arrow
 
             if minimum_arrow_text_distance < minimum_element_text_distance or (
                     minimum_arrow_text_distance == minimum_element_text_distance and not self.element_precedent_over_arrow_in_text_association):
-                arrow_text_associations[minimum_arrow_text_bbox].append(text_bbox)
+                arrow_text_associations[minimum_distance_arrow_to_text].append(text_bbox)
 
             else:
                 element_text_associations[minimum_element_text_bbox].append(text_bbox)

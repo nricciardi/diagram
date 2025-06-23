@@ -4,21 +4,20 @@ import os
 import sys
 import logging
 from pathlib import Path
-
 import torch
-from torchvision.models.detection import fasterrcnn_resnet50_fpn
-
 from core.classifier.classifier import Classifier
 from core.extractor.extractor import Extractor
 from core.image.image import Image
 from core.image.tensor_image import TensorImage
 from core.orchestrator.orchestrator import Orchestrator
 from src.classifier.classifier import GNRClassifier
+from src.extractor.bbox_detection import load_model
 from src.extractor.flowchart.gnr_extractor import GNRFlowchartExtractor
 from src.transducer.d2.flowchart_transducer import FlowchartToD2Transducer
 from src.transducer.mermaid.flowchart_transducer import FlowchartToMermaidTransducer
 from src.compiler.d2.flowchart_compiler import FlowchartToD2Compiler
 from src.compiler.mermaid.flowchart_compiler import FlowchartToMermaidCompiler
+
 
 # Configure logging
 logging.basicConfig(
@@ -139,17 +138,6 @@ def main(classifier: Classifier, extractors: List[Extractor], inputs_paths: List
         outputs_dir_path=outputs_dir_path
     )
 
-def load_model(weights_path, device):
-    # Load the model architecture
-    model = fasterrcnn_resnet50_fpn(pretrained=False, num_classes=12)
-
-    # Load the saved weights
-    model.load_state_dict(torch.load(weights_path, map_location=device))
-
-    # Set to evaluation mode
-    model.to(device)
-    model.eval()
-    return model
 
 if __name__ == '__main__':
     args = parse_args()

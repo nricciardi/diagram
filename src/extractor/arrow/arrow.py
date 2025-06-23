@@ -20,6 +20,22 @@ class Arrow:
     bbox: ImageBoundingBox
 
 
+
+def get_most_certain_bbox(bboxes_part: List[ImageBoundingBox], arrow_bbox: ImageBoundingBox) -> ImageBoundingBox:
+    """
+    Get the most certain bbox from bboxes_part that overlaps with arrow_bbox.
+    """
+    max_overlap = 0
+    most_certain_bbox = None
+
+    for bbox in bboxes_part:
+        overlap = bbox_overlap(bbox, arrow_bbox)
+        if overlap > max_overlap:
+            max_overlap = overlap
+            most_certain_bbox = bbox
+
+    return most_certain_bbox
+
 def compute_arrows(arrow_bboxes: List[ImageBoundingBox], head_bboxes: List[ImageBoundingBox], tail_bboxes: List[ImageBoundingBox]) -> List[Arrow]:
     """
     arrow_bboxes: bboxes of arrows
@@ -52,21 +68,6 @@ def compute_arrows(arrow_bboxes: List[ImageBoundingBox], head_bboxes: List[Image
             1 if bbox_overlap(bbox, tail_bbox) > 0 else 0 for tail_bbox in tail_bboxes
         ])
     )
-    
-    def get_most_certain_bbox(bboxes_part: List[ImageBoundingBox], arrow_bbox: ImageBoundingBox) -> ImageBoundingBox:
-        """
-        Get the most certain bbox from bboxes_part that overlaps with arrow_bbox.
-        """
-        max_overlap = 0
-        most_certain_bbox = None
-        
-        for bbox in bboxes_part:
-            overlap = bbox_overlap(bbox, arrow_bbox)
-            if overlap > max_overlap:
-                max_overlap = overlap
-                most_certain_bbox = bbox
-        
-        return most_certain_bbox
 
     for arrow in arrow_bboxes:
         head_bbox = get_most_certain_bbox(head_bboxes, arrow)
@@ -76,10 +77,10 @@ def compute_arrows(arrow_bboxes: List[ImageBoundingBox], head_bboxes: List[Image
             continue
 
         # Compute the center of the head and tail bboxes
-        x_head = (head_bbox.top_left_x + head_bbox.bottom_right_x) // 2
-        y_head = (head_bbox.top_left_y + head_bbox.bottom_right_y) // 2
-        x_tail = (tail_bbox.top_left_x + tail_bbox.bottom_right_x) // 2
-        y_tail = (tail_bbox.top_left_y + tail_bbox.bottom_right_y) // 2
+        x_head = int((head_bbox.top_left_x + head_bbox.bottom_right_x) // 2)
+        y_head = int((head_bbox.top_left_y + head_bbox.bottom_right_y) // 2)
+        x_tail = int((tail_bbox.top_left_x + tail_bbox.bottom_right_x) // 2)
+        y_tail = int((tail_bbox.top_left_y + tail_bbox.bottom_right_y) // 2)
 
         arrows.append(Arrow(x_head, y_head, x_tail, y_tail, arrow))
 
