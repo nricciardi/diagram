@@ -28,17 +28,22 @@ class Orchestrator(ToDeviceMixin):
     extractors: List[Extractor]
     transducers: List[Transducer]
     compilers: List[Compiler]
-    device: str = field(default=DEVICE)
+    extensions_lookup: Dict[str, str]
 
     def to_device(self, device: str):
         self.classifier.to_device(device)
         for extractor in self.extractors:
             extractor.to_device(device)
 
-        self.device = device
+    def get_device(self) -> str:
+        device = self.classifier.get_device()
 
-    @classmethod
-    def _build_output_path(cls, outputs_dir_path: str, diagram_id: str, markup_language: str, make_unique: bool = True, unique_strength: int = 8) -> str:
+        for extractor in self.extractors:
+            assert device == extractor.get_device()
+
+        return device
+
+    def _build_output_path(self, outputs_dir_path: str, diagram_id: str, markup_language: str, make_unique: bool = True, unique_strength: int = 8) -> str:
 
         file_name = f"{diagram_id}__{markup_language}"
 
@@ -48,6 +53,11 @@ class Orchestrator(ToDeviceMixin):
             unique = hash_value[:min(len(hash_value) - 1, unique_strength)]
 
             file_name += f"__{unique}"
+
+        if markup_language not in self.extensions_lookup:
+            raise ValueError("Unknown markup language")
+
+        file_name += f".{self.extensions_lookup[markup_language]}"
 
         return os.path.join(outputs_dir_path, file_name)
 
@@ -65,6 +75,7 @@ class Orchestrator(ToDeviceMixin):
         logger.info("Classify image...")
         logger.debug(image)
 
+        image.to_device(self.classifier.get_device())
         diagram_id = self.classifier.classify(image)
 
         logger.info(f"Image was classified as {diagram_id}")
@@ -98,7 +109,7 @@ class Orchestrator(ToDeviceMixin):
         return compatible_transducer
 
 
-    def images2diagrams(self, images: List[Image], parallelization: bool = False, then_compile: bool = True, outputs_dir_path: Optional[str] = None) -> List[TransducerOutcome]:
+    def images2diagrams(self, images: List[Image], parallelization: bool = False, dump_markup: bool = False, then_compile: bool = True, outputs_dir_path: Optional[str] = None) -> List[TransducerOutcome]:
         """
         Convert a bulk of images
 
@@ -109,9 +120,6 @@ class Orchestrator(ToDeviceMixin):
         :return: all transducer outcomes, based on extractors and transducers more than one outcome can be produced
         """
 
-        for image in images:
-            image.to_device(self.device)
-
         outcomes: List[TransducerOutcome] = []
         if parallelization:
 
@@ -121,7 +129,7 @@ class Orchestrator(ToDeviceMixin):
                     logger.info(f"Elaborate image n. {index}")
 
                     tasks.append(
-                        executor.submit(self.image2diagram, image, parallelization, then_compile, outputs_dir_path)
+                        executor.submit(self.image2diagram, image, parallelization, dump_markup, then_compile, outputs_dir_path)
                     )
 
                 outcomes: List[TransducerOutcome] = []
@@ -138,25 +146,27 @@ class Orchestrator(ToDeviceMixin):
 
         return outcomes
 
-    def image2diagram(self, image: Image, parallelization: bool = False, then_compile: bool = True, outputs_dir_path: str | None = None) -> List[TransducerOutcome]:
+    def image2diagram(self, image: Image, parallelization: bool = False, dump_markup: bool = False, then_compile: bool = True, outputs_dir_path: Optional[str] = None) -> List[TransducerOutcome]:
         """
         Convert one handwritten image to digital diagram
 
-        :param outputs_dir_path: directory in which outputs will be dumped
-        :param image: input image
-        :param parallelization: enable parallelization
-        :param then_compile: True if compile outcomes
-        :return: all transducer outcomes, based on extractors and transducers more than one outcome can be produced
+        Args:
+            dump_markup:
+            :param outputs_dir_path: directory in which outputs will be dumped
+            :param image: input image
+            :param parallelization: enable parallelization
+            :param then_compile: True if compile outcomes
+            :return: all transducer outcomes, based on extractors and transducers more than one outcome can be produced
         """
 
         if parallelization:
-            return self.__par_image2diagram(image, then_compile=then_compile, outputs_dir_path=outputs_dir_path)
+            return self.__par_image2diagram(image, dump_markup=dump_markup, then_compile=then_compile, outputs_dir_path=outputs_dir_path)
         else:
-            return self.__seq_image2diagram(image, then_compile=then_compile, outputs_dir_path=outputs_dir_path)
+            return self.__seq_image2diagram(image, dump_markup=dump_markup, then_compile=then_compile, outputs_dir_path=outputs_dir_path)
 
     # ====> SEQ <====
 
-    def __seq_image2diagram(self, image: Image, then_compile: bool, outputs_dir_path: str | None = None) -> List[TransducerOutcome]:
+    def __seq_image2diagram(self, image: Image, dump_markup: bool, then_compile: bool, outputs_dir_path: str | None = None) -> List[TransducerOutcome]:
         """
         Convert image to diagram sequentially
         """
@@ -179,6 +189,9 @@ class Orchestrator(ToDeviceMixin):
 
             outcomes.extend(o)
 
+        if dump_markup:
+            self.__seq_dump_markup(outcomes, outputs_dir_path)
+
         if not then_compile:
             return outcomes
 
@@ -198,6 +211,8 @@ class Orchestrator(ToDeviceMixin):
 
         for extractor in compatible_extractors:
             logger.debug(f"Extract using {extractor.identifier}")
+
+            image.to_device(extractor.get_device())
             representation: DiagramRepresentation = extractor.extract(diagram_id, image)
             diagram_representations.append(representation)
 
@@ -218,6 +233,19 @@ class Orchestrator(ToDeviceMixin):
 
         return outcomes
 
+
+    def __seq_dump_markup(self, outcomes: List[TransducerOutcome], outputs_dir_path: str):
+
+        for outcome in outcomes:
+            file_path: str = self._build_output_path(
+                outputs_dir_path,
+                outcome.diagram_id,
+                outcome.markup_language
+            )
+
+            with open(file_path, "w") as file:
+                file.write(outcome.payload)
+
     def __seq_compile_transducer_outcomes(self, outcomes: List[TransducerOutcome], outputs_dir_path: str):
 
         outcomes_by_markuplang: Dict[str, List[TransducerOutcome]] = Orchestrator._arrange_outcomes_by_markuplang(outcomes)
@@ -233,7 +261,7 @@ class Orchestrator(ToDeviceMixin):
 
                         compiler.compile(
                             outcome.payload,
-                            Orchestrator._build_output_path(
+                            self._build_output_path(
                                 outputs_dir_path,
                                 outcome.diagram_id,
                                 outcome.markup_language
@@ -242,7 +270,7 @@ class Orchestrator(ToDeviceMixin):
 
     # ===> PAR <===
 
-    def __par_image2diagram(self, image: Image, then_compile: bool, outputs_dir_path: str | None = None) -> List[TransducerOutcome]:
+    def __par_image2diagram(self, image: Image, dump_markup: bool, then_compile: bool, outputs_dir_path: str | None = None) -> List[TransducerOutcome]:
         """
         Convert image to diagram in parallel
         """
@@ -250,6 +278,9 @@ class Orchestrator(ToDeviceMixin):
         diagram_id = self.__classify(image)
 
         outcomes = self.__par_elaboration(diagram_id, image)
+
+        if dump_markup:
+            self.__seq_dump_markup(outcomes, outputs_dir_path)
 
         if not then_compile:
             return outcomes
@@ -282,6 +313,7 @@ class Orchestrator(ToDeviceMixin):
             return outcomes
 
     def _par_extract_using_extractor_and_transduce(self, extractor: Extractor, diagram_id: str, image: Image) -> List[TransducerOutcome]:
+        image.to_device(extractor.get_device())
         diagram_representation: DiagramRepresentation = extractor.extract(diagram_id, image)
 
         compatible_transducers = self.__compatible_transducers(diagram_id, diagram_representation)
@@ -318,7 +350,7 @@ class Orchestrator(ToDeviceMixin):
 
                             compiler.compile(
                                 outcome.payload,
-                                Orchestrator._build_output_path(
+                                self._build_output_path(
                                     outputs_dir_path,
                                     outcome.diagram_id,
                                     outcome.markup_language

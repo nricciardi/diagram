@@ -19,7 +19,7 @@ from src.transducer.d2.flowchart_transducer import FlowchartToD2Transducer
 from src.transducer.mermaid.flowchart_transducer import FlowchartToMermaidTransducer
 from src.compiler.d2.flowchart_compiler import FlowchartToD2Compiler
 from src.compiler.mermaid.flowchart_compiler import FlowchartToMermaidCompiler
-
+from src.wellknown_markuplang import WellKnownMarkupLanguage
 
 # Configure logging
 logging.basicConfig(
@@ -144,6 +144,10 @@ def main(device: str, classifier: Classifier, extractors: List[Extractor], input
             FlowchartToMermaidCompiler("flowchart-to-mermaid-compiler"),
             FlowchartToD2Compiler("flowchart-to-d2-compiler")
         ],
+        extensions_lookup={
+            WellKnownMarkupLanguage.D2_LANG.value: "d2",
+            WellKnownMarkupLanguage.MERMAID.value: "md",
+        }
     )
 
     orchestrator.to_device(device)
@@ -151,6 +155,7 @@ def main(device: str, classifier: Classifier, extractors: List[Extractor], input
     orchestrator.images2diagrams(
         images,
         parallelization=parallelization,
+        dump_markup=True,       # CLI always dumps markup files
         then_compile=then_compile,
         outputs_dir_path=outputs_dir_path
     )

@@ -15,11 +15,13 @@ class TensorImage(Image):
 
     @classmethod
     def from_str(cls, path: str) -> Self:
+
         if (path.lower().endswith('.png') or path.lower().endswith('.jpeg') or path.lower().endswith('.jpg')):
             tensor = read_image(path)
             if tensor.shape[0] == 4:
                 tensor = tensor[:3, :, :]
             return TensorImage(tensor)
+
         if (path.lower().endswith('.bmp')):
             np_img = cv2.imread(path)
             if np_img.shape[2] == 4:
@@ -34,3 +36,6 @@ class TensorImage(Image):
 
     def to_device(self, device: str) -> None:
         self.tensor = self.tensor.to(device)
+
+    def get_device(self) -> str:
+        return self.tensor.device.type

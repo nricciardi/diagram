@@ -46,6 +46,11 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
         self.bbox_detector = self.bbox_detector.to(device)
         self.text_digitizer.to_device(device)
 
+    def get_device(self) -> str:
+        assert next(self.bbox_detector.parameters()).device.type == self.text_digitizer.get_device()
+
+        return self.text_digitizer.get_device()
+
     @override
     def compatible_diagrams(self) -> List[str]:
         return [

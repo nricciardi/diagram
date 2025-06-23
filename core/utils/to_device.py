@@ -12,3 +12,11 @@ class ToDeviceMixin(ABC):
         :param device:
         :return:
         """
+
+    @abstractmethod
+    def get_device(self) -> str:
+        """
+        Get device
+
+        :return: device as str
+        """

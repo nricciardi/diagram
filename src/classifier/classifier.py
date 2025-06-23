@@ -250,3 +250,6 @@ class GNRClassifier(Classifier):
         """
         self.device = torch.device(device)
         self.model.to(self.device)
+
+    def get_device(self) -> str:
+        return next(self.model.parameters()).device.type

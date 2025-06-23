@@ -217,7 +217,11 @@ class TrOCRTextExtractorSmall(TextExtractor):
         """
         self.device = device
         self.model.to(device)
-    
+
+    def get_device(self) -> str:
+        return next(self.model.parameters()).device.type
+
+
 class TrOCRTextExtractorBase(TextExtractor):
     
     def __init__(self):

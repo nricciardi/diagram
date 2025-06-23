@@ -13,12 +13,7 @@ class FlowchartToMermaidCompiler(Compiler):
     def compatible_markup_languages(self) -> List[str]:
         return [WellKnownMarkupLanguage.MERMAID.value]
 
-    def compile(self, payload: str, output_path: str, dump_markuplang_file: bool = True,
-                markuplang_file_path: str | None = None):
-        if dump_markuplang_file is True:
-            with open(markuplang_file_path, 'w') as file:
-                file.write(payload)
-
+    def compile(self, payload: str, output_path: str, dump_markuplang_file: bool = False, markuplang_file_path: str | None = None):
         mm(payload, output_path)
 
 
@@ -39,4 +34,4 @@ def mm(graph: str, output_path: str):
     img = im.open(io.BytesIO(response.content))
     plt.imshow(img)
     plt.axis('off')  # allow to hide axis
-    plt.savefig(output_path, dpi=1200)
+    plt.savefig(f"{output_path}.png", dpi=1200)
