@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 from core.image.image import Image
+from core.image.tensor_image import TensorImage
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 
@@ -77,5 +78,6 @@ class MultiProcessor(Processor):
                 ax.axis("off")
             plt.tight_layout()
             plt.show()
-        return image
+
+        return TensorImage(image.as_tensor().unsqueeze(0))
         
