@@ -199,11 +199,9 @@ class TrOCRTextExtractorSmall(TextExtractor):
             str: The extracted text.
         """
         
-        device = image.as_tensor().device.type
         cropped_image = self.crop_image(image, text_bbox)
-        cropped_image.to_device(device)
         pixel_values = self.processor(images=cropped_image, return_tensors="pt").pixel_values
-        generated_ids = self.model.generate(pixel_values)
+        generated_ids = self.model.cpu().generate(pixel_values)
         generated_text: str = self.processor.batch_decode(generated_ids, skip_special_tokens=True)[0]
         return generated_text.strip()
     
@@ -218,7 +216,7 @@ class TrOCRTextExtractorSmall(TextExtractor):
             device (str): The device to move the model to (e.g., "cuda" or "cpu").
         """
         self.device = device
-        self.model = self.model.to(device)
+        self.model.to(device)
     
 class TrOCRTextExtractorBase(TextExtractor):
     
