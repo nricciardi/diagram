@@ -109,7 +109,8 @@ class Orchestrator(ToDeviceMixin):
         :return: all transducer outcomes, based on extractors and transducers more than one outcome can be produced
         """
 
-        images: List[Image] = [image.to_device(self.device) for image in images]
+        for image in images:
+            image.to_device(self.device)
 
         outcomes: List[TransducerOutcome] = []
         if parallelization:

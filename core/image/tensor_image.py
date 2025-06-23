@@ -4,7 +4,7 @@ from core.image.image import Image
 from dataclasses import dataclass
 from torch import Tensor
 import torch
-
+from typing import Self
 from src import DEVICE
 
 
@@ -13,8 +13,8 @@ class TensorImage(Image):
 
     tensor: Tensor
 
-    @staticmethod
-    def from_str(path: str) -> 'Image':
+    @classmethod
+    def from_str(cls, path: str) -> Self:
         if (path.lower().endswith('.png') or path.lower().endswith('.jpeg') or path.lower().endswith('.jpg')):
             tensor = read_image(path)
             if tensor.shape[0] == 4:
@@ -32,5 +32,5 @@ class TensorImage(Image):
     def as_tensor(self) -> Tensor:
         return self.tensor
 
-    def to_device(self, device: str):
+    def to_device(self, device: str) -> None:
         self.tensor = self.tensor.to(device)

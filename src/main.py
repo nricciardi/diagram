@@ -125,7 +125,11 @@ def parse_args():
 
 
 def main(device: str, classifier: Classifier, extractors: List[Extractor], inputs_paths: List[str], parallelization: bool, then_compile: bool, outputs_dir_path: Optional[str]):
-    images: List[Image] = [TensorImage.from_str(path) for path in inputs_paths]
+    images: List[Image] = []
+    for path in inputs_paths:
+        image = TensorImage.from_str(path)
+        image.to_device(DEVICE)
+        images.append(image)
 
     orchestrator = Orchestrator(
         classifier=classifier,
