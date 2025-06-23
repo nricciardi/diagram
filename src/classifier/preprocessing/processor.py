@@ -36,7 +36,9 @@ class GrayScaleProcessor(Processor):
         :param image: The input image to be processed.
         :return: The processed image in grayscale.
         """
-        image_np = image.as_tensor().detach().numpy()
+
+        device = image.as_tensor().device
+        image_np = image.as_tensor().cpu().detach().numpy()
         image_np = image_np.astype(np.uint8)
         
         if len(image_np.shape) != 3:
@@ -47,8 +49,9 @@ class GrayScaleProcessor(Processor):
             image_np = np.transpose(image_np, (1, 2, 0))
             gray_image = cv2.cvtColor(image_np, cv2.COLOR_RGB2GRAY)
             assert gray_image.shape == image_np.shape[:2], f"Expected shape {image_np.shape[:2]}, but got {gray_image.shape}"
-            
-        return TensorImage(torch.from_numpy(gray_image))
+        
+        tensor = torch.from_numpy(gray_image).to(device)
+        return TensorImage(tensor)
 
 class PadderProcessor(Processor):
     def __init__(self, target_size: tuple[int, int] = Processor.BASE_SHAPE):
@@ -56,7 +59,8 @@ class PadderProcessor(Processor):
         self.target_size = target_size
 
     def process(self, image: Image) -> Image:
-        image_np = image.as_tensor().detach().numpy()
+        device = image.as_tensor().device
+        image_np = image.as_tensor().cpu().detach().numpy()
         image_np = image_np.astype(np.uint8)
         
         if len(image_np.shape) != 2:
@@ -89,7 +93,8 @@ class PadderProcessor(Processor):
             value=255
         )
         assert padded_image.shape == self.target_size, f"Expected shape {self.target_size}, but got {padded_image.shape}"
-        return TensorImage(torch.from_numpy(padded_image))
+        tensor = torch.from_numpy(padded_image).to(device)
+        return TensorImage(tensor)
 
 class MedianFilterProcessor(Processor):
     def __init__(self, kernel_size: int = 3):
@@ -98,24 +103,26 @@ class MedianFilterProcessor(Processor):
 
     def process(self, image: Image) -> Image:
         
-        image_np = image.as_tensor().detach().numpy()
+        device = image.as_tensor().device
+        image_np = image.as_tensor().cpu().detach().numpy()
         image_np = image_np.astype(np.uint8)
         image_np = cv2.medianBlur(image_np, self.kernel_size)
         
-        return TensorImage(torch.from_numpy(image_np))
+        return TensorImage(torch.from_numpy(image_np).to(device))
 
 class OtsuThresholdProcessor(Processor):
     def __init__(self):
         super().__init__()
 
     def process(self, image: Image) -> Image:
-        image_np = image.as_tensor().detach().numpy()
+        device = image.as_tensor().device
+        image_np = image.as_tensor().cpu().detach().numpy()
         image_np = image_np.astype(np.uint8)
         
         _, thresh = cv2.threshold(image_np, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
         
         assert thresh.shape == image_np.shape, f"Expected shape {image_np.shape}, but got {thresh.shape}"
-        return TensorImage(torch.from_numpy(thresh))
+        return TensorImage(torch.from_numpy(thresh).to(device))
 
 class PerspectiveCorrectionProcessor(Processor):
     def __init__(self, output_size=None):
@@ -144,7 +151,8 @@ class PerspectiveCorrectionProcessor(Processor):
         return rect
     
     def process(self, image: Image) -> Image:
-        gray = image.as_tensor().detach().numpy()
+        device = image.as_tensor().device
+        gray = image.as_tensor().cpu().detach().numpy()
 
         thresh = gray.astype(np.uint8)
 
@@ -179,7 +187,7 @@ class PerspectiveCorrectionProcessor(Processor):
         warped = cv2.warpPerspective(gray, M, (self.output_size[0], self.output_size[1]))
 
         tensor = torch.from_numpy(warped).unsqueeze(0).float()
-        return TensorImage(tensor)
+        return TensorImage(tensor.to(device))
 
 class GNRMultiProcessor(MultiProcessor):
     def __init__(self, processors: list[Processor] = None):
