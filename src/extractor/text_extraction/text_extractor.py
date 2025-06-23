@@ -183,7 +183,8 @@ class TrOCRTextExtractorSmall(TextExtractor):
         self.processor = TrOCRProcessor.from_pretrained("microsoft/trocr-small-printed")
         self.model = VisionEncoderDecoderModel.from_pretrained("microsoft/trocr-small-printed")
         self.model.eval()
-        self.model.to("cuda" if torch.cuda.is_available() else "cpu")
+        self.device = "cuda" if torch.cuda.is_available() else "cpu"
+        self.model.to(self.device)
     
     def extract_text(self, image: Image, text_bbox: ImageBoundingBox) -> str:
         """
@@ -204,6 +205,16 @@ class TrOCRTextExtractorSmall(TextExtractor):
     
     def compute_embedding(self, text: str) -> torch.Tensor:
         return self.processor.tokenizer(text, return_tensors="pt").input_ids
+    
+    def to(self, device: str):
+        """
+        Moves the model to the specified device.
+
+        Args:
+            device (str): The device to move the model to (e.g., "cuda" or "cpu").
+        """
+        self.device = device
+        self.model.to(device)
     
 class TrOCRTextExtractorBase(TextExtractor):
     
