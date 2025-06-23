@@ -13,6 +13,7 @@ from core.orchestrator.orchestrator import Orchestrator
 from src.classifier.classifier import GNRClassifier
 from src.extractor.bbox_detection import load_model
 from src.extractor.flowchart.gnr_extractor import GNRFlowchartExtractor
+from src.extractor.text_extraction.text_extractor import TrOCRTextExtractorSmall
 from src.transducer.d2.flowchart_transducer import FlowchartToD2Transducer
 from src.transducer.mermaid.flowchart_transducer import FlowchartToMermaidTransducer
 from src.compiler.d2.flowchart_compiler import FlowchartToD2Compiler
@@ -169,6 +170,7 @@ if __name__ == '__main__':
     classifier = GNRClassifier(model_path=args.classifier)
     extractors = [
         GNRFlowchartExtractor(
+            text_digitizer=None, #TrOCRTextExtractorSmall(),
             bbox_detector=load_model(args.bbox_detector, torch.device('cuda' if torch.cuda.is_available() else 'cpu')),
             identifier="gnr-flowchart-extractor",
             bbox_trust_threshold=0.7,
