@@ -70,7 +70,8 @@ class GNRClassifier(Classifier):
         :return: The classification result.
         """
         
-        self.model.eval().to(self.device)
+        self.model.eval()
+        self.model = self.model.to(self.device)
         image = self.processor.process(image)
         tensor = image.as_tensor().unsqueeze(0).to(self.device)
         y = self.model.forward(tensor.float())
