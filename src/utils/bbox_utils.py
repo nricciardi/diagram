@@ -57,11 +57,11 @@ def bbox_overlap(bbox1: ImageBoundingBox, bbox2: ImageBoundingBox, two_wrt_one: 
             `two_wrt_one` is False.
     """
     x_left: float = max(bbox1.top_left_x, bbox2.top_left_x)
-    y_top: float = min(bbox1.top_left_y, bbox2.top_left_y)
+    y_top: float = max(bbox1.top_left_y, bbox2.top_left_y)
     x_right: float = min(bbox1.bottom_right_x, bbox2.bottom_right_x)
-    y_bottom: float = max(bbox1.bottom_right_y, bbox2.bottom_right_y)
+    y_bottom: float = min(bbox1.bottom_right_y, bbox2.bottom_right_y)
 
-    intersection_area: float = max(0., x_right - x_left) * max(0., y_top - y_bottom)
+    intersection_area: float = max(0., x_right - x_left) * max(0., y_bottom - y_top)
     area_bbox1: float = bbox1.area()
     area_bbox2: float = bbox2.area()
 
@@ -100,7 +100,8 @@ def bbox_vertices(bbox1: ImageBoundingBox, bbox2: ImageBoundingBox) -> \
     return bbox1_vertices, bbox2_vertices
 
 
-def split_linestring_by_ratios(self, line: LineString, ratios: List[float]) -> List[LineString]:
+def split_linestring_by_ratios(line: LineString, ratios: List[float]) -> List[LineString]:
+    # TODO: Rifare (not working :-( )
     """
     Splits a LineString into segments based on provided ratios.
 

@@ -21,18 +21,18 @@ class Arrow:
 
 
 
-def get_most_certain_bbox(bboxes_part: List[ImageBoundingBox], arrow_bbox: ImageBoundingBox) -> ImageBoundingBox:
+def get_most_certain_bbox(bboxes_part: List[ImageBoundingBox], arrow_bbox: ImageBoundingBox) -> tuple[ImageBoundingBox, int]:
     """
     Get the most certain bbox from bboxes_part that overlaps with arrow_bbox.
     """
     max_overlap = 0
-    most_certain_bbox = None
+    most_certain_bbox = (None, None)
 
-    for bbox in bboxes_part:
+    for i, bbox in enumerate(bboxes_part):
         overlap = bbox_overlap(bbox, arrow_bbox)
         if overlap > max_overlap:
             max_overlap = overlap
-            most_certain_bbox = bbox
+            most_certain_bbox = (bbox, i)
 
     return most_certain_bbox
 
@@ -70,11 +70,13 @@ def compute_arrows(arrow_bboxes: List[ImageBoundingBox], head_bboxes: List[Image
     )
 
     for arrow in arrow_bboxes:
-        head_bbox = get_most_certain_bbox(head_bboxes, arrow)
-        tail_bbox = get_most_certain_bbox(tail_bboxes, arrow)
-
+        head_bbox, i = get_most_certain_bbox(head_bboxes, arrow)
+        tail_bbox, j = get_most_certain_bbox(tail_bboxes, arrow)
         if head_bbox is None or tail_bbox is None:
             continue
+        
+        head_bboxes.pop(i)
+        tail_bboxes.pop(j)
 
         # Compute the center of the head and tail bboxes
         x_head = int((head_bbox.top_left_x + head_bbox.bottom_right_x) // 2)
