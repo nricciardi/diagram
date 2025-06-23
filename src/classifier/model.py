@@ -68,7 +68,7 @@ class ClassifierCNN(nn.Module):
         
         :return: Output tensor.
         """
-        x = x.unsqueeze(0)
+        x = x.unsqueeze(1).permute(1, 0, 2, 3)
         x = self.convSeq(x)
         x = self.linSeq(x.view(x.size(0), -1))
         return x
