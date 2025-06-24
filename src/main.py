@@ -39,7 +39,7 @@ def configure_logger(level_name: str):
     level = LOG_LEVELS.get(level_name.lower(), logging.INFO)
     logging.basicConfig(
         level=level,
-        format="%(asctime)s [%(levelname)s] %(message)s",
+        format="[%(name)s] %(asctime)s [%(levelname)s] %(message)s",
         handlers=[logging.StreamHandler(sys.stdout)]
     )
 
