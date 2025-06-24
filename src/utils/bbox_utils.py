@@ -11,28 +11,6 @@ import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 
 
-# def bbox_distance(bbox1: ImageBoundingBox, bbox2: ImageBoundingBox) -> float:
-#     """
-#     Calculate the shortest distance between two bounding boxes using Pythagoras' theorem.
-#     This function computes the Euclidean distance between all pairs of vertices from
-#     two bounding boxes and returns the smallest distance.
-#     Args:
-#         bbox1 (ImageBoundingBox): The first bounding box.
-#         bbox2 (ImageBoundingBox): The second bounding box.
-#     Returns:
-#         float: The shortest Euclidean distance between the two bounding boxes.
-#     """
-#     bbox1_vertices, bbox2_vertices = bbox_vertices(bbox1=bbox1, bbox2=bbox2)
-#
-#     distance: float = 0
-#     for bbox1_vertex in bbox1_vertices:
-#         for bbox2_vertex in bbox2_vertices:
-#             bbox_dist = math.sqrt((bbox1_vertex[0] - bbox2_vertex[0]) ** 2 + (bbox1_vertex[1] - bbox2_vertex[1]) ** 2)
-#             if bbox_dist < distance or distance == 0:
-#                 distance = bbox_dist
-#
-#     return distance
-
 
 def bbox_overlap(bbox1: ImageBoundingBox, bbox2: ImageBoundingBox, two_wrt_one: bool = True) -> float:
     """
@@ -74,30 +52,30 @@ def bbox_overlap(bbox1: ImageBoundingBox, bbox2: ImageBoundingBox, two_wrt_one: 
     return overlap_percentage
 
 
-# def bbox_vertices(bbox1: ImageBoundingBox, bbox2: ImageBoundingBox) -> \
-#         Tuple[List[Tuple[float, float]], List[Tuple[float, float]]]:
-#     """
-#     Computes the vertices of two bounding boxes and returns them as lists of coordinate tuples.
-#     Args:
-#         bbox1 (ImageBoundingBox): The first bounding box, containing attributes for its corner coordinates.
-#         bbox2 (ImageBoundingBox): The second bounding box, containing attributes for its corner coordinates.
-#     Returns:
-#         Tuple[List[Tuple[float, float]], List[Tuple[float, float]]]:
-#             A tuple containing two lists:
-#             - The first list contains the vertices of `bbox1` as (x, y) coordinate tuples.
-#             - The second list contains the vertices of `bbox2` as (x, y) coordinate tuples.
-#     """
-#
-#     bbox1_vertices: List[Tuple[float, float]] = [(bbox1.top_left_x, bbox1.top_left_y),
-#                                                  (bbox1.top_right_x, bbox1.top_right_y),
-#                                                  (bbox1.bottom_right_x, bbox1.bottom_right_y),
-#                                                  (bbox1.bottom_left_x, bbox1.bottom_left_y)]
-#     bbox2_vertices: List[Tuple[float, float]] = [(bbox2.top_left_x, bbox2.top_left_y),
-#                                                  (bbox2.top_right_x, bbox2.top_right_y),
-#                                                  (bbox2.bottom_right_x, bbox2.bottom_right_y),
-#                                                  (bbox2.bottom_left_x, bbox2.bottom_left_y)]
-#
-#     return bbox1_vertices, bbox2_vertices
+def bbox_vertices(bbox1: ImageBoundingBox, bbox2: ImageBoundingBox) -> \
+        Tuple[List[Tuple[float, float]], List[Tuple[float, float]]]:
+    """
+    Computes the vertices of two bounding boxes and returns them as lists of coordinate tuples.
+    Args:
+        bbox1 (ImageBoundingBox): The first bounding box, containing attributes for its corner coordinates.
+        bbox2 (ImageBoundingBox): The second bounding box, containing attributes for its corner coordinates.
+    Returns:
+        Tuple[List[Tuple[float, float]], List[Tuple[float, float]]]:
+            A tuple containing two lists:
+            - The first list contains the vertices of `bbox1` as (x, y) coordinate tuples.
+            - The second list contains the vertices of `bbox2` as (x, y) coordinate tuples.
+    """
+
+    bbox1_vertices: List[Tuple[float, float]] = [(bbox1.top_left_x, bbox1.top_left_y),
+                                                 (bbox1.top_right_x, bbox1.top_right_y),
+                                                 (bbox1.bottom_right_x, bbox1.bottom_right_y),
+                                                 (bbox1.bottom_left_x, bbox1.bottom_left_y)]
+    bbox2_vertices: List[Tuple[float, float]] = [(bbox2.top_left_x, bbox2.top_left_y),
+                                                 (bbox2.top_right_x, bbox2.top_right_y),
+                                                 (bbox2.bottom_right_x, bbox2.bottom_right_y),
+                                                 (bbox2.bottom_left_x, bbox2.bottom_left_y)]
+
+    return bbox1_vertices, bbox2_vertices
 
 
 def insert_point_into_line(line: LineString, point, tol=1e-8):

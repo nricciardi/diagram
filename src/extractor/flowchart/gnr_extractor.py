@@ -16,8 +16,8 @@ from src.extractor.arrow.arrow import Arrow
 from src.extractor.flowchart.multistage_extractor import MultistageFlowchartExtractor, ArrowTextTypeOutcome, \
     ElementTextTypeOutcome, ObjectRelation
 from src.flowchart_element_category import FlowchartElementCategoryIndex, Lookup
-from src.utils.bbox_utils import bbox_overlap, bbox_distance, bbox_vertices, \
-    distance_bbox_point, split_linestring_by_ratios
+from src.utils.bbox_utils import bbox_overlap, \
+    distance_bbox_point, split_linestring_by_ratios, bbox_vertices
 from src.wellknown_diagram import WellKnownDiagram
 from src.extractor.text_extraction.text_extractor import TrOCRTextExtractorSmall, TextExtractor
 
@@ -99,7 +99,7 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
             minimum_element_text_distance: float = float('inf')
             minimum_element_text_bbox: Optional[ImageBoundingBox] = None
             for element_bbox in element_bboxes:
-                element_text_distance: float = bbox_distance(text_bbox, element_bbox)
+                element_text_distance: float = text_bbox.distance(element_bbox)
 
                 if element_text_distance < minimum_element_text_distance:
                     minimum_element_text_distance = element_text_distance
@@ -216,7 +216,7 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
         distance: float = 0
         if overlap_text == 0:
             logger.debug('Computing distance element-text...')
-            distance = bbox_distance(bbox1=element_bbox, bbox2=text_bbox)
+            distance = element_bbox.distance(text_bbox)
             logger.debug(f'Distance element-text is {distance}')
 
         outcome: ElementTextTypeOutcome = ElementTextTypeOutcome.INNER

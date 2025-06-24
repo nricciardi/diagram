@@ -71,8 +71,7 @@ class Orchestrator(ToDeviceMixin):
         return outcomes_by_markuplang
 
     def __classify(self, image: Image) -> str:
-        logger.info("Classify image...")
-        logger.debug(image)
+        logger.info(f"Classify image... {image.as_tensor().shape}")
 
         image.to_device(self.classifier.get_device())
         diagram_id = self.classifier.classify(image)
