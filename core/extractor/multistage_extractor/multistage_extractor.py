@@ -21,6 +21,9 @@ class MultiStageExtractor(Extractor, ABC):
                 raise ValueError("bbox_trust_threshold must be between 0 and 1")
 
     def extract(self, diagram_id: str, image: Image) -> DiagramRepresentation:
+
+        self.update_thresholds(diagram_id, image)
+
         image = self._preprocess(diagram_id, image)
 
         bboxes = self._extract_diagram_objects(diagram_id, image)
@@ -31,6 +34,17 @@ class MultiStageExtractor(Extractor, ABC):
             bboxes = self._filter_bboxes(bboxes)
 
         return self._build_diagram_representation(diagram_id, image, bboxes)
+
+    def update_thresholds(self, diagram_id: str, image: Image) -> None:
+        """
+
+        Args:
+            diagram_id:
+            image:
+
+        Returns:
+
+        """
 
     def _preprocess(self, diagram_id: str, image: Image) -> Image:
         """
