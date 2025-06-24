@@ -187,49 +187,25 @@ class TextExtractor(ToDeviceMixin, ABC):
     def get_device(self) -> str:
         return next(self.model.parameters()).device.type
 
-class TrOCRTextExtractorSmall(TextExtractor):
-    
+class TrOCRTextExtractor(TextExtractor, ABC):
+
+    """
+    Abstract base class for TrOCR text extraction.
+    This class provides a common interface for different TrOCR models.
+    """
+
     def __init__(self):
-        self.processor = TrOCRProcessor.from_pretrained("microsoft/trocr-small-printed")
-        self.model = VisionEncoderDecoderModel.from_pretrained("microsoft/trocr-small-printed")
+        super().__init__()
+        self.processor: TrOCRProcessor = self.get_processor()
+        self.model: VisionEncoderDecoderModel = self.get_model()
         self.model.eval()
-        self.model.to(self.device)
-    
+
     def extract_text(self, image: Image, text_bbox: ImageBoundingBox) -> str:
         """
         Extracts text from the given image using the TrOCR model.
 
         Args:
             text_bbox:
-            image (Image): The image object containing the file.
-
-        Returns:
-            str: The extracted text.
-        """
-        
-        cropped_image = self.crop_image(image, text_bbox)
-        pixel_values = self.processor(images=cropped_image, return_tensors="pt").pixel_values
-        generated_ids = self.model.generate(pixel_values.to(self.device))
-        generated_text: str = self.processor.batch_decode(generated_ids, skip_special_tokens=True)[0]
-        return generated_text.strip()
-    
-    def compute_embedding(self, text: str) -> torch.Tensor:
-        return self.processor.tokenizer(text, return_tensors="pt").input_ids
-
-
-class TrOCRTextExtractorBase(TextExtractor):
-    
-    def __init__(self):
-        self.processor = TrOCRProcessor.from_pretrained("microsoft/trocr-base-printed")
-        self.model = VisionEncoderDecoderModel.from_pretrained("microsoft/trocr-base-printed")
-        self.model.eval()
-        self.model.to(self.device)
-    
-    def extract_text(self, image: Image, text_bbox: ImageBoundingBox) -> str:
-        """
-        Extracts text from the given image using the TrOCR model.
-
-        Args:
             image (Image): The image object containing the file.
 
         Returns:
@@ -245,88 +221,80 @@ class TrOCRTextExtractorBase(TextExtractor):
     def compute_embedding(self, text: str) -> torch.Tensor:
         return self.processor.tokenizer(text, return_tensors="pt").input_ids
     
-class TrOCRTextExtractionSmallHandwritten(TextExtractor):
+    @abstractmethod
+    def get_processor(self) -> TrOCRProcessor:
+        """
+        Returns the TrOCR processor instance.
         
-        def __init__(self):
-            self.processor = TrOCRProcessor.from_pretrained("microsoft/trocr-small-handwritten")
-            self.model = VisionEncoderDecoderModel.from_pretrained("microsoft/trocr-small-handwritten")
-            self.model.eval()
-            self.model.to(self.device)
-        
-        def extract_text(self, image: Image, text_bbox: ImageBoundingBox) -> str:
-            """
-            Extracts text from the given image using the TrOCR model.
+        Returns:
+            TrOCRProcessor: The TrOCR processor instance.
+        """
+        raise NotImplementedError("Subclasses should implement this method.")
     
-            Args:
-                image (Image): The image object containing the file.
+    @abstractmethod
+    def get_model(self) -> VisionEncoderDecoderModel:
+        """
+        Returns the TrOCR model instance.
+        
+        Returns:
+            VisionEncoderDecoderModel: The TrOCR model instance.
+        """
+        raise NotImplementedError("Subclasses should implement this method.")
+
+
+class TrOCRTextExtractorSmall(TextExtractor):
     
-            Returns:
-                str: The extracted text.
-            """
-            
-            cropped_image = self.crop_image(image, text_bbox)
-            pixel_values = self.processor(images=cropped_image, return_tensors="pt").pixel_values
-            generated_ids = self.model.generate(pixel_values)
-            generated_text: str = self.processor.batch_decode(generated_ids, skip_special_tokens=True)[0]
-            return generated_text.strip()
-        
-        def compute_embedding(self, text: str) -> torch.Tensor:
-            return self.processor.tokenizer(text, return_tensors="pt").input_ids
-        
+    def __init__(self):
+        super().__init__()
+
+    def get_processor(self) -> TrOCRProcessor:
+        return TrOCRProcessor.from_pretrained("microsoft/trocr-small-printed")
+    
+    def get_model(self) -> VisionEncoderDecoderModel:
+        return VisionEncoderDecoderModel.from_pretrained("microsoft/trocr-small-printed")
+
+
+class TrOCRTextExtractorBase(TextExtractor):
+    
+    def __init__(self):
+        super().__init__()
+    
+    def get_processor(self) -> TrOCRProcessor:
+        return TrOCRProcessor.from_pretrained("microsoft/trocr-base-printed")
+    
+    def get_model(self) -> VisionEncoderDecoderModel:
+        return VisionEncoderDecoderModel.from_pretrained("microsoft/trocr-base-printed")
+ 
+
+class TrOCRTextExtractorSmallHandwritten(TextExtractor):
+    
+    def __init__(self):
+        super().__init__()
+
+    def get_processor(self) -> TrOCRProcessor:
+        return TrOCRProcessor.from_pretrained("microsoft/trocr-small-handwritten")
+    
+    def get_model(self) -> VisionEncoderDecoderModel:
+        return VisionEncoderDecoderModel.from_pretrained("microsoft/trocr-small-handwritten")
+
 class TrOCRTextExtractorBaseHandwritten(TextExtractor):
     
-            def __init__(self):
-                self.processor = TrOCRProcessor.from_pretrained("microsoft/trocr-base-handwritten")
-                self.model = VisionEncoderDecoderModel.from_pretrained("microsoft/trocr-base-handwritten")
-                self.model.eval()
-                self.model.to(self.device)
-            
-            def extract_text(self, image: Image, text_bbox: ImageBoundingBox) -> str:
-                """
-                Extracts text from the given image using the TrOCR model.
-        
-                Args:
-                    image (Image): The image object containing the file.
-        
-                Returns:
-                    str: The extracted text.
-                """
-                
-                cropped_image = self.crop_image(image, text_bbox)
-                pixel_values = self.processor(images=cropped_image, return_tensors="pt").pixel_values
-                generated_ids = self.model.generate(pixel_values)
-                generated_text: str = self.processor.batch_decode(generated_ids, skip_special_tokens=True)[0]
-                return generated_text.strip()
-            
-            def compute_embedding(self, text: str) -> torch.Tensor:
-                return self.processor.tokenizer(text, return_tensors="pt").input_ids
+    def __init__(self):
+        super().__init__()
+
+    def get_processor(self) -> TrOCRProcessor:
+        return TrOCRProcessor.from_pretrained("microsoft/trocr-base-handwritten")
+    
+    def get_model(self) -> VisionEncoderDecoderModel:
+        return VisionEncoderDecoderModel.from_pretrained("microsoft/trocr-base-handwritten")
             
 class TrOCRTextExtractorLargeHandwritten(TextExtractor):
     
-            def __init__(self):
-                self.processor = TrOCRProcessor.from_pretrained("microsoft/trocr-large-handwritten")
-                self.model = VisionEncoderDecoderModel.from_pretrained("microsoft/trocr-large-handwritten")
-                self.model.eval()
-                self.model.to(self.device)
-            
-            def extract_text(self, image: Image, text_bbox: ImageBoundingBox) -> str:
-                """
-                Extracts text from the given image using the TrOCR model.
-        
-                Args:
-                    image (Image): The image object containing the file.
-        
-                Returns:
-                    str: The extracted text.
-                """
-                
-                device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-                cropped_image = self.crop_image(image, text_bbox)
-                pixel_values = self.processor(images=cropped_image, return_tensors="pt").pixel_values.to(device)
-                self.model.to(device)
-                generated_ids = self.model.generate(pixel_values)
-                generated_text: str = self.processor.batch_decode(generated_ids, skip_special_tokens=True)[0]
-                return generated_text.strip()
-            
-            def compute_embedding(self, text: str) -> torch.Tensor:
-                return self.processor.tokenizer(text, return_tensors="pt").input_ids
+    def __init__(self):
+        super().__init__()
+
+    def get_processor(self) -> TrOCRProcessor:
+        return TrOCRProcessor.from_pretrained("microsoft/trocr-large-handwritten")
+    
+    def get_model(self) -> VisionEncoderDecoderModel:
+        return VisionEncoderDecoderModel.from_pretrained("microsoft/trocr-large-handwritten")
