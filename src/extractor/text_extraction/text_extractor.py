@@ -214,7 +214,7 @@ class TrOCRTextExtractor(TextExtractor, ABC):
         
         cropped_image = self.crop_image(image, text_bbox)
         pixel_values = self.processor(images=cropped_image, return_tensors="pt").pixel_values
-        generated_ids = self.model.generate(pixel_values)
+        generated_ids = self.model.generate(pixel_values.to(self.get_device()))
         generated_text: str = self.processor.batch_decode(generated_ids, skip_special_tokens=True)[0]
         return generated_text.strip()
     
@@ -242,7 +242,7 @@ class TrOCRTextExtractor(TextExtractor, ABC):
         raise NotImplementedError("Subclasses should implement this method.")
 
 
-class TrOCRTextExtractorSmall(TextExtractor):
+class TrOCRTextExtractorSmall(TrOCRTextExtractor):
     
     def __init__(self):
         super().__init__()
@@ -254,7 +254,7 @@ class TrOCRTextExtractorSmall(TextExtractor):
         return VisionEncoderDecoderModel.from_pretrained("microsoft/trocr-small-printed")
 
 
-class TrOCRTextExtractorBase(TextExtractor):
+class TrOCRTextExtractorBase(TrOCRTextExtractor):
     
     def __init__(self):
         super().__init__()
@@ -266,7 +266,7 @@ class TrOCRTextExtractorBase(TextExtractor):
         return VisionEncoderDecoderModel.from_pretrained("microsoft/trocr-base-printed")
  
 
-class TrOCRTextExtractorSmallHandwritten(TextExtractor):
+class TrOCRTextExtractorSmallHandwritten(TrOCRTextExtractor):
     
     def __init__(self):
         super().__init__()
@@ -277,7 +277,7 @@ class TrOCRTextExtractorSmallHandwritten(TextExtractor):
     def get_model(self) -> VisionEncoderDecoderModel:
         return VisionEncoderDecoderModel.from_pretrained("microsoft/trocr-small-handwritten")
 
-class TrOCRTextExtractorBaseHandwritten(TextExtractor):
+class TrOCRTextExtractorBaseHandwritten(TrOCRTextExtractor):
     
     def __init__(self):
         super().__init__()
@@ -288,7 +288,7 @@ class TrOCRTextExtractorBaseHandwritten(TextExtractor):
     def get_model(self) -> VisionEncoderDecoderModel:
         return VisionEncoderDecoderModel.from_pretrained("microsoft/trocr-base-handwritten")
             
-class TrOCRTextExtractorLargeHandwritten(TextExtractor):
+class TrOCRTextExtractorLargeHandwritten(TrOCRTextExtractor):
     
     def __init__(self):
         super().__init__()
