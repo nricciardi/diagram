@@ -191,7 +191,7 @@ if __name__ == '__main__':
             text_digitizer=text_digitizer,
             bbox_detector=load_model(args.bbox_detector, torch.device(DEVICE)),
             identifier="gnr-flowchart-extractor",
-            bbox_trust_threshold=0.7,
+            bbox_trust_threshold=0.5,
             parallelization=args.parallelize
         )
     ]
