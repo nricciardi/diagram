@@ -1,4 +1,4 @@
-from enum import Enum
+from enum import StrEnum
 from dataclasses import dataclass
 from typing import List
 
@@ -6,13 +6,13 @@ from typing import List
 For reference: https://en.wikipedia.org/wiki/Flowchart#Building_blocks
 """
 
-class FlowchartElementCategory(Enum):
-    TERMINAL: str = "TerminalNode"
-    PROCESS: str = "ProcessNode"
-    DECISION: str = "DecisionNode"
-    INPUT_OUTPUT: str = "InputOutputNode"
-    CIRCLE: str = "CircleNode"
-    SUBROUTINE: str = "SubroutineNode"
+class FlowchartElementCategory(StrEnum):
+    TERMINAL = "TerminalNode"
+    PROCESS = "ProcessNode"
+    DECISION = "DecisionNode"
+    INPUT_OUTPUT = "InputOutputNode"
+    CIRCLE = "CircleNode"
+    SUBROUTINE = "SubroutineNode"
 
 
 @dataclass(frozen=True, slots=True)

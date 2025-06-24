@@ -40,3 +40,14 @@ class FlowchartRepresentation(DiagramRepresentation):
             data = json.load(file)
             return FlowchartRepresentation(elements=[Element("", [], []).from_dict(element) for element in data["elements"]],
                                            relations=[Relation("", "", "", [], [], [], []).from_dict(relation) for relation in data["relations"]])
+
+    def __repr__(self):
+        r = f"elements ({len(self.elements)}):\n"
+        for element in self.elements:
+            r += str(element) + "\n"
+
+        r += f"relations ({len(self.relations)}):\n"
+        for relation in self.relations:
+            r += str(relation) + "\n"
+
+        return r
