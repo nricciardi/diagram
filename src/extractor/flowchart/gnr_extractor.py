@@ -39,7 +39,7 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
     arrow_text_discard_distance_threshold: float = 10  # TODO find optimal threshold
     arrow_text_inner_distance_threshold: float = 2 # TODO find optimal threshold
     element_arrow_overlap_threshold: float = 0.1  # TODO find optimal threshold
-    element_arrow_distance_threshold: float = 20.  # TODO find optimal threshold
+    element_arrow_distance_threshold: float = 150.  # TODO find optimal threshold
     ratios = [0.2, 0.6, 0.2]  # Source, Middle, Target
 
     def to_device(self, device: str):
