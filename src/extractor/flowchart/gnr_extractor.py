@@ -19,7 +19,7 @@ from src.flowchart_element_category import FlowchartElementCategoryIndex, Lookup
 from src.utils.bbox_utils import bbox_overlap, \
     distance_bbox_point, split_linestring_by_ratios, bbox_vertices
 from src.wellknown_diagram import WellKnownDiagram
-from src.extractor.text_extraction.text_extractor import TrOCRTextExtractorSmall, TextExtractor
+from src.extractor.text_extraction.text_extractor import TextExtractor
 
 logger = logging.getLogger(__name__)
 
@@ -44,7 +44,11 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
 
     @override
     def update_thresholds(self, diagram_id: str, image: Image) -> None:
-        pass # TODO
+        image_area = image.as_tensor().shape[1] * image.as_tensor().shape[0]
+
+        self.element_text_overlap_threshold = 0.5 * image_area / 1000000
+
+        
 
     def to_device(self, device: str):
         self.bbox_detector = self.bbox_detector.to(device)
@@ -140,11 +144,6 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
                 where the text is located.
         Returns:
             str: The extracted and digitalized text from the specified region of the image.
-        Notes:
-            - The method processes the image tensor to crop the region defined by the bounding box.
-            - The cropped region is converted to a PIL image and passed through a text recognition 
-              model to extract the text.
-            - The extracted text is stripped of leading and trailing whitespace before being returned.
         """
 
         logger.debug("Analyzing the text found...")
