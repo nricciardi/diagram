@@ -44,11 +44,9 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
 
     @override
     def update_thresholds(self, diagram_id: str, image: Image) -> None:
-        image_area = image.as_tensor().shape[1] * image.as_tensor().shape[0]
+        longest_side: float = max(image.as_tensor().shape[0], image.as_tensor().shape[1])
 
-        self.element_text_overlap_threshold = 0.5 * image_area / 1000000
-
-        
+        self.element_arrow_distance_threshold = 0.2 * longest_side
 
     def to_device(self, device: str):
         self.bbox_detector = self.bbox_detector.to(device)
