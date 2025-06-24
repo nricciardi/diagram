@@ -217,6 +217,7 @@ def distance_bbox_point(bbox: ImageBoundingBox, point_x: float, point_y: float) 
     Returns:
         float: The shortest distance from the point to the bounding box.
     """
-    x = max(bbox.top_left_x, min(point_x, bbox.bottom_right_x))
-    y = max(bbox.bottom_right_y, min(point_y, bbox.top_left_y))
-    return math.sqrt((x - point_x) ** 2 + (y - point_y) ** 2)
+    center_x = (bbox.top_left_x + bbox.bottom_right_x) / 2
+    center_y = (bbox.top_left_y + bbox.bottom_right_y) / 2
+
+    return math.sqrt((point_x - center_x)**2 + (point_y - center_y)**2)
