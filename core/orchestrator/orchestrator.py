@@ -29,6 +29,7 @@ class Orchestrator(ToDeviceMixin):
     transducers: List[Transducer]
     compilers: List[Compiler]
     extensions_lookup: Dict[str, str]
+    make_unique: bool = False   # TODO: -> True
 
     def to_device(self, device: str):
         self.classifier.to_device(device)
@@ -43,11 +44,11 @@ class Orchestrator(ToDeviceMixin):
 
         return device
 
-    def _build_output_path(self, outputs_dir_path: str, diagram_id: str, markup_language: str, make_unique: bool = True, unique_strength: int = 8) -> str:
+    def _build_output_path(self, outputs_dir_path: str, diagram_id: str, markup_language: str) -> str:
 
         file_name = f"{diagram_id}__{markup_language}"
 
-        if make_unique:
+        if self.make_unique:
             now_str = datetime.now().strftime("%Y%m%d%H%M%S%f")
 
             file_name += f"__{now_str}"

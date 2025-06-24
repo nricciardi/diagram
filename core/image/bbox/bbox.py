@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from abc import ABC, abstractmethod
 from torch import Tensor
+from typing import Self
 
 
 @dataclass(frozen=True)
@@ -82,4 +83,8 @@ class ImageBoundingBox(ABC):
 
     @abstractmethod
     def area(self) -> float:
+        pass
+
+    @abstractmethod
+    def distance(self, other: Self) -> float:
         pass

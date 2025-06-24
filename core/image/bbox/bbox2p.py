@@ -1,7 +1,6 @@
 from core.image.bbox.bbox import ImageBoundingBox
 from dataclasses import dataclass
 import torch
-from typing import Self
 
 
 @dataclass(frozen=True)
@@ -54,3 +53,23 @@ class ImageBoundingBox2Points(ImageBoundingBox):
         # assert (self.top_right_y - self.bottom_right_y) == (self.top_left_y - self.bottom_left_y)
 
         return (self.top_right_x - self.top_left_x) * (self.bottom_right_y - self.top_right_y)
+
+    def distance(self, other: ImageBoundingBox) -> float:
+
+        # Distance along x
+        if self.bottom_right_x < other.top_left_x:
+            dx = other.top_left_x - self.bottom_right_x
+        elif other.bottom_right_x < self.top_left_x:
+            dx = self.top_left_x - other.bottom_right_x
+        else:
+            dx = 0  # overlap along x
+
+        # Distance along y
+        if self.bottom_right_y < other.top_left_y:
+            dy = other.top_left_y - self.bottom_right_y
+        elif other.bottom_right_y < self.top_left_y:
+            dy = self.top_left_y - other.bottom_right_y
+        else:
+            dy = 0  # overlap along y
+
+        return (dx ** 2 + dy ** 2) ** 0.5

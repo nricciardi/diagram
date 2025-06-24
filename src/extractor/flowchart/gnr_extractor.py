@@ -108,7 +108,7 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
             minimum_arrow_text_distance: float = float('inf')
             minimum_distance_arrow_to_text: Optional[Arrow] = None
             for arrow in arrows:
-                arrow_text_distance: float = arrow.distance_to_bbox(text_bbox) # bbox_distance(text_bbox, arrow.bbox) TODO check
+                arrow_text_distance: float = arrow.distance_to_bbox(text_bbox)
 
                 if arrow_text_distance < minimum_arrow_text_distance:
                     minimum_arrow_text_distance = arrow_text_distance
@@ -120,6 +120,9 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
 
             else:
                 element_text_associations[minimum_element_text_bbox].append(text_bbox)
+
+        logger.debug(f"{len(element_text_associations)} element-text associations found")
+        logger.debug(f"{len(arrow_text_associations)} arrow-text associations found")
 
         return element_text_associations, arrow_text_associations
 
