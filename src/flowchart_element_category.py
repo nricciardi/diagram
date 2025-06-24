@@ -37,5 +37,3 @@ class Lookup:
                              FlowchartElementCategoryIndex.ARROW_HEAD.value: FlowchartExtraElementCategory.ARROW_HEAD.value,
                              FlowchartElementCategoryIndex.ARROW_TAIL.value: FlowchartExtraElementCategory.ARROW_TAIL.value
                              }
-
-# print("CircleNode" in [s.value for s in FlowchartElementCategory])

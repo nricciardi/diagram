@@ -143,7 +143,7 @@ def main(device: str, classifier: Classifier, extractors: List[Extractor], input
         ],
         extensions_lookup={
             WellKnownMarkupLanguage.D2_LANG.value: "d2",
-            WellKnownMarkupLanguage.MERMAID.value: "md",
+            WellKnownMarkupLanguage.MERMAID.value: "mmd",
         }
     )
 
