@@ -34,27 +34,13 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
         GrayScaleProcessor()
     ])
     element_precedent_over_arrow_in_text_association: bool = True
-
-    def element_text_overlap_threshold(self, image: Image) -> float:
-        return 0.5  # TODO find optimal threshold
-
-    def element_text_distance_threshold(self, image: Image) -> float:
-        return 10  # TODO find optimal threshold
-
-    def arrow_text_discard_distance_threshold(self, image: Image) -> float:
-        return 10  # TODO find optimal threshold
-
-    def arrow_text_inner_distance_threshold(self, image: Image) -> float:
-        return 10  # TODO find optimal threshold
-
-    def element_arrow_overlap_threshold(self, image: Image) -> float:
-        return 10  # TODO find optimal threshold
-
-    def element_arrow_distance_threshold(self, image: Image) -> float:
-        return 10  # TODO find optimal threshold
-
-    def ratios(self, image: Image) -> Tuple[float, float, float]:
-        return 0.2, 0.6, 0.2  # Source, Middle, Target
+    element_text_overlap_threshold: float = 0.5  # TODO find optimal threshold
+    element_text_distance_threshold: float = 30  # TODO find optimal threshold
+    arrow_text_discard_distance_threshold: float = 20  # TODO find optimal threshold
+    arrow_text_inner_distance_threshold: float = 5 # TODO find optimal threshold
+    element_arrow_overlap_threshold: float = 0.1  # TODO find optimal threshold
+    element_arrow_distance_threshold: float = 20.  # TODO find optimal threshold
+    ratios = [0.2, 0.6, 0.2]  # Source, Middle, Target
 
     def to_device(self, device: str):
         self.bbox_detector = self.bbox_detector.to(device)

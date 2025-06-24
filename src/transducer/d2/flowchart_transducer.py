@@ -1,4 +1,4 @@
-from typing import List, Type, override
+from typing import List, Type, override, Optional
 
 from src.wellknown_diagram import WellKnownDiagram
 from core.representation.representation import DiagramRepresentation
@@ -26,7 +26,7 @@ class FlowchartToD2Transducer(Transducer):
         return [FlowchartRepresentation]
 
     @staticmethod
-    def wrap_element(category: str, label: str, elem_id: str) -> str:
+    def wrap_element(category: str, label: str, elem_id: int) -> str:
         match category:
             case FlowchartElementCategory.CIRCLE.value:
                 return f"{elem_id}: {label}\n" \
@@ -49,18 +49,18 @@ class FlowchartToD2Transducer(Transducer):
                 raise ValueError(f"Unknown flowchart element category: {category}")
 
     @staticmethod
-    def wrap_relation(category: str, label: str, target_id: str) -> str:
+    def wrap_relation(category: str, label: str, target_id: int) -> str:
         match category:
             case FlowchartRelationCategory.ARROW.value:
-                if label == "":
+                if label is None:
                     return f"->{target_id}\n"
                 return f"->{target_id}: {label}\n"
             case FlowchartRelationCategory.OPEN_LINK.value:
-                if label == "":
+                if label is None:
                     return f"--{target_id}\n"
                 return f"--{target_id}: {label}\n"
             case FlowchartRelationCategory.DOTTED_ARROW.value:
-                if label == "":
+                if label is None:
                     return f"->{target_id} {{\n" \
                            "\tstyle: {\n" \
                            "\tstroke-dash: 3\n" \
@@ -74,18 +74,24 @@ class FlowchartToD2Transducer(Transducer):
             case _:
                 raise ValueError(f"Unknown flowchart relation category: {category}")
 
+
+    def get_text(self, obj: Relation | Element) -> str:
+        pass
+
     def transduce(self, diagram_id: str, diagram_representation: DiagramRepresentation) -> TransducerOutcome:
         assert isinstance(diagram_representation, FlowchartRepresentation)
 
         body: str = ""
         for identifier, element in enumerate(diagram_representation.elements):
             # NOTA: L'outer_text non è assolutamente utilizzato
-            body += self.wrap_element(element.category, " ".join(element.inner_text), str(identifier))
+            body += self.wrap_element(element.category, self.get_text(element), identifier)
 
         body += "\n"
         for relation in diagram_representation.relations:
+            if relation.source_id is None or relation.target_id is None:
+                continue
             body += f"{relation.source_id}"
-            body += self.wrap_relation(relation.category, "" if relation.get_text() is None else relation.get_text(), relation.target_id)
+            body += self.wrap_relation(relation.category, "" if self.get_text(relation) is None else self.get_text(relation), relation.target_id)
 
         outcome: TransducerOutcome = TransducerOutcome(diagram_id, WellKnownMarkupLanguage.D2_LANG.value, body)
         return outcome

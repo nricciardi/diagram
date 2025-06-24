@@ -1,8 +1,8 @@
-from typing import List, Type, override
+from typing import List, Type, override, Optional
 import sys, os
 
-from src.representation.flowchart_representation.element import FlowchartElementCategory
-from src.representation.flowchart_representation.relation import FlowchartRelationCategory
+from src.representation.flowchart_representation.element import FlowchartElementCategory, Element
+from src.representation.flowchart_representation.relation import FlowchartRelationCategory, Relation
 
 from src.wellknown_diagram import WellKnownDiagram
 from core.representation.representation import DiagramRepresentation
@@ -57,19 +57,22 @@ class FlowchartToMermaidTransducer(Transducer):
     def wrap_relation(category: str, label: str) -> str:
         match category:
             case FlowchartRelationCategory.ARROW.value:
-                if label == "":
+                if label is None:
                     return "-->"
                 return f"-->|{label}|"
             case FlowchartRelationCategory.OPEN_LINK.value:
-                if label == "":
+                if label is None:
                     return " --- "
                 return f"---|{label}|"
             case FlowchartRelationCategory.DOTTED_ARROW.value:
-                if label == "":
+                if label is None:
                     return "-.->"
                 return f" -. {label} .->"
             case _:
                 raise ValueError(f"Unknown flowchart relation category: {category}")
+
+    def get_text(self, obj: Relation | Element) -> str:
+        pass
 
     def transduce(self, diagram_id: str, diagram_representation: DiagramRepresentation) -> TransducerOutcome:
         """
@@ -94,12 +97,14 @@ class FlowchartToMermaidTransducer(Transducer):
 
         body: str = "flowchart TD\n"
         for identifier, element in enumerate(diagram_representation.elements):
-            body += f"\t{identifier}{self.wrap_element(element.category, " ".join(element.inner_text))}\n"
+            body += f"\t{identifier}{self.wrap_element(element.category, self.get_text(element))}\n"
 
         body += "\n"
         for relation in diagram_representation.relations:
+            if relation.source_id is None or relation.target_id is None:
+                continue
             body += f"\t{relation.source_id}"
-            body += f"{self.wrap_relation(relation.category, relation.get_text())}{relation.target_id}\n"
+            body += f"{self.wrap_relation(relation.category, self.get_text(relation))}{relation.target_id}\n"
 
         outcome: TransducerOutcome = TransducerOutcome(diagram_id=diagram_id, payload=body, markup_language="mermaid")
         return outcome
