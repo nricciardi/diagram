@@ -14,7 +14,6 @@ class TextExtractor(ToDeviceMixin, ABC):
 
     def __init__(self):
         super().__init__()
-        self.device = "cpu"
     
     @abstractmethod
     def extract_text(self, image: Image, text_bbox: ImageBoundingBox) -> str:
@@ -183,8 +182,7 @@ class TextExtractor(ToDeviceMixin, ABC):
         raise NotImplementedError("Subclasses should implement this method.")
 
     def to_device(self, device: str):
-        self.device = device
-        self.model.to(device)
+        self.model = self.model.to(device)
 
     def get_device(self) -> str:
         return next(self.model.parameters()).device.type
@@ -195,7 +193,6 @@ class TrOCRTextExtractorSmall(TextExtractor):
         self.processor = TrOCRProcessor.from_pretrained("microsoft/trocr-small-printed")
         self.model = VisionEncoderDecoderModel.from_pretrained("microsoft/trocr-small-printed")
         self.model.eval()
-        self.device = "cuda" if torch.cuda.is_available() else "cpu"
         self.model.to(self.device)
     
     def extract_text(self, image: Image, text_bbox: ImageBoundingBox) -> str:
@@ -226,7 +223,6 @@ class TrOCRTextExtractorBase(TextExtractor):
         self.processor = TrOCRProcessor.from_pretrained("microsoft/trocr-base-printed")
         self.model = VisionEncoderDecoderModel.from_pretrained("microsoft/trocr-base-printed")
         self.model.eval()
-        self.device = "cuda" if torch.cuda.is_available() else "cpu"
         self.model.to(self.device)
     
     def extract_text(self, image: Image, text_bbox: ImageBoundingBox) -> str:
@@ -255,7 +251,6 @@ class TrOCRTextExtractionSmallHandwritten(TextExtractor):
             self.processor = TrOCRProcessor.from_pretrained("microsoft/trocr-small-handwritten")
             self.model = VisionEncoderDecoderModel.from_pretrained("microsoft/trocr-small-handwritten")
             self.model.eval()
-            self.device = "cuda" if torch.cuda.is_available() else "cpu"
             self.model.to(self.device)
         
         def extract_text(self, image: Image, text_bbox: ImageBoundingBox) -> str:
@@ -284,7 +279,6 @@ class TrOCRTextExtractorBaseHandwritten(TextExtractor):
                 self.processor = TrOCRProcessor.from_pretrained("microsoft/trocr-base-handwritten")
                 self.model = VisionEncoderDecoderModel.from_pretrained("microsoft/trocr-base-handwritten")
                 self.model.eval()
-                self.device = "cuda" if torch.cuda.is_available() else "cpu"
                 self.model.to(self.device)
             
             def extract_text(self, image: Image, text_bbox: ImageBoundingBox) -> str:
@@ -313,7 +307,6 @@ class TrOCRTextExtractorLargeHandwritten(TextExtractor):
                 self.processor = TrOCRProcessor.from_pretrained("microsoft/trocr-large-handwritten")
                 self.model = VisionEncoderDecoderModel.from_pretrained("microsoft/trocr-large-handwritten")
                 self.model.eval()
-                self.device = "cuda" if torch.cuda.is_available() else "cpu"
                 self.model.to(self.device)
             
             def extract_text(self, image: Image, text_bbox: ImageBoundingBox) -> str:
