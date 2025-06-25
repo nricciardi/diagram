@@ -323,28 +323,50 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
         Args:
             diagram_id:
             image: tensor (C, H, W)
-            arrow_bboxes:
+            arrow_bboxes: (x1, y1, x2, y2)
 
         Returns:
 
         """
         managed_arrows: List[Optional[Arrow]] = []
-        crop_size: Tuple[int, int, int] = (1, image.as_tensor().shape[1], image.as_tensor().shape[2])
-
+        crop_size: Tuple[int, int, int] = (1, image.as_tensor().shape[1] + int(self.arrow_crop_delta_size_y) + 1, image.as_tensor().shape[2] + int(self.arrow_crop_delta_size_x) + 1)
+        _, H, W = image.as_tensor().shape
         for arrow_bbox in arrow_bboxes:
-            x1, y1, x2, y2 = arrow_bbox.bottom_left_x, arrow_bbox.bottom_left_y, arrow_bbox.bottom_right_x, arrow_bbox.top_left_y
+            x1, y1, x2, y2 = int(arrow_bbox.bottom_left_x), int(arrow_bbox.top_left_y), int(arrow_bbox.bottom_right_x), int(arrow_bbox.bottom_left_y)
             crop_bbox: torch.Tensor = torch.ones(crop_size).to(self.get_device())
-            center_x: int = crop_bbox.shape[2] // 2
-            center_y: int = crop_bbox.shape[1] // 2
-            delta_x: int = arrow_bbox.box.shape[2] // 2 + int(self.arrow_crop_delta_size_x) // 2
-            assert center_x - delta_x > 0 and center_x + delta_x < crop_size[2]
-            delta_y: int = arrow_bbox.box.shape[1] // 2 + int(self.arrow_crop_delta_size_y) // 2
-            assert center_y - delta_y > 0 and center_y + delta_y < crop_size[1]
-            crop_bbox[:, (center_y - delta_y):(center_y + delta_y), (center_x - delta_x):(center_x + delta_x)] = (
-                image.as_tensor())[:, (y1 - delta_y):(y2 + delta_y), (x1 - delta_x): (x2 + delta_x)]
+            crop_center_x: int = int(crop_bbox.shape[2] // 2)
+            crop_center_y: int = int(crop_bbox.shape[1] // 2)
+            delta_x: int = int((x2 - x1) // 2) + int(self.arrow_crop_delta_size_x // 2)
+            assert crop_center_x - delta_x > 0 and crop_center_x + delta_x < crop_size[2]
+            delta_y: int = int((y2 - y1) // 2) + int(self.arrow_crop_delta_size_y // 2)
+            assert crop_center_y - delta_y > 0 and crop_center_y + delta_y < crop_size[1]
+            orig_center_x: int = (x2 - x1) // 2 + x1
+            orig_center_y: int = (y2 - y1) // 2 + y1
+
+            delta_y_left: int = delta_y
+            delta_y_right: int = delta_y
+
+            delta_x_left: int = delta_x
+            delta_x_right: int = delta_x
+
+            orig_y_start: int = max(0, orig_center_y - delta_y)
+            if orig_y_start == 0:
+                delta_y_left -= delta_y - orig_center_y
+            orig_y_end: int = min(H, orig_center_y + delta_y)
+            if orig_y_end == H:
+                delta_y_right -= orig_center_y + delta_y - H
+            orig_x_start: int = max(0, orig_center_x - delta_x)
+            if orig_x_start == 0:
+                delta_x_left -= delta_x - orig_center_x
+            orig_x_end: int = min(W, orig_center_x + delta_x)
+            if orig_x_end == W:
+                delta_x_right -= orig_center_x + delta_x - W
+
+            crop_bbox[:, (crop_center_y - delta_y_left):(crop_center_y + delta_y_right), (crop_center_x - delta_x_left):(crop_center_x + delta_x_right)] = \
+                image.as_tensor()[:, orig_y_start:orig_y_end, orig_x_start:orig_x_end]
             prediction = self.bbox_detector(crop_bbox.unsqueeze(0))[0]
-            head: torch.Tensor
-            tail: torch.Tensor
+            head: Optional[torch.Tensor] = None
+            tail: Optional[torch.Tensor] = None
             head_score: float = 0.0
             tail_score: float = 0.0
             for bbox, label, score in zip(prediction['boxes'], prediction['labels'], prediction['scores']):
