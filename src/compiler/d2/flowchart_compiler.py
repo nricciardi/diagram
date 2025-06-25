@@ -35,7 +35,7 @@ class FlowchartToD2Compiler(Compiler):
             raise
 
         finally:
-            pass #TODO os.remove(TMP_FILE)
+            os.remove(TMP_FILE)
 
 
     def compatible_markup_languages(self) -> List[str]:
