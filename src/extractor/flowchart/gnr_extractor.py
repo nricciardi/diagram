@@ -6,7 +6,6 @@ from typing import List, Tuple, Dict, Optional, override
 from torchvision.transforms.functional import to_pil_image
 from torchvision.utils import draw_bounding_boxes
 
-from src import DEVICE
 from src.classifier.preprocessing.processor import GrayScaleProcessor, MultiProcessor
 import torch
 from shapely.geometry import Polygon, LineString
@@ -42,8 +41,11 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
     element_text_distance_threshold: float = 10  # TODO find optimal threshold
     arrow_text_discard_distance_threshold: float = 10  # TODO find optimal threshold
     arrow_text_inner_distance_threshold: float = 2  # TODO find optimal threshold
+    arrow_crop_delta_size_x: float = 40. # TODO find optimal threshold
+    arrow_crop_delta_size_y: float = 25. # TODO find optimal threshold
     element_arrow_overlap_threshold: float = 0.1  # TODO find optimal threshold
     element_arrow_distance_threshold: float = 150.  # TODO find optimal threshold
+
     ratios = [0.2, 0.6, 0.2]  # Source, Middle, Target
     bbox_trust_thresholds: Dict[int, Optional[float]] = field(default_factory=dict)
 
@@ -82,7 +84,6 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
         return [
             WellKnownDiagram.GRAPH_DIAGRAM.value,
             WellKnownDiagram.FLOW_CHART.value,
-            WellKnownDiagram.OTHER.value # TODO REMOVE ASAP
         ]
 
     @override
@@ -113,10 +114,6 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
         image = self.preprocessor.process(image)
 
         return image
-
-    @override
-    def _manage_wrong_computed_arrows(self, diagram_id: str, image: Image, arrow_bboxes: List[ImageBoundingBox]) -> List[Optional[Arrow]]:
-        return []
 
     def _compute_text_associations(self, diagram_id: str, element_bboxes: List[ImageBoundingBox],
                                    arrows: List[Arrow], text_bboxes: List[ImageBoundingBox])\
@@ -319,12 +316,60 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
         return outcome
 
     @override
-    def _extract_diagram_objects(self, diagram_id: str, image: Image) -> List[ImageBoundingBox]:
-        im = torch.ones((1, 1000, 1000)).to(DEVICE)
-        image = image.as_tensor().unsqueeze(0).float() / 255.0      # unsqueeze(0) to fake a batch: (C=1, H, W) -> (1, C=1, H, W)
-        im[:, 300:(300+image.shape[2]), 300:(300+image.shape[3])] = image.squeeze(0)
+    def _manage_wrong_computed_arrows(self, diagram_id: str, image: Image, arrow_bboxes: List[ImageBoundingBox]) -> \
+    List[Optional[Arrow]]:
 
-        prediction = self.bbox_detector(im.unsqueeze(0))[0] #self.bbox_detector(image)[0] TODO change
+        """
+        Args:
+            diagram_id:
+            image: tensor (C, H, W)
+            arrow_bboxes:
+
+        Returns:
+
+        """
+        managed_arrows: List[Optional[Arrow]] = []
+        crop_size: Tuple[int, int, int] = (1, image.as_tensor().shape[1], image.as_tensor().shape[2])
+
+        for arrow_bbox in arrow_bboxes:
+            x1, y1, x2, y2 = arrow_bbox.bottom_left_x, arrow_bbox.bottom_left_y, arrow_bbox.bottom_right_x, arrow_bbox.top_left_y
+            crop_bbox: torch.Tensor = torch.ones(crop_size).to(self.get_device())
+            center_x: int = crop_bbox.shape[2] // 2
+            center_y: int = crop_bbox.shape[1] // 2
+            delta_x: int = arrow_bbox.box.shape[2] // 2 + int(self.arrow_crop_delta_size_x) // 2
+            assert center_x - delta_x > 0 and center_x + delta_x < crop_size[2]
+            delta_y: int = arrow_bbox.box.shape[1] // 2 + int(self.arrow_crop_delta_size_y) // 2
+            assert center_y - delta_y > 0 and center_y + delta_y < crop_size[1]
+            crop_bbox[:, (center_y - delta_y):(center_y + delta_y), (center_x - delta_x):(center_x + delta_x)] = (
+                image.as_tensor())[:, (y1 - delta_y):(y2 + delta_y), (x1 - delta_x): (x2 + delta_x)]
+            prediction = self.bbox_detector(crop_bbox.unsqueeze(0))[0]
+            head: torch.Tensor
+            tail: torch.Tensor
+            head_score: float = 0.0
+            tail_score: float = 0.0
+            for bbox, label, score in zip(prediction['boxes'], prediction['labels'], prediction['scores']):
+                if label.item() == FlowchartElementCategoryIndex.ARROW_HEAD.value and score.item() > head_score:
+                    head = bbox
+                    head_score = score.item()
+                if label.item() == FlowchartElementCategoryIndex.ARROW_TAIL.value and score.item() > tail_score:
+                    tail = bbox
+                    tail_score = score.item()
+            if head is not None and tail is not None:
+                managed_arrows.append(Arrow.from_bboxes(
+                head_bbox=ImageBoundingBox2Points(category=Lookup.table[diagram_id][FlowchartElementCategoryIndex.ARROW_HEAD.value],
+                                                box=head, trust=head_score),
+                tail_bbox=ImageBoundingBox2Points(category=Lookup.table[diagram_id][FlowchartElementCategoryIndex.ARROW_TAIL.value],
+                                                  box=tail, trust=tail_score), arrow=arrow_bbox))
+            else:
+                managed_arrows.append(None)
+
+        return managed_arrows
+
+    @override
+    def _extract_diagram_objects(self, diagram_id: str, image: Image) -> List[ImageBoundingBox]:
+        image = image.as_tensor().unsqueeze(0).float() / 255.0      # unsqueeze(0) to fake a batch: (C=1, H, W) -> (1, C=1, H, W)
+
+        prediction = self.bbox_detector(image)[0]
         bboxes: List[ImageBoundingBox] = []
 
 
@@ -336,7 +381,7 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
 
         if logging.root.level <= 10:
             # Draw predictions
-            img_cpu = im.cpu() #image.squeeze(0).cpu() # TODO change
+            img_cpu = image.squeeze(0).cpu()
             boxes = prediction['boxes']
             labels = prediction['labels']
             drawn = draw_bounding_boxes(img_cpu, boxes=boxes, labels=[str(l.item()) for l in labels], width=2)

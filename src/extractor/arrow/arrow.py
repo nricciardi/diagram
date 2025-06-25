@@ -20,8 +20,17 @@ class Arrow:
 
     bbox: ImageBoundingBox
 
+    @classmethod
+    def from_bboxes(cls, head_bbox: ImageBoundingBox, tail_bbox: ImageBoundingBox, arrow: ImageBoundingBox):
+        # Compute the center of the head and tail bboxes
+        x_head = int((head_bbox.top_left_x + head_bbox.bottom_right_x) // 2)
+        y_head = int((head_bbox.top_left_y + head_bbox.bottom_right_y) // 2)
+        x_tail = int((tail_bbox.top_left_x + tail_bbox.bottom_right_x) // 2)
+        y_tail = int((tail_bbox.top_left_y + tail_bbox.bottom_right_y) // 2)
+        return Arrow(x_head=x_head, y_head=y_head, x_tail=x_tail, y_tail=y_tail, bbox=arrow)
+
     def is_self(self) -> bool:
-        pass
+        pass # TODO backlog
 
     def distance_to_bbox(self, other: ImageBoundingBox) -> float:
         arrow_line = LineString(coordinates=[[self.x_tail, self.y_tail], [self.x_head, self.y_head]])
@@ -87,12 +96,6 @@ def compute_arrows(arrow_bboxes: List[ImageBoundingBox], head_bboxes: List[Image
         head_bboxes.pop(i)
         tail_bboxes.pop(j)
 
-        # Compute the center of the head and tail bboxes
-        x_head = int((head_bbox.top_left_x + head_bbox.bottom_right_x) // 2)
-        y_head = int((head_bbox.top_left_y + head_bbox.bottom_right_y) // 2)
-        x_tail = int((tail_bbox.top_left_x + tail_bbox.bottom_right_x) // 2)
-        y_tail = int((tail_bbox.top_left_y + tail_bbox.bottom_right_y) // 2)
-
-        arrows.append(Arrow(x_head, y_head, x_tail, y_tail, arrow))
+        arrows.append(Arrow.from_bboxes(head_bbox=head_bbox, tail_bbox=tail_bbox, arrow=arrow))
 
     return arrows
