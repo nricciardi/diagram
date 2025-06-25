@@ -80,6 +80,8 @@ class MultistageFlowchartExtractor(MultiStageExtractor, ABC):
 
             arrow_bboxes_to_recover.append(arrow_bbox)
 
+        assert len(arrow_bboxes_to_recover) == len(arrow_bboxes) - len(arrows)
+
         recovered_arrows = self._manage_wrong_computed_arrows(diagram_id, image, arrow_bboxes_to_recover)
 
         assert len(recovered_arrows) == len(arrow_bboxes_to_recover)
