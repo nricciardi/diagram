@@ -52,15 +52,15 @@ class FlowchartToD2Transducer(Transducer):
     def wrap_relation(category: str, label: str, target_id: int) -> str:
         match category:
             case FlowchartRelationCategory.ARROW.value:
-                if label is None:
+                if label.strip() == "":
                     return f"->{target_id}\n"
                 return f"->{target_id}: {label}\n"
             case FlowchartRelationCategory.OPEN_LINK.value:
-                if label is None:
+                if label.strip() == "":
                     return f"--{target_id}\n"
                 return f"--{target_id}: {label}\n"
             case FlowchartRelationCategory.DOTTED_ARROW.value:
-                if label is None:
+                if label.strip() == "":
                     return f"->{target_id} {{\n" \
                            "\tstyle: {\n" \
                            "\tstroke-dash: 3\n" \

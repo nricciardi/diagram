@@ -57,15 +57,15 @@ class FlowchartToMermaidTransducer(Transducer):
     def wrap_relation(category: str, label: str) -> str:
         match category:
             case FlowchartRelationCategory.ARROW.value:
-                if label is None:
+                if label.strip() == "":
                     return "-->"
                 return f"-->|{label}|"
             case FlowchartRelationCategory.OPEN_LINK.value:
-                if label is None:
+                if label.strip() == "":
                     return " --- "
                 return f"---|{label}|"
             case FlowchartRelationCategory.DOTTED_ARROW.value:
-                if label is None:
+                if label.strip() == "":
                     return "-.->"
                 return f" -. {label} .->"
             case _:
