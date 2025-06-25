@@ -75,10 +75,10 @@ class Arrow:
         right_side_x = self.bbox.top_right_x
 
         mean_points = [
-            ((self.bbox.bottom_left_x + self.bbox.bottom_right_x) / 2, self.bbox.bottom_left_y),
-            ((self.bbox.top_right_y + self.bbox.bottom_right_y) / 2, self.bbox.top_right_x),
-            ((self.bbox.top_left_x + self.bbox.top_right_x) / 2, self.bbox.top_left_y),
-            ((self.bbox.top_left_y + self.bbox.bottom_left_y) / 2, self.bbox.bottom_left_x)
+            (int((self.bbox.bottom_left_x + self.bbox.bottom_right_x) / 2), self.bbox.bottom_left_y),
+            (int((self.bbox.top_right_y + self.bbox.bottom_right_y) / 2), self.bbox.top_right_x),
+            (int((self.bbox.top_left_x + self.bbox.top_right_x) / 2), self.bbox.top_left_y),
+            (int((self.bbox.top_left_y + self.bbox.bottom_left_y) / 2), self.bbox.bottom_left_x)
         ]
 
         vertices = [
