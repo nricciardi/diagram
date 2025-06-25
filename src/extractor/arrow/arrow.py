@@ -2,6 +2,8 @@ import logging
 from dataclasses import dataclass
 from typing import List
 import alphashape
+from scipy.spatial import ConvexHull
+from shapely.constructive import convex_hull
 from shapely.geometry import Polygon
 import torch
 from matplotlib.image import BboxImage
@@ -10,6 +12,8 @@ import numpy as np
 from core.image.bbox.bbox import ImageBoundingBox
 from core.image.bbox.bbox2p import ImageBoundingBox2Points
 from src.utils.bbox_utils import bbox_overlap, IoU
+import cv2
+from sklearn.cluster import DBSCAN
 
 
 @dataclass(frozen=True)
@@ -32,19 +36,60 @@ class Arrow:
 
         return Arrow(x_head=x_head, y_head=y_head, x_tail=x_tail, y_tail=y_tail, bbox=arrow)
 
-    def is_self(self, alpha: float = 1.0, circularity_threshold: float = 0.1) -> bool:  # TODO: finetune
+    def __greatest_convexhull(self, labels, points):
+        unique_labels = set(labels) - {-1}
 
-        shape = alphashape.alphashape(largest_cluster_points, alpha)
+        max_area = 0
+        largest_cluster_label = None
+        largest_cluster_points = None
+        largest_hull = None
 
-        area = shape.area
-        perimeter = shape.length
+        for label in unique_labels:
+            cluster_points = points[labels == label]
+
+            if len(cluster_points) >= 3:  # at least 3 points to build a Convex Hull
+                try:
+                    hull = ConvexHull(cluster_points)
+                    area = hull.volume  # For 2D, 'volume' is area of Convex Hull
+                    if area > max_area:
+                        max_area = area
+                        largest_cluster_label = label
+                        largest_cluster_points = cluster_points
+                        largest_hull = hull
+                except:
+                    continue  # ignore invalid cluster for convex hull
+
+        largest_cluster_label_with_largest_convexhull = largest_cluster_label.copy()
+        largest_cluster_points_with_largest_convexhull = largest_cluster_points.copy()
+
+        logging.debug(f"label of largest cluster: {largest_cluster_label_with_largest_convexhull}")
+        logging.debug(f"n. points: {largest_cluster_points_with_largest_convexhull}")
+
+        return largest_hull
+
+    def is_self(self, alpha: float = 1.0, circularity_threshold: float = 0.1, eps: float = 100, min_samples: int = 1) -> bool:  # TODO: finetune
+        orb = cv2.ORB_create()
+        orb_keypoints, descriptors = orb.detectAndCompute(self.bbox.content, None)
+
+        orb = cv2.SIFT_create()
+        sift_keypoints, descriptors = orb.detectAndCompute(self.bbox.content, None)
+
+        points = np.array([kp.pt for kp in [*orb_keypoints, *sift_keypoints]])
+
+        dbscan = DBSCAN(eps=eps, min_samples=min_samples)
+        labels = dbscan.fit_predict(points)
+
+        num_clusters = len(set(labels)) - (1 if -1 in labels else 0)
+        logging.debug(f"DBSCAN found {num_clusters} cluster(s)")
+
+        convexhull: ConvexHull = self.__greatest_convexhull(labels, points)
 
         circularity = 0
-        if perimeter != 0:
-            circularity = 4 * np.pi * area / (perimeter ** 2)
+        if convexhull.volume != 0:
+            circularity = 4 * np.pi * convexhull.area / (convexhull.volume ** 2)
 
-            logging.debug(f"Area: {area:.2f}")
-            logging.debug(f"Perimeter: {perimeter:.2f}")
+            logging.debug(f"Area: {convexhull.area:.2f}")
+            logging.debug(f"Perimeter: {convexhull.volume:.2f}")
             logging.debug(f"Circularity: {circularity:.4f}")
 
         else:
@@ -53,6 +98,7 @@ class Arrow:
         self_arrow = circularity > circularity_threshold
 
         return self_arrow
+
 
     def distance_to_bbox(self, other: ImageBoundingBox) -> float:
         arrow_line = LineString(coordinates=[[self.x_tail, self.y_tail], [self.x_head, self.y_head]])
