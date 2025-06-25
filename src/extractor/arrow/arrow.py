@@ -101,7 +101,6 @@ class Arrow:
             abs(self.x_tail - left_side_x)
         ]
 
-        # ATTENZIONE: Questa è magia. Per sapere come funziona, contattarmi: filippogaragnani1@gmail.com
         convert_table = {
             2: 0,
             5: 1,
@@ -127,37 +126,10 @@ class Arrow:
 
         return (False, None, None)
 
-    def is_self(self, alpha: float = 1.0, circularity_threshold: float = 0.1, eps: float = 100, min_samples: int = 1) -> bool:  # TODO: finetune
-        orb = cv2.ORB_create()
-        orb_keypoints, descriptors = orb.detectAndCompute(self.bbox.content, None)
+    def is_self(self) -> bool:
+        s, _, _ = self.compute_opposite_point()
 
-        orb = cv2.SIFT_create()
-        sift_keypoints, descriptors = orb.detectAndCompute(self.bbox.content, None)
-
-        points = np.array([kp.pt for kp in [*orb_keypoints, *sift_keypoints]])
-
-        dbscan = DBSCAN(eps=eps, min_samples=min_samples)
-        labels = dbscan.fit_predict(points)
-
-        num_clusters = len(set(labels)) - (1 if -1 in labels else 0)
-        logging.debug(f"DBSCAN found {num_clusters} cluster(s)")
-
-        convexhull: ConvexHull = self.__greatest_convexhull(labels, points)
-
-        circularity = 0
-        if convexhull.volume != 0:
-            circularity = 4 * np.pi * convexhull.area / (convexhull.volume ** 2)
-
-            logging.debug(f"Area: {convexhull.area:.2f}")
-            logging.debug(f"Perimeter: {convexhull.volume:.2f}")
-            logging.debug(f"Circularity: {circularity:.4f}")
-
-        else:
-            logging.warning("WARN: perimeter is ZERO")
-
-        self_arrow = circularity > circularity_threshold
-
-        return self_arrow
+        return s
 
 
     def distance_to_bbox(self, other: ImageBoundingBox) -> float:
