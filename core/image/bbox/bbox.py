@@ -39,6 +39,7 @@ class ImageBoundingBox(ABC):
     category: str
     box: Tensor
     trust: float
+    content: Tensor
 
     def __post_init__(self):
         if self.trust > 1 or self.trust < 0:

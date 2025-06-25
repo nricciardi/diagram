@@ -1,10 +1,12 @@
+import logging
 from dataclasses import dataclass
 from typing import List
-
+import alphashape
+from shapely.geometry import Polygon
 import torch
 from matplotlib.image import BboxImage
 from shapely import LineString, Polygon
-
+import numpy as np
 from core.image.bbox.bbox import ImageBoundingBox
 from core.image.bbox.bbox2p import ImageBoundingBox2Points
 from src.utils.bbox_utils import bbox_overlap, IoU
@@ -27,10 +29,30 @@ class Arrow:
         y_head = int((head_bbox.top_left_y + head_bbox.bottom_right_y) // 2)
         x_tail = int((tail_bbox.top_left_x + tail_bbox.bottom_right_x) // 2)
         y_tail = int((tail_bbox.top_left_y + tail_bbox.bottom_right_y) // 2)
+
         return Arrow(x_head=x_head, y_head=y_head, x_tail=x_tail, y_tail=y_tail, bbox=arrow)
 
-    def is_self(self) -> bool:
-        pass # TODO backlog
+    def is_self(self, alpha: float = 1.0, circularity_threshold: float = 0.1) -> bool:  # TODO: finetune
+
+        shape = alphashape.alphashape(largest_cluster_points, alpha)
+
+        area = shape.area
+        perimeter = shape.length
+
+        circularity = 0
+        if perimeter != 0:
+            circularity = 4 * np.pi * area / (perimeter ** 2)
+
+            logging.debug(f"Area: {area:.2f}")
+            logging.debug(f"Perimeter: {perimeter:.2f}")
+            logging.debug(f"Circularity: {circularity:.4f}")
+
+        else:
+            logging.warning("WARN: perimeter is ZERO")
+
+        self_arrow = circularity > circularity_threshold
+
+        return self_arrow
 
     def distance_to_bbox(self, other: ImageBoundingBox) -> float:
         arrow_line = LineString(coordinates=[[self.x_tail, self.y_tail], [self.x_head, self.y_head]])

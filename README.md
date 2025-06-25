@@ -6,6 +6,10 @@ to eventually integrate or modify them.
 
 [Scrivo in italiano per fare prima, poi cambiamo in inglese]
 
+```bash
+pip3 install alphashape torch opencv-python matplotlib requests pillow pandas torchvision numpy shapely transformers sentencepiece protobuf torchmetrics scikit-learn
+```
+
 
 ## Buone abitudini per non smadonnare
 
