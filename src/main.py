@@ -124,6 +124,69 @@ def parse_args():
         help="List of input files from the local file system (required)"
     )
 
+    # === THRESHOLDs ===
+    parser.add_argument(
+        "--element_precedent_over_arrow_in_text_association",
+        action="store_true",
+        help="element_precedent_over_arrow_in_text_association"
+    )
+
+    parser.add_argument(
+        "--element_text_overlap_threshold",
+        type=float,
+        default=0.5,
+        help="element_text_overlap_threshold"
+    )
+
+    parser.add_argument(
+        "--element_text_distance_threshold",
+        type=float,
+        default=150,
+        help="element_text_distance_threshold"
+    )
+
+    parser.add_argument(
+        "--arrow_text_discard_distance_threshold",
+        type=float,
+        default=150.0,
+        help="arrow_text_discard_distance_threshold"
+    )
+
+    parser.add_argument(
+        "--arrow_text_inner_distance_threshold",
+        type=float,
+        default=2.0,
+        help="arrow_text_inner_distance_threshold"
+    )
+
+    parser.add_argument(
+        "--arrow_crop_delta_size_x",
+        type=float,
+        default=40.0,
+        help="arrow_crop_delta_size_x"
+    )
+
+    parser.add_argument(
+        "--arrow_crop_delta_size_y",
+        type=float,
+        default=25.0,
+        help="arrow_crop_delta_size_y"
+    )
+
+    parser.add_argument(
+        "--element_arrow_overlap_threshold",
+        type=float,
+        default=0.1,
+        help="element_arrow_overlap_threshold"
+    )
+
+    parser.add_argument(
+        "--element_arrow_distance_threshold",
+        type=float,
+        default=150,
+        help="element_arrow_distance_threshold"
+    )
+
     return parser.parse_args()
 
 
@@ -203,7 +266,16 @@ if __name__ == '__main__':
                 FlowchartElementCategoryIndex.TERMINATOR.value: 0.5,
                 FlowchartElementCategoryIndex.DECISION.value: 0.5,
             },
-            parallelization=args.parallelize
+            parallelization=args.parallelize,
+            element_precedent_over_arrow_in_text_association=args.element_precedent_over_arrow_in_text_association,
+            element_text_overlap_threshold=args.element_text_overlap_threshold,
+            element_text_distance_threshold=args.element_text_distance_threshold,
+            arrow_text_discard_distance_threshold=args.arrow_text_discard_distance_threshold,
+            arrow_text_inner_distance_threshold=args.arrow_text_inner_distance_threshold,
+            arrow_crop_delta_size_x=args.arrow_crop_delta_size_x,
+            arrow_crop_delta_size_y=args.arrow_crop_delta_size_y,
+            element_arrow_overlap_threshold=args.element_arrow_overlap_threshold,
+            element_arrow_distance_threshold=args.element_arrow_distance_threshold
         )
     ]
 

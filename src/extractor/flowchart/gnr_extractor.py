@@ -34,15 +34,17 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
     preprocessor = MultiProcessor([
         GrayScaleProcessor()
     ])
-    element_precedent_over_arrow_in_text_association: bool = True
-    element_text_overlap_threshold: float = 0.5  # TODO find optimal threshold
-    element_text_distance_threshold: float = 10  # TODO find optimal threshold
-    arrow_text_discard_distance_threshold: float = 10  # TODO find optimal threshold
-    arrow_text_inner_distance_threshold: float = 2  # TODO find optimal threshold
-    arrow_crop_delta_size_x: float = 40. # TODO find optimal threshold
-    arrow_crop_delta_size_y: float = 25. # TODO find optimal threshold
-    element_arrow_overlap_threshold: float = 0.1  # TODO find optimal threshold
-    element_arrow_distance_threshold: float = 150.  # TODO find optimal threshold
+
+    # TODO: change name in CLI
+    element_precedent_over_arrow_in_text_association: bool
+    element_text_overlap_threshold: float
+    element_text_distance_threshold: float
+    arrow_text_discard_distance_threshold: float
+    arrow_text_inner_distance_threshold: float
+    arrow_crop_delta_size_x: float
+    arrow_crop_delta_size_y: float
+    element_arrow_overlap_threshold: float
+    element_arrow_distance_threshold: float
 
     ratios = [0.2, 0.6, 0.2]  # Source, Middle, Target
     bbox_trust_thresholds: Dict[int, Optional[float]] = field(default_factory=dict)
