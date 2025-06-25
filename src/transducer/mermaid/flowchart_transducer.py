@@ -71,9 +71,6 @@ class FlowchartToMermaidTransducer(Transducer):
             case _:
                 raise ValueError(f"Unknown flowchart relation category: {category}")
 
-    def get_text(self, obj: Relation | Element) -> str:
-        pass
-
     def transduce(self, diagram_id: str, diagram_representation: DiagramRepresentation) -> TransducerOutcome:
         """
         Transforms a diagram representation into a Mermaid flowchart representation.
@@ -97,14 +94,16 @@ class FlowchartToMermaidTransducer(Transducer):
 
         body: str = "flowchart TD\n"
         for identifier, element in enumerate(diagram_representation.elements):
-            body += f"\t{identifier}{self.wrap_element(element.category, self.get_text(element))}\n"
+            element_text = f"{' '.join(element.inner_text)}\n{' '.join(element.outer_text)}"
+            body += f"\t{identifier}{self.wrap_element(element.category, element_text)}\n"
 
         body += "\n"
         for relation in diagram_representation.relations:
             if relation.source_id is None or relation.target_id is None:
                 continue
             body += f"\t{relation.source_id}"
-            body += f"{self.wrap_relation(relation.category, self.get_text(relation))}{relation.target_id}\n"
+            relation_text = f"{' '.join(relation.source_text)}\n{' '.join(relation.middle_text)}\n{' '.join(relation.inner_text)}\n{' '.join(relation.target_text)}\n"
+            body += f"{self.wrap_relation(relation.category, relation_text)}{relation.target_id}\n"
 
         outcome: TransducerOutcome = TransducerOutcome(diagram_id=diagram_id, payload=body, markup_language="mermaid")
         return outcome
