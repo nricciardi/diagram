@@ -37,5 +37,6 @@ class FlowchartToD2Compiler(Compiler):
         finally:
             os.remove(TMP_FILE)
 
+
     def compatible_markup_languages(self) -> List[str]:
-        return [ WellKnownMarkupLanguage.MERMAID.value ]
+        return [ WellKnownMarkupLanguage.D2_LANG.value ]
