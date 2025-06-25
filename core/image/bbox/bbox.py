@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from abc import ABC, abstractmethod
 
+import torch
 from scipy.optimize import anderson
 from torch import Tensor
 from typing import Self
@@ -91,12 +92,19 @@ class ImageBoundingBox(ABC):
     def distance(self, other: Self) -> float:
         pass
 
+    def eq(self, other: Self) -> bool:
+        return self.category == other.category and \
+            torch.equal(self.box, other.box)
+
     def __eq__(self, other: Self) -> bool:
-        return int(self.top_left_x) == int(other.top_left_x) and \
-                int(self.top_right_x) == int(other.top_right_x) and \
-                int(self.bottom_right_x) == int(other.bottom_right_x) and \
-                int(self.bottom_left_x) == int(other.bottom_left_x) and \
-                int(self.top_left_y) == int(other.top_left_y) and \
-                int(self.top_right_y) == int(other.top_right_y) and \
-                int(self.bottom_right_y) == int(other.bottom_right_y) and \
-                int(self.bottom_left_y) == int(other.bottom_left_y)
+        return self.category == other.category and \
+                torch.equal(self.box, other.box)
+        # return int(self.top_left_x) == int(other.top_left_x) and \
+        #         int(self.top_right_x) == int(other.top_right_x) and \
+        #         int(self.bottom_right_x) == int(other.bottom_right_x) and \
+        #         int(self.bottom_left_x) == int(other.bottom_left_x) and \
+        #         int(self.top_left_y) == int(other.top_left_y) and \
+        #         int(self.top_right_y) == int(other.top_right_y) and \
+        #         int(self.bottom_right_y) == int(other.bottom_right_y) and \
+        #         int(self.bottom_left_y) == int(other.bottom_left_y) and \
+        #         self.category == other.category
