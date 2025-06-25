@@ -46,5 +46,4 @@ class Lookup:
     table: Dict[str, Dict[int, str]] = {
         WellKnownDiagram.FLOW_CHART.value: table_flowchart,
         WellKnownDiagram.GRAPH_DIAGRAM.value: table_graph,
-        WellKnownDiagram.OTHER.value: table_graph, # TODO REMOVE
     }

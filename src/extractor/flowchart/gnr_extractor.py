@@ -58,6 +58,8 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
             longest_side: float = max(tensor.shape[-2], tensor.shape[-1])
 
         self.element_arrow_distance_threshold = 0.2 * longest_side
+        self.arrow_text_discard_distance_threshold = 0.2 * longest_side
+        self.arrow_text_inner_distance_threshold = 0.2 * longest_side
 
     def to_device(self, device: str):
         self.bbox_detector = self.bbox_detector.to(device)
@@ -127,7 +129,7 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
                     minimum_element_text_distance = element_text_distance
                     minimum_element_text_bbox = element_bbox
 
-                # distance >= 0 -> se 0, basta cercare
+                # distance >= 0 -> if 0, stop searching
                 if minimum_element_text_distance == 0:
                     break
 
@@ -147,9 +149,11 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
             else:
                 element_text_associations[minimum_element_text_bbox].append(text_bbox)
 
+        # TODO fix
         logger.debug(f"{len(element_text_associations)} element-text associations found")
         logger.debug(f"{len(arrow_text_associations)} arrow-text associations found")
-
+        # TODO fix
+        # assert len(element_text_associations) + len(arrow_text_associations) == len(text_bboxes)
         return element_text_associations, arrow_text_associations
 
     def _digitalize_text(self, diagram_id: str, image: Image, text_bbox: ImageBoundingBox) -> str:
