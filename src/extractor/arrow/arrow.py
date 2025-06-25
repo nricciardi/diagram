@@ -68,7 +68,14 @@ class Arrow:
 
         return largest_hull
 
-    def compute_opposite_point(self) -> tuple[bool, Optional[int], Optional[int]]:
+    def compute_opposite_point(self) -> tuple[bool, Optional[float], Optional[float]]:
+        """
+            Determines if an arrow has head and tail near the same sides.
+            Returns:
+                :bool: True, if head and tail on the same side
+                :Optional[float]: x
+                :Optional[float]: y
+        """
         lower_side_y = self.bbox.bottom_left_y
         upper_side_y = self.bbox.top_left_y
         left_side_x = self.bbox.top_left_x
@@ -76,9 +83,9 @@ class Arrow:
 
         mean_points = [
             (int((self.bbox.bottom_left_x + self.bbox.bottom_right_x) / 2), self.bbox.bottom_left_y),
-            (int((self.bbox.top_right_y + self.bbox.bottom_right_y) / 2), self.bbox.top_right_x),
+            (self.bbox.top_right_x, int((self.bbox.top_right_y + self.bbox.bottom_right_y) / 2)),
             (int((self.bbox.top_left_x + self.bbox.top_right_x) / 2), self.bbox.top_left_y),
-            (int((self.bbox.top_left_y + self.bbox.bottom_left_y) / 2), self.bbox.bottom_left_x)
+            (self.bbox.bottom_left_x, int((self.bbox.top_left_y + self.bbox.bottom_left_y) / 2),)
         ]
 
         vertices = [
