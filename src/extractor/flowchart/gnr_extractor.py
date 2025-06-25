@@ -118,6 +118,10 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
                     minimum_element_text_distance = element_text_distance
                     minimum_element_text_bbox = element_bbox
 
+                # distance >= 0 -> se 0, basta cercare
+                if minimum_element_text_distance == 0:
+                    break
+
             minimum_arrow_text_distance: float = float('inf')
             minimum_distance_arrow_to_text: Optional[Arrow] = None
             for arrow in arrows:
