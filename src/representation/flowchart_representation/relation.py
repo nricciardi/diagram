@@ -8,9 +8,9 @@ For reference: https://en.wikipedia.org/wiki/Flowchart#Building_blocks
 
 
 class FlowchartRelationCategory(Enum):
-    ARROW: str = "Arrowhead"
+    ARROW: str = "Arrow"
     OPEN_LINK: str = "OpenLink"
-    DOTTED_ARROW: str = "DottedArrowhead"
+    DOTTED_ARROW: str = "DottedArrow"
 
 
 @dataclass(frozen=True, slots=True)
