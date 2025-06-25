@@ -116,24 +116,26 @@ class Arrow:
 
         if head_min_index == tail_min_index:
             side_index = (head_min_index + 2) % 4
-            return (True, mean_points[side_index][0], mean_points[side_index][1])
+            return True, mean_points[side_index][0], mean_points[side_index][1]
 
         if abs(head_min_index - tail_min_index) == 1:
             minV = min(head_min_index, tail_min_index)
             maxV = max(head_min_index, tail_min_index) * 2
             index = convert_table[minV + maxV]
-            return (False, vertices[index][0], vertices[index][1])
+            return False, vertices[index][0], vertices[index][1]
 
-        return (False, None, None)
+        return False, None, None
+
 
     def is_self(self) -> bool:
         s, _, _ = self.compute_opposite_point()
 
         return s
 
-
     def distance_to_bbox(self, other: ImageBoundingBox) -> float:
-        arrow_line = LineString(coordinates=[[self.x_tail, self.y_tail], [self.x_head, self.y_head]])
+        _, x, y = self.compute_opposite_point()
+
+        arrow_line = LineString(coordinates=[[self.x_tail, self.y_tail], [x, y], [self.x_head, self.y_head]])
         other_poly = Polygon([[other.top_left_x, other.top_left_y], [other.top_right_x, other.top_right_y],
                               [other.bottom_right_x, other.bottom_right_y], [other.bottom_left_x, other.bottom_left_y]])
         return arrow_line.distance(other_poly)
