@@ -44,7 +44,14 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
 
     @override
     def update_thresholds(self, diagram_id: str, image: Image) -> None:
-        longest_side: float = max(image.as_tensor().shape[0], image.as_tensor().shape[1], image.as_tensor().shape[2])
+        tensor: torch.Tensor = image.as_tensor()
+        if len(tensor.shape) == 2:
+            longest_side: float = max(tensor.shape[0], tensor.shape[1])
+        elif len(tensor.shape) == 3:
+            longest_side: float = max(image.as_tensor().shape[0], image.as_tensor().shape[1], image.as_tensor().shape[2])
+        else:
+            logger.warning(f"Unexpected tensor shape {tensor.shape}, assuming last two dimensions are height and width\n")
+            longest_side: float = max(tensor.shape[-2], tensor.shape[-1])
 
         self.element_arrow_distance_threshold = 0.2 * longest_side
 
