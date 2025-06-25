@@ -58,6 +58,8 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
             longest_side: float = max(tensor.shape[-2], tensor.shape[-1])
 
         self.element_arrow_distance_threshold = 0.2 * longest_side
+        self.arrow_text_discard_distance_threshold = 0.2 * longest_side
+        self.arrow_text_inner_distance_threshold = 0.2 * longest_side
 
     def to_device(self, device: str):
         self.bbox_detector = self.bbox_detector.to(device)
@@ -123,7 +125,7 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
                     minimum_element_text_distance = element_text_distance
                     minimum_element_text_bbox = element_bbox
 
-                # distance >= 0 -> se 0, basta cercare
+                # distance >= 0 -> if 0, stop searching
                 if minimum_element_text_distance == 0:
                     break
 
@@ -143,9 +145,11 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
             else:
                 element_text_associations[minimum_element_text_bbox].append(text_bbox)
 
+        # TODO fix
         logger.debug(f"{len(element_text_associations)} element-text associations found")
         logger.debug(f"{len(arrow_text_associations)} arrow-text associations found")
-
+        # TODO fix
+        # assert len(element_text_associations) + len(arrow_text_associations) == len(text_bboxes)
         return element_text_associations, arrow_text_associations
 
     def _digitalize_text(self, diagram_id: str, image: Image, text_bbox: ImageBoundingBox) -> str:
@@ -304,11 +308,9 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
 
     @override
     def _extract_diagram_objects(self, diagram_id: str, image: Image) -> List[ImageBoundingBox]:
-        im = torch.ones((1, 1000, 1000))
         image = image.as_tensor().unsqueeze(0).float() / 255.0      # unsqueeze(0) to fake a batch: (C=1, H, W) -> (1, C=1, H, W)
-        im[:, 300:(300+image.shape[2]), 300:(300+image.shape[3])] = image.squeeze(0)
 
-        prediction = self.bbox_detector(im.unsqueeze(0))[0] #self.bbox_detector(image)[0] TODO change
+        prediction = self.bbox_detector(image)[0]
         bboxes: List[ImageBoundingBox] = []
 
 
@@ -320,7 +322,7 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
 
         if logging.root.level <= 10:
             # Draw predictions
-            img_cpu = im.cpu() #image.squeeze(0).cpu() # TODO change
+            img_cpu = image.squeeze(0).cpu()
             boxes = prediction['boxes']
             labels = prediction['labels']
             drawn = draw_bounding_boxes(img_cpu, boxes=boxes, labels=[str(l.item()) for l in labels], width=2)
