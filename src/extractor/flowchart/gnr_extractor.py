@@ -313,7 +313,10 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
 
 
         for box, label, score in zip(prediction['boxes'], prediction['labels'], prediction['scores']):
-            bboxes.append(ImageBoundingBox2Points(Lookup.table[label.item()], box, score.item()))
+            if label.item() not in Lookup.table[diagram_id]:
+                continue    # this should not be recognized here
+
+            bboxes.append(ImageBoundingBox2Points(Lookup.table[diagram_id][label.item()], box, score.item()))
 
         if logging.root.level <= 10:
             # Draw predictions
