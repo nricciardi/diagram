@@ -9,13 +9,16 @@ import subprocess
 import logging
 
 logger = logging.getLogger(__name__)
+TMP_FILE = 'tmp.d2'
+
 
 class FlowchartToD2Compiler(Compiler):
     def compile(self, payload: str, output_path: str):
 
-        TMP_FILE = 'tmp.d2'
+        base_dir = os.path.dirname(output_path)
+        tmp_file_path = os.path.join(base_dir, TMP_FILE)
 
-        with open(TMP_FILE, 'w') as file:
+        with open(tmp_file_path, 'w') as file:
             file.write(payload)
 
         try:
@@ -35,7 +38,7 @@ class FlowchartToD2Compiler(Compiler):
             raise
 
         finally:
-            os.remove(TMP_FILE)
+            os.remove(tmp_file_path)
 
 
     def compatible_markup_languages(self) -> List[str]:

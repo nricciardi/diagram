@@ -1,6 +1,5 @@
 from core.image.bbox.bbox import ImageBoundingBox
 from dataclasses import dataclass
-import torch
 
 
 @dataclass(frozen=True)
