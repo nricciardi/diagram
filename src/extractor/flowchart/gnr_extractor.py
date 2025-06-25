@@ -10,9 +10,9 @@ from core.image.bbox.bbox import ImageBoundingBox
 from core.image.bbox.bbox2p import ImageBoundingBox2Points
 from core.image.image import Image
 from src.extractor.arrow.arrow import Arrow
+from src.extractor.bbox_detection.target import FlowchartElementCategoryIndex, Lookup
 from src.extractor.flowchart.multistage_extractor import MultistageFlowchartExtractor, ArrowTextTypeOutcome, \
     ElementTextTypeOutcome, ObjectRelation
-from src.flowchart_element_category import FlowchartElementCategoryIndex, Lookup
 from src.utils.bbox_utils import bbox_overlap, \
     distance_bbox_point, split_linestring_by_ratios, bbox_vertices
 from src.wellknown_diagram import WellKnownDiagram

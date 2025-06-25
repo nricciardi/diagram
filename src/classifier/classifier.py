@@ -61,8 +61,9 @@ class GNRClassifier(Classifier):
             WellKnownDiagram.FLOW_CHART.value,
             WellKnownDiagram.GRAPH_DIAGRAM.value,
         ]
-    
-    def classify(self, image: Image) -> Optional[str]:
+
+    @override
+    def classify(self, image: Image) -> str:
         """
         Classify the image using the model and processor.
         
@@ -79,13 +80,12 @@ class GNRClassifier(Classifier):
         predicted = predicted.item()
 
         if self.classes[predicted] == WellKnownDiagram.OTHER:
-            return None
+            return WellKnownDiagram.OTHER.value
 
         return self.classes[predicted].value
     
     
     def train(self, dataset: DatasetClassifier, epochs: int = 10, batch_size: int = 32, learning_rate: float = 1e-4, verbose: bool = True):
-        
         """
         Train the model using the provided dataset.
         """

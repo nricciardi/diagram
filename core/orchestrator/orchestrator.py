@@ -171,7 +171,6 @@ class Orchestrator(ToDeviceMixin):
 
         diagram_id = self.__classify(image)
 
-        logger.info(f"Extract image...")
         diagram_representations: List[DiagramRepresentation] = self.__seq_extraction(diagram_id, image)
 
         logger.info(f"{len(diagram_representations)} diagram representation(s) found")
@@ -208,11 +207,13 @@ class Orchestrator(ToDeviceMixin):
         diagram_representations: List[DiagramRepresentation] = []
 
         for extractor in compatible_extractors:
-            logger.debug(f"Extract using {extractor.identifier}")
+            logger.info(f"Extract using {extractor.identifier}")
 
             image.to_device(extractor.get_device())
             representation: DiagramRepresentation = extractor.extract(diagram_id, image)
             diagram_representations.append(representation)
+        else:
+            logger.warning(f"No compatible extractors are found for '{diagram_id}'")
 
         return diagram_representations
 
@@ -305,6 +306,8 @@ class Orchestrator(ToDeviceMixin):
                 tasks.append(
                     executor.submit(self._par_extract_using_extractor_and_transduce, extractor, diagram_id, image)
                 )
+            else:
+                logger.warning(f"No compatible extractors are found for '{diagram_id}'")
 
             outcomes: List[TransducerOutcome] = []
             for task in tasks:
