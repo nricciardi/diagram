@@ -18,7 +18,6 @@ class ImageBoundingBox2Points(ImageBoundingBox):
 
     @classmethod
     def from_image(cls, category: str, box: torch.Tensor, image: Image, trust: float):
-        tensor = image.as_tensor()
 
         image_tensor = image.as_tensor()
 
