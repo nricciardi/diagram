@@ -37,6 +37,10 @@ class FlowchartToMermaidTransducer(Transducer):
 
     @staticmethod
     def wrap_element(category: str, label: str) -> str:
+
+        if label.strip() == "":
+            label = category
+
         match category:
             case FlowchartElementCategory.CIRCLE.value:
                 return f"(({label}))"
@@ -57,22 +61,19 @@ class FlowchartToMermaidTransducer(Transducer):
     def wrap_relation(category: str, label: str) -> str:
         match category:
             case FlowchartRelationCategory.ARROW.value:
-                if label is None:
+                if label.strip() == "":
                     return "-->"
                 return f"-->|{label}|"
             case FlowchartRelationCategory.OPEN_LINK.value:
-                if label is None:
+                if label.strip() == "":
                     return " --- "
                 return f"---|{label}|"
             case FlowchartRelationCategory.DOTTED_ARROW.value:
-                if label is None:
+                if label.strip() == "":
                     return "-.->"
                 return f" -. {label} .->"
             case _:
                 raise ValueError(f"Unknown flowchart relation category: {category}")
-
-    def get_text(self, obj: Relation | Element) -> str:
-        pass
 
     def transduce(self, diagram_id: str, diagram_representation: DiagramRepresentation) -> TransducerOutcome:
         """
@@ -97,14 +98,36 @@ class FlowchartToMermaidTransducer(Transducer):
 
         body: str = "flowchart TD\n"
         for identifier, element in enumerate(diagram_representation.elements):
-            body += f"\t{identifier}{self.wrap_element(element.category, self.get_text(element))}\n"
+            element_text = ""
+            if len(element.inner_text) > 0:
+                element_text += f"{' '.join(element.inner_text)}\n"
+            relation_text = ""
+            if len(element.outer_text) > 0:
+                relation_text += f"{' '.join(element.outer_text)}\n"
+
+            element_text = element_text.strip()
+
+            body += f"\t{identifier}{self.wrap_element(element.category, element_text)}\n"
 
         body += "\n"
         for relation in diagram_representation.relations:
             if relation.source_id is None or relation.target_id is None:
                 continue
             body += f"\t{relation.source_id}"
-            body += f"{self.wrap_relation(relation.category, self.get_text(relation))}{relation.target_id}\n"
+
+            relation_text = ""
+            if len(relation.source_text) > 0:
+                relation_text += f"{' '.join(relation.source_text)}\n"
+            if len(relation.middle_text) > 0:
+                relation_text += f"{' '.join(relation.middle_text)}\n"
+            if len(relation.inner_text) > 0:
+                relation_text += f"{' '.join(relation.inner_text)}\n"
+            if len(relation.target_text) > 0:
+                relation_text += f"{' '.join(relation.target_text)}\n"
+
+            relation_text = relation_text.strip()
+
+            body += f"{self.wrap_relation(relation.category, relation_text)}{relation.target_id}\n"
 
         outcome: TransducerOutcome = TransducerOutcome(diagram_id=diagram_id, payload=body, markup_language="mermaid")
         return outcome
