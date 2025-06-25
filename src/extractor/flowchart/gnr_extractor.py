@@ -154,11 +154,13 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
             else:
                 element_text_associations[minimum_element_text_bbox].append(text_bbox)
 
+        tot_element_text_associations = sum([len(v) for k, v in element_text_associations.items()])
+        tot_arrow_text_associations = sum([len(v) for k, v in arrow_text_associations.items()])
         # TODO fix
-        logger.debug(f"{len(element_text_associations)} element-text associations found")
-        logger.debug(f"{len(arrow_text_associations)} arrow-text associations found")
+        logger.debug(f"{tot_element_text_associations} element-text associations found")
+        logger.debug(f"{tot_arrow_text_associations} arrow-text associations found")
         # TODO fix
-        # assert len(element_text_associations) + len(arrow_text_associations) == len(text_bboxes)
+        assert tot_element_text_associations + tot_arrow_text_associations == len(text_bboxes)
         return element_text_associations, arrow_text_associations
 
     def _digitalize_text(self, diagram_id: str, image: Image, text_bbox: ImageBoundingBox) -> str:
@@ -403,7 +405,7 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
 
             bboxes.append(ImageBoundingBox2Points(Lookup.table_target_int_to_str_by_diagram_id[diagram_id][label.item()], box, score.item()))
 
-        if logging.root.level <= 10:
+        if logging.root.level <= 10: # TODO disable
             # Draw predictions
             img_cpu = image.squeeze(0).cpu()
             boxes = prediction['boxes']
