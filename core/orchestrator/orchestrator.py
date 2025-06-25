@@ -76,7 +76,7 @@ class Orchestrator(ToDeviceMixin):
         image.to_device(self.classifier.get_device())
         diagram_id = self.classifier.classify(image)
 
-        logger.info(f"Image was classified as {diagram_id}")
+        logger.info(f"Image was classified as '{diagram_id}'")
 
         return diagram_id
 
@@ -124,7 +124,7 @@ class Orchestrator(ToDeviceMixin):
             with ProcessPoolExecutor() as executor:
                 tasks: List[Future] = []
                 for index, image in enumerate(images):
-                    logger.info(f"Elaborate image n. {index}")
+                    logger.info(f"Elaborate image n. {index + 1}")
 
                     tasks.append(
                         executor.submit(self.image2diagram, image, parallelization, dump_markup, then_compile, outputs_dir_path)

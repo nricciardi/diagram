@@ -70,26 +70,26 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
 
     @override
     def _is_arrow_category(self, diagram_id: str, category: str) -> bool:
-        return category == Lookup.table[FlowchartElementCategoryIndex.ARROW.value]
+        return category == Lookup.table[diagram_id][FlowchartElementCategoryIndex.ARROW.value]
 
     @override
     def _is_element_category(self, diagram_id: str, category: str) -> bool:
-        return category not in [Lookup.table[FlowchartElementCategoryIndex.ARROW.value],
-                                Lookup.table[FlowchartElementCategoryIndex.ARROW_TAIL.value],
-                                Lookup.table[FlowchartElementCategoryIndex.ARROW_HEAD.value],
-                                Lookup.table[FlowchartElementCategoryIndex.TEXT.value]]
+        return category not in [Lookup.table[diagram_id][FlowchartElementCategoryIndex.ARROW.value],
+                                Lookup.table[diagram_id][FlowchartElementCategoryIndex.ARROW_TAIL.value],
+                                Lookup.table[diagram_id][FlowchartElementCategoryIndex.ARROW_HEAD.value],
+                                Lookup.table[diagram_id][FlowchartElementCategoryIndex.TEXT.value]]
 
     @override
     def _is_text_category(self, diagram_id: str, category: str) -> bool:
-        return category == Lookup.table[FlowchartElementCategoryIndex.TEXT.value]
+        return category == Lookup.table[diagram_id][FlowchartElementCategoryIndex.TEXT.value]
 
     @override
     def _is_arrow_head_category(self, diagram_id: str, category: str) -> bool:
-        return category == Lookup.table[FlowchartElementCategoryIndex.ARROW_HEAD.value]
+        return category == Lookup.table[diagram_id][FlowchartElementCategoryIndex.ARROW_HEAD.value]
 
     @override
     def _is_arrow_tail_category(self, diagram_id: str, category: str) -> bool:
-        return category == Lookup.table[FlowchartElementCategoryIndex.ARROW_TAIL.value]
+        return category == Lookup.table[diagram_id][FlowchartElementCategoryIndex.ARROW_TAIL.value]
 
     def _preprocess(self, diagram_id: str, image: Image) -> Image:
 
@@ -191,7 +191,7 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
 
             ret.append(
                 ObjectRelation(
-                    category=Lookup.table[FlowchartElementCategoryIndex.ARROW.value],
+                    category=Lookup.table[diagram_id][FlowchartElementCategoryIndex.ARROW.value],
                     source_index=source,
                     target_index=target,
                 )
