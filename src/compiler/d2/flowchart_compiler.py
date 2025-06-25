@@ -22,7 +22,7 @@ class FlowchartToD2Compiler(Compiler):
             file.write(payload)
 
         try:
-            subprocess.run(["d2", TMP_FILE, f"{output_path}.png"])
+            subprocess.run(["d2", tmp_file_path, f"{output_path}.png"])
             # d2.render(markuplang_file_path, output_path, format="png")
 
         except subprocess.CalledProcessError as e:

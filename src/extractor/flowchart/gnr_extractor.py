@@ -2,10 +2,8 @@ import logging
 from collections import defaultdict
 from dataclasses import dataclass, field
 from typing import List, Tuple, Dict, Optional, override
-
 from torchvision.transforms.functional import to_pil_image
 from torchvision.utils import draw_bounding_boxes
-
 from src.classifier.preprocessing.processor import GrayScaleProcessor, MultiProcessor
 import torch
 from shapely.geometry import Polygon, LineString
@@ -57,18 +55,19 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
 
     @override
     def update_thresholds(self, diagram_id: str, image: Image) -> None:
-        tensor: torch.Tensor = image.as_tensor()
-        if len(tensor.shape) == 2:
-            longest_side: float = max(tensor.shape[0], tensor.shape[1])
-        elif len(tensor.shape) == 3:
-            longest_side: float = max(image.as_tensor().shape[0], image.as_tensor().shape[1], image.as_tensor().shape[2])
-        else:
-            logger.warning(f"Unexpected tensor shape {tensor.shape}, assuming last two dimensions are height and width\n")
-            longest_side: float = max(tensor.shape[-2], tensor.shape[-1])
-
-        self.element_arrow_distance_threshold = 0.2 * longest_side
-        self.arrow_text_discard_distance_threshold = 0.2 * longest_side
-        self.arrow_text_inner_distance_threshold = 0.2 * longest_side
+        pass
+        # TODO: not working
+        # tensor: torch.Tensor = image.as_tensor()
+        # if len(tensor.shape) == 2:
+        #     longest_side: float = max(tensor.shape[0], tensor.shape[1])
+        # elif len(tensor.shape) == 3:
+        #     longest_side: float = max(image.as_tensor().shape[0], image.as_tensor().shape[1], image.as_tensor().shape[2])
+        # else:
+        #     logger.warning(f"Unexpected tensor shape {tensor.shape}, assuming last two dimensions are height and width\n")
+        #     longest_side: float = max(tensor.shape[-2], tensor.shape[-1])
+        # self.element_arrow_distance_threshold = 0.2 * longest_side
+        # self.arrow_text_discard_distance_threshold = 0.2 * longest_side
+        # self.arrow_text_inner_distance_threshold = 0.2 * longest_side
 
     def to_device(self, device: str):
         self.bbox_detector = self.bbox_detector.to(device)

@@ -187,8 +187,8 @@ if __name__ == '__main__':
 
 
     classifier = GNRClassifier("gnr-classifier", model_path=args.classifier)
-    # TODO: Use TrOCRTextExtractorBaseHandwritten
-    text_digitizer = TrOCRTextExtractorSmall()
+    text_digitizer = TrOCRTextExtractorBaseHandwritten()    # less expensive version, but with lower performance: TrOCRTextExtractorSmall()
+
     extractors = [
         GNRFlowchartExtractor(
             text_digitizer=text_digitizer,

@@ -74,11 +74,14 @@ class MultistageFlowchartExtractor(MultiStageExtractor, ABC):
 
         arrow_bboxes_to_recover = []
         for arrow_bbox in arrow_bboxes:
+            insert: bool = True
             for arrow in arrows:
                 if arrow.bbox.eq(arrow_bbox):
+                    insert = False
                     break
 
-            arrow_bboxes_to_recover.append(arrow_bbox)
+            if insert:
+                arrow_bboxes_to_recover.append(arrow_bbox)
 
         assert len(arrow_bboxes_to_recover) == len(arrow_bboxes) - len(arrows)
 
