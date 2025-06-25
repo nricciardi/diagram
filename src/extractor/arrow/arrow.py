@@ -133,9 +133,15 @@ class Arrow:
         return s
 
     def distance_to_bbox(self, other: ImageBoundingBox) -> float:
-        _, x, y = self.compute_opposite_point()
+        is_self, x, y = self.compute_opposite_point()
 
-        arrow_line = LineString(coordinates=[[self.x_tail, self.y_tail], [x, y], [self.x_head, self.y_head]])
+        if is_self:
+            assert x is not None
+            assert y is not None
+            arrow_line = LineString(coordinates=[[self.x_tail, self.y_tail], [x, y], [self.x_head, self.y_head]])
+        else:
+            arrow_line = LineString(coordinates=[[self.x_tail, self.y_tail], [self.x_head, self.y_head]])
+
         other_poly = Polygon([[other.top_left_x, other.top_left_y], [other.top_right_x, other.top_right_y],
                               [other.bottom_right_x, other.bottom_right_y], [other.bottom_left_x, other.bottom_left_y]])
         return arrow_line.distance(other_poly)
