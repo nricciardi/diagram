@@ -1,5 +1,9 @@
+import torch
+
 from core.image.bbox.bbox import ImageBoundingBox
 from dataclasses import dataclass
+
+from core.image.image import Image
 
 
 @dataclass(frozen=True)
@@ -11,6 +15,28 @@ class ImageBoundingBox2Points(ImageBoundingBox):
     of the bounding box (top-left, top-right, bottom-left, bottom-right) in terms
     of their x and y values.
     """
+
+    @classmethod
+    def from_image(cls, category: str, box: torch.Tensor, image: Image, trust: float):
+        tensor = image.as_tensor()
+
+        image_tensor = image.as_tensor()
+
+        left, top, right, bottom = box.int().tolist()
+
+        _, H, W = image_tensor.shape
+        left = max(0, left)
+        right = min(W, right)
+        top = max(0, top)
+        bottom = min(H, bottom)
+
+        cropped_tensor = image_tensor[:, top:bottom, left:right]
+        if cropped_tensor.ndim == 2:
+            cropped_tensor = cropped_tensor.unsqueeze(0).repeat(3, 1, 1)
+        elif cropped_tensor.shape[0] == 1:
+            cropped_tensor = cropped_tensor.repeat(3, 1, 1)
+
+        return ImageBoundingBox2Points(category=category, box=box, trust=trust, content=cropped_tensor)
 
     @property
     def top_left_x(self) -> float:

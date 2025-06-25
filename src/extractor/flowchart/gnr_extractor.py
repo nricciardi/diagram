@@ -16,7 +16,7 @@ from src.extractor.bbox_detection.target import FlowchartElementCategoryIndex, L
 from src.extractor.flowchart.multistage_extractor import MultistageFlowchartExtractor, ArrowTextTypeOutcome, \
     ElementTextTypeOutcome, ObjectRelation
 from src.utils.bbox_utils import bbox_overlap, \
-    distance_bbox_point, split_linestring_by_ratios, bbox_vertices
+    distance_bbox_point, split_linestring_by_ratios, bbox_vertices, crop_image
 from src.wellknown_diagram import WellKnownDiagram
 from src.extractor.text_extraction.text_extractor import TextExtractor
 
@@ -383,7 +383,7 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
             if head is not None and tail is not None:
                 managed_arrows.append(Arrow.from_bboxes(
                 head_bbox=ImageBoundingBox2Points(category=Lookup.table_target_int_to_str_by_diagram_id[diagram_id][FlowchartElementCategoryIndex.ARROW_HEAD.value],
-                                                box=head, trust=head_score),
+                                                box=head, trust=head_score, content=crop_image(image=image, )),
                 tail_bbox=ImageBoundingBox2Points(category=Lookup.table_target_int_to_str_by_diagram_id[diagram_id][FlowchartElementCategoryIndex.ARROW_TAIL.value],
                                                   box=tail, trust=tail_score), arrow=arrow_bbox))
             else:
