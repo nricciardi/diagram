@@ -306,7 +306,7 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
     def _extract_diagram_objects(self, diagram_id: str, image: Image) -> List[ImageBoundingBox]:
         im = torch.ones((1, 1000, 1000))
         image = image.as_tensor().unsqueeze(0).float() / 255.0      # unsqueeze(0) to fake a batch: (C=1, H, W) -> (1, C=1, H, W)
-        im[:, 400:(400+image.shape[2]), 400:(400+image.shape[3])] = image.squeeze(0)
+        im[:, 300:(300+image.shape[2]), 300:(300+image.shape[3])] = image.squeeze(0)
 
         prediction = self.bbox_detector(im.unsqueeze(0))[0] #self.bbox_detector(image)[0] TODO change
         bboxes: List[ImageBoundingBox] = []
