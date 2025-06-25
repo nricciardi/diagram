@@ -354,11 +354,12 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
                 if label.item() == FlowchartElementCategoryIndex.ARROW_TAIL.value and score.item() > tail_score:
                     tail = bbox
                     tail_score = score.item()
+
             if head is not None and tail is not None:
                 managed_arrows.append(Arrow.from_bboxes(
-                head_bbox=ImageBoundingBox2Points(category=Lookup.table[diagram_id][FlowchartElementCategoryIndex.ARROW_HEAD.value],
+                head_bbox=ImageBoundingBox2Points(category=Lookup.table_target_int_to_str_by_diagram_id[diagram_id][FlowchartElementCategoryIndex.ARROW_HEAD.value],
                                                 box=head, trust=head_score),
-                tail_bbox=ImageBoundingBox2Points(category=Lookup.table[diagram_id][FlowchartElementCategoryIndex.ARROW_TAIL.value],
+                tail_bbox=ImageBoundingBox2Points(category=Lookup.table_target_int_to_str_by_diagram_id[diagram_id][FlowchartElementCategoryIndex.ARROW_TAIL.value],
                                                   box=tail, trust=tail_score), arrow=arrow_bbox))
             else:
                 managed_arrows.append(None)
