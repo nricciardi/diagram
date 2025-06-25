@@ -105,6 +105,10 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
 
         return image
 
+    @override
+    def _manage_wrong_computed_arrows(self, diagram_id: str, image: Image, arrow_bboxes: List[ImageBoundingBox]) -> List[Optional[Arrow]]:
+        return []
+
     def _compute_text_associations(self, diagram_id: str, element_bboxes: List[ImageBoundingBox],
                                    arrows: List[Arrow], text_bboxes: List[ImageBoundingBox])\
             -> Tuple[Dict[ImageBoundingBox, List[ImageBoundingBox]], Dict[Arrow, List[ImageBoundingBox]]]:
@@ -200,6 +204,7 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
             ret.append(
                 ObjectRelation(
                     category=Lookup.table[diagram_id][FlowchartElementCategoryIndex.ARROW.value],
+                    arrow=arrow,
                     source_index=source,
                     target_index=target,
                 )
@@ -304,7 +309,7 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
 
     @override
     def _extract_diagram_objects(self, diagram_id: str, image: Image) -> List[ImageBoundingBox]:
-        im = torch.ones((1, 1000, 1000))
+        im = torch.ones((1, 1000, 1000)).to(DEVICE)
         image = image.as_tensor().unsqueeze(0).float() / 255.0      # unsqueeze(0) to fake a batch: (C=1, H, W) -> (1, C=1, H, W)
         im[:, 300:(300+image.shape[2]), 300:(300+image.shape[3])] = image.squeeze(0)
 

@@ -1,7 +1,7 @@
 import logging
 from abc import ABC, abstractmethod
-from dataclasses import dataclass
-from typing import List, Optional
+from dataclasses import dataclass, field
+from typing import List, Optional, Dict
 from core.extractor.extractor import Extractor
 from core.image.bbox.bbox import ImageBoundingBox
 from core.image.image import Image
@@ -13,12 +13,12 @@ logger = logging.getLogger(__name__)
 @dataclass
 class MultiStageExtractor(Extractor, ABC):
 
-    bbox_trust_threshold: Optional[float] = None
+    bbox_trust_thresholds: Dict[int, Optional[float]] = field(default_factory=dict)
 
     def __post_init__(self):
-        if self.bbox_trust_threshold is not None:
-            if self.bbox_trust_threshold > 1 or self.bbox_trust_threshold < 0:
-                raise ValueError("bbox_trust_threshold must be between 0 and 1")
+        for key, threshold in self.bbox_trust_thresholds.items():
+            if threshold > 1 or threshold < 0:
+                raise ValueError(f"bbox_trust_thresholds (category: {key}) must be between 0 and 1")
 
     def extract(self, diagram_id: str, image: Image) -> DiagramRepresentation:
 
@@ -26,12 +26,11 @@ class MultiStageExtractor(Extractor, ABC):
 
         image = self._preprocess(diagram_id, image)
 
-        bboxes = self._extract_diagram_objects(diagram_id, image)
+        bboxes: List[ImageBoundingBox] = self._extract_diagram_objects(diagram_id, image)
 
         logger.debug(f"{len(bboxes)} extracted")
 
-        if self.bbox_trust_threshold is not None:
-            bboxes = self._filter_bboxes(bboxes)
+        bboxes = self._filter_bboxes(bboxes)
 
         return self._build_diagram_representation(diagram_id, image, bboxes)
 
@@ -62,7 +61,7 @@ class MultiStageExtractor(Extractor, ABC):
         Filter bboxes based on trust threshold, i.e. keep only bbox which has trust > threshold
         """
 
-        return [bbox for bbox in bboxes if bbox.trust > self.bbox_trust_threshold]
+        return [bbox for bbox in bboxes if bbox.category not in self.bbox_trust_thresholds or self.bbox_trust_thresholds[bbox.category] is None or bbox.trust > self.bbox_trust_thresholds[bbox.category]]
 
 
     @abstractmethod

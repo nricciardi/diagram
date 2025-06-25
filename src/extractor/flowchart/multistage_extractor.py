@@ -18,6 +18,7 @@ logger = logging.getLogger(__name__)
 @dataclass(frozen=True)
 class ObjectRelation:
     category: str
+    arrow: Arrow
     source_index: Optional[int]
     target_index: Optional[int]
 
@@ -47,6 +48,19 @@ class MultistageFlowchartExtractor(MultiStageExtractor, ABC):
         else:
             return self.__seq_build_diagram_representation(diagram_id, image, bboxes)
 
+    def _manage_wrong_computed_arrows(self, diagram_id: str, image: Image, arrow_bboxes: List[ImageBoundingBox]) -> List[Optional[Arrow]]:
+        """
+
+        Args:
+            diagram_id:
+            image:
+            arrow_bboxes:
+
+        Returns: in each position of the list return None if arrow is wrong computed again or a new Arrow
+
+        """
+
+        return []
 
     def __seq_build_diagram_representation(self, diagram_id: str, image: Image, bboxes: List[ImageBoundingBox]) -> FlowchartRepresentation:
 
@@ -230,6 +244,10 @@ class MultistageFlowchartExtractor(MultiStageExtractor, ABC):
             target_text: List[str] = []
 
             for arrow, associated_text_bboxes in arrow_texts_associations.items():
+
+                if arrow != obj_relation.arrow:
+                    continue
+
                 for associated_text_bbox in associated_text_bboxes:
                     outcome = self._arrow_text_type(diagram_id, arrow, associated_text_bbox)
 

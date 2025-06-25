@@ -6,6 +6,8 @@ import logging
 from pathlib import Path
 import torch
 
+from src.extractor.bbox_detection.target import FlowchartElementCategoryIndex
+
 sys.path.append(str(Path(__file__).resolve().parent.parent))
 
 from core.classifier.classifier import Classifier
@@ -192,7 +194,19 @@ if __name__ == '__main__':
             text_digitizer=text_digitizer,
             bbox_detector=load_model(args.bbox_detector, torch.device(DEVICE)),
             identifier="gnr-flowchart-extractor",
-            bbox_trust_threshold=0.5,
+            bbox_trust_thresholds={
+                FlowchartElementCategoryIndex.TEXT.value: 0.5,
+                FlowchartElementCategoryIndex.ARROW.value: 0.5,
+                FlowchartElementCategoryIndex.FINAL_STATE.value: 0.85,
+                FlowchartElementCategoryIndex.STATE.value: 0.85,
+                FlowchartElementCategoryIndex.ARROW_TAIL.value: 0.5,
+                FlowchartElementCategoryIndex.ARROW_HEAD.value: 0.5,
+                FlowchartElementCategoryIndex.CONNECTION.value: 0.5,
+                FlowchartElementCategoryIndex.DATA.value: 0.5,
+                FlowchartElementCategoryIndex.PROCESS.value: 0.5,
+                FlowchartElementCategoryIndex.TERMINATOR.value: 0.5,
+                FlowchartElementCategoryIndex.DECISION.value: 0.5,
+            },
             parallelization=args.parallelize
         )
     ]
