@@ -6,6 +6,8 @@ import logging
 from pathlib import Path
 import torch
 
+from core.compiler.compiler import Compiler
+from core.transducer.transducer import Transducer
 from src.extractor.bbox_detection.target import FlowchartElementCategoryIndex
 
 sys.path.append(str(Path(__file__).resolve().parent.parent))
@@ -125,7 +127,7 @@ def parse_args():
     return parser.parse_args()
 
 
-def main(device: str, classifier: Classifier, extractors: List[Extractor], inputs_paths: List[str], parallelization: bool, then_compile: bool, outputs_dir_path: Optional[str]):
+def main(device: str, classifier: Classifier, extractors: List[Extractor], transducers: List[Transducer], compilers: List[Compiler], inputs_paths: List[str], parallelization: bool, then_compile: bool, outputs_dir_path: Optional[str]):
     images: List[Image] = []
     for path in inputs_paths:
         image = TensorImage.from_str(path)
@@ -135,14 +137,8 @@ def main(device: str, classifier: Classifier, extractors: List[Extractor], input
     orchestrator = Orchestrator(
         classifier=classifier,
         extractors=extractors,
-        transducers=[
-            FlowchartToMermaidTransducer("flowchart-to-mermaid-transducer"),
-            FlowchartToD2Transducer("flowchart-to-d2-transducer"),
-        ],
-        compilers=[
-            FlowchartToMermaidCompiler("flowchart-to-mermaid-compiler"),
-            FlowchartToD2Compiler("flowchart-to-d2-compiler")
-        ],
+        transducers=transducers,
+        compilers=compilers,
         extensions_lookup={
             WellKnownMarkupLanguage.D2_LANG.value: "d2",
             WellKnownMarkupLanguage.MERMAID.value: "mmd",
@@ -218,5 +214,13 @@ if __name__ == '__main__':
         inputs_paths=args.input,
         parallelization=args.parallelize,
         then_compile=args.then_compile,
-        outputs_dir_path=str(args.outputs_dir_path)
+        outputs_dir_path=str(args.outputs_dir_path),
+        transducers=[
+            # TODO: FlowchartToMermaidTransducer("flowchart-to-mermaid-transducer"),
+            FlowchartToD2Transducer("flowchart-to-d2-transducer"),
+        ],
+        compilers=[
+            FlowchartToMermaidCompiler("flowchart-to-mermaid-compiler"),
+            FlowchartToD2Compiler("flowchart-to-d2-compiler")
+        ]
     )
