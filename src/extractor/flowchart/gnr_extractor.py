@@ -2,6 +2,11 @@ import logging
 from collections import defaultdict
 from dataclasses import dataclass
 from typing import List, Tuple, Dict, Optional, override
+
+from torchvision.transforms.functional import to_pil_image
+from torchvision.utils import draw_bounding_boxes
+
+from src import DEVICE
 from src.classifier.preprocessing.processor import GrayScaleProcessor, MultiProcessor
 import torch
 from shapely.geometry import Polygon, LineString
@@ -17,6 +22,8 @@ from src.utils.bbox_utils import bbox_overlap, \
     distance_bbox_point, split_linestring_by_ratios, bbox_vertices
 from src.wellknown_diagram import WellKnownDiagram
 from src.extractor.text_extraction.text_extractor import TextExtractor
+
+import matplotlib.pyplot as plt
 
 logger = logging.getLogger(__name__)
 
@@ -66,6 +73,7 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
         return [
             WellKnownDiagram.GRAPH_DIAGRAM.value,
             WellKnownDiagram.FLOW_CHART.value,
+            WellKnownDiagram.OTHER.value # TODO REMOVE ASAP
         ]
 
     @override
@@ -296,12 +304,25 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
 
     @override
     def _extract_diagram_objects(self, diagram_id: str, image: Image) -> List[ImageBoundingBox]:
+        im = torch.ones((1, 1000, 1000))
         image = image.as_tensor().unsqueeze(0).float() / 255.0      # unsqueeze(0) to fake a batch: (C=1, H, W) -> (1, C=1, H, W)
-        predictions = self.bbox_detector(image)
+        im[:, 400:(400+image.shape[2]), 400:(400+image.shape[3])] = image.squeeze(0)
+
+        prediction = self.bbox_detector(im.unsqueeze(0))[0] #self.bbox_detector(image)[0] TODO change
         bboxes: List[ImageBoundingBox] = []
 
-        for prediction in predictions:
-            for box, label, score in zip(prediction['boxes'], prediction['labels'], prediction['scores']):
-                bboxes.append(ImageBoundingBox2Points(Lookup.table[label.item()], box, score.item()))
+
+        for box, label, score in zip(prediction['boxes'], prediction['labels'], prediction['scores']):
+            bboxes.append(ImageBoundingBox2Points(Lookup.table[label.item()], box, score.item()))
+
+        if logging.root.level <= 10:
+            # Draw predictions
+            img_cpu = im.cpu() #image.squeeze(0).cpu() # TODO change
+            boxes = prediction['boxes']
+            labels = prediction['labels']
+            drawn = draw_bounding_boxes(img_cpu, boxes=boxes, labels=[str(l.item()) for l in labels], width=2)
+            plt.imshow(to_pil_image(drawn))
+            plt.axis('off')
+            plt.show()
 
         return bboxes
