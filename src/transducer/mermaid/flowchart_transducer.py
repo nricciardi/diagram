@@ -37,6 +37,10 @@ class FlowchartToMermaidTransducer(Transducer):
 
     @staticmethod
     def wrap_element(category: str, label: str) -> str:
+
+        if label.strip() == "":
+            label = category
+
         match category:
             case FlowchartElementCategory.CIRCLE.value:
                 return f"(({label}))"

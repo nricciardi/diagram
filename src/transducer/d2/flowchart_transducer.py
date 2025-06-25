@@ -27,26 +27,28 @@ class FlowchartToD2Transducer(Transducer):
 
     @staticmethod
     def wrap_element(category: str, label: str, elem_id: int) -> str:
+
+        s = str(elem_id)
+        if label.strip() != "":
+            s += f": {label}\n"
+
         match category:
             case FlowchartElementCategory.CIRCLE.value:
-                return f"{elem_id}: {label}\n" \
-                       f"{elem_id}.shape: circle\n"
+                s += f"{elem_id}.shape: circle\n"
             case FlowchartElementCategory.TERMINAL.value:
-                return f"{elem_id}: {label}\n" \
-                       f"{elem_id}.shape: oval\n"
+                s += f"{elem_id}.shape: oval\n"
             case FlowchartElementCategory.PROCESS.value:
-                return f"{elem_id}: {label}\n" \
-                       f"{elem_id}.style.border-radius: 8\n"
+                s += f"{elem_id}.style.border-radius: 8\n"
             case FlowchartElementCategory.DECISION.value:
-                return f"{elem_id}: {label}\n" \
-                       f"{elem_id}.shape: diamond\n"
+                s += f"{elem_id}.shape: diamond\n"
             case FlowchartElementCategory.INPUT_OUTPUT.value:
-                return f"{elem_id}: {label}\n" \
-                       f"{elem_id}.shape: parallelogram\n"
+                s += f"{elem_id}.shape: parallelogram\n"
             case FlowchartElementCategory.SUBROUTINE.value:
-                return f"{elem_id}: {label}\n"
+                pass # nothing to do
             case _:
                 raise ValueError(f"Unknown flowchart element category: {category}")
+
+        return s
 
     @staticmethod
     def wrap_relation(category: str, label: str, target_id: int) -> str:
@@ -55,10 +57,12 @@ class FlowchartToD2Transducer(Transducer):
                 if label.strip() == "":
                     return f"->{target_id}\n"
                 return f"->{target_id}: {label}\n"
+
             case FlowchartRelationCategory.OPEN_LINK.value:
                 if label.strip() == "":
                     return f"--{target_id}\n"
                 return f"--{target_id}: {label}\n"
+
             case FlowchartRelationCategory.DOTTED_ARROW.value:
                 if label.strip() == "":
                     return f"->{target_id} {{\n" \
