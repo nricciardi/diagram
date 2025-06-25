@@ -225,31 +225,29 @@ def distance_bbox_point(bbox: ImageBoundingBox, point_x: float, point_y: float) 
     return math.sqrt((point_x - center_x)**2 + (point_y - center_y)**2)
 
 
-def crop_image(image: Image, bbox: ImageBoundingBox) -> Tensor:
+def crop_image(image: Image, bbox: Tensor) -> Tensor:
         """
         Crops the image to the specified bounding box.
 
         Args:
             image (Image): The image object containing the file.
-            bbox (ImageBoundingBox): The bounding box for cropping.
+            bbox (Tensor): The bounding box tensor with coordinates
+                in the format [top_left_x, top_left_y, bottom_right_x, bottom_right_y].
 
         Returns:
-            Image: The cropped image.
+            Tensor: The cropped image.
         """
-        tensor = image.as_tensor()
+        image_tensor = image.as_tensor()
 
-        left = int(min(bbox.top_left_x, bbox.bottom_left_x))
-        right = int(max(bbox.top_right_x, bbox.bottom_right_x))
-        top = int(min(bbox.top_left_y, bbox.top_right_y))
-        bottom = int(max(bbox.bottom_left_y, bbox.bottom_right_y))
+        left, top, right, bottom = bbox.int().tolist()
 
-        _, H, W = tensor.shape
+        _, H, W = image_tensor.shape
         left = max(0, left)
         right = min(W, right)
         top = max(0, top)
         bottom = min(H, bottom)
 
-        cropped_tensor = tensor[:, top:bottom, left:right]
+        cropped_tensor = image_tensor[:, top:bottom, left:right]
         if cropped_tensor.ndim == 2:
             cropped_tensor = cropped_tensor.unsqueeze(0).repeat(3, 1, 1)
         elif cropped_tensor.shape[0] == 1:
