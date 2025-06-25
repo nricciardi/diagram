@@ -100,10 +100,10 @@ class FlowchartToMermaidTransducer(Transducer):
         for identifier, element in enumerate(diagram_representation.elements):
             element_text = ""
             if len(element.inner_text) > 0:
-                element_text += f"{' '.join(element.inner_text)}\n"
+                element_text += f"{' '.join(element.inner_text)}\\n"
             relation_text = ""
             if len(element.outer_text) > 0:
-                relation_text += f"{' '.join(element.outer_text)}\n"
+                relation_text += f"{' '.join(element.outer_text)}\\n"
 
             element_text = element_text.strip()
 
@@ -117,13 +117,13 @@ class FlowchartToMermaidTransducer(Transducer):
 
             relation_text = ""
             if len(relation.source_text) > 0:
-                relation_text += f"{' '.join(relation.source_text)}\n"
+                relation_text += f"{' '.join(relation.source_text)}\\n"
             if len(relation.middle_text) > 0:
-                relation_text += f"{' '.join(relation.middle_text)}\n"
+                relation_text += f"{' '.join(relation.middle_text)}\\n"
             if len(relation.inner_text) > 0:
-                relation_text += f"{' '.join(relation.inner_text)}\n"
+                relation_text += f"{' '.join(relation.inner_text)}\\n"
             if len(relation.target_text) > 0:
-                relation_text += f"{' '.join(relation.target_text)}\n"
+                relation_text += f"{' '.join(relation.target_text)}\\n"
 
             relation_text = relation_text.strip()
 
