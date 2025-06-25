@@ -84,7 +84,9 @@ class MultistageFlowchartExtractor(MultiStageExtractor, ABC):
 
         assert len(recovered_arrows) == len(arrow_bboxes_to_recover)
 
-        arrows.extend([new_arrow for new_arrow in recovered_arrows if new_arrow is not None])
+        real_recovered_arrows = [new_arrow for new_arrow in recovered_arrows if new_arrow is not None]
+        logger.debug(f"{len(real_recovered_arrows)} recovered arrows")
+        arrows.extend(real_recovered_arrows)
 
         elements_texts_associations, arrows_texts_associations = self._compute_text_associations(diagram_id, element_bboxes, arrows, text_bboxes)
 
