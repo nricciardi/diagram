@@ -14,6 +14,7 @@ from core.image.bbox.bbox2p import ImageBoundingBox2Points
 from src.utils.bbox_utils import bbox_overlap, IoU
 import cv2
 from sklearn.cluster import DBSCAN
+from typing import Optional
 
 
 @dataclass(frozen=True)
@@ -66,6 +67,66 @@ class Arrow:
         logging.debug(f"n. points: {largest_cluster_points_with_largest_convexhull}")
 
         return largest_hull
+
+    def compute_opposite_point(self) -> tuple[bool, Optional[int], Optional[int]]:
+        lower_side_y = self.bbox.bottom_left_y
+        upper_side_y = self.bbox.top_left_y
+        left_side_x = self.bbox.top_left_x
+        right_side_x = self.bbox.top_right_x
+
+        mean_points = [
+            ((self.bbox.bottom_left_x + self.bbox.bottom_right_x) / 2, self.bbox.bottom_left_y),
+            ((self.bbox.top_right_y + self.bbox.bottom_right_y) / 2, self.bbox.top_right_x),
+            ((self.bbox.top_left_x + self.bbox.top_right_x) / 2, self.bbox.top_left_y),
+            ((self.bbox.top_left_y + self.bbox.bottom_left_y) / 2, self.bbox.bottom_left_x)
+        ]
+
+        vertices = [
+            (self.bbox.top_left_x, self.bbox.top_left_y),
+            (self.bbox.top_right_x, self.bbox.top_right_y),
+            (self.bbox.bottom_right_x, self.bbox.bottom_right_y),
+            (self.bbox.bottom_left_x, self.bbox.bottom_left_y)
+        ]
+
+        head_distances = [
+            abs(self.y_head - lower_side_y),
+            abs(self.x_head - right_side_x),
+            abs(self.y_head - upper_side_y),
+            abs(self.x_head - left_side_x)
+        ]
+
+        tail_distances = [
+            abs(self.y_tail - lower_side_y),
+            abs(self.x_tail - right_side_x),
+            abs(self.y_tail - upper_side_y),
+            abs(self.x_tail - left_side_x)
+        ]
+
+        # ATTENZIONE: Questa è magia. Per sapere come funziona, contattarmi: filippogaragnani1@gmail.com
+        convert_table = {
+            2: 0,
+            5: 1,
+            8: 2,
+            3: 3
+        }
+
+        head_min_distance = min(head_distances)
+        head_min_index = head_distances.index(head_min_distance)
+        
+        tail_min_distance = min(tail_distances)
+        tail_min_index = tail_distances.index(tail_min_distance)
+
+        if head_min_index == tail_min_index:
+            side_index = (head_min_index + 2) % 4
+            return (True, mean_points[side_index][0], mean_points[side_index][1])
+        
+        if abs(head_min_index - tail_min_index) == 1:
+            minV = min(head_min_index, tail_min_index)
+            maxV = max(head_min_index, tail_min_index) * 2
+            index = convert_table[minV + maxV]
+            return (False, vertices[index][0], vertices[index][1]) 
+
+        return (False, None, None)
 
     def is_self(self, alpha: float = 1.0, circularity_threshold: float = 0.1, eps: float = 100, min_samples: int = 1) -> bool:  # TODO: finetune
         orb = cv2.ORB_create()
