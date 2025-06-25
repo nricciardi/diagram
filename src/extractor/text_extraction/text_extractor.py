@@ -248,7 +248,7 @@ class TrOCRTextExtractorSmall(TrOCRTextExtractor):
         super().__init__()
 
     def get_processor(self) -> TrOCRProcessor:
-        return TrOCRProcessor.from_pretrained("microsoft/trocr-small-printed")
+        return TrOCRProcessor.from_pretrained("microsoft/trocr-small-printed", use_fast=True)
     
     def get_model(self) -> VisionEncoderDecoderModel:
         return VisionEncoderDecoderModel.from_pretrained("microsoft/trocr-small-printed")
@@ -260,7 +260,7 @@ class TrOCRTextExtractorBase(TrOCRTextExtractor):
         super().__init__()
     
     def get_processor(self) -> TrOCRProcessor:
-        return TrOCRProcessor.from_pretrained("microsoft/trocr-base-printed")
+        return TrOCRProcessor.from_pretrained("microsoft/trocr-base-printed", use_fast=True)
     
     def get_model(self) -> VisionEncoderDecoderModel:
         return VisionEncoderDecoderModel.from_pretrained("microsoft/trocr-base-printed")
@@ -272,7 +272,7 @@ class TrOCRTextExtractorSmallHandwritten(TrOCRTextExtractor):
         super().__init__()
 
     def get_processor(self) -> TrOCRProcessor:
-        return TrOCRProcessor.from_pretrained("microsoft/trocr-small-handwritten")
+        return TrOCRProcessor.from_pretrained("microsoft/trocr-small-handwritten", use_fast=True)
     
     def get_model(self) -> VisionEncoderDecoderModel:
         return VisionEncoderDecoderModel.from_pretrained("microsoft/trocr-small-handwritten")
@@ -283,7 +283,7 @@ class TrOCRTextExtractorBaseHandwritten(TrOCRTextExtractor):
         super().__init__()
 
     def get_processor(self) -> TrOCRProcessor:
-        return TrOCRProcessor.from_pretrained("microsoft/trocr-base-handwritten")
+        return TrOCRProcessor.from_pretrained("microsoft/trocr-base-handwritten", use_fast=True)
     
     def get_model(self) -> VisionEncoderDecoderModel:
         return VisionEncoderDecoderModel.from_pretrained("microsoft/trocr-base-handwritten")
@@ -294,7 +294,7 @@ class TrOCRTextExtractorLargeHandwritten(TrOCRTextExtractor):
         super().__init__()
 
     def get_processor(self) -> TrOCRProcessor:
-        return TrOCRProcessor.from_pretrained("microsoft/trocr-large-handwritten")
+        return TrOCRProcessor.from_pretrained("microsoft/trocr-large-handwritten", use_fast=True)
     
     def get_model(self) -> VisionEncoderDecoderModel:
         return VisionEncoderDecoderModel.from_pretrained("microsoft/trocr-large-handwritten")
