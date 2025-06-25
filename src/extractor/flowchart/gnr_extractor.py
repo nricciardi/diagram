@@ -16,7 +16,7 @@ from src.extractor.bbox_detection.target import FlowchartElementCategoryIndex, L
 from src.extractor.flowchart.multistage_extractor import MultistageFlowchartExtractor, ArrowTextTypeOutcome, \
     ElementTextTypeOutcome, ObjectRelation
 from src.utils.bbox_utils import bbox_overlap, \
-    distance_bbox_point, split_linestring_by_ratios, bbox_vertices
+    distance_bbox_point, split_linestring_by_ratios, bbox_vertices, crop_image
 from src.wellknown_diagram import WellKnownDiagram
 from src.extractor.text_extraction.text_extractor import TextExtractor
 
@@ -382,10 +382,11 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
 
             if head is not None and tail is not None:
                 managed_arrows.append(Arrow.from_bboxes(
-                head_bbox=ImageBoundingBox2Points(category=Lookup.table_target_int_to_str_by_diagram_id[diagram_id][FlowchartElementCategoryIndex.ARROW_HEAD.value],
-                                                box=head, trust=head_score),
-                tail_bbox=ImageBoundingBox2Points(category=Lookup.table_target_int_to_str_by_diagram_id[diagram_id][FlowchartElementCategoryIndex.ARROW_TAIL.value],
-                                                  box=tail, trust=tail_score), arrow=arrow_bbox))
+                head_bbox=ImageBoundingBox2Points.from_image(category=Lookup.table_target_int_to_str_by_diagram_id[diagram_id][FlowchartElementCategoryIndex.ARROW_HEAD.value],
+                                                box=head, trust=head_score, image=image),
+                tail_bbox=ImageBoundingBox2Points.from_image(category=Lookup.table_target_int_to_str_by_diagram_id[diagram_id][FlowchartElementCategoryIndex.ARROW_TAIL.value],
+                                                  box=tail, trust=tail_score, image=image)
+                                                  ))
             else:
                 managed_arrows.append(None)
 
@@ -393,9 +394,9 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
 
     @override
     def _extract_diagram_objects(self, diagram_id: str, image: Image) -> List[ImageBoundingBox]:
-        image = image.as_tensor().unsqueeze(0).float() / 255.0      # unsqueeze(0) to fake a batch: (C=1, H, W) -> (1, C=1, H, W)
+        image_tensor = image.as_tensor().unsqueeze(0).float() / 255.0      # unsqueeze(0) to fake a batch: (C=1, H, W) -> (1, C=1, H, W)
 
-        prediction = self.bbox_detector(image)[0]
+        prediction = self.bbox_detector(image_tensor)[0]
         bboxes: List[ImageBoundingBox] = []
 
 
@@ -403,11 +404,11 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
             if label.item() not in Lookup.table_target_int_to_str_by_diagram_id[diagram_id]:
                 continue    # this should not be recognized here
 
-            bboxes.append(ImageBoundingBox2Points(Lookup.table_target_int_to_str_by_diagram_id[diagram_id][label.item()], box, score.item()))
+            bboxes.append(ImageBoundingBox2Points.from_image(category=Lookup.table_target_int_to_str_by_diagram_id[diagram_id][label.item()], box=box, trust=score.item(), image=image))
 
         if logging.root.level <= 10: # TODO disable
             # Draw predictions
-            img_cpu = image.squeeze(0).cpu()
+            img_cpu = image_tensor.squeeze(0).cpu()
             boxes = prediction['boxes']
             labels = prediction['labels']
             drawn = draw_bounding_boxes(img_cpu, boxes=boxes, labels=[str(l.item()) for l in labels], width=2)
