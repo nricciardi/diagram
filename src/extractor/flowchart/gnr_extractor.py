@@ -19,7 +19,7 @@ from src.flowchart_element_category import FlowchartElementCategoryIndex, Lookup
 from src.utils.bbox_utils import bbox_overlap, \
     distance_bbox_point, split_linestring_by_ratios, bbox_vertices
 from src.wellknown_diagram import WellKnownDiagram
-from src.extractor.text_extraction.text_extractor import TrOCRTextExtractorSmall, TextExtractor
+from src.extractor.text_extraction.text_extractor import TextExtractor
 
 logger = logging.getLogger(__name__)
 
@@ -35,12 +35,25 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
     ])
     element_precedent_over_arrow_in_text_association: bool = True
     element_text_overlap_threshold: float = 0.5  # TODO find optimal threshold
-    element_text_distance_threshold: float = 30  # TODO find optimal threshold
-    arrow_text_discard_distance_threshold: float = 20  # TODO find optimal threshold
-    arrow_text_inner_distance_threshold: float = 5 # TODO find optimal threshold
+    element_text_distance_threshold: float = 10  # TODO find optimal threshold
+    arrow_text_discard_distance_threshold: float = 10  # TODO find optimal threshold
+    arrow_text_inner_distance_threshold: float = 2  # TODO find optimal threshold
     element_arrow_overlap_threshold: float = 0.1  # TODO find optimal threshold
-    element_arrow_distance_threshold: float = 20.  # TODO find optimal threshold
+    element_arrow_distance_threshold: float = 150.  # TODO find optimal threshold
     ratios = [0.2, 0.6, 0.2]  # Source, Middle, Target
+
+    @override
+    def update_thresholds(self, diagram_id: str, image: Image) -> None:
+        tensor: torch.Tensor = image.as_tensor()
+        if len(tensor.shape) == 2:
+            longest_side: float = max(tensor.shape[0], tensor.shape[1])
+        elif len(tensor.shape) == 3:
+            longest_side: float = max(image.as_tensor().shape[0], image.as_tensor().shape[1], image.as_tensor().shape[2])
+        else:
+            logger.warning(f"Unexpected tensor shape {tensor.shape}, assuming last two dimensions are height and width\n")
+            longest_side: float = max(tensor.shape[-2], tensor.shape[-1])
+
+        self.element_arrow_distance_threshold = 0.2 * longest_side
 
     def to_device(self, device: str):
         self.bbox_detector = self.bbox_detector.to(device)
@@ -105,6 +118,10 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
                     minimum_element_text_distance = element_text_distance
                     minimum_element_text_bbox = element_bbox
 
+                # distance >= 0 -> se 0, basta cercare
+                if minimum_element_text_distance == 0:
+                    break
+
             minimum_arrow_text_distance: float = float('inf')
             minimum_distance_arrow_to_text: Optional[Arrow] = None
             for arrow in arrows:
@@ -136,11 +153,6 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
                 where the text is located.
         Returns:
             str: The extracted and digitalized text from the specified region of the image.
-        Notes:
-            - The method processes the image tensor to crop the region defined by the bounding box.
-            - The cropped region is converted to a PIL image and passed through a text recognition 
-              model to extract the text.
-            - The extracted text is stripped of leading and trailing whitespace before being returned.
         """
 
         logger.debug("Analyzing the text found...")
