@@ -2,13 +2,10 @@ import logging
 from collections import defaultdict
 from dataclasses import dataclass
 from typing import List, Tuple, Dict, Optional, override
-
-from src import DEVICE
 from src.classifier.preprocessing.processor import GrayScaleProcessor, MultiProcessor
 import torch
 from shapely.geometry import Polygon, LineString
 from torchvision.models.detection import FasterRCNN
-
 from core.image.bbox.bbox import ImageBoundingBox
 from core.image.bbox.bbox2p import ImageBoundingBox2Points
 from core.image.image import Image
