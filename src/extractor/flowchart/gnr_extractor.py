@@ -1,6 +1,6 @@
 import logging
 from collections import defaultdict
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import List, Tuple, Dict, Optional, override
 
 from torchvision.transforms.functional import to_pil_image
@@ -45,6 +45,13 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
     element_arrow_overlap_threshold: float = 0.1  # TODO find optimal threshold
     element_arrow_distance_threshold: float = 150.  # TODO find optimal threshold
     ratios = [0.2, 0.6, 0.2]  # Source, Middle, Target
+    bbox_trust_thresholds: Dict[int, Optional[float]] = field(default_factory=dict)
+
+    def __post_init__(self):
+        for key, threshold in self.bbox_trust_thresholds.items():
+            if threshold > 1 or threshold < 0:
+                raise ValueError(f"bbox_trust_thresholds (category: {key}) must be between 0 and 1")
+
 
     @override
     def update_thresholds(self, diagram_id: str, image: Image) -> None:
@@ -80,26 +87,26 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
 
     @override
     def _is_arrow_category(self, diagram_id: str, category: str) -> bool:
-        return category == Lookup.table[diagram_id][FlowchartElementCategoryIndex.ARROW.value]
+        return category == Lookup.table_target_int_to_str_by_diagram_id[diagram_id][FlowchartElementCategoryIndex.ARROW.value]
 
     @override
     def _is_element_category(self, diagram_id: str, category: str) -> bool:
-        return category not in [Lookup.table[diagram_id][FlowchartElementCategoryIndex.ARROW.value],
-                                Lookup.table[diagram_id][FlowchartElementCategoryIndex.ARROW_TAIL.value],
-                                Lookup.table[diagram_id][FlowchartElementCategoryIndex.ARROW_HEAD.value],
-                                Lookup.table[diagram_id][FlowchartElementCategoryIndex.TEXT.value]]
+        return category not in [Lookup.table_target_int_to_str_by_diagram_id[diagram_id][FlowchartElementCategoryIndex.ARROW.value],
+                                Lookup.table_target_int_to_str_by_diagram_id[diagram_id][FlowchartElementCategoryIndex.ARROW_TAIL.value],
+                                Lookup.table_target_int_to_str_by_diagram_id[diagram_id][FlowchartElementCategoryIndex.ARROW_HEAD.value],
+                                Lookup.table_target_int_to_str_by_diagram_id[diagram_id][FlowchartElementCategoryIndex.TEXT.value]]
 
     @override
     def _is_text_category(self, diagram_id: str, category: str) -> bool:
-        return category == Lookup.table[diagram_id][FlowchartElementCategoryIndex.TEXT.value]
+        return category == Lookup.table_target_int_to_str_by_diagram_id[diagram_id][FlowchartElementCategoryIndex.TEXT.value]
 
     @override
     def _is_arrow_head_category(self, diagram_id: str, category: str) -> bool:
-        return category == Lookup.table[diagram_id][FlowchartElementCategoryIndex.ARROW_HEAD.value]
+        return category == Lookup.table_target_int_to_str_by_diagram_id[diagram_id][FlowchartElementCategoryIndex.ARROW_HEAD.value]
 
     @override
     def _is_arrow_tail_category(self, diagram_id: str, category: str) -> bool:
-        return category == Lookup.table[diagram_id][FlowchartElementCategoryIndex.ARROW_TAIL.value]
+        return category == Lookup.table_target_int_to_str_by_diagram_id[diagram_id][FlowchartElementCategoryIndex.ARROW_TAIL.value]
 
     def _preprocess(self, diagram_id: str, image: Image) -> Image:
 
@@ -207,7 +214,7 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
 
             ret.append(
                 ObjectRelation(
-                    category=Lookup.table[diagram_id][FlowchartElementCategoryIndex.ARROW.value],
+                    category=Lookup.table_target_int_to_str_by_diagram_id[diagram_id][FlowchartElementCategoryIndex.ARROW.value],
                     arrow=arrow,
                     source_index=source,
                     target_index=target,
@@ -322,10 +329,10 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
 
 
         for box, label, score in zip(prediction['boxes'], prediction['labels'], prediction['scores']):
-            if label.item() not in Lookup.table[diagram_id]:
+            if label.item() not in Lookup.table_target_int_to_str_by_diagram_id[diagram_id]:
                 continue    # this should not be recognized here
 
-            bboxes.append(ImageBoundingBox2Points(Lookup.table[diagram_id][label.item()], box, score.item()))
+            bboxes.append(ImageBoundingBox2Points(Lookup.table_target_int_to_str_by_diagram_id[diagram_id][label.item()], box, score.item()))
 
         if logging.root.level <= 10:
             # Draw predictions
@@ -338,3 +345,21 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
             plt.show()
 
         return bboxes
+
+
+    @override
+    def _filter_bboxes(self, diagram_id: str, bboxes: List[ImageBoundingBox]) -> List[ImageBoundingBox]:
+        """
+        Filter bboxes based on trust threshold, i.e. keep only bbox which has trust > threshold
+        """
+
+        filtered_bboxes = []
+
+        for bbox in bboxes:
+            if bbox.category not in self.bbox_trust_thresholds or \
+                    self.bbox_trust_thresholds[Lookup.table_str_to_target_int_by_diagram_id[diagram_id][bbox.category]] is None or \
+                    bbox.trust > self.bbox_trust_thresholds[Lookup.table_str_to_target_int_by_diagram_id[diagram_id][bbox.category]]:
+
+                filtered_bboxes.append(bbox)
+
+        return filtered_bboxes

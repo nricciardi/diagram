@@ -1,8 +1,8 @@
 import logging
 from abc import ABC, abstractmethod
-from typing import List, Tuple, Optional, Dict
+from typing import List, Tuple, Optional, Dict, override
 from enum import Enum
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from core.extractor.multistage_extractor.multistage_extractor import MultiStageExtractor
 from core.image.bbox.bbox import ImageBoundingBox
 from core.image.image import Image
@@ -60,7 +60,7 @@ class MultistageFlowchartExtractor(MultiStageExtractor, ABC):
 
         """
 
-        return []
+        return [None for bbox in arrow_bboxes]
 
     def __seq_build_diagram_representation(self, diagram_id: str, image: Image, bboxes: List[ImageBoundingBox]) -> FlowchartRepresentation:
 
@@ -71,6 +71,20 @@ class MultistageFlowchartExtractor(MultiStageExtractor, ABC):
         text_bboxes: List[ImageBoundingBox] = [bbox for bbox in bboxes if self._is_text_category(diagram_id, bbox.category)]
 
         arrows: List[Arrow] = compute_arrows(arrow_bboxes, arrow_head_bboxes, arrow_tail_bboxes)
+
+        arrow_bboxes_to_recover = []
+        for arrow_bbox in arrow_bboxes:
+            for arrow in arrows:
+                if arrow.bbox == arrow_bbox:
+                    break
+
+            arrow_bboxes_to_recover.append(arrow_bbox)
+
+        recovered_arrows = self._manage_wrong_computed_arrows(diagram_id, image, arrow_bboxes_to_recover)
+
+        assert len(recovered_arrows) == len(arrow_bboxes_to_recover)
+
+        arrows.extend([new_arrow for new_arrow in recovered_arrows if new_arrow is not None])
 
         elements_texts_associations, arrows_texts_associations = self._compute_text_associations(diagram_id, element_bboxes, arrows, text_bboxes)
 

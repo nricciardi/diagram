@@ -1,5 +1,7 @@
 from dataclasses import dataclass
 from abc import ABC, abstractmethod
+
+from scipy.optimize import anderson
 from torch import Tensor
 from typing import Self
 
@@ -88,3 +90,13 @@ class ImageBoundingBox(ABC):
     @abstractmethod
     def distance(self, other: Self) -> float:
         pass
+
+    def __eq__(self, other: Self) -> bool:
+        return int(self.top_left_x) == int(other.top_left_x) and \
+                int(self.top_right_x) == int(other.top_right_x) and \
+                int(self.bottom_right_x) == int(other.bottom_right_x) and \
+                int(self.bottom_left_x) == int(other.bottom_left_x) and \
+                int(self.top_left_y) == int(other.top_left_y) and \
+                int(self.top_right_y) == int(other.top_right_y) and \
+                int(self.bottom_right_y) == int(other.bottom_right_y) and \
+                int(self.bottom_left_y) == int(other.bottom_left_y)

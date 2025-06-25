@@ -22,7 +22,7 @@ class FlowchartElementCategoryIndex(IntEnum):
 
 
 class Lookup:
-    table_flowchart: Dict[int, str] = {
+    table_target_int_to_flowchart_category_str: Dict[int, str] = {
         FlowchartElementCategoryIndex.PROCESS.value: FlowchartElementCategory.PROCESS.value,
          FlowchartElementCategoryIndex.DECISION.value: FlowchartElementCategory.DECISION.value,
          FlowchartElementCategoryIndex.TERMINATOR.value: FlowchartElementCategory.TERMINAL.value,
@@ -34,7 +34,7 @@ class Lookup:
          FlowchartElementCategoryIndex.ARROW_TAIL.value: FlowchartExtraElementCategory.ARROW_TAIL.value
     }
 
-    table_graph: Dict[int, str] = {
+    table_target_int_to_graph_category_str: Dict[int, str] = {
         FlowchartElementCategoryIndex.ARROW.value: FlowchartRelationCategory.ARROW.value,
         FlowchartElementCategoryIndex.STATE.value: FlowchartElementCategory.CIRCLE.value,
         FlowchartElementCategoryIndex.FINAL_STATE.value: FlowchartElementCategory.CIRCLE.value,
@@ -43,7 +43,20 @@ class Lookup:
         FlowchartElementCategoryIndex.ARROW_TAIL.value: FlowchartExtraElementCategory.ARROW_TAIL.value
     }
 
-    table: Dict[str, Dict[int, str]] = {
-        WellKnownDiagram.FLOW_CHART.value: table_flowchart,
-        WellKnownDiagram.GRAPH_DIAGRAM.value: table_graph,
+    @property
+    def table_graph_category_str_to_target_int(self) -> Dict[str, int]:
+        return dict((v,k) for k,v in self.table_target_int_to_graph_category_str.items())
+
+    @property
+    def table_flowchart_category_str_to_target_int(self) -> Dict[str, int]:
+        return dict((v, k) for k, v in self.table_target_int_to_flowchart_category_str.items())
+
+    table_target_int_to_str_by_diagram_id: Dict[str, Dict[int, str]] = {
+        WellKnownDiagram.FLOW_CHART.value: table_target_int_to_flowchart_category_str,
+        WellKnownDiagram.GRAPH_DIAGRAM.value: table_target_int_to_graph_category_str,
+    }
+
+    table_str_to_target_int_by_diagram_id: Dict[str, Dict[str, int]] = {
+        WellKnownDiagram.FLOW_CHART.value: table_flowchart_category_str_to_target_int,
+        WellKnownDiagram.GRAPH_DIAGRAM.value: table_graph_category_str_to_target_int,
     }

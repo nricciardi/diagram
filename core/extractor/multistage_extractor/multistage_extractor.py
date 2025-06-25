@@ -13,13 +13,6 @@ logger = logging.getLogger(__name__)
 @dataclass
 class MultiStageExtractor(Extractor, ABC):
 
-    bbox_trust_thresholds: Dict[int, Optional[float]] = field(default_factory=dict)
-
-    def __post_init__(self):
-        for key, threshold in self.bbox_trust_thresholds.items():
-            if threshold > 1 or threshold < 0:
-                raise ValueError(f"bbox_trust_thresholds (category: {key}) must be between 0 and 1")
-
     def extract(self, diagram_id: str, image: Image) -> DiagramRepresentation:
 
         self.update_thresholds(diagram_id, image)
@@ -30,7 +23,7 @@ class MultiStageExtractor(Extractor, ABC):
 
         logger.debug(f"{len(bboxes)} extracted")
 
-        bboxes = self._filter_bboxes(bboxes)
+        bboxes = self._filter_bboxes(diagram_id, bboxes)
 
         return self._build_diagram_representation(diagram_id, image, bboxes)
 
@@ -56,13 +49,12 @@ class MultiStageExtractor(Extractor, ABC):
         Extract diagram's objects as bounding boxes
         """
 
-    def _filter_bboxes(self, bboxes: List[ImageBoundingBox]) -> List[ImageBoundingBox]:
+    def _filter_bboxes(self, diagram_id: str, bboxes: List[ImageBoundingBox]) -> List[ImageBoundingBox]:
         """
         Filter bboxes based on trust threshold, i.e. keep only bbox which has trust > threshold
         """
 
-        return [bbox for bbox in bboxes if bbox.category not in self.bbox_trust_thresholds or self.bbox_trust_thresholds[bbox.category] is None or bbox.trust > self.bbox_trust_thresholds[bbox.category]]
-
+        return bboxes
 
     @abstractmethod
     def _build_diagram_representation(self, diagram_id: str, image: Image, bboxes: List[ImageBoundingBox]) -> DiagramRepresentation:
