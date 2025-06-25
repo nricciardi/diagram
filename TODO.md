@@ -144,22 +144,23 @@ Scegliere se andare a fare spionaggio
 
 ## Domenica 29/06
 
-- [ ] Fil: _compute_relations in extractor
-- [ ] Sav: _arrow_text_type in extractor
+- [x] Fil: _compute_relations in extractor
+- [x] Sav: _arrow_text_type in extractor
 - [ ] Chat: Finetuning threshold extractor
 - [x] N: Fix extractor (tra cui aggiungere i metodi astratti per transduer e extractor)
 - [ ] Togliere i TODO nel progetto, togliere percorsi assoluti
-- [ ] F: Spostare preprocessor
-- [ ] N: Non va debug nei log
+- [x] F: Spostare preprocessor
+- [x] N: Non va debug nei log
 - [ ] F: unsqueeze sul preprocessor grayscale
 - [ ] F: `"cuda" if torch.cuda.is_available() else "cpu"` nei text extractor -> usare to_device mixin (nostro)
 - [ ] Aggiungere opzione per scegliere il markup lang
-- [ ] Togliere warning
+- [ ] ~~Togliere warning~~
 
 
 ## Deadline codice 01/07
 
 - [ ] Testing
+- [ ]
 
 ## Deadline paper e presentazione 07/07
 
@@ -170,6 +171,9 @@ Scegliere se andare a fare spionaggio
 
 - [ ] Presentazione orale
 
+
+
+## Prima di consegnare
 
 
 

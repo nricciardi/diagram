@@ -1,7 +1,6 @@
 import logging
 from dataclasses import dataclass
 from typing import List
-import alphashape
 from scipy.spatial import ConvexHull
 from shapely.constructive import convex_hull
 from shapely.geometry import Polygon
@@ -67,7 +66,8 @@ class Arrow:
 
         return largest_hull
 
-    def is_self(self, alpha: float = 1.0, circularity_threshold: float = 0.1, eps: float = 100, min_samples: int = 1) -> bool:  # TODO: finetune
+    # TODO: finetune
+    def is_self(self, alpha: float = 1.0, circularity_threshold: float = 0.1, eps: float = 100, min_samples: int = 1) -> bool:
         orb = cv2.ORB_create()
         orb_keypoints, descriptors = orb.detectAndCompute(self.bbox.content, None)
 

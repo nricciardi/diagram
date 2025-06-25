@@ -12,8 +12,9 @@ class TransducerOutcome(DumpableMixin, LoadableMixin):
     payload: str
 
     def dump(self, output_path: str):
-        pass        # TODO
+        with open(output_path, "w") as file:
+            file.write(self.payload)
 
     @staticmethod
     def load(input_path: str):
-        pass        # TODO
+        raise NotImplemented()

@@ -244,8 +244,7 @@ class Orchestrator(ToDeviceMixin):
 
             logger.info(f"Dump outcome: {file_path}")
 
-            with open(file_path, "w") as file:
-                file.write(outcome.payload)
+            outcome.dump(file_path)
 
     def __seq_compile_transducer_outcomes(self, outcomes: List[TransducerOutcome], outputs_dir_path: str):
 
