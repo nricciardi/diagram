@@ -94,7 +94,15 @@ class FlowchartToMermaidTransducer(Transducer):
 
         body: str = "flowchart TD\n"
         for identifier, element in enumerate(diagram_representation.elements):
-            element_text = f"{' '.join(element.inner_text)}\n{' '.join(element.outer_text)}"
+            element_text = ""
+            if len(element.inner_text) > 0:
+                element_text += f"{' '.join(element.inner_text)}\n"
+            relation_text = ""
+            if len(element.outer_text) > 0:
+                relation_text += f"{' '.join(element.outer_text)}\n"
+
+            element_text = element_text.strip()
+
             body += f"\t{identifier}{self.wrap_element(element.category, element_text)}\n"
 
         body += "\n"
@@ -102,7 +110,19 @@ class FlowchartToMermaidTransducer(Transducer):
             if relation.source_id is None or relation.target_id is None:
                 continue
             body += f"\t{relation.source_id}"
-            relation_text = f"{' '.join(relation.source_text)}\n{' '.join(relation.middle_text)}\n{' '.join(relation.inner_text)}\n{' '.join(relation.target_text)}\n"
+
+            relation_text = ""
+            if len(relation.source_text) > 0:
+                relation_text += f"{' '.join(relation.source_text)}\n"
+            if len(relation.middle_text) > 0:
+                relation_text += f"{' '.join(relation.middle_text)}\n"
+            if len(relation.inner_text) > 0:
+                relation_text += f"{' '.join(relation.inner_text)}\n"
+            if len(relation.target_text) > 0:
+                relation_text += f"{' '.join(relation.target_text)}\n"
+
+            relation_text = relation_text.strip()
+
             body += f"{self.wrap_relation(relation.category, relation_text)}{relation.target_id}\n"
 
         outcome: TransducerOutcome = TransducerOutcome(diagram_id=diagram_id, payload=body, markup_language="mermaid")
