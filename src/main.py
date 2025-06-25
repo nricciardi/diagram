@@ -6,12 +6,11 @@ import logging
 from pathlib import Path
 import torch
 
+sys.path.append(str(Path(__file__).resolve().parent.parent))
+
 from core.compiler.compiler import Compiler
 from core.transducer.transducer import Transducer
 from src.extractor.bbox_detection.target import FlowchartElementCategoryIndex
-
-sys.path.append(str(Path(__file__).resolve().parent.parent))
-
 from core.classifier.classifier import Classifier
 from core.extractor.extractor import Extractor
 from core.image.image import Image
@@ -246,7 +245,7 @@ if __name__ == '__main__':
 
 
     classifier = GNRClassifier("gnr-classifier", model_path=args.classifier)
-    text_digitizer = TrOCRTextExtractorBaseHandwritten()    # less expensive version, but with lower performance: TrOCRTextExtractorSmall()
+    text_digitizer = TrOCRTextExtractorSmall()    # less expensive version, but with lower performance: TrOCRTextExtractorSmall()
 
     extractors = [
         GNRFlowchartExtractor(

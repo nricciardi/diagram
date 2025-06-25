@@ -89,9 +89,9 @@ class Arrow:
 
         vertices = [
             (self.bbox.top_left_x, self.bbox.top_left_y),
-            (self.bbox.top_right_x, self.bbox.top_right_y),
+            (self.bbox.bottom_left_x, self.bbox.bottom_left_y),
             (self.bbox.bottom_right_x, self.bbox.bottom_right_y),
-            (self.bbox.bottom_left_x, self.bbox.bottom_left_y)
+            (self.bbox.top_right_x, self.bbox.top_right_y),
         ]
 
         head_distances = [
@@ -129,7 +129,7 @@ class Arrow:
             minV = min(head_min_index, tail_min_index)
             maxV = max(head_min_index, tail_min_index) * 2
             index = convert_table[minV + maxV]
-            return False, vertices[index][0], vertices[index][1]
+            return True, vertices[index][0], vertices[index][1]
 
         return False, None, None
 
