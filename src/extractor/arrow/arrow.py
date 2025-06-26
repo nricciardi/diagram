@@ -112,7 +112,7 @@ class Arrow:
             2: 0,
             5: 1,
             8: 2,
-            3: 3
+            6: 3
         }
 
         head_min_distance = min(head_distances)
