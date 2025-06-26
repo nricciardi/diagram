@@ -125,7 +125,7 @@ class Arrow:
             side_index = (head_min_index + 2) % 4
             return True, mean_points[side_index][0], mean_points[side_index][1]
 
-        if (abs(head_min_index - tail_min_index)) % 4 == 1:
+        if (abs(head_min_index - tail_min_index)) == 1 or (abs(head_min_index - tail_min_index)) == 3:
             minV = min(head_min_index, tail_min_index)
             maxV = max(head_min_index, tail_min_index) * 2
             index = convert_table[minV + maxV]
