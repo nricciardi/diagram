@@ -173,13 +173,6 @@ def parse_args():
     )
 
     parser.add_argument(
-        "--element_arrow_overlap_threshold",
-        type=float,
-        default=0.1,
-        help="element_arrow_overlap_threshold"
-    )
-
-    parser.add_argument(
         "--element_arrow_distance_threshold",
         type=float,
         default=150,
@@ -245,7 +238,7 @@ if __name__ == '__main__':
 
 
     classifier = GNRClassifier("gnr-classifier", model_path=args.classifier)
-    text_digitizer = TrOCRTextExtractorSmall()    # less expensive version, but with lower performance: TrOCRTextExtractorSmall()
+    text_digitizer = TrOCRTextExtractorBaseHandwritten()    # less expensive version, but with lower performance: TrOCRTextExtractorSmall()
 
     extractors = [
         GNRFlowchartExtractor(
@@ -273,7 +266,6 @@ if __name__ == '__main__':
             arrow_text_inner_distance_threshold=args.arrow_text_inner_distance_threshold,
             arrow_crop_delta_size_x=args.arrow_crop_delta_size_x,
             arrow_crop_delta_size_y=args.arrow_crop_delta_size_y,
-            element_arrow_overlap_threshold=args.element_arrow_overlap_threshold,
             element_arrow_distance_threshold=args.element_arrow_distance_threshold
         )
     ]

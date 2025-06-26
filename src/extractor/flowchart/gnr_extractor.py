@@ -39,12 +39,11 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
     element_precedent_over_arrow_in_text_association: bool
     element_text_overlap_threshold: float
     element_text_distance_threshold: float
+    element_arrow_distance_threshold: float
     arrow_text_discard_distance_threshold: float
     arrow_text_inner_distance_threshold: float
     arrow_crop_delta_size_x: float
     arrow_crop_delta_size_y: float
-    element_arrow_overlap_threshold: float
-    element_arrow_distance_threshold: float
 
     ratios = [0.2, 0.6, 0.2]  # Source, Middle, Target
     bbox_trust_thresholds: Dict[int, Optional[float]] = field(default_factory=dict)
@@ -58,18 +57,6 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
     @override
     def update_thresholds(self, diagram_id: str, image: Image) -> None:
         pass
-        # TODO: not working
-        # tensor: torch.Tensor = image.as_tensor()
-        # if len(tensor.shape) == 2:
-        #     longest_side: float = max(tensor.shape[0], tensor.shape[1])
-        # elif len(tensor.shape) == 3:
-        #     longest_side: float = max(image.as_tensor().shape[0], image.as_tensor().shape[1], image.as_tensor().shape[2])
-        # else:
-        #     logger.warning(f"Unexpected tensor shape {tensor.shape}, assuming last two dimensions are height and width\n")
-        #     longest_side: float = max(tensor.shape[-2], tensor.shape[-1])
-        # self.element_arrow_distance_threshold = 0.2 * longest_side
-        # self.arrow_text_discard_distance_threshold = 0.2 * longest_side
-        # self.arrow_text_inner_distance_threshold = 0.2 * longest_side
 
     def to_device(self, device: str):
         self.bbox_detector = self.bbox_detector.to(device)
@@ -156,10 +143,10 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
 
         tot_element_text_associations = sum([len(v) for k, v in element_text_associations.items()])
         tot_arrow_text_associations = sum([len(v) for k, v in arrow_text_associations.items()])
-        # TODO fix
+
         logger.debug(f"{tot_element_text_associations} element-text associations found")
         logger.debug(f"{tot_arrow_text_associations} arrow-text associations found")
-        # TODO fix
+
         assert tot_element_text_associations + tot_arrow_text_associations == len(text_bboxes)
         return element_text_associations, arrow_text_associations
 
