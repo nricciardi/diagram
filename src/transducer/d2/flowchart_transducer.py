@@ -1,5 +1,6 @@
 from typing import List, Type, override, Optional
 
+from dataclasses import dataclass
 from src.wellknown_diagram import WellKnownDiagram
 from core.representation.representation import DiagramRepresentation
 from src.representation.flowchart_representation.flowchart_representation import FlowchartRepresentation
@@ -9,10 +10,9 @@ from core.transducer.outcome import TransducerOutcome
 from core.transducer.transducer import Transducer
 from src.wellknown_markuplang import WellKnownMarkupLanguage
 
-class FlowchartToD2Transducer(Transducer):
 
-    def __init__(self, identifier: str):
-        super().__init__(identifier)
+@dataclass
+class FlowchartToD2Transducer(Transducer):
 
     @override
     def compatible_diagrams(self) -> List[str]:

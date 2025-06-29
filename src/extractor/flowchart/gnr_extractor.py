@@ -35,7 +35,6 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
         GrayScaleProcessor()
     ])
 
-    # TODO: change name in CLI
     element_precedent_over_arrow_in_text_association: bool
     element_text_overlap_threshold: float
     element_text_distance_threshold: float
@@ -503,7 +502,7 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
 
             bboxes.append(ImageBoundingBox2Points.from_image(category=Lookup.table_target_int_to_str_by_diagram_id[diagram_id][label.item()], box=box, trust=score.item(), image=image))
 
-        if logging.root.level <= 10: # TODO disable
+        if logging.root.level <= 10:
             # Draw predictions
             img_cpu = image_tensor.squeeze(0).cpu()
             boxes = prediction['boxes']

@@ -30,7 +30,7 @@ class Orchestrator(ToDeviceMixin):
     transducers: List[Transducer]
     compilers: List[Compiler]
     extensions_lookup: Dict[str, str]
-    make_unique: bool = False   # TODO: -> True
+    make_unique: bool = True
 
     def to_device(self, device: str):
         self.classifier.to_device(device)
@@ -72,7 +72,7 @@ class Orchestrator(ToDeviceMixin):
         return outcomes_by_markuplang
 
     def __classify(self, image: Image) -> str:
-        logger.info(f"Classify image... {image.as_tensor().shape}")
+        logger.info(f"Classify image... (shape: {tuple(image.as_tensor().shape)})")
 
         image.to_device(self.classifier.get_device())
         diagram_id = self.classifier.classify(image)
