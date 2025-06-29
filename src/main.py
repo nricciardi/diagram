@@ -280,7 +280,7 @@ if __name__ == '__main__':
         then_compile=args.then_compile,
         outputs_dir_path=str(args.outputs_dir_path),
         transducers=[
-            # TODO: FlowchartToMermaidTransducer("flowchart-to-mermaid-transducer"),
+            FlowchartToMermaidTransducer("flowchart-to-mermaid-transducer"),
             FlowchartToD2Transducer("flowchart-to-d2-transducer"),
         ],
         compilers=[

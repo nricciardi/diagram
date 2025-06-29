@@ -48,7 +48,7 @@ class MultistageFlowchartExtractor(MultiStageExtractor, ABC):
         else:
             return self.__seq_build_diagram_representation(diagram_id, image, bboxes)
 
-    def _manage_wrong_computed_arrows(self, diagram_id: str, image: Image, arrow_bboxes: List[ImageBoundingBox]) -> List[Optional[Arrow]]:
+    def _manage_wrong_computed_arrows(self, diagram_id: str, image: Image, arrow_bboxes: List[ImageBoundingBox]) -> List[Arrow]:
         """
 
         Args:
@@ -56,11 +56,26 @@ class MultistageFlowchartExtractor(MultiStageExtractor, ABC):
             image:
             arrow_bboxes:
 
-        Returns: in each position of the list return None if arrow is wrong computed again or a new Arrow
+        Returns: list of recovered arrows
 
         """
 
-        return [None for bbox in arrow_bboxes]
+        return []
+
+    def _manage_unmatched_arrow_tails_and_heads(self, diagram_id: str, image: Image, head_bboxes: List[ImageBoundingBox], tail_bboxes: List[ImageBoundingBox]) -> List[Arrow]:
+        """
+
+        Args:
+            diagram_id:
+            image:
+            head_bboxes:
+            tail_bboxes:
+
+        Returns: list of recovered arrows
+
+        """
+
+        return []
 
     def __seq_build_diagram_representation(self, diagram_id: str, image: Image, bboxes: List[ImageBoundingBox]) -> FlowchartRepresentation:
 
@@ -70,28 +85,16 @@ class MultistageFlowchartExtractor(MultiStageExtractor, ABC):
         arrow_tail_bboxes: List[ImageBoundingBox] = [bbox for bbox in bboxes if self._is_arrow_tail_category(diagram_id, bbox.category)]
         text_bboxes: List[ImageBoundingBox] = [bbox for bbox in bboxes if self._is_text_category(diagram_id, bbox.category)]
 
-        arrows, head_bboxes, tail_bboxes = compute_arrows(arrow_bboxes, arrow_head_bboxes, arrow_tail_bboxes)
+        arrows, arrow_bboxes_to_recover, unmatched_head_bboxes, unmatched_tail_bboxes = compute_arrows(arrow_bboxes, arrow_head_bboxes, arrow_tail_bboxes)
 
-        arrow_bboxes_to_recover = []
-        for arrow_bbox in arrow_bboxes:
-            insert: bool = True
-            for arrow in arrows:
-                if arrow.bbox.eq(arrow_bbox):
-                    insert = False
-                    break
+        recovered_arrows_from_arrow_bboxes = self._manage_wrong_computed_arrows(diagram_id, image, arrow_bboxes_to_recover)
+        recovered_arrows_from_tail_and_head_bboxes = self._manage_unmatched_arrow_tails_and_heads(diagram_id, image, unmatched_head_bboxes, unmatched_tail_bboxes)
 
-            if insert:
-                arrow_bboxes_to_recover.append(arrow_bbox)
+        logger.debug(f"{len(recovered_arrows_from_arrow_bboxes)} recovered arrows from arrow bboxes")
+        arrows.extend(recovered_arrows_from_arrow_bboxes)
 
-        assert len(arrow_bboxes_to_recover) == len(arrow_bboxes) - len(arrows)
-
-        recovered_arrows = self._manage_wrong_computed_arrows(diagram_id, image, arrow_bboxes_to_recover)
-
-        assert len(recovered_arrows) == len(arrow_bboxes_to_recover)
-
-        real_recovered_arrows = [new_arrow for new_arrow in recovered_arrows if new_arrow is not None]
-        logger.debug(f"{len(real_recovered_arrows)} recovered arrows")
-        arrows.extend(real_recovered_arrows)
+        logger.debug(f"{len(recovered_arrows_from_tail_and_head_bboxes)} recovered arrows from head and tail bboxes")
+        arrows.extend(recovered_arrows_from_tail_and_head_bboxes)
 
         elements_texts_associations, arrows_texts_associations = self._compute_text_associations(diagram_id, element_bboxes, arrows, text_bboxes)
 

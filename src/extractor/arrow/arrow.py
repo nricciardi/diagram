@@ -27,14 +27,14 @@ class Arrow:
     bbox: ImageBoundingBox
 
     @classmethod
-    def from_bboxes(cls, head_bbox: ImageBoundingBox, tail_bbox: ImageBoundingBox, arrow: ImageBoundingBox):
+    def from_bboxes(cls, head_bbox: ImageBoundingBox, tail_bbox: ImageBoundingBox, arrow_bbox: ImageBoundingBox):
         # Compute the center of the head and tail bboxes
         x_head = int((head_bbox.top_left_x + head_bbox.bottom_right_x) // 2)
         y_head = int((head_bbox.top_left_y + head_bbox.bottom_right_y) // 2)
         x_tail = int((tail_bbox.top_left_x + tail_bbox.bottom_right_x) // 2)
         y_tail = int((tail_bbox.top_left_y + tail_bbox.bottom_right_y) // 2)
 
-        return Arrow(x_head=x_head, y_head=y_head, x_tail=x_tail, y_tail=y_tail, bbox=arrow)
+        return Arrow(x_head=x_head, y_head=y_head, x_tail=x_tail, y_tail=y_tail, bbox=arrow_bbox)
 
     def __greatest_convexhull(self, labels, points):
         unique_labels = set(labels) - {-1}
@@ -170,13 +170,13 @@ def get_most_certain_bbox(bboxes_part: List[ImageBoundingBox], arrow_bbox: Image
     return most_certain_bbox
 
 def compute_arrows(arrow_bboxes: List[ImageBoundingBox], head_bboxes: List[ImageBoundingBox], tail_bboxes: List[ImageBoundingBox]) \
-        -> Tuple[List[Arrow], List[ImageBoundingBox], List[ImageBoundingBox]]:
+        -> Tuple[List[Arrow], List[ImageBoundingBox], List[ImageBoundingBox], List[ImageBoundingBox]]:
     """
     arrow_bboxes: bboxes of arrows
     arrow_bboxes: bboxes of arrow heads
     arrow_bboxes: bboxes of arrow tails
 
-    :returns: List of Arrow objects, remaining head bboxes, remaining tail bboxes
+    :returns: List of Arrow objects, remaining arrow bboxes, remaining head bboxes, remaining tail bboxes
     """
 
     arrows: List[Arrow] = []
@@ -212,6 +212,19 @@ def compute_arrows(arrow_bboxes: List[ImageBoundingBox], head_bboxes: List[Image
         head_bboxes.pop(i)
         tail_bboxes.pop(j)
 
-        arrows.append(Arrow.from_bboxes(head_bbox=head_bbox, tail_bbox=tail_bbox, arrow=arrow))
+        arrows.append(Arrow.from_bboxes(head_bbox=head_bbox, tail_bbox=tail_bbox, arrow_bbox=arrow))
 
-    return arrows, head_bboxes, tail_bboxes
+    arrow_bboxes_to_recover = []
+    for arrow_bbox in arrow_bboxes:
+        insert: bool = True
+        for arrow in arrows:
+            if arrow.bbox.eq(arrow_bbox):
+                insert = False
+                break
+
+        if insert:
+            arrow_bboxes_to_recover.append(arrow_bbox)
+
+    assert len(arrow_bboxes_to_recover) == len(arrow_bboxes) - len(arrows)
+
+    return arrows, arrow_bboxes_to_recover, head_bboxes, tail_bboxes

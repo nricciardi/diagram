@@ -9,7 +9,10 @@ to eventually integrate or modify them.
 
 ### Install
 
-1. Installa **D2 CLI** dal repository ufficiale: [https://github.com/terrastruct/d2](https://github.com/terrastruct/d2) (cercare la versione appropriata per il proprio sistema nelle [releases](https://github.com/terrastruct/d2/releases))
+1. Installa **D2 CLI** dal repository ufficiale: [https://github.com/terrastruct/d2](https://github.com/terrastruct/d2) (cercare la versione appropriata per il proprio sistema nelle )
+    - Linux: https://d2lang.com/tour/install/
+    - [All releases](https://github.com/terrastruct/d2/releases)
+
 
 Dopo aver installato la CLI dovresti essere in grado di eseguire `d2`.
 
