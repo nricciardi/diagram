@@ -57,7 +57,7 @@ docker run --rm -v "`pwd`/demo:/app/demo" diagram --input demo/demo_image1.png -
 
 CLI options can be visualized thanks to flag: `-h`
 
-La CLI is in `src/main.py`
+CLI is in `src/main.py`
 
 ```bash
 python src/main.py -h
