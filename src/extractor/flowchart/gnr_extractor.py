@@ -185,26 +185,29 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
 
         for arrow in arrows:
 
-            target = source = None
+            target: Optional[ImageBoundingBox] = None
+            source: Optional[ImageBoundingBox] = None
+
             distance_head_min = distance_tail_min = None
+
             for i, element in enumerate(element_bboxes):
                 element_bbox: ImageBoundingBox = element
                 distance_element_head: float = distance_bbox_point(bbox=element_bbox, point_x=arrow.x_head, point_y=arrow.y_head)
                 if distance_element_head < self.element_arrow_distance_threshold and (distance_head_min is None or distance_element_head < distance_head_min):
-                    target = i
+                    target = element_bbox
                     distance_head_min = distance_element_head
 
                 distance_element_tail: float = distance_bbox_point(bbox=element_bbox, point_x=arrow.x_tail, point_y=arrow.y_tail)
                 if distance_element_tail < self.element_arrow_distance_threshold and (distance_tail_min is None or distance_element_tail < distance_tail_min):
-                    source = i
+                    source = element_bbox
                     distance_tail_min = distance_element_tail
 
             ret.append(
                 ObjectRelation(
                     category=Lookup.table_target_int_to_str_by_diagram_id[diagram_id][FlowchartElementCategoryIndex.ARROW.value],
                     arrow=arrow,
-                    source_index=source,
-                    target_index=target,
+                    source=source,
+                    target=target,
                 )
             )
 

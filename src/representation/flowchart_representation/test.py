@@ -16,9 +16,9 @@ class TestFlowchartRepresentation(unittest.TestCase):
                 Element(category="terminal", inner_text=["Begin"], outer_text=["End"]),
             ],
             relations=[
-                Relation(category="arrow", source_id="1", target_id="2", inner_text=[], source_text=[], target_text=[], middle_text=[]),
-                Relation(category="arrow", source_id="2", target_id="3", inner_text=[], source_text=["Ciao", "Due"], target_text=[], middle_text=[]),
-                Relation(category="arrow", source_id="1", target_id="5", inner_text=["inner"], source_text=[], target_text=[], middle_text=["Input"]),
+                Relation(category="arrow", source_index="1", target_index="2", inner_text=[], source_text=[], target_text=[], middle_text=[]),
+                Relation(category="arrow", source_index="2", target_index="3", inner_text=[], source_text=["Ciao", "Due"], target_text=[], middle_text=[]),
+                Relation(category="arrow", source_index="1", target_index="5", inner_text=["inner"], source_text=[], target_text=[], middle_text=["Input"]),
             ]
         )
         test_file = "test_flowchart.txt"

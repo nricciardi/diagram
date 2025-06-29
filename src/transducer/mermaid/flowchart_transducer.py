@@ -111,9 +111,9 @@ class FlowchartToMermaidTransducer(Transducer):
 
         body += "\n"
         for relation in diagram_representation.relations:
-            if relation.source_id is None or relation.target_id is None:
+            if relation.source_index is None or relation.target_index is None:
                 continue
-            body += f"\t{relation.source_id}"
+            body += f"\t{relation.source_index}"
 
             relation_text = ""
             if len(relation.source_text) > 0:
@@ -127,7 +127,7 @@ class FlowchartToMermaidTransducer(Transducer):
 
             relation_text = relation_text.strip()
 
-            body += f"{self.wrap_relation(relation.category, relation_text)}{relation.target_id}\n"
+            body += f"{self.wrap_relation(relation.category, relation_text)}{relation.target_index}\n"
 
         outcome: TransducerOutcome = TransducerOutcome(diagram_id=diagram_id, payload=body, markup_language="mermaid")
         return outcome

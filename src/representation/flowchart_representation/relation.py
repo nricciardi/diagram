@@ -19,8 +19,8 @@ class Relation:
     A class representing a relation in a flowchart representation.
     Attributes:
         category (str): The category of the relation.
-        source_id (Optional[int]): The ID of the source node in the relation.
-        target_id (Optional[int]): The ID of the target node in the relation.
+        source_index (Optional[int]): The ID of the source node in the relation.
+        target_index (Optional[int]): The ID of the target node in the relation.
         inner_text (List[str]): A list of strings representing the inner text of the relation.
         source_text (List[str]): A list of strings representing the text near the source node.
         target_text (List[str]): A list of strings representing the text near the target node.
@@ -36,8 +36,8 @@ class Relation:
     
 
     category: str
-    source_id: Optional[int]
-    target_id: Optional[int]
+    source_index: Optional[int]
+    target_index: Optional[int]
     inner_text: List[str]
     source_text: List[str]
     target_text: List[str]
@@ -46,8 +46,8 @@ class Relation:
     def to_dict(self) -> dict:
         return {
             "category": self.category,
-            "source_id": self.source_id,
-            "target_id": self.target_id,
+            "source_index": self.source_index,
+            "target_index": self.target_index,
             "inner_text": self.inner_text,
             "source_text": self.source_text,
             "target_text": self.target_text,
@@ -56,8 +56,8 @@ class Relation:
 
     def from_dict(self, data: dict) -> 'Relation':
         object.__setattr__(self, "category", data["category"])
-        object.__setattr__(self, "source_id", data["source_id"])
-        object.__setattr__(self, "target_id", data["target_id"])
+        object.__setattr__(self, "source_index", data["source_index"])
+        object.__setattr__(self, "target_index", data["target_index"])
         object.__setattr__(self, "inner_text", data["inner_text"])
         object.__setattr__(self, "source_text", data["source_text"])
         object.__setattr__(self, "target_text", data["target_text"])

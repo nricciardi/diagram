@@ -100,9 +100,9 @@ class FlowchartToD2Transducer(Transducer):
 
         body += "\n"
         for relation in diagram_representation.relations:
-            if relation.source_id is None or relation.target_id is None:
+            if relation.source_index is None or relation.target_index is None:
                 continue
-            body += f"{relation.source_id}"
+            body += f"{relation.source_index}"
 
             relation_text = ""
             if len(relation.source_text) > 0:
@@ -116,7 +116,7 @@ class FlowchartToD2Transducer(Transducer):
 
             relation_text = relation_text.strip()
 
-            body += self.wrap_relation(relation.category, relation_text, relation.target_id)
+            body += self.wrap_relation(relation.category, relation_text, relation.target_index)
 
         outcome: TransducerOutcome = TransducerOutcome(diagram_id, WellKnownMarkupLanguage.D2_LANG.value, body)
         return outcome
