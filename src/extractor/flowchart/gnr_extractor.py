@@ -365,10 +365,20 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
             head_score: float = 0.0
             tail_score: float = 0.0
             for bbox, label, score in zip(prediction['boxes'], prediction['labels'], prediction['scores']):
-                if label.item() == FlowchartElementCategoryIndex.ARROW_HEAD.value and score.item() > head_score:
+                if label.item() not in Lookup.table_target_int_to_str_by_diagram_id[diagram_id]:
+                    continue  # this should not be recognized here
+
+                filtered_bbox: List[ImageBoundingBox] = self._filter_bboxes(diagram_id=diagram_id,
+                                                                            bboxes=[ImageBoundingBox2Points.from_image(
+                                                                                category=
+                                                                                Lookup.table_target_int_to_str_by_diagram_id[
+                                                                                    diagram_id][label.item()],
+                                                                                box=bbox, trust=score.item(),
+                                                                                image=image)])
+                if label.item() == FlowchartElementCategoryIndex.ARROW_HEAD.value and score.item() > head_score and len(filtered_bbox) == 1:
                     head = bbox
                     head_score = score.item()
-                if label.item() == FlowchartElementCategoryIndex.ARROW_TAIL.value and score.item() > tail_score:
+                if label.item() == FlowchartElementCategoryIndex.ARROW_TAIL.value and score.item() > tail_score and len(filtered_bbox) == 1:
                     tail = bbox
                     tail_score = score.item()
 
@@ -440,12 +450,18 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
                 arrow_bbox: Optional[ImageBoundingBox] = None
                 arrow_score: float = 0.0
                 for bbox, label, score in zip(prediction['boxes'], prediction['labels'], prediction['scores']):
-                    if label.item() == FlowchartElementCategoryIndex.ARROW.value and score.item() > arrow_score:
+                    if label.item() not in Lookup.table_target_int_to_str_by_diagram_id[diagram_id]:
+                        continue  # this should not be recognized here
+
+                    filtered_bbox: List[ImageBoundingBox] = self._filter_bboxes(diagram_id=diagram_id,
+                    bboxes=[ImageBoundingBox2Points.from_image(category=Lookup.table_target_int_to_str_by_diagram_id[diagram_id][label.item()],
+                            box=bbox, trust=score.item(), image=image)])
+                    if label.item() == FlowchartElementCategoryIndex.ARROW.value and score.item() > arrow_score and len(filtered_bbox) == 1:
                         arrow_bbox = ImageBoundingBox2Points.from_image(
                             category=Lookup.table_target_int_to_str_by_diagram_id[diagram_id][
                                 FlowchartElementCategoryIndex.ARROW.value],
                             box=bbox, trust=score.item(), image=image)
-                        if bbox_overlap(arrow_bbox, head_bbox) > self.arrow_head_overlap and bbox_overlap(arrow_bbox, tail_bbox) > self.arrow_tail_overlap:
+                        if bbox_overlap(arrow_bbox, head_bbox) > self.arrow_head_overlap_threshold and bbox_overlap(arrow_bbox, tail_bbox) > self.arrow_tail_overlap_threshold:
                             arrow_score = score.item()
                         else:
                             arrow_bbox = None
