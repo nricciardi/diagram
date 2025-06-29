@@ -372,15 +372,22 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
 
             if head is not None and tail is not None:
                 managed_arrows.append(Arrow.from_bboxes(
-                head_bbox=ImageBoundingBox2Points.from_image(category=Lookup.table_target_int_to_str_by_diagram_id[diagram_id][FlowchartElementCategoryIndex.ARROW_HEAD.value],
-                                                box=head, trust=head_score, image=image),
-                tail_bbox=ImageBoundingBox2Points.from_image(category=Lookup.table_target_int_to_str_by_diagram_id[diagram_id][FlowchartElementCategoryIndex.ARROW_TAIL.value],
-                                                  box=tail, trust=tail_score, image=image)
-                                                  ))
-            else:
-                managed_arrows.append(None)
+                    head_bbox=ImageBoundingBox2Points.from_image(category=Lookup.table_target_int_to_str_by_diagram_id[diagram_id][FlowchartElementCategoryIndex.ARROW_HEAD.value],
+                                                    box=head, trust=head_score, image=image),
+                    tail_bbox=ImageBoundingBox2Points.from_image(
+                        category=Lookup.table_target_int_to_str_by_diagram_id[diagram_id][FlowchartElementCategoryIndex.ARROW_TAIL.value],
+                        box=tail,
+                        trust=tail_score,
+                        image=image
+                    ),
+                    arrow_bbox=arrow_bbox
+                ))
 
         return managed_arrows
+
+    @override
+    def _manage_unmatched_arrow_tails_and_heads(self, diagram_id: str, image: Image, head_bboxes: List[ImageBoundingBox], tail_bboxes: List[ImageBoundingBox]) -> List[Arrow]:
+        pass    # TODO: x Save
 
     @override
     def _extract_diagram_objects(self, diagram_id: str, image: Image) -> List[ImageBoundingBox]:
