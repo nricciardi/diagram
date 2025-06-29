@@ -29,8 +29,11 @@ class FlowchartToD2Transducer(Transducer):
     def wrap_element(category: str, label: str, elem_id: int) -> str:
 
         s = str(elem_id)
-        if label.strip() != "":
-            s += f": {label}\n"
+
+        if label.strip() == "":
+            label = '""'
+
+        s += f": {label}\n"
 
         match category:
             case FlowchartElementCategory.CIRCLE.value:

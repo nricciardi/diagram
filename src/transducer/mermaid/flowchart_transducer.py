@@ -40,7 +40,7 @@ class FlowchartToMermaidTransducer(Transducer):
     def wrap_element(category: str, label: str) -> str:
 
         if label.strip() == "":
-            label = category
+            label = " "
 
         label = FlowchartToMermaidTransducer.sanitize_text(label)
 

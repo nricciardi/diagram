@@ -76,6 +76,9 @@ class GNRClassifier(Classifier):
         image = self.processor.process(image)
         tensor = image.as_tensor().to(self.device)
         y = self.model.forward(tensor.float())
+
+        logger.debug(f"Predictions: {y}")
+
         _, predicted = torch.max(y, dim=1)
         predicted = predicted.item()
 
