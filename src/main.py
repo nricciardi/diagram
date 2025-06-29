@@ -161,14 +161,14 @@ def parse_args():
     parser.add_argument(
         "--arrow_crop_delta_size_x",
         type=float,
-        default=40.0,
+        default=30.0,
         help="arrow_crop_delta_size_x"
     )
 
     parser.add_argument(
         "--arrow_crop_delta_size_y",
         type=float,
-        default=25.0,
+        default=30.0,
         help="arrow_crop_delta_size_y"
     )
 
@@ -177,6 +177,20 @@ def parse_args():
         type=float,
         default=150,
         help="element_arrow_distance_threshold"
+    )
+
+    parser.add_argument(
+        "--arrow_head_overlap_threshold",
+        type=float,
+        default=0.0,
+        help="arrow_head_overlap_threshold"
+    )
+
+    parser.add_argument(
+        "--arrow_tail_overlap_threshold",
+        type=float,
+        default=0.0,
+        help="arrow_tail_overlap_threshold"
     )
 
     return parser.parse_args()
@@ -267,7 +281,9 @@ if __name__ == '__main__':
             arrow_text_inner_distance_threshold=args.arrow_text_inner_distance_threshold,
             arrow_crop_delta_size_x=args.arrow_crop_delta_size_x,
             arrow_crop_delta_size_y=args.arrow_crop_delta_size_y,
-            element_arrow_distance_threshold=args.element_arrow_distance_threshold
+            element_arrow_distance_threshold=args.element_arrow_distance_threshold,
+            arrow_head_overlap_threshold=args.arrow_head_overlap_threshold,
+            arrow_tail_overlap_threshold=args.arrow_tail_overlap_threshold
         )
     ]
 

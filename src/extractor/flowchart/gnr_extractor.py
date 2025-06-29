@@ -16,7 +16,7 @@ from src.extractor.bbox_detection.target import FlowchartElementCategoryIndex, L
 from src.extractor.flowchart.multistage_extractor import MultistageFlowchartExtractor, ArrowTextTypeOutcome, \
     ElementTextTypeOutcome, ObjectRelation
 from src.utils.bbox_utils import bbox_overlap, \
-    distance_bbox_point, split_linestring_by_ratios, bbox_vertices, crop_image
+    distance_bbox_point, split_linestring_by_ratios, bbox_vertices, draw_predictions
 from src.wellknown_diagram import WellKnownDiagram
 from src.extractor.text_extraction.text_extractor import TextExtractor
 
@@ -44,6 +44,8 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
     arrow_text_inner_distance_threshold: float
     arrow_crop_delta_size_x: float
     arrow_crop_delta_size_y: float
+    arrow_head_overlap_threshold: float
+    arrow_tail_overlap_threshold: float
 
     ratios = [0.2, 0.6, 0.2]  # Source, Middle, Target
     bbox_trust_thresholds: Dict[int, Optional[float]] = field(default_factory=dict)
@@ -356,7 +358,7 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
                 delta_x_right -= orig_center_x + delta_x - W
 
             crop_bbox[:, (crop_center_y - delta_y_left):(crop_center_y + delta_y_right), (crop_center_x - delta_x_left):(crop_center_x + delta_x_right)] = \
-                image.as_tensor()[:, orig_y_start:orig_y_end, orig_x_start:orig_x_end]
+                image.as_tensor()[:, orig_y_start:orig_y_end, orig_x_start:orig_x_end] / 255.0
             prediction = self.bbox_detector(crop_bbox.unsqueeze(0))[0]
             head: Optional[torch.Tensor] = None
             tail: Optional[torch.Tensor] = None
@@ -383,11 +385,93 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
                     arrow_bbox=arrow_bbox
                 ))
 
+            draw_predictions(crop_bbox.unsqueeze(0), prediction)
+
         return managed_arrows
 
+    #"""
     @override
     def _manage_unmatched_arrow_tails_and_heads(self, diagram_id: str, image: Image, head_bboxes: List[ImageBoundingBox], tail_bboxes: List[ImageBoundingBox]) -> List[Arrow]:
-        pass    # TODO: x Save
+        managed_arrows: List[Optional[Arrow]] = []
+        crop_size: Tuple[int, int, int] = (1, image.as_tensor().shape[1] + int(self.arrow_crop_delta_size_y) + 1,
+                                           image.as_tensor().shape[2] + int(self.arrow_crop_delta_size_x) + 1)
+        _, H, W = image.as_tensor().shape
+        for head_bbox in head_bboxes:
+            for tail_bbox in tail_bboxes:
+
+                x1, y1, x2, y2 = (int(min(head_bbox.bottom_left_x, tail_bbox.bottom_left_x)),
+                                  int(min(head_bbox.top_left_y, tail_bbox.top_left_y)),
+                                  int(max(head_bbox.bottom_right_x, tail_bbox.bottom_right_x)),
+                                  int(max(head_bbox.bottom_left_y, tail_bbox.bottom_left_y)))
+
+                crop_bbox: torch.Tensor = torch.ones(crop_size).to(self.get_device())
+                crop_center_x: int = int(crop_bbox.shape[2] // 2)
+                crop_center_y: int = int(crop_bbox.shape[1] // 2)
+                delta_x: int = int((x2 - x1) // 2) + int(self.arrow_crop_delta_size_x // 2)
+                assert crop_center_x - delta_x > 0 and crop_center_x + delta_x < crop_size[2]
+                delta_y: int = int((y2 - y1) // 2) + int(self.arrow_crop_delta_size_y // 2)
+                assert crop_center_y - delta_y > 0 and crop_center_y + delta_y < crop_size[1]
+                orig_center_x: int = (x2 - x1) // 2 + x1
+                orig_center_y: int = (y2 - y1) // 2 + y1
+
+                delta_y_left: int = delta_y
+                delta_y_right: int = delta_y
+
+                delta_x_left: int = delta_x
+                delta_x_right: int = delta_x
+
+                orig_y_start: int = max(0, orig_center_y - delta_y)
+                if orig_y_start == 0:
+                    delta_y_left -= delta_y - orig_center_y
+                orig_y_end: int = min(H, orig_center_y + delta_y)
+                if orig_y_end == H:
+                    delta_y_right -= orig_center_y + delta_y - H
+                orig_x_start: int = max(0, orig_center_x - delta_x)
+                if orig_x_start == 0:
+                    delta_x_left -= delta_x - orig_center_x
+                orig_x_end: int = min(W, orig_center_x + delta_x)
+                if orig_x_end == W:
+                    delta_x_right -= orig_center_x + delta_x - W
+
+                crop_bbox[:, (crop_center_y - delta_y_left):(crop_center_y + delta_y_right),
+                (crop_center_x - delta_x_left):(crop_center_x + delta_x_right)] = \
+                    image.as_tensor()[:, orig_y_start:orig_y_end, orig_x_start:orig_x_end] / 255.0
+                prediction = self.bbox_detector(crop_bbox.unsqueeze(0))[0]
+                arrow_bbox: Optional[ImageBoundingBox] = None
+                arrow_score: float = 0.0
+                for bbox, label, score in zip(prediction['boxes'], prediction['labels'], prediction['scores']):
+                    if label.item() == FlowchartElementCategoryIndex.ARROW.value and score.item() > arrow_score:
+                        arrow_bbox = ImageBoundingBox2Points.from_image(
+                            category=Lookup.table_target_int_to_str_by_diagram_id[diagram_id][
+                                FlowchartElementCategoryIndex.ARROW.value],
+                            box=bbox, trust=score.item(), image=image)
+                        if bbox_overlap(arrow_bbox, head_bbox) > self.arrow_head_overlap and bbox_overlap(arrow_bbox, tail_bbox) > self.arrow_tail_overlap:
+                            arrow_score = score.item()
+                        else:
+                            arrow_bbox = None
+
+                if arrow_bbox is not None:
+                    managed_arrows.append(Arrow.from_bboxes(
+                        head_bbox=ImageBoundingBox2Points.from_image(
+                            category=Lookup.table_target_int_to_str_by_diagram_id[diagram_id][
+                                FlowchartElementCategoryIndex.ARROW_HEAD.value],
+                            box=head_bbox.box, trust=head_bbox.trust, image=image),
+                        tail_bbox=ImageBoundingBox2Points.from_image(
+                            category=Lookup.table_target_int_to_str_by_diagram_id[diagram_id][
+                                FlowchartElementCategoryIndex.ARROW_TAIL.value],
+                            box=tail_bbox.box,
+                            trust=tail_bbox.trust,
+                            image=image
+                        ),
+                        arrow_bbox=arrow_bbox
+                    ))
+
+                draw_predictions(crop_bbox.unsqueeze(0), prediction)
+
+        return managed_arrows
+
+    #"""
+
 
     @override
     def _extract_diagram_objects(self, diagram_id: str, image: Image) -> List[ImageBoundingBox]:
