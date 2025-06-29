@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (MiKTeX 25.4) (preloaded format=pdflatex 2025.6.15)  22 JUN 2025 09:55
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (MiKTeX 25.4) (preloaded format=pdflatex 2025.6.15)  29 JUN 2025 08:29
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -539,80 +539,89 @@ Underfull \hbox (badness 10000) in paragraph at lines 97--98
 
 
 
+<flowchart-extractor.png, id=141, 376.5267pt x 600.5637pt>
+File: flowchart-extractor.png Graphic file (type png)
+<use flowchart-extractor.png>
+Package pdftex.def Info: flowchart-extractor.png  used on input line 103.
+(pdftex.def)             Requested size: 252.0pt x 401.94489pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 101--102
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 103--104
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 106--107
+Underfull \hbox (badness 10000) in paragraph at lines 109--112
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 109--110
+Underfull \hbox (badness 10000) in paragraph at lines 114--115
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 112--113
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 115--116
+Underfull \hbox (badness 10000) in paragraph at lines 116--117
 
  []
 
 
 
-[2 <./classifier_preprocessing.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 124--130
+[2 <./classifier_preprocessing.png> <./flowchart-extractor.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 119--120
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 131--134
+Underfull \hbox (badness 10000) in paragraph at lines 122--123
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 135--139
+Underfull \hbox (badness 10000) in paragraph at lines 125--126
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 128--129
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 137--143
+
+ []
+
+
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 144--147
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 148--152
 
  []
 
 Package hyperref Info: bookmark level for unknown algorithm defaults to 0 on in
-put line 144.
+put line 157.
 
 
-
-Overfull \hbox (1.94206pt too wide) in paragraph at lines 171--183
+[3]
+Overfull \hbox (1.94206pt too wide) in paragraph at lines 184--196
  [][] 
  []
 
-<text_digitization_results_1.png, id=152, 679.338pt x 585.387pt>
+<text_digitization_results_1.png, id=171, 679.338pt x 585.387pt>
 File: text_digitization_results_1.png Graphic file (type png)
 <use text_digitization_results_1.png>
-Package pdftex.def Info: text_digitization_results_1.png  used on input line 18
-9.
+Package pdftex.def Info: text_digitization_results_1.png  used on input line 20
+2.
 (pdftex.def)             Requested size: 252.0pt x 217.14359pt.
-<text_digitization_results_2.png, id=153, 685.1196pt x 548.5293pt>
+<text_digitization_results_2.png, id=172, 685.1196pt x 548.5293pt>
 File: text_digitization_results_2.png Graphic file (type png)
 <use text_digitization_results_2.png>
-Package pdftex.def Info: text_digitization_results_2.png  used on input line 19
-6.
+Package pdftex.def Info: text_digitization_results_2.png  used on input line 20
+9.
 (pdftex.def)             Requested size: 252.0pt x 201.75577pt.
 
-Underfull \vbox (badness 1057) has occurred while \output is active []
 
-
-
-[3 <./text_digitization_results_1.png>] (article.bbl
+(article.bbl
 
 ! LaTeX Error: Something's wrong--perhaps a missing \item.
 
@@ -626,52 +635,46 @@ Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 )
-<spectral_clustering.png, id=176, 484.9317pt x 585.387pt>
+<spectral_clustering.png, id=175, 484.9317pt x 585.387pt>
 File: spectral_clustering.png Graphic file (type png)
 <use spectral_clustering.png>
-Package pdftex.def Info: spectral_clustering.png  used on input line 227.
+Package pdftex.def Info: spectral_clustering.png  used on input line 240.
 (pdftex.def)             Requested size: 150.0pt x 181.07507pt.
-
-Underfull \vbox (badness 4254) has occurred while \output is active []
-
-
-
-<arrow_double_clustering_clusters.png, id=177, 484.9317pt x 585.387pt>
+<arrow_double_clustering_clusters.png, id=176, 484.9317pt x 585.387pt>
 File: arrow_double_clustering_clusters.png Graphic file (type png)
 <use arrow_double_clustering_clusters.png>
 Package pdftex.def Info: arrow_double_clustering_clusters.png  used on input li
-ne 234.
+ne 247.
 (pdftex.def)             Requested size: 150.0pt x 181.07507pt.
-<arrow_double_clustering_direction.png, id=179, 484.9317pt x 585.387pt>
+
+Underfull \vbox (badness 5119) has occurred while \output is active []
+
+
+
+[4 <./text_digitization_results_1.png> <./text_digitization_results_2.png> <./s
+pectral_clustering.png>]
+<arrow_double_clustering_direction.png, id=197, 484.9317pt x 585.387pt>
 File: arrow_double_clustering_direction.png Graphic file (type png)
 <use arrow_double_clustering_direction.png>
 Package pdftex.def Info: arrow_double_clustering_direction.png  used on input l
-ine 244.
+ine 257.
 (pdftex.def)             Requested size: 150.0pt x 181.07507pt.
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
-
-
-[4 <./text_digitization_results_2.png> <./spectral_clustering.png> <./arrow_dou
-ble_clustering_clusters.png>]
-<templates.png, id=198, 209.583pt x 281.1303pt>
+<templates.png, id=199, 209.583pt x 281.1303pt>
 File: templates.png Graphic file (type png)
 <use templates.png>
-Package pdftex.def Info: templates.png  used on input line 253.
+Package pdftex.def Info: templates.png  used on input line 266.
 (pdftex.def)             Requested size: 50.0pt x 67.06512pt.
-<template_matching_fail.png, id=200, 480.5955pt x 570.933pt>
+
+
+<template_matching_fail.png, id=201, 480.5955pt x 570.933pt>
 File: template_matching_fail.png Graphic file (type png)
 <use template_matching_fail.png>
-Package pdftex.def Info: template_matching_fail.png  used on input line 262.
+Package pdftex.def Info: template_matching_fail.png  used on input line 275.
 (pdftex.def)             Requested size: 150.0pt x 178.1896pt.
 
-Overfull \hbox (15.17413pt too wide) in paragraph at lines 274--289
+Overfull \hbox (15.17413pt too wide) in paragraph at lines 287--302
  [][] 
  []
-
-
-LaTeX Warning: `h' float specifier changed to `ht'.
 
 
 ** Conference Paper **
@@ -686,51 +689,38 @@ Before submitting the final camera ready copy, remember to:
 
 
 
-
-
-[5 <./arrow_double_clustering_direction.png> <./templates.png> <./template_matc
-hing_fail.png>] (article.aux)
+[5 <./arrow_double_clustering_clusters.png> <./arrow_double_clustering_directio
+n.png> <./templates.png> <./template_matching_fail.png>] (article.aux)
  ***********
 LaTeX2e <2025-06-01>
 L3 programming layer <2025-05-26>
  ***********
-
-
-Package rerunfilecheck Warning: File `article.out' has changed.
-(rerunfilecheck)                Rerun to get outlines right
-(rerunfilecheck)                or use package `bookmark'.
-
-Package rerunfilecheck Info: Checksums for `article.out':
-(rerunfilecheck)             Before: 3967DA1FAC9774C06281C68A84145D6C;4482
-(rerunfilecheck)             After:  00E4432CA4FC0CAEC14508C85668CDE8;4349.
+Package rerunfilecheck Info: File `article.out' has not changed.
+(rerunfilecheck)             Checksum: EA53B8F3835AF87FE899D874A8BA3123;4482.
  ) 
 Here is how much of TeX's memory you used:
- 12417 strings out of 468225
- 201220 string characters out of 5432973
- 611867 words of memory out of 5000000
- 40741 multiletter control sequences out of 15000+600000
+ 12425 strings out of 468225
+ 201463 string characters out of 5432973
+ 611944 words of memory out of 5000000
+ 40748 multiletter control sequences out of 15000+600000
  663205 words of font info for 110 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  75i,8n,79p,759b,527s stack positions out of 10000i,1000n,20000p,200000b,200000s
-
-pdfTeX warning (dest): name{subsubsection.3.3.8} has been referenced but does n
-ot exist, replaced by a fixed one
-
-<C:/Users/filip/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cm
-ex10.pfb><C:/Users/filip/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfo
-nts/cm/cmmi10.pfb><C:/Users/filip/AppData/Local/Programs/MiKTeX/fonts/type1/pub
-lic/amsfonts/cm/cmmi7.pfb><C:/Users/filip/AppData/Local/Programs/MiKTeX/fonts/t
-ype1/public/amsfonts/cm/cmr10.pfb><C:/Users/filip/AppData/Local/Programs/MiKTeX
-/fonts/type1/public/amsfonts/cm/cmr7.pfb><C:/Users/filip/AppData/Local/Programs
-/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/filip/AppData/Local
-/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy7.pfb><C:/Users/filip/AppDa
-ta/Local/Programs/MiKTeX/fonts/type1/urw/times/utmb8a.pfb><C:/Users/filip/AppDa
-ta/Local/Programs/MiKTeX/fonts/type1/urw/times/utmbi8a.pfb><C:/Users/filip/AppD
-ata/Local/Programs/MiKTeX/fonts/type1/urw/times/utmr8a.pfb><C:/Users/filip/AppD
-ata/Local/Programs/MiKTeX/fonts/type1/urw/times/utmri8a.pfb>
-Output written on article.pdf (5 pages, 823676 bytes).
+<C:/Users/filip/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/
+cmex10.pfb><C:/Users/filip/AppData/Local/Programs/MiKTeX/fonts/type1/public/ams
+fonts/cm/cmmi10.pfb><C:/Users/filip/AppData/Local/Programs/MiKTeX/fonts/type1/p
+ublic/amsfonts/cm/cmmi7.pfb><C:/Users/filip/AppData/Local/Programs/MiKTeX/fonts
+/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/filip/AppData/Local/Programs/MiKT
+eX/fonts/type1/public/amsfonts/cm/cmr7.pfb><C:/Users/filip/AppData/Local/Progra
+ms/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/filip/AppData/Loc
+al/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy7.pfb><C:/Users/filip/App
+Data/Local/Programs/MiKTeX/fonts/type1/urw/times/utmb8a.pfb><C:/Users/filip/App
+Data/Local/Programs/MiKTeX/fonts/type1/urw/times/utmbi8a.pfb><C:/Users/filip/Ap
+pData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmr8a.pfb><C:/Users/filip/Ap
+pData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmri8a.pfb>
+Output written on article.pdf (5 pages, 966298 bytes).
 PDF statistics:
- 274 PDF objects out of 1000 (max. 8388607)
- 61 named destinations out of 1000 (max. 500000)
- 286 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 277 PDF objects out of 1000 (max. 8388607)
+ 62 named destinations out of 1000 (max. 500000)
+ 291 words of extra memory for PDF output out of 10000 (max. 10000000)
 

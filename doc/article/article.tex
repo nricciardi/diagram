@@ -97,10 +97,18 @@ Figure~\ref{fig:classifier_preprocessing} shows the step-by-step process of prep
 Since it was assumed that classifying two types of diagrams - with a third 'other' class - was a quite simple task, a small network was deemed enough. The model consists of three convolutional blocks - each containing a convolutional layer, followed by a batch normalization and a max-pooling layer - then followed by three linear layers (for a more detailed overview, see Appendix~\ref{classification_net}). The output vector of the MLP contains three features - one for each class that this specific classifier needs to address. In order to determine the prediction, the softmax function is then applied. As later seen in section~\ref{exp:classifier}, a weighted Cross-Entropy loss is then used to train the model.  \\
 
 \subsection{Extractor Module}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\linewidth]{flowchart-extractor.png}
+	\caption{The complete pipeline of the extractor module.}
+	\label{fig:flowchart-extractor}
+\end{figure}
+
 \subsubsection{Preprocessing}
 TODO:
 1. Va lo stesso
-2. Alcuni tipi di filtri rovinano l'immagine (testo/...)
+2. Alcuni tipi di filtri rovinano l'immagine (testo/...) \\
 
 \subsubsection{Bounding Box Detection}
 TODO\\
@@ -260,7 +268,7 @@ For Step (5), we had previously hand-picked some templates (see Figure~\ref{fig:
 	\label{fig:templates}
 \end{figure}
 
-However, this approach didn't work as expected (see Figure~\ref{fig:template_matching_fail}). [TODO: Spiegare perchè].
+However, this approach didn't work as expected (see Figure~\ref{fig:template_matching_fail}). In particular, it never worked around self arrows: the maximized distance inside one of the two clusters is never between the tail and the head of the arrow.
 
 \begin{figure}[H]
 	\centering
