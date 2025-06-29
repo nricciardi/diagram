@@ -9,6 +9,7 @@
 \citation{med2}
 \citation{online1}
 \citation{online2}
+\citation{online3}
 \@writefile{toc}{\contentsline {section}{\numberline {I}Introduction}{1}{section.1}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {II}Related Works}{1}{section.2}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {III}System Architecture}{1}{section.3}\protected@file@percent }
@@ -32,6 +33,8 @@
 \newlabel{extr:bbd}{{\mbox  {IV-C}2}{2}{Bounding Box Detection}{subsubsection.4.3.2}{}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {IV-C}2}Bounding Box Detection}{2}{subsubsection.4.3.2}\protected@file@percent }
 \citation{microsofttrocr}
+\citation{online1}
+\citation{online3}
 \@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces The complete pipeline of the extractor module.}}{3}{figure.caption.3}\protected@file@percent }
 \newlabel{fig:flowchart-extractor}{{3}{3}{The complete pipeline of the extractor module}{figure.caption.3}{}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {IV-C}3}Arrow Orientation}{3}{subsubsection.4.3.3}\protected@file@percent }
@@ -41,20 +44,27 @@
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {IV-C}7}Element-Text Association}{3}{subsubsection.4.3.7}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {IV-C}8}Relation-Text Association}{3}{subsubsection.4.3.8}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {V}Dataset}{3}{section.5}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {VI}Experiments}{3}{section.6}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VI-A}}Classifier}{3}{subsection.6.1}\protected@file@percent }
-\newlabel{exp:classifier}{{\mbox  {VI-A}}{3}{Classifier}{subsection.6.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-A}}Dataset Sources}{3}{subsection.5.1}\protected@file@percent }
+\citation{ohfcd}
+\citation{BPMN}
+\citation{modelsketch}
+\citation{circuitnet}
+\citation{ai2d}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-B}}Dataset Utilization Strategy}{4}{subsection.5.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {VI}Experiments}{4}{section.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VI-A}}Classifier}{4}{subsection.6.1}\protected@file@percent }
+\newlabel{exp:classifier}{{\mbox  {VI-A}}{4}{Classifier}{subsection.6.1}{}}
 \@writefile{loa}{\contentsline {algorithm}{\numberline {1}{\ignorespaces Cross-Entropy weight computation}}{4}{algorithm.1}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VI-B}}Object Detection}{4}{subsection.6.2}\protected@file@percent }
 \newlabel{sec:obj_det}{{\mbox  {VI-B}}{4}{Object Detection}{subsection.6.2}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces The model employed in a zero-shot fashion.}}{4}{figure.caption.4}\protected@file@percent }
-\newlabel{fig:bbox1}{{4}{4}{The model employed in a zero-shot fashion}{figure.caption.4}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces The model employed after 10 epochs of training.}}{4}{figure.caption.5}\protected@file@percent }
-\newlabel{fig:bbox2}{{5}{4}{The model employed after 10 epochs of training}{figure.caption.5}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces The model employed after 100 epochs of training. }}{4}{figure.caption.6}\protected@file@percent }
-\newlabel{fig:bbox3}{{6}{4}{The model employed after 100 epochs of training}{figure.caption.6}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {I}{\ignorespaces Mean Average Precision (\textit  {mAP}) Metrics}}{5}{table.caption.7}\protected@file@percent }
-\newlabel{tab:map}{{I}{5}{Mean Average Precision (\textit {mAP}) Metrics}{table.caption.7}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {I}{\ignorespaces Mean Average Precision (\textit  {mAP}) Metrics}}{4}{table.caption.7}\protected@file@percent }
+\newlabel{tab:map}{{I}{4}{Mean Average Precision (\textit {mAP}) Metrics}{table.caption.7}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces The model employed in a zero-shot fashion.}}{5}{figure.caption.4}\protected@file@percent }
+\newlabel{fig:bbox1}{{4}{5}{The model employed in a zero-shot fashion}{figure.caption.4}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces The model employed after 10 epochs of training.}}{5}{figure.caption.5}\protected@file@percent }
+\newlabel{fig:bbox2}{{5}{5}{The model employed after 10 epochs of training}{figure.caption.5}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces The model employed after 100 epochs of training. }}{5}{figure.caption.6}\protected@file@percent }
+\newlabel{fig:bbox3}{{6}{5}{The model employed after 100 epochs of training}{figure.caption.6}{}}
 \@writefile{lot}{\contentsline {table}{\numberline {II}{\ignorespaces Mean Average Recall (\textit  {mAR}) Metrics}}{5}{table.caption.8}\protected@file@percent }
 \newlabel{tab:mar}{{II}{5}{Mean Average Recall (\textit {mAR}) Metrics}{table.caption.8}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VI-C}}Arrow Orientation}{5}{subsection.6.3}\protected@file@percent }
@@ -64,54 +74,60 @@
 \newlabel{tab:text_digitization}{{III}{5}{Text Distance Metrics}{table.caption.9}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces Some random results of the text digitization over the proposed models.}}{5}{figure.caption.10}\protected@file@percent }
 \newlabel{fig:text_digitization_results_1}{{7}{5}{Some random results of the text digitization over the proposed models}{figure.caption.10}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces Some results in which the \textit  {trocr-base-handwritten} fails.}}{5}{figure.caption.11}\protected@file@percent }
-\newlabel{fig:text_digitization_results_2}{{8}{5}{Some results in which the \textit {trocr-base-handwritten} fails}{figure.caption.11}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {VII}Discussion}{5}{section.7}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {VIII}Conclusion and Future Work}{5}{section.8}\protected@file@percent }
 \bibstyle{IEEEtran}
 \bibdata{article}
 \bibcite{arrowrcnn}{1}
-\bibcite{interactiveUML}{2}
-\bibcite{med1}{3}
-\bibcite{med2}{4}
-\bibcite{online1}{5}
-\bibcite{online2}{6}
-\bibcite{sketchdiagram}{7}
-\bibcite{rcnn}{8}
-\bibcite{microsofttrocr}{9}
-\bibcite{SIFT}{10}
-\bibcite{spectralclustering}{11}
-\bibcite{dbscan}{12}
-\bibcite{unet}{13}
+\bibcite{sketchdiagram}{2}
+\bibcite{interactiveUML}{3}
+\bibcite{med1}{4}
+\bibcite{med2}{5}
+\bibcite{online1}{6}
+\bibcite{online2}{7}
+\bibcite{online3}{8}
+\bibcite{rcnn}{9}
+\bibcite{microsofttrocr}{10}
+\bibcite{ohfcd}{11}
+\bibcite{BPMN}{12}
+\bibcite{modelsketch}{13}
+\bibcite{circuitnet}{14}
+\bibcite{ai2d}{15}
+\bibcite{SIFT}{16}
+\bibcite{spectralclustering}{17}
+\bibcite{dbscan}{18}
+\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces Some results in which the \textit  {trocr-base-handwritten} fails.}}{6}{figure.caption.11}\protected@file@percent }
+\newlabel{fig:text_digitization_results_2}{{8}{6}{Some results in which the \textit {trocr-base-handwritten} fails}{figure.caption.11}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {VII}Discussion}{6}{section.7}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {VIII}Conclusion and Future Work}{6}{section.8}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{References}{6}{section*.12}\protected@file@percent }
+\bibcite{unet}{19}
 \citation{SIFT}
 \citation{spectralclustering}
 \citation{dbscan}
 \citation{SIFT}
-\@writefile{toc}{\contentsline {section}{References}{6}{section*.12}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{Appendix\nobreakspace  A: Double Clustering}{6}{section*.13}\protected@file@percent }
-\newlabel{double_clustering}{{A}{6}{\appendixname \nobreakspace \thesectiondis \\* Double Clustering}{section*.13}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {9}{\ignorespaces The result of Spectral Clustering to one instance of an arrow bounding box in our dataset.}}{6}{figure.caption.14}\protected@file@percent }
-\newlabel{fig:spectral_clustering}{{9}{6}{The result of Spectral Clustering to one instance of an arrow bounding box in our dataset}{figure.caption.14}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {10}{\ignorespaces The result of DBScan to one instance of an arrow bounding box in our dataset.}}{6}{figure.caption.15}\protected@file@percent }
-\newlabel{fig:arrow_double_clustering_clusters}{{10}{6}{The result of DBScan to one instance of an arrow bounding box in our dataset}{figure.caption.15}{}}
+\@writefile{toc}{\contentsline {section}{Appendix\nobreakspace  A: Double Clustering}{7}{section*.13}\protected@file@percent }
+\newlabel{double_clustering}{{A}{7}{\appendixname \nobreakspace \thesectiondis \\* Double Clustering}{section*.13}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {9}{\ignorespaces The result of Spectral Clustering to one instance of an arrow bounding box in our dataset.}}{7}{figure.caption.14}\protected@file@percent }
+\newlabel{fig:spectral_clustering}{{9}{7}{The result of Spectral Clustering to one instance of an arrow bounding box in our dataset}{figure.caption.14}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {10}{\ignorespaces The result of DBScan to one instance of an arrow bounding box in our dataset.}}{7}{figure.caption.15}\protected@file@percent }
+\newlabel{fig:arrow_double_clustering_clusters}{{10}{7}{The result of DBScan to one instance of an arrow bounding box in our dataset}{figure.caption.15}{}}
 \citation{unet}
-\@writefile{lof}{\contentsline {figure}{\numberline {11}{\ignorespaces The estimated direction of the arrow, finding the points that maximize the distance inside the cluster.}}{7}{figure.caption.16}\protected@file@percent }
-\newlabel{fig:arrow_double_clustering_direction}{{11}{7}{The estimated direction of the arrow, finding the points that maximize the distance inside the cluster}{figure.caption.16}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {12}{\ignorespaces An example of hand-picked template with SIFT descriptors.}}{7}{figure.caption.17}\protected@file@percent }
-\newlabel{fig:templates}{{12}{7}{An example of hand-picked template with SIFT descriptors}{figure.caption.17}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {13}{\ignorespaces The overall result of the algorithm.}}{7}{figure.caption.18}\protected@file@percent }
-\newlabel{fig:template_matching_fail}{{13}{7}{The overall result of the algorithm}{figure.caption.18}{}}
-\@writefile{toc}{\contentsline {section}{Appendix\nobreakspace  B: ArrowNet}{7}{section*.19}\protected@file@percent }
-\newlabel{arrow-net}{{B}{7}{\appendixname \nobreakspace \thesectiondis \\* ArrowNet}{section*.19}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {IV}{\ignorespaces ArrowNet Architecture Details}}{7}{table.caption.20}\protected@file@percent }
-\newlabel{tab:arrownet}{{IV}{7}{ArrowNet Architecture Details}{table.caption.20}{}}
-\newlabel{table:arrownet}{{IV}{7}{ArrowNet Architecture Details}{table.caption.20}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {14}{\ignorespaces Some results for arrow's head reconstruction.}}{7}{figure.caption.21}\protected@file@percent }
-\newlabel{fig:arrownet1}{{14}{7}{Some results for arrow's head reconstruction}{figure.caption.21}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {15}{\ignorespaces The overall result of an ArrowNet input.}}{7}{figure.caption.22}\protected@file@percent }
-\newlabel{fig:arrownet2}{{15}{7}{The overall result of an ArrowNet input}{figure.caption.22}{}}
-\@writefile{toc}{\contentsline {section}{Appendix\nobreakspace  C: The Classification Network}{8}{section*.23}\protected@file@percent }
-\newlabel{classification_net}{{C}{8}{\appendixname \nobreakspace \thesectiondis \\* The Classification Network}{section*.23}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {V}{\ignorespaces Classification Network Details}}{8}{table.caption.24}\protected@file@percent }
-\newlabel{tab:classification-architecture}{{V}{8}{Classification Network Details}{table.caption.24}{}}
-\gdef \@abspage@last{8}
+\@writefile{lof}{\contentsline {figure}{\numberline {11}{\ignorespaces The estimated direction of the arrow, finding the points that maximize the distance inside the cluster.}}{8}{figure.caption.16}\protected@file@percent }
+\newlabel{fig:arrow_double_clustering_direction}{{11}{8}{The estimated direction of the arrow, finding the points that maximize the distance inside the cluster}{figure.caption.16}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {12}{\ignorespaces An example of hand-picked template with SIFT descriptors.}}{8}{figure.caption.17}\protected@file@percent }
+\newlabel{fig:templates}{{12}{8}{An example of hand-picked template with SIFT descriptors}{figure.caption.17}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {13}{\ignorespaces The overall result of the algorithm.}}{8}{figure.caption.18}\protected@file@percent }
+\newlabel{fig:template_matching_fail}{{13}{8}{The overall result of the algorithm}{figure.caption.18}{}}
+\@writefile{toc}{\contentsline {section}{Appendix\nobreakspace  B: ArrowNet}{8}{section*.19}\protected@file@percent }
+\newlabel{arrow-net}{{B}{8}{\appendixname \nobreakspace \thesectiondis \\* ArrowNet}{section*.19}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {IV}{\ignorespaces ArrowNet Architecture Details}}{8}{table.caption.20}\protected@file@percent }
+\newlabel{tab:arrownet}{{IV}{8}{ArrowNet Architecture Details}{table.caption.20}{}}
+\newlabel{table:arrownet}{{IV}{8}{ArrowNet Architecture Details}{table.caption.20}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {14}{\ignorespaces Some results for arrow's head reconstruction.}}{8}{figure.caption.21}\protected@file@percent }
+\newlabel{fig:arrownet1}{{14}{8}{Some results for arrow's head reconstruction}{figure.caption.21}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {15}{\ignorespaces The overall result of an ArrowNet input.}}{8}{figure.caption.22}\protected@file@percent }
+\newlabel{fig:arrownet2}{{15}{8}{The overall result of an ArrowNet input}{figure.caption.22}{}}
+\@writefile{toc}{\contentsline {section}{Appendix\nobreakspace  C: The Classification Network}{9}{section*.23}\protected@file@percent }
+\newlabel{classification_net}{{C}{9}{\appendixname \nobreakspace \thesectiondis \\* The Classification Network}{section*.23}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {V}{\ignorespaces Classification Network Details}}{9}{table.caption.24}\protected@file@percent }
+\newlabel{tab:classification-architecture}{{V}{9}{Classification Network Details}{table.caption.24}{}}
+\gdef \@abspage@last{9}
