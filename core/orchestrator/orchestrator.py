@@ -17,6 +17,7 @@ from core.representation.representation import DiagramRepresentation
 from core.transducer.outcome import TransducerOutcome
 from core.transducer.transducer import Transducer
 from core.utils.to_device import ToDeviceMixin
+from src.classifier.preprocessing.processor import MedianFilterProcessor
 
 logger = logging.getLogger(__name__)
 
@@ -208,7 +209,7 @@ class Orchestrator(ToDeviceMixin):
 
         for extractor in compatible_extractors:
             logger.info(f"Extract using {extractor.identifier}")
-
+            
             image.to_device(extractor.get_device())
             representation: DiagramRepresentation = extractor.extract(diagram_id, image)
             diagram_representations.append(representation)

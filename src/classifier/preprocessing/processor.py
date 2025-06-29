@@ -39,10 +39,15 @@ class GrayScaleProcessor(Processor):
 
         device = image.as_tensor().device
         image_np = image.as_tensor().cpu().detach().numpy()
-        image_np = image_np.astype(np.uint8)
+        if image_np.min() >= 0 and image_np.max() <= 1:
+            image_np = (image_np * 255).clip(0, 255).astype(np.uint8)
         
         if len(image_np.shape) != 3:
             return image
+        elif image_np.shape[0] == 4:
+            image_np = image_np[:3]  # Discard alpha
+            image_np = np.transpose(image_np, (1, 2, 0))
+            gray_image = cv2.cvtColor(image_np, cv2.COLOR_RGB2GRAY)
         elif image_np.shape[0] == 1:
             gray_image = image_np[0]
         elif image_np.shape[0] == 3:
@@ -50,6 +55,10 @@ class GrayScaleProcessor(Processor):
             gray_image = cv2.cvtColor(image_np, cv2.COLOR_RGB2GRAY)
             assert gray_image.shape == image_np.shape[:2], f"Expected shape {image_np.shape[:2]}, but got {gray_image.shape}"
         
+        avg_brightness = gray_image.mean()
+        if avg_brightness < 127:
+            gray_image = 255 - gray_image
+
         tensor = torch.from_numpy(gray_image).to(device)
         return TensorImage(tensor)
 

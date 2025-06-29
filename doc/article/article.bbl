@@ -46,10 +46,46 @@ I.~Saito, H.~Yoshida, and K.~Sakaguchi, ``Sketch2diagram: Generating vector
 
 \bibitem{rcnn}
 \BIBentryALTinterwordspacing
-S.~Ren, K.~He, R.~B. Girshick, and J.~Sun, ``Faster {R-CNN:} towards real-time
-  object detection with region proposal networks,'' \emph{CoRR}, vol.
-  abs/1506.01497, 2015. [Online]. Available:
-  \url{http://arxiv.org/abs/1506.01497}
+S.~Ren, K.~He, R.~Girshick, and J.~Sun, ``Faster r-cnn: Towards real-time
+  object detection with region proposal networks,'' in \emph{Advances in Neural
+  Information Processing Systems}, C.~Cortes, N.~Lawrence, D.~Lee, M.~Sugiyama,
+  and R.~Garnett, Eds., vol.~28.\hskip 1em plus 0.5em minus 0.4em\relax Curran
+  Associates, Inc., 2015. [Online]. Available:
+  \url{https://proceedings.neurips.cc/paper_files/paper/2015/file/14bfa6bb14875e45bba028a21ed38046-Paper.pdf}
+\BIBentrySTDinterwordspacing
+
+\bibitem{microsofttrocr}
+\BIBentryALTinterwordspacing
+M.~Li, T.~Lv, J.~Chen, L.~Cui, Y.~Lu, D.~Florencio, C.~Zhang, Z.~Li, and
+  F.~Wei, ``Trocr: Transformer-based optical character recognition with
+  pre-trained models,'' in \emph{Proceedings of the AAAI Conference on
+  Artificial Intelligence}, vol.~37, no.~11.\hskip 1em plus 0.5em minus
+  0.4em\relax AAAI Press, 2023, pp. 13\,094--13\,102. [Online]. Available:
+  \url{https://doi.org/10.1609/aaai.v37i11.26538}
+\BIBentrySTDinterwordspacing
+
+\bibitem{SIFT}
+\BIBentryALTinterwordspacing
+D.~G. Lowe, ``Distinctive image features from scale-invariant keypoints,''
+  \emph{International Journal of Computer Vision}, vol.~60, no.~2, pp. 91--110,
+  2004. [Online]. Available:
+  \url{https://doi.org/10.1023/B:VISI.0000029664.99615.94}
+\BIBentrySTDinterwordspacing
+
+\bibitem{dbscan}
+\BIBentryALTinterwordspacing
+D.~Deng, ``Dbscan clustering algorithm based on density,'' in \emph{2020 7th
+  International Forum on Electrical Engineering and Automation (IFEEA)}, 2020,
+  pp. 949--953. [Online]. Available:
+  \url{https://doi.org/10.1109/IFEEA51475.2020.00199}
+\BIBentrySTDinterwordspacing
+
+\bibitem{unet}
+\BIBentryALTinterwordspacing
+N.~Siddique, S.~Paheding, C.~P. Elkin, and V.~Devabhaktuni, ``U-net and its
+  variants for medical image segmentation: A review of theory and
+  applications,'' \emph{IEEE Access}, vol.~9, pp. 82\,031--82\,057, 2021.
+  [Online]. Available: \url{https://doi.org/10.1109/ACCESS.2021.3086020}
 \BIBentrySTDinterwordspacing
 
 \end{thebibliography}
