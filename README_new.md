@@ -18,18 +18,18 @@ docker build -t diagram .
 
 #### Install on host machine
 
-1. Installa **D2 CLI** dal repository ufficiale: [https://github.com/terrastruct/d2](https://github.com/terrastruct/d2) (cercare la versione appropriata per il proprio sistema nelle )
+1. Install **D2 CLI** from official repository: [https://github.com/terrastruct/d2](https://github.com/terrastruct/d2)
     - Linux: https://d2lang.com/tour/install/
     - [All releases](https://github.com/terrastruct/d2/releases)
 
 
-Dopo aver installato la CLI dovresti essere in grado di eseguire `d2`.
+Try `d2` installation.
 
 ```bash
 d2 --version
 ```
 
-2. Installare le librerie necessarie (eventualmente in un ambiente Conda)
+2. Install dependencies (use Conda if you want)
 
 ```bash
 pip3 install torch opencv-python matplotlib requests pillow pandas torchvision numpy shapely transformers sentencepiece protobuf torchmetrics scikit-learn
@@ -130,7 +130,9 @@ Per modificare le soglie utilizzare per esempio:
 
 ![Hard flowchart](assets/images/hard_flowchart.png)
 
+![Outcome D2](assets/images/hard_flow_outcome_d2.svg)
 
+![Outcome Mermaid](assets/images/hard_flow_outcome_mermaid.png)
 
 
 ## Project Overview
