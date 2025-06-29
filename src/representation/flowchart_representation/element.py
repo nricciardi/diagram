@@ -1,5 +1,5 @@
 from enum import StrEnum
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import List
 
 """
@@ -31,8 +31,8 @@ class Element:
     """
 
     category: str
-    inner_text: List[str]
-    outer_text: List[str]
+    inner_text: List[str] = field(default_factory=list)
+    outer_text: List[str] = field(default_factory=list)
 
     def to_dict(self) -> dict:
         return {

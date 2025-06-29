@@ -1,5 +1,5 @@
 from enum import Enum
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import List, Optional
 
 """
@@ -36,12 +36,12 @@ class Relation:
     
 
     category: str
-    source_index: Optional[int]
-    target_index: Optional[int]
-    inner_text: List[str]
-    source_text: List[str]
-    target_text: List[str]
-    middle_text: List[str]
+    source_index: Optional[int] = field(default=None)
+    target_index: Optional[int] = field(default=None)
+    inner_text: List[str] = field(default_factory=list)
+    source_text: List[str] = field(default_factory=list)
+    target_text: List[str] = field(default_factory=list)
+    middle_text: List[str] = field(default_factory=list)
     
     def to_dict(self) -> dict:
         return {

@@ -43,13 +43,6 @@ class Lookup:
         FlowchartElementCategoryIndex.ARROW_TAIL.value: FlowchartExtraElementCategory.ARROW_TAIL.value
     }
 
-    @property
-    def table_graph_category_str_to_target_int(self) -> Dict[str, int]:
-        return dict((v,k) for k,v in self.table_target_int_to_graph_category_str.items())
-
-    @property
-    def table_flowchart_category_str_to_target_int(self) -> Dict[str, int]:
-        return dict((v, k) for k, v in self.table_target_int_to_flowchart_category_str.items())
 
     table_target_int_to_str_by_diagram_id: Dict[str, Dict[int, str]] = {
         WellKnownDiagram.FLOW_CHART.value: table_target_int_to_flowchart_category_str,
@@ -57,6 +50,6 @@ class Lookup:
     }
 
     table_str_to_target_int_by_diagram_id: Dict[str, Dict[str, int]] = {
-        WellKnownDiagram.FLOW_CHART.value: table_flowchart_category_str_to_target_int,
-        WellKnownDiagram.GRAPH_DIAGRAM.value: table_graph_category_str_to_target_int,
+        WellKnownDiagram.GRAPH_DIAGRAM.value: dict((v, k) for k,v in table_target_int_to_graph_category_str.items()),
+        WellKnownDiagram.FLOW_CHART.value: dict((v, k) for k, v in table_target_int_to_flowchart_category_str.items()),
     }

@@ -79,6 +79,54 @@ Per modificare le soglie utilizzare per esempio:
 - `--element_arrow_distance_threshold 260`
 
 
+### Demo
+
+#### Graph
+
+##### Easy Graph
+
+```bash
+--input demo/easy_graph.png --classifier demo/classifier_weights.pth --bbox-detector demo/object_detector_weights.pth --outputs-dir-path demo/outcome --then-compile --element_arrow_distance_threshold 150
+```
+
+![Easy graph](assets/images/easy_graph.png)
+
+
+##### Hard Graph
+
+```bash
+--input test/hard_graph.png --classifier demo/classifier_weights.pth --bbox-detector demo/object_detector_weights.pth --outputs-dir-path demo/outcome --then-compile --element_arrow_distance_threshold 250
+```
+
+> [!WARNING]
+> An extra node will be found, because a self arrow is recognized as a node. Anyway, you can remove it from `.d2` markup file.
+> 
+> Non-Maximum Suppression is useless because "Node" label has a greater score respects to "Arrow" label.
+
+![Hard graph](assets/images/hard_graph.png)
+
+![Outcome](assets/images/hard_graph_outcome.svg)
+
+
+#### Flowchart
+
+##### Easy Flowchart
+
+```bash
+--input demo/easy_graph.png --classifier demo/classifier_weights.pth --bbox-detector demo/object_detector_weights.pth --outputs-dir-path demo/outcome --then-compile --element_arrow_distance_threshold 150
+```
+
+
+##### Hard Flowchart
+
+```bash
+--input test/hard_graph.png --classifier demo/classifier_weights.pth --bbox-detector demo/object_detector_weights.pth --outputs-dir-path demo/outcome --then-compile --element_arrow_distance_threshold 250
+```
+
+
+
+
+
 ## Project Overview
 
 Il sistema si compone di diverse parti:
@@ -90,7 +138,7 @@ Il sistema si compone di diverse parti:
 - **Compiler**: compila il linguaggio di markup nell'effettivo diagramma
 - **Orchestrator**: gestisce il flusso e i componenti
 
-![Overview](doc/assets/images/overview.png)
+![Overview](assets/images/overview.png)
 
 La rete classificatrice è utilizzata per individuare quale modulo estrattivo utilizzare.
 
@@ -98,7 +146,7 @@ Ogni extractor è **specializzato** su una sola tipologia di digramma.
 
 Per esempio, dato come input un'immagine di un grafo:
 
-![Input](dataset/source/fa/test/writer018_fa_001.png)
+![Input](assets/images/writer018_fa_001.png)
 
 Il classificatore produce `graph-diagram`, dunque l'orchestratore porta all'extractor per i diagrammi l'immagine di input.
 
@@ -144,8 +192,8 @@ The diagrams are all **annotated** with **bounding box**, *also for the text*
 
 *Categories*
 
-![Categories](doc/assets/images/categories-fa.png)
+![Categories](assets/images/categories-fa.png)
 
 *Annotation example*
 
-![Labels](doc/assets/images/annotation-fa.png)
+![Labels](assets/images/annotation-fa.png)

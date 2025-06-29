@@ -43,7 +43,7 @@ def configure_logger(level_name: str):
     level = LOG_LEVELS.get(level_name.lower(), logging.INFO)
     logging.basicConfig(
         level=level,
-        format="[%(name)s] %(asctime)s [%(levelname)s] %(message)s",
+        format="%(asctime)s [%(levelname)s] %(message)s",   # [%(name)s]
         handlers=[logging.StreamHandler(sys.stdout)]
     )
 
@@ -88,7 +88,7 @@ def parse_args():
     )
 
     parser.add_argument(
-        "--log-level",
+        "--log",
         type=str,
         default="info",
         choices=LOG_LEVELS.keys(),
@@ -228,7 +228,7 @@ def main(device: str, classifier: Classifier, extractors: List[Extractor], trans
 
 if __name__ == '__main__':
     args = parse_args()
-    logger = configure_logger(args.log_level)
+    logger = configure_logger(args.log)
 
     # Validate compile output directory
     if args.then_compile:

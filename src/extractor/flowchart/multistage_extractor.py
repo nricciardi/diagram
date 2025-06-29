@@ -90,19 +90,21 @@ class MultistageFlowchartExtractor(MultiStageExtractor, ABC):
         recovered_arrows_from_arrow_bboxes = self._manage_wrong_computed_arrows(diagram_id, image, arrow_bboxes_to_recover)
         recovered_arrows_from_tail_and_head_bboxes = self._manage_unmatched_arrow_tails_and_heads(diagram_id, image, unmatched_head_bboxes, unmatched_tail_bboxes)
 
-        logger.debug(f"{len(recovered_arrows_from_arrow_bboxes)} recovered arrows from arrow bboxes")
-        arrows.extend(recovered_arrows_from_arrow_bboxes)
+        if len(recovered_arrows_from_arrow_bboxes) > 0:
+            logger.debug(f"{len(recovered_arrows_from_arrow_bboxes)} recovered arrows from arrow bboxes")
+            arrows.extend(recovered_arrows_from_arrow_bboxes)
 
-        logger.debug(f"{len(recovered_arrows_from_tail_and_head_bboxes)} recovered arrows from head and tail bboxes")
-        arrows.extend(recovered_arrows_from_tail_and_head_bboxes)
+        if len(recovered_arrows_from_tail_and_head_bboxes) > 0:
+            logger.debug(f"{len(recovered_arrows_from_tail_and_head_bboxes)} recovered arrows from head and tail bboxes")
+            arrows.extend(recovered_arrows_from_tail_and_head_bboxes)
 
         elements_texts_associations, arrows_texts_associations = self._compute_text_associations(diagram_id, element_bboxes, arrows, text_bboxes)
 
         objects_relations: List[ObjectRelation] = self._compute_relations(diagram_id, element_bboxes, arrows)
 
-        elements, element_bboxes = self._build_elements(diagram_id, image, elements_texts_associations)
+        elements, element_bboxes = self._build_elements(diagram_id, image, element_bboxes, elements_texts_associations)
 
-        relations: List[Relation] = self._build_relations(diagram_id, image, objects_relations, element_bboxes, arrows_texts_associations)
+        relations: List[Relation] = self._build_relations(diagram_id, image, objects_relations, element_bboxes, arrows_texts_associations, arrows)
 
         return FlowchartRepresentation(
             elements=elements,
@@ -187,7 +189,7 @@ class MultistageFlowchartExtractor(MultiStageExtractor, ABC):
         Return if text of arrow is inner, outer or must be discarded
         """
 
-    def _build_elements(self, diagram_id: str, image: Image, elements_texts_associations: Dict[ImageBoundingBox, List[ImageBoundingBox]]) -> Tuple[List[Element], List[ImageBoundingBox]]:
+    def _build_elements(self, diagram_id: str, image: Image, element_bboxes: List[ImageBoundingBox], elements_texts_associations: Dict[ImageBoundingBox, List[ImageBoundingBox]]) -> Tuple[List[Element], List[ImageBoundingBox]]:
         """
         Constructs a list of Element objects by associating each detected diagram element with its related texts.
 
@@ -209,7 +211,7 @@ class MultistageFlowchartExtractor(MultiStageExtractor, ABC):
 
         bucket_of_discarded_texts: List[ImageBoundingBox] = []      # kept for future use
         elements: List[Element] = []
-        elements_bboxes: List[ImageBoundingBox] = []
+        final_elements_bboxes: List[ImageBoundingBox] = []
         for element_bbox, associated_text_bboxes in elements_texts_associations.items():
             inner_text: List[str] = []
             outer_text: List[str] = []
@@ -234,12 +236,24 @@ class MultistageFlowchartExtractor(MultiStageExtractor, ABC):
 
             element: Element = Element(element_bbox.category, inner_text, outer_text)
             elements.append(element)
-            elements_bboxes.append(element_bbox)
+            final_elements_bboxes.append(element_bbox)
 
-        return elements, elements_bboxes
+        for element_bbox in element_bboxes:
+            insert = True
+            for final_bbox in final_elements_bboxes:
+                if element_bbox is final_bbox:
+                    insert = False
+                    break
+
+            if insert:
+                element: Element = Element(element_bbox.category)
+                elements.append(element)
+                final_elements_bboxes.append(element_bbox)
+
+        return elements, final_elements_bboxes
 
 
-    def _build_relations(self, diagram_id: str, image: Image, objects_relations: List[ObjectRelation], element_bboxes: List[ImageBoundingBox], arrow_texts_associations: Dict[Arrow, List[ImageBoundingBox]]) -> List[Relation]:
+    def _build_relations(self, diagram_id: str, image: Image, objects_relations: List[ObjectRelation], element_bboxes: List[ImageBoundingBox], arrow_texts_associations: Dict[Arrow, List[ImageBoundingBox]], arrows: List[Arrow]) -> List[Relation]:
         """
         Constructs a list of Relation objects by associating diagram object relations with their corresponding texts.
 
@@ -304,7 +318,6 @@ class MultistageFlowchartExtractor(MultiStageExtractor, ABC):
 
                 if bbox is obj_relation.target:
                    target_id = i
-
 
             relation = Relation(
                 category=obj_relation.category,

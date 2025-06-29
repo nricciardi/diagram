@@ -207,12 +207,14 @@ class Orchestrator(ToDeviceMixin):
 
         diagram_representations: List[DiagramRepresentation] = []
 
-        for extractor in compatible_extractors:
-            logger.info(f"Extract using {extractor.identifier}")
-            
-            image.to_device(extractor.get_device())
-            representation: DiagramRepresentation = extractor.extract(diagram_id, image)
-            diagram_representations.append(representation)
+        if len(compatible_extractors) > 0:
+            for extractor in compatible_extractors:
+                logger.info(f"Extract using {extractor.identifier}")
+
+                image.to_device(extractor.get_device())
+                representation: DiagramRepresentation = extractor.extract(diagram_id, image)
+                diagram_representations.append(representation)
+
         else:
             logger.warning(f"No compatible extractors are found for '{diagram_id}'")
 
@@ -300,12 +302,13 @@ class Orchestrator(ToDeviceMixin):
 
         with ProcessPoolExecutor() as executor:
             tasks: List[Future] = []
-            for extractor in compatible_extractors:
-                logger.debug(f"Extract using {extractor.identifier}")
+            if len(compatible_extractors) > 0:
+                for extractor in compatible_extractors:
+                    logger.debug(f"Extract using {extractor.identifier}")
 
-                tasks.append(
-                    executor.submit(self._par_extract_using_extractor_and_transduce, extractor, diagram_id, image)
-                )
+                    tasks.append(
+                        executor.submit(self._par_extract_using_extractor_and_transduce, extractor, diagram_id, image)
+                    )
             else:
                 logger.warning(f"No compatible extractors are found for '{diagram_id}'")
 

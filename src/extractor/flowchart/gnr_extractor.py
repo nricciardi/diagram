@@ -322,10 +322,16 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
         Returns:
 
         """
+
+        logger.debug(f"manage_wrong_computed_arrows for {len(arrow_bboxes)} arrows")
+
         managed_arrows: List[Optional[Arrow]] = []
         crop_size: Tuple[int, int, int] = (1, image.as_tensor().shape[1] + int(self.arrow_crop_delta_size_y) + 1, image.as_tensor().shape[2] + int(self.arrow_crop_delta_size_x) + 1)
         _, H, W = image.as_tensor().shape
-        for arrow_bbox in arrow_bboxes:
+        for arrow_index, arrow_bbox in enumerate(arrow_bboxes):
+
+            logger.debug(f"bbox of arrow n. {arrow_index}: {arrow_bbox.box}")
+
             x1, y1, x2, y2 = int(arrow_bbox.bottom_left_x), int(arrow_bbox.top_left_y), int(arrow_bbox.bottom_right_x), int(arrow_bbox.bottom_left_y)
             crop_bbox: torch.Tensor = torch.ones(crop_size).to(self.get_device())
             crop_center_x: int = int(crop_bbox.shape[2] // 2)
@@ -382,6 +388,9 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
                     tail_score = score.item()
 
             if head is not None and tail is not None:
+
+                logger.debug(f"Both head and tail are found for n. {arrow_index}")
+
                 managed_arrows.append(Arrow.from_bboxes(
                     head_bbox=ImageBoundingBox2Points.from_image(category=Lookup.table_target_int_to_str_by_diagram_id[diagram_id][FlowchartElementCategoryIndex.ARROW_HEAD.value],
                                                     box=head, trust=head_score, image=image),
@@ -393,18 +402,27 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
                     ),
                     arrow_bbox=arrow_bbox
                 ))
+            else:
+                logger.debug(f"Head or tail not found for arrow n. {arrow_index}")
+
             if logging.root.level <= 10:
                 draw_predictions(crop_bbox.unsqueeze(0), prediction)
 
         return managed_arrows
 
-    #"""
     @override
     def _manage_unmatched_arrow_tails_and_heads(self, diagram_id: str, image: Image, head_bboxes: List[ImageBoundingBox], tail_bboxes: List[ImageBoundingBox]) -> List[Arrow]:
+
+        logger.debug(f"manage_unmatched_arrow_tails_and_heads for {len(head_bboxes)} heads and {len(tail_bboxes)} tails")
+
         managed_arrows: List[Optional[Arrow]] = []
         crop_size: Tuple[int, int, int] = (1, image.as_tensor().shape[1] + int(self.arrow_crop_delta_size_y) + 1,
                                            image.as_tensor().shape[2] + int(self.arrow_crop_delta_size_x) + 1)
         _, H, W = image.as_tensor().shape
+
+        if len(head_bboxes) == 0:
+            logger.debug(f"no heads")
+
         for head_bbox in head_bboxes:
             for tail_bbox in tail_bboxes:
 
@@ -449,8 +467,6 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
                 arrow_bbox: Optional[ImageBoundingBox] = None
                 arrow_score: float = 0.0
                 for bbox, label, score in zip(prediction['boxes'], prediction['labels'], prediction['scores']):
-                    if label.item() not in Lookup.table_target_int_to_str_by_diagram_id[diagram_id]:
-                        continue  # this should not be recognized here
 
                     filtered_bbox: List[ImageBoundingBox] = self._filter_bboxes(diagram_id=diagram_id,
                     bboxes=[ImageBoundingBox2Points.from_image(category=Lookup.table_target_int_to_str_by_diagram_id[diagram_id][label.item()],
@@ -485,7 +501,6 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
 
         return managed_arrows
 
-    #"""
 
 
     @override
@@ -497,9 +512,6 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
 
 
         for box, label, score in zip(prediction['boxes'], prediction['labels'], prediction['scores']):
-            if label.item() not in Lookup.table_target_int_to_str_by_diagram_id[diagram_id]:
-                continue    # this should not be recognized here
-
             bboxes.append(ImageBoundingBox2Points.from_image(category=Lookup.table_target_int_to_str_by_diagram_id[diagram_id][label.item()], box=box, trust=score.item(), image=image))
 
         if logging.root.level <= 10:
@@ -523,8 +535,19 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
 
         filtered_bboxes = []
 
+
         for bbox in bboxes:
-            if bbox.category not in self.bbox_trust_thresholds or \
+
+            category_as_int = Lookup.table_str_to_target_int_by_diagram_id[diagram_id].get(bbox.category)
+            not_in_thresholds_dict: bool = category_as_int not in self.bbox_trust_thresholds
+
+            if category_as_int not in Lookup.table_target_int_to_str_by_diagram_id[diagram_id]:
+                continue    # this should not be recognized here
+
+            if not_in_thresholds_dict:
+                logger.warning(f"category '{bbox.category}' (as int: {category_as_int}) is not in thresholds dictionary")
+
+            if not_in_thresholds_dict or \
                     self.bbox_trust_thresholds[Lookup.table_str_to_target_int_by_diagram_id[diagram_id][bbox.category]] is None or \
                     bbox.trust > self.bbox_trust_thresholds[Lookup.table_str_to_target_int_by_diagram_id[diagram_id][bbox.category]]:
 
