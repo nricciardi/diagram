@@ -116,6 +116,11 @@ Per modificare le soglie utilizzare per esempio:
 --input demo/easy_graph.png --classifier demo/classifier_weights.pth --bbox-detector demo/object_detector_weights.pth --outputs-dir-path demo/outcome --then-compile --element_arrow_distance_threshold 150
 ```
 
+![Easy flowchart](assets/images/easy_flowchart.png)
+
+![Outcome D2](assets/images/easy_flow_outcome_d2.svg)
+
+![Outcome Mermaid](assets/images/easy_flow_outcome_mermaid.png)
 
 ##### Hard Flowchart
 
@@ -123,6 +128,7 @@ Per modificare le soglie utilizzare per esempio:
 --input test/hard_graph.png --classifier demo/classifier_weights.pth --bbox-detector demo/object_detector_weights.pth --outputs-dir-path demo/outcome --then-compile --element_arrow_distance_threshold 250
 ```
 
+![Hard flowchart](assets/images/hard_flowchart.png)
 
 
 
