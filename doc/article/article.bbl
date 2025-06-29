@@ -29,6 +29,14 @@ B.~Schäfer, M.~Keuper, and H.~Stuckenschmidt, ``Arrow r-cnn for handwritten
   \url{https://doi.org/10.1007/s10032-020-00361-1}
 \BIBentrySTDinterwordspacing
 
+\bibitem{sketchdiagram}
+\BIBentryALTinterwordspacing
+I.~Saito, H.~Yoshida, and K.~Sakaguchi, ``Sketch2diagram: Generating vector
+  diagrams from hand-drawn sketches,'' in \emph{The Thirteenth International
+  Conference on Learning Representations}, 2025. [Online]. Available:
+  \url{https://openreview.net/forum?id=KvaDHPhhir}
+\BIBentrySTDinterwordspacing
+
 \bibitem{interactiveUML}
 \BIBentryALTinterwordspacing
 E.~Lank, J.~Thorley, and S.~Chen, ``An interactive system for recognizing hand
@@ -69,12 +77,12 @@ M.~Bresler, D.~Průša, and V.~Hlavac, ``Detection of arrows in on-line
   \url{https://doi.org/10.1109/WACV.2015.87}
 \BIBentrySTDinterwordspacing
 
-\bibitem{sketchdiagram}
+\bibitem{online3}
 \BIBentryALTinterwordspacing
-I.~Saito, H.~Yoshida, and K.~Sakaguchi, ``Sketch2diagram: Generating vector
-  diagrams from hand-drawn sketches,'' in \emph{The Thirteenth International
-  Conference on Learning Representations}, 2025. [Online]. Available:
-  \url{https://openreview.net/forum?id=KvaDHPhhir}
+------, ``Online recognition of sketched arrow-connected diagrams,''
+  \emph{International Journal on Document Analysis and Recognition (IJDAR)},
+  vol.~19, 09 2016. [Online]. Available:
+  \url{https://doi.org/10.1007/s10032-016-0269-z}
 \BIBentrySTDinterwordspacing
 
 \bibitem{rcnn}
@@ -96,6 +104,35 @@ M.~Li, T.~Lv, J.~Chen, L.~Cui, Y.~Lu, D.~Florencio, C.~Zhang, Z.~Li, and
   0.4em\relax AAAI Press, 2023, pp. 13\,094--13\,102. [Online]. Available:
   \url{https://doi.org/10.1609/aaai.v37i11.26538}
 \BIBentrySTDinterwordspacing
+
+\bibitem{ohfcd}
+B.~Schäfer, M.~Keuper, and H.~Stuckenschmidt. (2021) Ohfcd - online
+  handwritten flowchart dataset.
+  \url{https://tc11.cvc.uab.es/datasets/OHFCD_1}. Accessed: 29/06/2025.
+
+\bibitem{BPMN}
+B.~Sch{\"a}fer, H.~{van der Aa}, H.~Leopold, and H.~Stuckenschmidt,
+  ``\BIBforeignlanguage{en}{Sketch2bpmn: Automatic recognition of hand-drawn
+  bpmn models},'' in \emph{\BIBforeignlanguage{en}{Advanced Information Systems
+  Engineering}}, ser. Lecture {{Notes}} in {{Computer Science}}.\hskip 1em plus
+  0.5em minus 0.4em\relax {Springer International Publishing}, 06 2021, pp.
+  344--360.
+
+\bibitem{modelsketch}
+L.~Piucco, E.~L. Dos~Santos, M.~Johann, and L.~M. Oliveira. (2021) Modelsketch:
+  A tool for extracting uml class diagrams from hand-drawn sketches.
+  \url{https://github.com/leticiapiucco/ModelSketch}. Accessed: 2025-06-29.
+
+\bibitem{circuitnet}
+A.~Anthony, N.~Lee, S.~Sabri, and Z.~Wu. (2021) Circuitnet: A dataset for
+  hand-drawn circuit diagram recognition.
+  \url{https://github.com/aaanthonyyy/CircuitNet}. Accessed: 2025-06-29.
+
+\bibitem{ai2d}
+A.~Kembhavi, M.~Salvato, E.~Kolve, M.~Seo, H.~Hajishirzi, and A.~Farhadi, ``A
+  diagram is worth a dozen images,'' in \emph{Computer Vision -- ECCV 2016},
+  B.~Leibe, J.~Matas, N.~Sebe, and M.~Welling, Eds.\hskip 1em plus 0.5em minus
+  0.4em\relax Cham: Springer International Publishing, 2016, pp. 235--251.
 
 \bibitem{SIFT}
 \BIBentryALTinterwordspacing

@@ -36,7 +36,7 @@ The area of analyzing handwritten diagrams has been already studied in literatur
 
 Various works have already focused on the development, training and evaluation of specific deep-learning networks for extracting structures in arrow-oriented diagrams (like \textbf{Arrow R-CNN} \cite{arrowrcnn}) or in vector diagrams (as in \cite{sketchdiagram}). More traditional approaches tipically focus on specific diagram types and a restricted set of elements in them (e.g., \textbf{UML} \cite{interactiveUML}). 
 
-Some works in element recognition - like arrows - are particularly domain-specific (like medical imaging \cite{med1}\cite{med2}). Other studies focus on the so-called \textit{online recognition} task, whose goal is to recognize diagrams as they are drawn (see \cite{online1}, \cite{online2}). The online recognition task quite often employs the use of relative strokes, and is mainly focused on flowchart diagrams.
+Some works in element recognition - like arrows - are particularly domain-specific (like medical imaging \cite{med1}\cite{med2}). Other studies focus on the so-called \textit{online recognition} task, whose goal is to recognize diagrams as they are drawn (see \cite{online1}, \cite{online2}, \cite{online3}). The online recognition task quite often employs the use of relative strokes, and is mainly focused on flowchart diagrams.
 
 % System Architecture
 \section{System Architecture}
@@ -146,7 +146,30 @@ After that a text box has been assigned to an element, there's the need to under
 After a text box is assigned to a relation, some computation is needed to fully understand how the text is associated to the relation itself. The relation's bounding box is then split into three different sections. The overlap between the text bounding box and each of the three sections boxes is computed - then, the section with the highest overlap value is then assigned to the text under consideration. 
 
 \section{Dataset}
-TODO: Elencare i dataset usati, in che modo erano usati originariamente e come lo usiamo noi (quali dati per quali componenti) \\
+Our approach leverages multiple handwritten diagram datasets to ensure robustness across different diagram types and drawing styles. We employed a strategic dataset partitioning scheme where different subsets serve specific model training purposes.
+
+\subsection{Dataset Sources}
+
+We collected data from seven diverse sources, encompassing various diagram types commonly found in technical documentation and educational materials:
+
+\begin{enumerate}
+	\item \textbf{Finite Automata Dataset} \cite{online1}: Graph diagrams from the Czech Technical University collection, focusing exclusively on finite state machine representations.
+	\item \textbf{Flowchart Dataset (FCB)} \cite{online3}: Flowchart diagrams from the Czech Technical University repository.
+	\item \textbf{OHFCD\_1 Dataset} \cite{ohfcd}: Handwritten flowchart diagrams from the Computer Vision Center at UAB.
+	\item \textbf{hdBPMN Dataset} \cite{BPMN}: Business Process Model and Notation diagrams from the Data and Web Science Lab.
+	\item \textbf{Handwritten UML Class Diagrams} \cite{modelsketch}: Class diagram collection from Kaggle.
+	\item \textbf{CircuitNet Dataset} \cite{circuitnet}: Electronic circuit diagram repository.
+	\item \textbf{AI2D Dataset} \cite{ai2d}: Educational science diagrams from the Allen Institute for AI.
+\end{enumerate}
+
+\subsection{Dataset Utilization Strategy}
+
+We implemented a targeted approach for dataset utilization based on the specific requirements of our two-stage architecture:
+
+\textbf{Classifier Training:} To enhance model robustness and generalization capabilities, we employed class diagrams, circuit diagrams, and school diagrams from the UML, CircuitNet, and AI2D datasets respectively. This diverse selection ensures the classifier can effectively distinguish between different diagram types across various domains.
+
+\textbf{Extractor Training:} For the specialized extraction tasks, we focused exclusively on flowchart and graph diagrams from the FCB, OHFCD\_1, and Finite Automata datasets. This targeted approach allows the extraction models to achieve high precision on the specific structural elements relevant to these diagram types.
+
 
 \section{Experiments}
 
