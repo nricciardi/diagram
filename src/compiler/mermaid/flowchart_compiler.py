@@ -1,5 +1,7 @@
 import base64
 import io, requests
+import logging
+
 import cv2
 import numpy as np
 from typing import List
@@ -12,7 +14,10 @@ class FlowchartToMermaidCompiler(Compiler):
         return [WellKnownMarkupLanguage.MERMAID.value]
 
     def compile(self, payload: str, output_path: str, dump_markuplang_file: bool = False, markuplang_file_path: str | None = None):
-        mm(payload, output_path)
+        try:
+            mm(payload, output_path)
+        except Exception as e:
+            logging.error(f"Mermaid can not be compiled due to error: {e}")
 
 
 def mm(graph: str, output_path: str):
