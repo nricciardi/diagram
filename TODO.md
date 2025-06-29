@@ -175,11 +175,16 @@ Scegliere se andare a fare spionaggio
 
 ## Prima di consegnare
 
+- [ ] README con spiegazione installazione (librerie python, CLI d2), esempio di funzionamento e come usare
+- [ ] Togliere TODO
+- [ ] Togliere test che non vanno
+- [ ] Test esecuzione con Windows
 
+https://github.com/terrastruct/d2/releases
 
+Si vedrà l'installazione di Chromium
 
-
-
+`--element_arrow_distance_threshold 260` per hard-graph
 
 
 
