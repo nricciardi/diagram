@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (MiKTeX 25.4) (preloaded format=pdflatex 2025.6.15)  29 JUN 2025 17:51
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (MiKTeX 25.4) (preloaded format=pdflatex 2025.6.15)  29 JUN 2025 20:01
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -497,89 +497,92 @@ Package hyperref Info: Link coloring OFF on input line 23.
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: float package is loaded.
 Package caption Info: End \AtBeginDocument code.
-<overview.png, id=139, 647.90054pt x 208.31827pt>
+<overview.png, id=143, 647.90054pt x 208.31827pt>
 File: overview.png Graphic file (type png)
 <use overview.png>
-Package pdftex.def Info: overview.png  used on input line 45.
+Package pdftex.def Info: overview.png  used on input line 48.
 (pdftex.def)             Requested size: 252.0pt x 81.02446pt.
 
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 61--63
+Underfull \hbox (badness 10000) in paragraph at lines 64--66
 []\OT1/ptm/m/n/10 The Com-piler mod-ule is the fi-nal stage of the
  []
 
 
-Underfull \hbox (badness 4266) in paragraph at lines 61--63
+Underfull \hbox (badness 4266) in paragraph at lines 64--66
 \OT1/ptm/m/n/10 struc-tured rep-re-sen-ta-tion of the di-a-gram, ex-pressed in
  []
 
 
-Underfull \hbox (badness 2753) in paragraph at lines 61--63
+Underfull \hbox (badness 2753) in paragraph at lines 64--66
 \OT1/ptm/m/n/10 a markup lan-guage (e.g., Mer-maid.js), and gen-er-ate a
  []
 
-LaTeX Font Info:    Trying to load font information for U+msa on input line 78.
 
-(C:\Users\filip\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsa.fd
-File: umsa.fd 2013/01/14 v3.01 AMS symbols A
-)
-LaTeX Font Info:    Trying to load font information for U+msb on input line 78.
-
-
-(C:\Users\filip\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsb.fd
-File: umsb.fd 2013/01/14 v3.01 AMS symbols B
-)
 
 [1{C:/Users/filip/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}{C:/Users/fi
 lip/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/base/8r.enc}
 
 
  <./overview.png>]
-<classifier_preprocessing.png, id=156, 632.3625pt x 440.64626pt>
+LaTeX Font Info:    Trying to load font information for U+msa on input line 81.
+
+ (C:\Users\filip\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsa.fd
+File: umsa.fd 2013/01/14 v3.01 AMS symbols A
+)
+LaTeX Font Info:    Trying to load font information for U+msb on input line 81.
+
+
+(C:\Users\filip\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsb.fd
+File: umsb.fd 2013/01/14 v3.01 AMS symbols B
+)
+<classifier_preprocessing.png, id=164, 632.3625pt x 440.64626pt>
 File: classifier_preprocessing.png Graphic file (type png)
 <use classifier_preprocessing.png>
-Package pdftex.def Info: classifier_preprocessing.png  used on input line 89.
+Package pdftex.def Info: classifier_preprocessing.png  used on input line 92.
 (pdftex.def)             Requested size: 250.0pt x 174.20464pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 103--104
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 106--107
 
  []
 
-
-
-<flowchart-extractor.png, id=159, 2019.545pt x 3237.09375pt>
+<flowchart-extractor.png, id=167, 2019.545pt x 3237.09375pt>
 File: flowchart-extractor.png Graphic file (type png)
 <use flowchart-extractor.png>
-Package pdftex.def Info: flowchart-extractor.png  used on input line 109.
+Package pdftex.def Info: flowchart-extractor.png  used on input line 112.
 (pdftex.def)             Requested size: 252.0pt x 403.89482pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 117--118
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
+
+[2 <./classifier_preprocessing.png (PNG copy)>]
+Underfull \hbox (badness 10000) in paragraph at lines 120--121
 []\OT1/ptm/m/n/10 The only pre-pro-cess-ing ap-plied is a gray-scale
  []
 
 
-Underfull \hbox (badness 7397) in paragraph at lines 117--118
+Underfull \hbox (badness 7397) in paragraph at lines 120--121
 \OT1/ptm/m/n/10 trans-for-ma-tion. Other trans-for-ma-tions are not deemed
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 117--118
+Underfull \hbox (badness 10000) in paragraph at lines 120--121
 
  []
 
 
-
-[2 <./classifier_preprocessing.png (PNG copy)> <./flowchart-extractor.png (PNG 
-copy)>]
-Underfull \hbox (badness 10000) in paragraph at lines 121--123
+Underfull \hbox (badness 10000) in paragraph at lines 124--126
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 126--127
-
- []
 
 
 Underfull \hbox (badness 10000) in paragraph at lines 129--130
@@ -602,128 +605,124 @@ Underfull \hbox (badness 10000) in paragraph at lines 138--139
  []
 
 
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 144--145
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 150--156
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 157--160
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 161--165
+Underfull \hbox (badness 10000) in paragraph at lines 141--142
 
  []
 
 
 
-[3]
+[3 <./flowchart-extractor.png (PNG copy)>]
+Underfull \hbox (badness 10000) in paragraph at lines 147--148
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 153--159
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 160--163
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 164--168
+
+ []
+
 Package hyperref Info: bookmark level for unknown algorithm defaults to 0 on in
-put line 170.
-<bbox1.jpg, id=186, 642.4pt x 481.8pt>
+put line 173.
+
+
+<bbox1.jpg, id=191, 642.4pt x 481.8pt>
 File: bbox1.jpg Graphic file (type jpg)
 <use bbox1.jpg>
-Package pdftex.def Info: bbox1.jpg  used on input line 190.
+Package pdftex.def Info: bbox1.jpg  used on input line 193.
 (pdftex.def)             Requested size: 199.99474pt x 149.99605pt.
-<bbox2.jpg, id=187, 642.4pt x 481.8pt>
+<bbox2.jpg, id=192, 642.4pt x 481.8pt>
 File: bbox2.jpg Graphic file (type jpg)
 <use bbox2.jpg>
-Package pdftex.def Info: bbox2.jpg  used on input line 197.
+Package pdftex.def Info: bbox2.jpg  used on input line 200.
 (pdftex.def)             Requested size: 199.99474pt x 149.99605pt.
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
-
-
-<bbox3.png, id=188, 462.528pt x 346.896pt>
+<bbox3.png, id=193, 462.528pt x 346.896pt>
 File: bbox3.png Graphic file (type png)
 <use bbox3.png>
-Package pdftex.def Info: bbox3.png  used on input line 204.
+Package pdftex.def Info: bbox3.png  used on input line 207.
 (pdftex.def)             Requested size: 180.00407pt x 149.99869pt.
 
 
-[4 <./bbox1.jpg> <./bbox2.jpg> <./bbox3.png>]
-Overfull \hbox (1.94206pt too wide) in paragraph at lines 267--279
+[4 <./bbox1.jpg> <./bbox2.jpg>]
+Overfull \hbox (1.94206pt too wide) in paragraph at lines 270--282
  [][] 
  []
 
-<text_digitization_results_1.png, id=213, 679.338pt x 585.387pt>
+
+
+<text_digitization_results_1.png, id=220, 679.338pt x 585.387pt>
 File: text_digitization_results_1.png Graphic file (type png)
 <use text_digitization_results_1.png>
 Package pdftex.def Info: text_digitization_results_1.png  used on input line 28
-5.
+8.
 (pdftex.def)             Requested size: 252.0pt x 217.14359pt.
-<text_digitization_results_2.png, id=214, 685.1196pt x 548.5293pt>
+<text_digitization_results_2.png, id=221, 685.1196pt x 548.5293pt>
 File: text_digitization_results_2.png Graphic file (type png)
 <use text_digitization_results_2.png>
 Package pdftex.def Info: text_digitization_results_2.png  used on input line 29
-2.
+5.
 (pdftex.def)             Requested size: 252.0pt x 201.75577pt.
 
-Underfull \vbox (badness 10000) has occurred while \output is active []
 
+[5 <./bbox3.png> <./text_digitization_results_1.png> <./text_digitization_resul
+ts_2.png>] (article.bbl)
 
-
-
-
-[5 <./text_digitization_results_1.png> <./text_digitization_results_2.png>]
-(article.bbl)
-
-<spectral_clustering.png, id=238, 664.4825pt x 795.97375pt>
+<spectral_clustering.png, id=250, 664.4825pt x 795.97375pt>
 File: spectral_clustering.png Graphic file (type png)
 <use spectral_clustering.png>
-Package pdftex.def Info: spectral_clustering.png  used on input line 326.
+Package pdftex.def Info: spectral_clustering.png  used on input line 329.
 (pdftex.def)             Requested size: 150.0pt x 179.6815pt.
-<arrow_double_clustering_clusters.png, id=239, 484.9317pt x 585.387pt>
+<arrow_double_clustering_clusters.png, id=251, 484.9317pt x 585.387pt>
 File: arrow_double_clustering_clusters.png Graphic file (type png)
 <use arrow_double_clustering_clusters.png>
 Package pdftex.def Info: arrow_double_clustering_clusters.png  used on input li
-ne 333.
+ne 336.
 (pdftex.def)             Requested size: 150.0pt x 181.07507pt.
 
 
 [6 <./spectral_clustering.png (PNG copy)> <./arrow_double_clustering_clusters.p
 ng>]
-<arrow_double_clustering_direction.png, id=264, 659.46375pt x 805.0075pt>
+<arrow_double_clustering_direction.png, id=277, 659.46375pt x 805.0075pt>
 File: arrow_double_clustering_direction.png Graphic file (type png)
 <use arrow_double_clustering_direction.png>
 Package pdftex.def Info: arrow_double_clustering_direction.png  used on input l
-ine 343.
+ine 346.
 (pdftex.def)             Requested size: 150.0pt x 183.0965pt.
-<templates.png, id=266, 277.035pt x 336.25626pt>
+<templates.png, id=279, 277.035pt x 336.25626pt>
 File: templates.png Graphic file (type png)
 <use templates.png>
-Package pdftex.def Info: templates.png  used on input line 352.
+Package pdftex.def Info: templates.png  used on input line 355.
 (pdftex.def)             Requested size: 49.9994pt x 60.00017pt.
-<template_matching_fail.png, id=268, 653.44125pt x 771.88374pt>
+<template_matching_fail.png, id=281, 653.44125pt x 771.88374pt>
 File: template_matching_fail.png Graphic file (type png)
 <use template_matching_fail.png>
-Package pdftex.def Info: template_matching_fail.png  used on input line 361.
+Package pdftex.def Info: template_matching_fail.png  used on input line 364.
 (pdftex.def)             Requested size: 150.0pt x 177.18796pt.
 
 
 
-Overfull \hbox (2.95023pt too wide) in paragraph at lines 374--396
+Overfull \hbox (2.95023pt too wide) in paragraph at lines 377--399
  [][] 
  []
 
-<arrownet1.jpg, id=271, 903.375pt x 301.125pt>
+<arrownet1.jpg, id=284, 903.375pt x 301.125pt>
 File: arrownet1.jpg Graphic file (type jpg)
 <use arrownet1.jpg>
-Package pdftex.def Info: arrownet1.jpg  used on input line 413.
+Package pdftex.def Info: arrownet1.jpg  used on input line 416.
 (pdftex.def)             Requested size: 225.00235pt x 75.00078pt.
-<arrownet2.jpg, id=272, 704.6325pt x 258.9675pt>
+<arrownet2.jpg, id=285, 704.6325pt x 258.9675pt>
 File: arrownet2.jpg Graphic file (type jpg)
 <use arrownet2.jpg>
-Package pdftex.def Info: arrownet2.jpg  used on input line 420.
+Package pdftex.def Info: arrownet2.jpg  used on input line 423.
 (pdftex.def)             Requested size: 224.99243pt x 74.99985pt.
 
 
@@ -756,10 +755,10 @@ Package rerunfilecheck Info: File `article.out' has not changed.
 (rerunfilecheck)             Checksum: EF568B33FDA068DE139D2B4E9176572F;4842.
  ) 
 Here is how much of TeX's memory you used:
- 12584 strings out of 468225
- 204011 string characters out of 5432973
- 614677 words of memory out of 5000000
- 40875 multiletter control sequences out of 15000+600000
+ 12593 strings out of 468225
+ 204091 string characters out of 5432973
+ 615791 words of memory out of 5000000
+ 40880 multiletter control sequences out of 15000+600000
  664848 words of font info for 112 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  75i,10n,79p,759b,532s stack positions out of 10000i,1000n,20000p,200000b,200000s
@@ -777,9 +776,9 @@ Users/filip/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmb8a.pfb><C:/
 Users/filip/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmbi8a.pfb><C:
 /Users/filip/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmr8a.pfb><C:
 /Users/filip/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmri8a.pfb>
-Output written on article.pdf (8 pages, 1165650 bytes).
+Output written on article.pdf (8 pages, 1169746 bytes).
 PDF statistics:
- 374 PDF objects out of 1000 (max. 8388607)
- 89 named destinations out of 1000 (max. 500000)
+ 388 PDF objects out of 1000 (max. 8388607)
+ 93 named destinations out of 1000 (max. 500000)
  340 words of extra memory for PDF output out of 10000 (max. 10000000)
 

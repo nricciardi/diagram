@@ -32,8 +32,11 @@ This report describes D.I.A.G.R.A.M., a system for diagram recognition and gener
 Diagrams are crucial in education, documentation, and many other fields. Developing a system that automatically understands and generates diagrams may reveal helpful for having high-quality, easily editable representations. This, however, poses challenges involving classification, shape detection, structure interpretation and symbolic representation. Our project proposes a modular architecture to tackle these tasks.
 
 \section{Related Works}
-\cite{arrowrcnn} \\
-\cite{interactiveUML} \\
+The area of analyzing handwritten diagrams has been already studied in literature. Some key, modern, contributions are highlighted in this section.
+
+Various works have already focused on the development, training and evaluation of specific deep-learning networks for extracting structures in arrow-oriented diagrams (like \textbf{Arrow R-CNN} \cite{arrowrcnn}). More traditional approaches tipically focus on specific diagram types and a restricted set of elements in them (e.g., \textbf{UML} \cite{interactiveUML}). 
+
+Some works in certain elements recognition - like arrows - are particularly domain-specific (like medical imaging \cite{med1}\cite{med2}). Other studies focus on the so-called \textit{online recognition} task, whose goal is to recognize diagrams as they are drawn (see \cite{online1}, \cite{online2}) - which could employ 'relative' strokes.
 \cite{sketchdiagram}
 
 % System Architecture

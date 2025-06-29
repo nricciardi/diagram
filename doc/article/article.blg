@@ -14,47 +14,48 @@ Database file #1: article.bib
 -- http://www.michaelshell.org/tex/ieeetran/bibtex/
 -- See the "IEEEtran_bst_HOWTO.pdf" manual for usage information.
 Warning--empty booktitle in interactiveUML
+Warning--empty booktitle in online1
 
 Done.
-You've used 9 entries,
+You've used 13 entries,
             4087 wiz_defined-function locations,
-            888 strings with 9493 characters,
-and the built_in function-call counts, 8106 in all, are:
-= -- 647
-> -- 197
-< -- 65
-+ -- 117
-- -- 47
-* -- 442
-:= -- 1248
-add.period$ -- 20
-call.type$ -- 9
-change.case$ -- 11
-chr.to.int$ -- 147
-cite$ -- 10
-duplicate$ -- 544
-empty$ -- 632
-format.name$ -- 43
-if$ -- 1853
+            916 strings with 10550 characters,
+and the built_in function-call counts, 10751 in all, are:
+= -- 854
+> -- 280
+< -- 76
++ -- 159
+- -- 65
+* -- 585
+:= -- 1684
+add.period$ -- 28
+call.type$ -- 13
+change.case$ -- 15
+chr.to.int$ -- 168
+cite$ -- 15
+duplicate$ -- 742
+empty$ -- 844
+format.name$ -- 65
+if$ -- 2451
 int.to.chr$ -- 0
-int.to.str$ -- 9
-missing$ -- 99
-newline$ -- 68
-num.names$ -- 11
-pop$ -- 224
+int.to.str$ -- 13
+missing$ -- 139
+newline$ -- 88
+num.names$ -- 15
+pop$ -- 323
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 2
-skip$ -- 607
+skip$ -- 802
 stack$ -- 0
-substring$ -- 384
-swap$ -- 459
-text.length$ -- 16
+substring$ -- 437
+swap$ -- 609
+text.length$ -- 20
 text.prefix$ -- 0
 top$ -- 5
-type$ -- 9
-warning$ -- 1
-while$ -- 32
-width$ -- 10
-write$ -- 137
-(There was 1 warning)
+type$ -- 13
+warning$ -- 2
+while$ -- 39
+width$ -- 15
+write$ -- 184
+(There were 2 warnings)
