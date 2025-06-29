@@ -394,8 +394,8 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
                     ),
                     arrow_bbox=arrow_bbox
                 ))
-
-            draw_predictions(crop_bbox.unsqueeze(0), prediction)
+            if logging.root.level <= 10:
+                draw_predictions(crop_bbox.unsqueeze(0), prediction)
 
         return managed_arrows
 
@@ -481,8 +481,8 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
                         ),
                         arrow_bbox=arrow_bbox
                     ))
-
-                draw_predictions(crop_bbox.unsqueeze(0), prediction)
+                if logging.root.level <= 10:
+                    draw_predictions(crop_bbox.unsqueeze(0), prediction)
 
         return managed_arrows
 
