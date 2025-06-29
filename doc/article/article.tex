@@ -34,10 +34,9 @@ Diagrams are crucial in education, documentation, and many other fields. Develop
 \section{Related Works}
 The area of analyzing handwritten diagrams has been already studied in literature. Some key, modern, contributions are highlighted in this section.
 
-Various works have already focused on the development, training and evaluation of specific deep-learning networks for extracting structures in arrow-oriented diagrams (like \textbf{Arrow R-CNN} \cite{arrowrcnn}). More traditional approaches tipically focus on specific diagram types and a restricted set of elements in them (e.g., \textbf{UML} \cite{interactiveUML}). 
+Various works have already focused on the development, training and evaluation of specific deep-learning networks for extracting structures in arrow-oriented diagrams (like \textbf{Arrow R-CNN} \cite{arrowrcnn}) or in vector diagrams (as in \cite{sketchdiagram}). More traditional approaches tipically focus on specific diagram types and a restricted set of elements in them (e.g., \textbf{UML} \cite{interactiveUML}). 
 
-Some works in certain elements recognition - like arrows - are particularly domain-specific (like medical imaging \cite{med1}\cite{med2}). Other studies focus on the so-called \textit{online recognition} task, whose goal is to recognize diagrams as they are drawn (see \cite{online1}, \cite{online2}) - which could employ 'relative' strokes.
-\cite{sketchdiagram}
+Some works in element recognition - like arrows - are particularly domain-specific (like medical imaging \cite{med1}\cite{med2}). Other studies focus on the so-called \textit{online recognition} task, whose goal is to recognize diagrams as they are drawn (see \cite{online1}, \cite{online2}). The online recognition task quite often employs the use of relative strokes, and is mainly focused on flowchart diagrams.
 
 % System Architecture
 \section{System Architecture}
@@ -62,7 +61,7 @@ The Transducer is responsible for converting the unified, agnostic representatio
 This transformation enables the subsequent Compiler module to generate high-quality visual outputs.
 \subsection{Compiler Module}
 The Compiler module is the final stage of the D.I.A.G.R.A.M. pipeline. 
-Its primary role is to take the structured representation of the diagram, expressed in a markup language (e.g., Mermaid.js), and generate a high-quality diagram in a visual format such as PNG. 
+Its primary role is to take the structured representation of the diagram, expressed in a markup language (e.g., \textit{Mermaid.js}), and generate a high-quality diagram in a visual format such as PNG. 
 
 % 
 % Flowchart Diagram
@@ -89,7 +88,7 @@ Figure~\ref{fig:classifier_preprocessing} shows the step-by-step process of prep
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=250pt]{classifier_preprocessing.png}
+	\includegraphics[width=220pt, height=150pt]{classifier_preprocessing.png}
 	\caption{
 		The operations applied by the preprocessing module.
 		\textbf{(a)}: The raw image, still colored.
@@ -100,14 +99,17 @@ Figure~\ref{fig:classifier_preprocessing} shows the step-by-step process of prep
 		\textbf{(f)}: The image in a standard size, ready to enter the network.
 	}
 	\label{fig:classifier_preprocessing}
-\end{figure} 
+\end{figure}
+
 
 \subsubsection{Model}
-Since it was assumed that classifying two types of diagrams - with a third 'other' class - was a quite simple task, a small network was deemed enough. The model consists of three convolutional blocks - each containing a convolutional layer, followed by a batch normalization and a max-pooling layer - then followed by three linear layers (for a more detailed overview, see Appendix~\ref{classification_net}). The output vector of the MLP contains three features - one for each class that this specific classifier needs to address. In order to determine the prediction, the softmax function is then applied. As later seen in section~\ref{exp:classifier}, a weighted Cross-Entropy loss is then used to train the model.  \\
+Since it was assumed that classifying two types of diagrams - with a third 'other' class - was a quite simple task, a small network was deemed enough. The model consists of three convolutional blocks - each containing a convolutional layer, followed by a batch normalization and a max-pooling layer - then followed by three linear layers (for a more detailed overview, see Appendix~\ref{classification_net}). The output vector of the MLP contains three features - one for each class that this specific classifier needs to address. In order to determine the prediction, the softmax function is then applied. As later seen in section~\ref{exp:classifier}, a weighted Cross-Entropy loss is then used to train the model.
 
 \subsection{Extractor Module}
 
-\begin{figure}[H]
+The Extractor - despite its name - doesn't only need to \textit{extract} objects from images, but also to find connections. Its pipeline can be seen at \textbf{Figure} ~\ref{fig:flowchart-extractor}. \\
+
+\begin{figure}
 	\centering
 	\includegraphics[width=\linewidth]{flowchart-extractor.png}
 	\caption{The complete pipeline of the extractor module.}
@@ -188,21 +190,22 @@ This final approach showed a significant improvement in the results, with the lo
 TODO: Talk about the net.
 
 The model employed was tested in two different ways: as zero-shot, after a 10-epoch training and after a 100-epoch training. The best-behaving one was, of course, the latter (to see the results of the different stages, see \textbf{Figures}~\ref{fig:bbox1} -~\ref{fig:bbox2} -~\ref{fig:bbox3}). In Table~\ref{tab:map} and Table~\ref{tab:mar} we show the Mean Average Precision and Recall of the model used.
-\begin{figure}[H]
+
+\begin{figure}
 	\centering
 	\includegraphics[width=200pt, height=150pt]{bbox1.jpg}
 	\caption{The model employed in a zero-shot fashion.}
 	\label{fig:bbox1}
 \end{figure}
 
-\begin{figure}[H]
+\begin{figure}
 	\centering
 	\includegraphics[width=200pt, height=150pt]{bbox2.jpg}
 	\caption{The model employed after 10 epochs of training.}
 	\label{fig:bbox2}
 \end{figure}
 
-\begin{figure}[H]
+\begin{figure}
 	\centering
 	\includegraphics[width=180pt, height=150pt]{bbox3.png}
 	\caption{The model employed after 100 epochs of training. }
@@ -303,9 +306,8 @@ TODO
 \section{Conclusion and Future Work}
 TODO
 
-\bibliographystyle{IEEEtran}
-
 \newpage
+\bibliographystyle{IEEEtran}
 \bibliography{article}
 \newpage
 
@@ -430,7 +432,7 @@ As seen in Figure~\ref{fig:arrownet2}, due to the low number of samples in the d
 \section{The Classification Network}
 \label{classification_net}
 
-The \textbf{Classification Network} is a lightweight convolutional neural network, suited for processing grayscale images. The architecture is composed of convolutional feature extraction layers followed by fully connected classification layers. Some specific about it can be found in Table~\ref{tab:classification-architecture}.
+The \textbf{Classification Network} is a lightweight convolutional neural network, suited for processing grayscale images. The architecture is composed of convolutional feature extraction layers followed by fully connected classification layers. Some specifics about it can be found in Table~\ref{tab:classification-architecture}.
 
 \begin{table}[h]
 	\centering
