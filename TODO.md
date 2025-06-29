@@ -198,7 +198,7 @@ Si vedrà l'installazione di Chromium
 - [ ] Ottimizzare digitalizzazione testo passando il batch di bbox (extractor)
 - [ ] Parallelizzare extractor
 - [x] Possibile deadline
-- [ ] Docker con cli d2, dipendenze python 
+- [x] Docker con cli d2, dipendenze python 
 - [ ] Finetunare la rete di text digitization
 - [ ] GUI
 

@@ -35,7 +35,7 @@ d2 --version
 pip3 install torch opencv-python matplotlib requests pillow pandas torchvision numpy shapely transformers sentencepiece protobuf torchmetrics scikit-learn
 ```
 
-3. Verificare la corretta installazione di DIAGRAM
+3. Check _DIAGRAM_ installation
 
 ```bash
 python src/main.py -h
@@ -55,26 +55,25 @@ docker run --rm -v "`pwd`/demo:/app/demo" diagram --input demo/demo_image1.png -
 
 #### Local version
 
-Le opzioni della CLI possono essere visualizzate tramite il flag `-h`
+CLI options can be visualized thanks to flag: `-h`
 
-La CLI è posta all'interno di `src/main.py`
+CLI is in `src/main.py`
 
 ```bash
 python src/main.py -h
 ```
 
-I parametri principali sono:
+CLI parameters are:
 
-- `--input path/to/image1.png path/to/image2.png ...` per fornire in input le immagini da processare
-- `--classifier path/to/classifier_weights.pth` pesi della rete classificatrice da utilizzare
-- `--bbox-detector path/to/object_detector_weights.pth` pesi della rete di object detection da utilizzare
-- `--outputs-dir-path path/to/output_dir` directory in cui verranno scritti gli output
-- `--then-compile` per ottenere anche la compilazione PNG oltre che i file markup
+- `--input path/to/image1.png path/to/image2.png ...` provides input images (even more than one)
+- `--classifier path/to/classifier_weights.pth` weights of classifier network
+- `--bbox-detector path/to/object_detector_weights.pth` weights of object detection network
+- `--outputs-dir-path path/to/output_dir` directory in which outputs will be dumped
+- `--then-compile` flag to compile markup language file into images
 
-In aggiunta a ciò è cruciale fornire le threshold ottimali per i propri input. 
-Di default vengono utilizzate delle soglie mediamente buone, ma non ottime in tutti i casi.
+We advise you to tune thresholds based on your drawing style. We have tuned thresholds for common digrams.
 
-Per modificare le soglie utilizzare per esempio:
+For example:
 
 - `--element_arrow_distance_threshold 260`
 
@@ -101,7 +100,7 @@ Per modificare le soglie utilizzare per esempio:
 > [!WARNING]
 > An extra node will be found, because a self arrow is recognized as a node. Anyway, you can remove it from `.d2` markup file.
 > 
-> Non-Maximum Suppression is useless because "Node" label has a greater score respects to "Arrow" label.
+> Non-Maximum Suppression is useless because _"Node"_ label has a greater score respects to _"Arrow"_ label.
 
 ![Hard graph](assets/images/hard_graph.png)
 
@@ -137,40 +136,50 @@ Per modificare le soglie utilizzare per esempio:
 
 ## Project Overview
 
-Il sistema si compone di diverse parti:
+System's components:
 
-- **Preprocessor**: preprocessa le immagini, e.g. raddrizza le immagini (*geometria*)
-- **Classifier**: classifica i diagrammi restituendo la tipologia (e.g. `graph-diagram`, `flow-chart`)
-- **Extractor**: entità astratta per *estrarre* una rappresentazione agnostica di *una specifica tipologia* di diagramma da un'immagine (e.g. matrice del grafo per i `graph-diagram`)
-- **Transducer**: traduce (staticamente) i concetti agnostici in uno *specifico* linguaggio di markup di rappresentazione dei diagrammi (e.g. Mermaid)
-- **Compiler**: compila il linguaggio di markup nell'effettivo diagramma
-- **Orchestrator**: gestisce il flusso e i componenti
+- **Preprocessor**: pre-elaborates images, e.g. straighten images
+- **Classifier**: classifies input images (e.g. `graph-diagram`, `flowchart`)
+- **Extractor**: extracts and builds agnostic representation of input diagram (e.g. matrice del grafo per i `graph-diagram`)
+- **Transducer**: converts agnostic representation of a diagram into a specific markup language (e.g. Mermaid)
+- **Compiler**: produces an input from a markup language file
+- **Orchestrator**: manages other components 
 
 ![Overview](assets/images/overview.png)
 
-La rete classificatrice è utilizzata per individuare quale modulo estrattivo utilizzare.
+The classifier network is used to determine which extraction module to use.
 
-Ogni extractor è **specializzato** su una sola tipologia di digramma.
+Each extractor is specialized for a single type of diagram.
 
-Per esempio, dato come input un'immagine di un grafo:
+For example, given an input image of a graph:
 
-![Input](assets/images/writer018_fa_001.png)
+![Input](assets/images/easy_flowchart.png)
 
-Il classificatore produce `graph-diagram`, dunque l'orchestratore porta all'extractor per i diagrammi l'immagine di input.
+The classifier outputs `graph-diagram`, so the orchestrator forwards the input image to the graph diagram extractor.
 
-L'extractor dei diagrammi produce la matrice del grafo, dove per righe e per colonne si hanno i **nodi** e i **fuori nodi** (per gestire frecce che partono dal nulla). Il valore è un interno non negativo che indica il numero di connessioni (la posizione nella matrice indica provenienza e destinazione). Inoltre, produce le datastruct di lookup per notazioni sulle frecce e testo dei nodi.
+The graph diagram extractor produces the graph's adjacency matrix, where the nodes and external nodes (to handle arrows starting from nowhere) are represented in the rows and columns. The value is a non-negative integer indicating the number of connections (the matrix position indicates the source and destination). Additionally, it generates lookup data structures for arrow annotations and node text.
 
-L'orchestratore porta in input dei trasduttori (in base input dell'utente oppure tutti) della relativa tipologia di diagramma, i quali produrranno le traduzioni in linguaggio di lookup.
-Per esempio, in Mermaid si potrebbe avere del testo del tipo:
+The orchestrator then sends this to the corresponding transducers (based on user input or all available ones) for that type of diagram, which will generate the translations into the target lookup language.
+For example, in Mermaid, the output might be something like:
 
 ```
-graph LR;
-    q0--> q0 & q1
-    q1--> q2
-    q2--> q2 & q1
+flowchart TD
+	0(Y = X
+	X =T)
+	1{X > Y}
+	2(T = Y)
+	3(( ))
+	4(( ))
+
+	1-->|Else|4
+	3-->1
+	2-->0
+	0-->4
+	1-->|Then|2
+
 ```
 
-Infine, il linguaggio di markup è compilato con il relativo compilatore.
+Then, markup language is compiled using associated compiler.
 
 
 
