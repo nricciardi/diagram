@@ -1,4 +1,4 @@
-from torchvision.io import read_image
+from torchvision.io import decode_image, ImageReadMode
 import cv2
 from core.image.image import Image
 from dataclasses import dataclass
@@ -17,7 +17,7 @@ class TensorImage(Image):
     def from_str(cls, path: str) -> Self:
 
         if (path.lower().endswith('.png') or path.lower().endswith('.jpeg') or path.lower().endswith('.jpg')):
-            tensor = read_image(path)
+            tensor = decode_image(path, mode = ImageReadMode.GRAY)
             if tensor.shape[0] == 4:
                 tensor = tensor[:3, :, :]
             return TensorImage(tensor)

@@ -41,6 +41,8 @@ class GrayScaleProcessor(Processor):
         image_np = image.as_tensor().cpu().detach().numpy()
         if image_np.min() >= 0 and image_np.max() <= 1:
             image_np = (image_np * 255).clip(0, 255).astype(np.uint8)
+        else:
+            image_np = image_np.clip(0, 255).astype(np.uint8)
         
         if len(image_np.shape) != 3:
             return image
@@ -54,7 +56,7 @@ class GrayScaleProcessor(Processor):
             image_np = np.transpose(image_np, (1, 2, 0))
             gray_image = cv2.cvtColor(image_np, cv2.COLOR_RGB2GRAY)
             assert gray_image.shape == image_np.shape[:2], f"Expected shape {image_np.shape[:2]}, but got {gray_image.shape}"
-        
+
         avg_brightness = gray_image.mean()
         if avg_brightness < 127:
             gray_image = 255 - gray_image

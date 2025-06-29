@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (MiKTeX 25.4) (preloaded format=pdflatex 2025.6.15)  29 JUN 2025 15:38
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (MiKTeX 25.4) (preloaded format=pdflatex 2025.6.15)  29 JUN 2025 15:58
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -661,12 +661,12 @@ Package pdftex.def Info: text_digitization_results_2.png  used on input line 22
 [4 <./text_digitization_results_1.png> <./text_digitization_results_2.png>]
 (article.bbl)
 
-<spectral_clustering.png, id=217, 664.4825pt x 795.97375pt>
+<spectral_clustering.png, id=219, 664.4825pt x 795.97375pt>
 File: spectral_clustering.png Graphic file (type png)
 <use spectral_clustering.png>
 Package pdftex.def Info: spectral_clustering.png  used on input line 256.
 (pdftex.def)             Requested size: 150.0pt x 179.6815pt.
-<arrow_double_clustering_clusters.png, id=218, 484.9317pt x 585.387pt>
+<arrow_double_clustering_clusters.png, id=220, 484.9317pt x 585.387pt>
 File: arrow_double_clustering_clusters.png Graphic file (type png)
 <use arrow_double_clustering_clusters.png>
 Package pdftex.def Info: arrow_double_clustering_clusters.png  used on input li
@@ -676,18 +676,18 @@ ne 263.
 
 [5 <./spectral_clustering.png (PNG copy)> <./arrow_double_clustering_clusters.p
 ng>]
-<arrow_double_clustering_direction.png, id=241, 659.46375pt x 805.0075pt>
+<arrow_double_clustering_direction.png, id=245, 659.46375pt x 805.0075pt>
 File: arrow_double_clustering_direction.png Graphic file (type png)
 <use arrow_double_clustering_direction.png>
 Package pdftex.def Info: arrow_double_clustering_direction.png  used on input l
 ine 273.
 (pdftex.def)             Requested size: 150.0pt x 183.0965pt.
-<templates.png, id=243, 277.035pt x 336.25626pt>
+<templates.png, id=247, 277.035pt x 336.25626pt>
 File: templates.png Graphic file (type png)
 <use templates.png>
 Package pdftex.def Info: templates.png  used on input line 282.
 (pdftex.def)             Requested size: 49.9994pt x 60.00017pt.
-<template_matching_fail.png, id=245, 653.44125pt x 771.88374pt>
+<template_matching_fail.png, id=249, 653.44125pt x 771.88374pt>
 File: template_matching_fail.png Graphic file (type png)
 <use template_matching_fail.png>
 Package pdftex.def Info: template_matching_fail.png  used on input line 291.
@@ -700,7 +700,7 @@ Overfull \hbox (35.93413pt too wide) in paragraph at lines 305--327
  []
 
 
-Overfull \hbox (15.17413pt too wide) in paragraph at lines 337--352
+Overfull \hbox (15.17413pt too wide) in paragraph at lines 347--362
  [][] 
  []
 
@@ -727,10 +727,10 @@ Package rerunfilecheck Info: File `article.out' has not changed.
 (rerunfilecheck)             Checksum: 26BFBD62421FCD051A23A430D4CD2B72;4845.
  ) 
 Here is how much of TeX's memory you used:
- 12527 strings out of 468225
- 203114 string characters out of 5432973
- 614075 words of memory out of 5000000
- 40831 multiletter control sequences out of 15000+600000
+ 12529 strings out of 468225
+ 203157 string characters out of 5432973
+ 618115 words of memory out of 5000000
+ 40832 multiletter control sequences out of 15000+600000
  664848 words of font info for 112 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  75i,10n,79p,759b,529s stack positions out of 10000i,1000n,20000p,200000b,200000s
@@ -748,9 +748,9 @@ Users/filip/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmb8a.pfb><C:/
 Users/filip/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmbi8a.pfb><C:
 /Users/filip/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmr8a.pfb><C:
 /Users/filip/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmri8a.pfb>
-Output written on article.pdf (6 pages, 1031881 bytes).
+Output written on article.pdf (6 pages, 1035576 bytes).
 PDF statistics:
- 334 PDF objects out of 1000 (max. 8388607)
- 76 named destinations out of 1000 (max. 500000)
+ 338 PDF objects out of 1000 (max. 8388607)
+ 77 named destinations out of 1000 (max. 500000)
  315 words of extra memory for PDF output out of 10000 (max. 10000000)
 

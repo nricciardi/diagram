@@ -249,7 +249,7 @@ The first algorithmic approach proposed to solve this task - called \textit{Doub
 	\item Run a template matching procedure inside the two clusters to find the head of the arrow.
 \end{enumerate}
 
-For Step (1), we tried to employ both Spectral Clustering (see Figure~\ref{fig:spectral_clustering}) and DBScan \cite{dbscan} (see Figure~\ref{fig:arrow_double_clustering_clusters}).
+For Step (1), we tried to employ both Spectral Clustering \cite{spectralclustering} (see Figure~\ref{fig:spectral_clustering}) and DBScan \cite{dbscan} (see Figure~\ref{fig:arrow_double_clustering_clusters}).
 
 \begin{figure}[H]
 	\centering
@@ -326,6 +326,16 @@ This second approach for determining an arrow's orientation was inspired by UNet
 	\label{table:arrownet}
 \end{table}
 
+The entire architecture is composed of three main building blocks:
+
+
+\textbf{Double Convolution Block:} Each double convolution block applies two consecutive $3 \times 3$ convolutions with padding=1, followed by batch normalization and ReLU activation after each convolution. This preserves spatial dimensions while increasing feature depth.
+
+\textbf{Upsampling Block:} The upsampling blocks use $2 \times 2$ transposed convolutions with stride=2 to double the spatial resolution, followed by batch normalization and ReLU activation.
+
+\textbf{Skip Connections:} The architecture employs skip connections that concatenate feature maps from the encoder path with corresponding decoder features, doubling the channel dimension before processing through decoder blocks.
+
+The network processes input images of size $256 \times 256$ through a symmetric encoder-decoder structure. The encoder progressively reduces spatial resolution from $256^2$ to $128^2$ to $64^2$ while increasing feature channels from 32 to 64 to 128. The decoder reverses this process, upsampling back to the original resolution while maintaining rich feature representations through skip connections. The final $1 \times 1$ convolution maps the 32-channel feature representation to 3 output classes for pixel-wise classification.
 
 \section{The Classification Network}
 \label{classification_net}

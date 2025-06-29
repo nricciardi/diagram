@@ -72,6 +72,14 @@ D.~G. Lowe, ``Distinctive image features from scale-invariant keypoints,''
   \url{https://doi.org/10.1023/B:VISI.0000029664.99615.94}
 \BIBentrySTDinterwordspacing
 
+\bibitem{spectralclustering}
+\BIBentryALTinterwordspacing
+J.~Shi and J.~Malik, ``Normalized cuts and image segmentation,'' \emph{IEEE
+  Transactions on Pattern Analysis and Machine Intelligence}, vol.~22, no.~8,
+  pp. 888--905, 2000. [Online]. Available:
+  \url{https://doi.org/10.1109/34.868688}
+\BIBentrySTDinterwordspacing
+
 \bibitem{dbscan}
 \BIBentryALTinterwordspacing
 D.~Deng, ``Dbscan clustering algorithm based on density,'' in \emph{2020 7th
