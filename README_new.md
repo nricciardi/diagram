@@ -9,15 +9,6 @@ to eventually integrate or modify them.
 
 ### Install
 
-#### Docker version
-
-```bash
-docker build -t diagram .
-```
-
-
-#### Install on host machine
-
 1. Install **D2 CLI** from official repository: [https://github.com/terrastruct/d2](https://github.com/terrastruct/d2)
     - Linux: https://d2lang.com/tour/install/
     - [All releases](https://github.com/terrastruct/d2/releases)
@@ -42,18 +33,6 @@ python src/main.py -h
 ```
 
 ### Example
-
-#### Docker
-
-On Linux or Windows Powershell, use `pwd` (i.e. current directory) to mount a volume on `/app` project directory in Docker container.
-Suppose to have images and weights in `demo` directory. 
-
-```bash
-docker run --rm -v "`pwd`/demo:/app/demo" diagram --input demo/demo_image1.png --classifier demo/classifier_weights.pth --bbox-detector demo/object_detector_weights.pth --outputs-dir-path demo/outcome --then-compile --element_arrow_distance_threshold 260
-```
-
-
-#### Local version
 
 CLI options can be visualized thanks to flag: `-h`
 

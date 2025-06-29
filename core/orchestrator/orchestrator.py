@@ -190,7 +190,8 @@ class Orchestrator(ToDeviceMixin):
 
             outcomes.extend(o)
 
-        outcomes = [outcome for outcome in outcomes if outcome.markup_language in markups]
+        if markups is not None:
+            outcomes = [outcome for outcome in outcomes if outcome.markup_language in markups]
 
         if dump_markup:
             self.__seq_dump_markup(outcomes, outputs_dir_path)
@@ -288,7 +289,8 @@ class Orchestrator(ToDeviceMixin):
 
         outcomes = self.__par_elaboration(diagram_id, image)
 
-        outcomes = [outcome for outcome in outcomes if outcome.markup_language in markups]
+        if markups is not None:
+            outcomes = [outcome for outcome in outcomes if outcome.markup_language in markups]
 
         if dump_markup:
             self.__seq_dump_markup(outcomes, outputs_dir_path)
