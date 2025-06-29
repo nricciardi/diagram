@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (MiKTeX 25.4) (preloaded format=pdflatex 2025.6.15)  29 JUN 2025 15:58
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (MiKTeX 25.4) (preloaded format=pdflatex 2025.6.15)  29 JUN 2025 17:32
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -635,74 +635,80 @@ Underfull \hbox (badness 10000) in paragraph at lines 160--164
 Package hyperref Info: bookmark level for unknown algorithm defaults to 0 on in
 put line 169.
 
-Overfull \hbox (1.94206pt too wide) in paragraph at lines 197--209
+
+
+Overfull \hbox (1.94206pt too wide) in paragraph at lines 246--258
  [][] 
  []
 
-<text_digitization_results_1.png, id=185, 679.338pt x 585.387pt>
+<text_digitization_results_1.png, id=187, 679.338pt x 585.387pt>
 File: text_digitization_results_1.png Graphic file (type png)
 <use text_digitization_results_1.png>
-Package pdftex.def Info: text_digitization_results_1.png  used on input line 21
-5.
+Package pdftex.def Info: text_digitization_results_1.png  used on input line 26
+4.
 (pdftex.def)             Requested size: 252.0pt x 217.14359pt.
-
-Underfull \vbox (badness 4647) has occurred while \output is active []
-
-
-
-<text_digitization_results_2.png, id=186, 685.1196pt x 548.5293pt>
+<text_digitization_results_2.png, id=188, 685.1196pt x 548.5293pt>
 File: text_digitization_results_2.png Graphic file (type png)
 <use text_digitization_results_2.png>
-Package pdftex.def Info: text_digitization_results_2.png  used on input line 22
-2.
+Package pdftex.def Info: text_digitization_results_2.png  used on input line 27
+1.
 (pdftex.def)             Requested size: 252.0pt x 201.75577pt.
 
 
 [4 <./text_digitization_results_1.png> <./text_digitization_results_2.png>]
+
 (article.bbl)
 
-<spectral_clustering.png, id=219, 664.4825pt x 795.97375pt>
+[5]
+<spectral_clustering.png, id=235, 664.4825pt x 795.97375pt>
 File: spectral_clustering.png Graphic file (type png)
 <use spectral_clustering.png>
-Package pdftex.def Info: spectral_clustering.png  used on input line 256.
+Package pdftex.def Info: spectral_clustering.png  used on input line 305.
 (pdftex.def)             Requested size: 150.0pt x 179.6815pt.
-<arrow_double_clustering_clusters.png, id=220, 484.9317pt x 585.387pt>
+<arrow_double_clustering_clusters.png, id=236, 484.9317pt x 585.387pt>
 File: arrow_double_clustering_clusters.png Graphic file (type png)
 <use arrow_double_clustering_clusters.png>
 Package pdftex.def Info: arrow_double_clustering_clusters.png  used on input li
-ne 263.
+ne 312.
 (pdftex.def)             Requested size: 150.0pt x 181.07507pt.
 
 
-[5 <./spectral_clustering.png (PNG copy)> <./arrow_double_clustering_clusters.p
-ng>]
-<arrow_double_clustering_direction.png, id=245, 659.46375pt x 805.0075pt>
+<arrow_double_clustering_direction.png, id=239, 659.46375pt x 805.0075pt>
 File: arrow_double_clustering_direction.png Graphic file (type png)
 <use arrow_double_clustering_direction.png>
 Package pdftex.def Info: arrow_double_clustering_direction.png  used on input l
-ine 273.
+ine 322.
 (pdftex.def)             Requested size: 150.0pt x 183.0965pt.
-<templates.png, id=247, 277.035pt x 336.25626pt>
+<templates.png, id=241, 277.035pt x 336.25626pt>
 File: templates.png Graphic file (type png)
 <use templates.png>
-Package pdftex.def Info: templates.png  used on input line 282.
+Package pdftex.def Info: templates.png  used on input line 331.
 (pdftex.def)             Requested size: 49.9994pt x 60.00017pt.
-<template_matching_fail.png, id=249, 653.44125pt x 771.88374pt>
+<template_matching_fail.png, id=243, 653.44125pt x 771.88374pt>
 File: template_matching_fail.png Graphic file (type png)
 <use template_matching_fail.png>
-Package pdftex.def Info: template_matching_fail.png  used on input line 291.
+Package pdftex.def Info: template_matching_fail.png  used on input line 340.
 (pdftex.def)             Requested size: 150.0pt x 177.18796pt.
 
 
-
-Overfull \hbox (35.93413pt too wide) in paragraph at lines 305--327
+[6 <./spectral_clustering.png (PNG copy)> <./arrow_double_clustering_clusters.p
+ng> <./arrow_double_clustering_direction.png (PNG copy)> <./templates.png (PNG 
+copy)> <./template_matching_fail.png (PNG copy)>]
+Overfull \hbox (2.95023pt too wide) in paragraph at lines 353--375
  [][] 
  []
 
+<arrownet1.jpg, id=264, 903.375pt x 301.125pt>
+File: arrownet1.jpg Graphic file (type jpg)
+<use arrownet1.jpg>
+Package pdftex.def Info: arrownet1.jpg  used on input line 392.
+(pdftex.def)             Requested size: 225.00235pt x 75.00078pt.
+<arrownet2.jpg, id=265, 704.6325pt x 258.9675pt>
+File: arrownet2.jpg Graphic file (type jpg)
+<use arrownet2.jpg>
+Package pdftex.def Info: arrownet2.jpg  used on input line 399.
+(pdftex.def)             Requested size: 224.99243pt x 74.99985pt.
 
-Overfull \hbox (15.17413pt too wide) in paragraph at lines 347--362
- [][] 
- []
 
 
 ** Conference Paper **
@@ -717,23 +723,22 @@ Before submitting the final camera ready copy, remember to:
 
 
 
-[6 <./arrow_double_clustering_direction.png (PNG copy)> <./templates.png (PNG c
-opy)> <./template_matching_fail.png (PNG copy)>] (article.aux)
+[7 <./arrownet1.jpg> <./arrownet2.jpg>] (article.aux)
  ***********
 LaTeX2e <2025-06-01>
 L3 programming layer <2025-05-26>
  ***********
 Package rerunfilecheck Info: File `article.out' has not changed.
-(rerunfilecheck)             Checksum: 26BFBD62421FCD051A23A430D4CD2B72;4845.
+(rerunfilecheck)             Checksum: 8278153C2DABF47AF3FD917E3808513E;4846.
  ) 
 Here is how much of TeX's memory you used:
- 12529 strings out of 468225
- 203157 string characters out of 5432973
- 618115 words of memory out of 5000000
- 40832 multiletter control sequences out of 15000+600000
+ 12555 strings out of 468225
+ 203574 string characters out of 5432973
+ 616398 words of memory out of 5000000
+ 40850 multiletter control sequences out of 15000+600000
  664848 words of font info for 112 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 75i,10n,79p,759b,529s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 75i,10n,79p,759b,533s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <C:/Users/filip/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/
 cmex10.pfb><C:/Users/filip/AppData/Local/Programs/MiKTeX/fonts/type1/public/ams
 fonts/cm/cmmi10.pfb><C:/Users/filip/AppData/Local/Programs/MiKTeX/fonts/type1/p
@@ -748,9 +753,9 @@ Users/filip/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmb8a.pfb><C:/
 Users/filip/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmbi8a.pfb><C:
 /Users/filip/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmr8a.pfb><C:
 /Users/filip/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmri8a.pfb>
-Output written on article.pdf (6 pages, 1035576 bytes).
+Output written on article.pdf (7 pages, 1070116 bytes).
 PDF statistics:
- 338 PDF objects out of 1000 (max. 8388607)
- 77 named destinations out of 1000 (max. 500000)
- 315 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 359 PDF objects out of 1000 (max. 8388607)
+ 85 named destinations out of 1000 (max. 500000)
+ 325 words of extra memory for PDF output out of 10000 (max. 10000000)
 
