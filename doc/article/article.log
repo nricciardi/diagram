@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (MiKTeX 25.4) (preloaded format=pdflatex 2025.6.15)  29 JUN 2025 15:17
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (MiKTeX 25.4) (preloaded format=pdflatex 2025.6.15)  29 JUN 2025 15:38
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -138,9 +138,18 @@ File: pdftex.def 2024/04/13 v1.2c Graphics/color driver for pdftex
 ))
 \Gin@req@height=\dimen172
 \Gin@req@width=\dimen173
-) (C:\Users\filip\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amsmath.sty
+)
+(C:\Users\filip\AppData\Local\Programs\MiKTeX\tex/latex/multirow\multirow.sty
+Package: multirow 2024/11/12 v2.9 Span multiple rows of a table
+\multirow@colwidth=\skip52
+\multirow@cntb=\count290
+\multirow@dima=\skip53
+\bigstrutjot=\dimen174
+)
+(C:\Users\filip\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amsmath.sty
 Package: amsmath 2025/05/18 v2.17x AMS math features
-\@mathmargin=\skip52
+\@mathmargin=\skip54
+
 For additional information on amsmath, use the `?' option.
 (C:\Users\filip\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amstext.sty
 Package: amstext 2024/11/17 v2.01 AMS text
@@ -148,23 +157,23 @@ Package: amstext 2024/11/17 v2.01 AMS text
 (C:\Users\filip\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amsgen.sty
 File: amsgen.sty 1999/11/30 v2.0 generic functions
 \@emptytoks=\toks19
-\ex@=\dimen174
+\ex@=\dimen175
 ))
 (C:\Users\filip\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amsbsy.sty
 Package: amsbsy 1999/11/29 v1.2d Bold Symbols
-\pmbraise@=\dimen175
+\pmbraise@=\dimen176
 )
 (C:\Users\filip\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amsopn.sty
 Package: amsopn 2022/04/08 v2.04 operator names
 )
-\inf@bad=\count290
+\inf@bad=\count291
 LaTeX Info: Redefining \frac on input line 233.
-\uproot@=\count291
-\leftroot@=\count292
+\uproot@=\count292
+\leftroot@=\count293
 LaTeX Info: Redefining \overline on input line 398.
 LaTeX Info: Redefining \colon on input line 409.
-\classnum@=\count293
-\DOTSCASE@=\count294
+\classnum@=\count294
+\DOTSCASE@=\count295
 LaTeX Info: Redefining \ldots on input line 495.
 LaTeX Info: Redefining \dots on input line 498.
 LaTeX Info: Redefining \cdots on input line 619.
@@ -174,33 +183,33 @@ LaTeX Info: Redefining \big on input line 721.
 LaTeX Info: Redefining \Big on input line 722.
 LaTeX Info: Redefining \bigg on input line 723.
 LaTeX Info: Redefining \Bigg on input line 724.
-\big@size=\dimen176
+\big@size=\dimen177
 LaTeX Font Info:    Redeclaring font encoding OML on input line 742.
 LaTeX Font Info:    Redeclaring font encoding OMS on input line 743.
-\macc@depth=\count295
+\macc@depth=\count296
 LaTeX Info: Redefining \bmod on input line 904.
 LaTeX Info: Redefining \pmod on input line 909.
 LaTeX Info: Redefining \smash on input line 939.
 LaTeX Info: Redefining \relbar on input line 969.
 LaTeX Info: Redefining \Relbar on input line 970.
-\c@MaxMatrixCols=\count296
+\c@MaxMatrixCols=\count297
 \dotsspace@=\muskip17
-\c@parentequation=\count297
-\dspbrk@lvl=\count298
+\c@parentequation=\count298
+\dspbrk@lvl=\count299
 \tag@help=\toks20
-\row@=\count299
-\column@=\count300
-\maxfields@=\count301
+\row@=\count300
+\column@=\count301
+\maxfields@=\count302
 \andhelp@=\toks21
-\eqnshift@=\dimen177
-\alignsep@=\dimen178
-\tagshift@=\dimen179
-\tagwidth@=\dimen180
-\totwidth@=\dimen181
-\lineht@=\dimen182
+\eqnshift@=\dimen178
+\alignsep@=\dimen179
+\tagshift@=\dimen180
+\tagwidth@=\dimen181
+\totwidth@=\dimen182
+\lineht@=\dimen183
 \@envbody=\toks22
-\multlinegap=\skip53
-\multlinetaggap=\skip54
+\multlinegap=\skip55
+\multlinetaggap=\skip56
 \mathdisplay@stack=\toks23
 LaTeX Info: Redefining \[ on input line 2949.
 LaTeX Info: Redefining \] on input line 2950.
@@ -265,20 +274,20 @@ Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
 (C:\Users\filip\AppData\Local\Programs\MiKTeX\tex/latex/kvoptions\kvoptions.sty
 Package: kvoptions 2022-06-15 v3.15 Key value format for package options (HO)
 ))
-\c@section@level=\count302
+\c@section@level=\count303
 )
 (C:\Users\filip\AppData\Local\Programs\MiKTeX\tex/latex/etoolbox\etoolbox.sty
 Package: etoolbox 2025/02/11 v2.5l e-TeX tools for LaTeX (JAW)
-\etb@tempcnta=\count303
+\etb@tempcnta=\count304
 )
 (C:\Users\filip\AppData\Local\Programs\MiKTeX\tex/generic/stringenc\stringenc.s
 ty
 Package: stringenc 2019/11/29 v1.12 Convert strings between diff. encodings (HO
 )
 )
-\@linkdim=\dimen183
-\Hy@linkcounter=\count304
-\Hy@pagecounter=\count305
+\@linkdim=\dimen184
+\Hy@linkcounter=\count305
+\Hy@pagecounter=\count306
  (C:\Users\filip\AppData\Local\Programs\MiKTeX\tex/latex/hyperref\pd1enc.def
 File: pd1enc.def 2025-05-20 v7.01m Hyperref: PDFDocEncoding definition (HO)
 Now handling font encoding PD1 ...
@@ -286,7 +295,7 @@ Now handling font encoding PD1 ...
 ) (C:\Users\filip\AppData\Local\Programs\MiKTeX\tex/generic/intcalc\intcalc.sty
 Package: intcalc 2019/12/15 v1.3 Expandable calculations with integers (HO)
 )
-\Hy@SavedSpaceFactor=\count306
+\Hy@SavedSpaceFactor=\count307
  (C:\Users\filip\AppData\Local\Programs\MiKTeX\tex/latex/hyperref\puenc.def
 File: puenc.def 2025-05-20 v7.01m Hyperref: PDF Unicode definition (HO)
 Now handling font encoding PU ...
@@ -299,14 +308,14 @@ Package hyperref Info: Plain pages OFF on input line 4172.
 Package hyperref Info: Backreferencing OFF on input line 4177.
 Package hyperref Info: Implicit mode ON; LaTeX internals redefined.
 Package hyperref Info: Bookmarks ON on input line 4424.
-\c@Hy@tempcnt=\count307
+\c@Hy@tempcnt=\count308
 
 (C:\Users\filip\AppData\Local\Programs\MiKTeX\tex/latex/url\url.sty
 \Urlmuskip=\muskip18
 Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
 )
 LaTeX Info: Redefining \url on input line 4763.
-\XeTeXLinkMargin=\dimen184
+\XeTeXLinkMargin=\dimen185
 
 (C:\Users\filip\AppData\Local\Programs\MiKTeX\tex/generic/bitset\bitset.sty
 Package: bitset 2019/12/09 v1.3 Handle bit-vector datatype (HO)
@@ -316,9 +325,9 @@ Package: bitset 2019/12/09 v1.3 Handle bit-vector datatype (HO)
 Package: bigintcalc 2019/12/15 v1.5 Expandable calculations on big integers (HO
 )
 ))
-\Fld@menulength=\count308
-\Field@Width=\dimen185
-\Fld@charsize=\dimen186
+\Fld@menulength=\count309
+\Field@Width=\dimen186
+\Fld@charsize=\dimen187
 Package hyperref Info: Hyper figures OFF on input line 6042.
 Package hyperref Info: Link nesting OFF on input line 6047.
 Package hyperref Info: Hyper index ON on input line 6050.
@@ -331,15 +340,15 @@ Package hyperref Info: PDF/A mode OFF on input line 6072.
 Package: atbegshi-ltx 2021/01/10 v1.0c Emulation of the original atbegshi
 package with kernel methods
 )
-\Hy@abspage=\count309
-\c@Item=\count310
-\c@Hfootnote=\count311
+\Hy@abspage=\count310
+\c@Item=\count311
+\c@Hfootnote=\count312
 )
 Package hyperref Info: Driver (autodetected): hpdftex.
 (C:\Users\filip\AppData\Local\Programs\MiKTeX\tex/latex/hyperref\hpdftex.def
 File: hpdftex.def 2025-05-20 v7.01m Hyperref driver for pdfTeX
-\Fld@listcount=\count312
-\c@bookmark@seq@number=\count313
+\Fld@listcount=\count313
+\c@bookmark@seq@number=\count314
 
 (C:\Users\filip\AppData\Local\Programs\MiKTeX\tex/latex/rerunfilecheck\rerunfil
 echeck.sty
@@ -357,21 +366,21 @@ Package: uniquecounter 2019/12/15 v1.4 Provide unlimited unique counter (HO)
 Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 2
 85.
 )
-\Hy@SectionHShift=\skip55
+\Hy@SectionHShift=\skip57
 )
 (C:\Users\filip\AppData\Local\Programs\MiKTeX\tex/latex/caption\caption.sty
 Package: caption 2023/08/05 v3.6o Customizing captions (AR)
 
 (C:\Users\filip\AppData\Local\Programs\MiKTeX\tex/latex/caption\caption3.sty
 Package: caption3 2023/07/31 v2.4d caption3 kernel (AR)
-\caption@tempdima=\dimen187
-\captionmargin=\dimen188
-\caption@leftmargin=\dimen189
-\caption@rightmargin=\dimen190
-\caption@width=\dimen191
-\caption@indent=\dimen192
-\caption@parindent=\dimen193
-\caption@hangindent=\dimen194
+\caption@tempdima=\dimen188
+\captionmargin=\dimen189
+\caption@leftmargin=\dimen190
+\caption@rightmargin=\dimen191
+\caption@width=\dimen192
+\caption@indent=\dimen193
+\caption@parindent=\dimen194
+\caption@hangindent=\dimen195
 Package caption Info: Unknown document class (or package),
 (caption)             standard defaults will be used.
 Package caption Info: \@makecaption = \long macro:#1#2->\ifx \@captype \@IEEEta
@@ -391,8 +400,8 @@ Package caption Warning: Unknown document class (or package),
 (caption)                standard defaults will be used.
 See the caption package documentation for explanation.
 
-\c@caption@flags=\count314
-\c@continuedfloat=\count315
+\c@caption@flags=\count315
+\c@continuedfloat=\count316
 Package caption Info: hyperref package is loaded.
 ) (C:\Users\filip\AppData\Local\Programs\MiKTeX\tex/latex/cite\cite.sty
 LaTeX Info: Redefining \cite on input line 302.
@@ -401,7 +410,7 @@ Package: cite 2015/02/27  v 5.5
 )
 (C:\Users\filip\AppData\Local\Programs\MiKTeX\tex/latex/float\float.sty
 Package: float 2001/11/08 v1.3d Float enhancements (AL)
-\c@float@type=\count316
+\c@float@type=\count317
 \float@exts=\toks24
 \float@box=\box57
 \@float@everytoks=\toks25
@@ -415,59 +424,59 @@ nment
 Package: ifthen 2024/03/16 v1.1e Standard LaTeX ifthen package (DPC)
 )
 \@float@every@algorithm=\toks26
-\c@algorithm=\count317
+\c@algorithm=\count318
 )
 (C:\Users\filip\AppData\Local\Programs\MiKTeX\tex/latex/algorithms\algorithmic.
 sty
 Package: algorithmic 2009/08/24 v0.1 Document Style `algorithmic'
-\c@ALC@unique=\count318
-\c@ALC@line=\count319
-\c@ALC@rem=\count320
-\c@ALC@depth=\count321
-\ALC@tlm=\skip56
-\algorithmicindent=\skip57
+\c@ALC@unique=\count319
+\c@ALC@line=\count320
+\c@ALC@rem=\count321
+\c@ALC@depth=\count322
+\ALC@tlm=\skip58
+\algorithmicindent=\skip59
 )
 (C:\Users\filip\AppData\Local\Programs\MiKTeX\tex/latex/l3backend\l3backend-pdf
 tex.def
 File: l3backend-pdftex.def 2025-04-14 L3 backend support: PDF output (pdfTeX)
-\l__color_backend_stack_int=\count322
+\l__color_backend_stack_int=\count323
 ) (article.aux)
 \openout1 = `article.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 22.
-LaTeX Font Info:    ... okay on input line 22.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 22.
-LaTeX Font Info:    ... okay on input line 22.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 22.
-LaTeX Font Info:    ... okay on input line 22.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 22.
-LaTeX Font Info:    ... okay on input line 22.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 22.
-LaTeX Font Info:    ... okay on input line 22.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 22.
-LaTeX Font Info:    ... okay on input line 22.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 22.
-LaTeX Font Info:    ... okay on input line 22.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 22.
-LaTeX Font Info:    ... okay on input line 22.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 22.
-LaTeX Font Info:    ... okay on input line 22.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 23.
+LaTeX Font Info:    ... okay on input line 23.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 23.
+LaTeX Font Info:    ... okay on input line 23.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 23.
+LaTeX Font Info:    ... okay on input line 23.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 23.
+LaTeX Font Info:    ... okay on input line 23.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 23.
+LaTeX Font Info:    ... okay on input line 23.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 23.
+LaTeX Font Info:    ... okay on input line 23.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 23.
+LaTeX Font Info:    ... okay on input line 23.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 23.
+LaTeX Font Info:    ... okay on input line 23.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 23.
+LaTeX Font Info:    ... okay on input line 23.
 
 -- Lines per column: 56 (exact).
 
 (C:\Users\filip\AppData\Local\Programs\MiKTeX\tex/context/base/mkii\supp-pdf.mk
 ii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count323
-\scratchdimen=\dimen195
+\scratchcounter=\count324
+\scratchdimen=\dimen196
 \scratchbox=\box59
-\nofMPsegments=\count324
-\nofMParguments=\count325
+\nofMPsegments=\count325
+\nofMParguments=\count326
 \everyMPshowfont=\toks27
-\MPscratchCnt=\count326
-\MPscratchDim=\dimen196
-\MPnumerator=\count327
-\makeMPintoPDFobject=\count328
+\MPscratchCnt=\count327
+\MPscratchDim=\dimen197
+\MPnumerator=\count328
+\makeMPintoPDFobject=\count329
 \everyMPtoPDFconversion=\toks28
 )
 (C:\Users\filip\AppData\Local\Programs\MiKTeX\tex/latex/epstopdf-pkg\epstopdf-b
@@ -480,7 +489,7 @@ Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
 fg
 File: epstopdf-sys.cfg 2021/03/18 v2.0 Configuration of epstopdf for MiKTeX
 ))
-Package hyperref Info: Link coloring OFF on input line 22.
+Package hyperref Info: Link coloring OFF on input line 23.
  (article.out) (article.out)
 \@outlinefile=\write3
 \openout3 = `article.out'.
@@ -491,31 +500,31 @@ Package caption Info: End \AtBeginDocument code.
 <overview.png, id=139, 647.90054pt x 208.31827pt>
 File: overview.png Graphic file (type png)
 <use overview.png>
-Package pdftex.def Info: overview.png  used on input line 44.
+Package pdftex.def Info: overview.png  used on input line 45.
 (pdftex.def)             Requested size: 252.0pt x 81.02446pt.
 
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 60--62
+Underfull \hbox (badness 10000) in paragraph at lines 61--63
 []\OT1/ptm/m/n/10 The Com-piler mod-ule is the fi-nal stage of the
  []
 
 
-Underfull \hbox (badness 4266) in paragraph at lines 60--62
+Underfull \hbox (badness 4266) in paragraph at lines 61--63
 \OT1/ptm/m/n/10 struc-tured rep-re-sen-ta-tion of the di-a-gram, ex-pressed in
  []
 
 
-Underfull \hbox (badness 2753) in paragraph at lines 60--62
+Underfull \hbox (badness 2753) in paragraph at lines 61--63
 \OT1/ptm/m/n/10 a markup lan-guage (e.g., Mer-maid.js), and gen-er-ate a
  []
 
-LaTeX Font Info:    Trying to load font information for U+msa on input line 77.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 78.
 
 (C:\Users\filip\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 77.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 78.
 
 
 (C:\Users\filip\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsb.fd
@@ -527,95 +536,96 @@ lip/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/base/8r.enc}
 
 
  <./overview.png>]
-<classifier_preprocessing.png, id=156, 462.528pt x 346.896pt>
+<classifier_preprocessing.png, id=156, 632.3625pt x 440.64626pt>
 File: classifier_preprocessing.png Graphic file (type png)
 <use classifier_preprocessing.png>
-Package pdftex.def Info: classifier_preprocessing.png  used on input line 88.
-(pdftex.def)             Requested size: 250.0pt x 187.501pt.
+Package pdftex.def Info: classifier_preprocessing.png  used on input line 89.
+(pdftex.def)             Requested size: 250.0pt x 174.20464pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 102--103
+Underfull \hbox (badness 10000) in paragraph at lines 103--104
 
  []
 
 
 
-<flowchart-extractor.png, id=159, 376.5267pt x 600.5637pt>
+<flowchart-extractor.png, id=159, 2019.545pt x 3237.09375pt>
 File: flowchart-extractor.png Graphic file (type png)
 <use flowchart-extractor.png>
-Package pdftex.def Info: flowchart-extractor.png  used on input line 108.
-(pdftex.def)             Requested size: 252.0pt x 401.94489pt.
+Package pdftex.def Info: flowchart-extractor.png  used on input line 109.
+(pdftex.def)             Requested size: 252.0pt x 403.89482pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 116--117
+Underfull \hbox (badness 10000) in paragraph at lines 117--118
 []\OT1/ptm/m/n/10 The only pre-pro-cess-ing ap-plied is a gray-scale
  []
 
 
-Underfull \hbox (badness 7397) in paragraph at lines 116--117
+Underfull \hbox (badness 7397) in paragraph at lines 117--118
 \OT1/ptm/m/n/10 trans-for-ma-tion. Other trans-for-ma-tions are not deemed
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 116--117
+Underfull \hbox (badness 10000) in paragraph at lines 117--118
 
  []
 
 
 
-[2 <./classifier_preprocessing.png> <./flowchart-extractor.png>]
-Underfull \hbox (badness 4699) in paragraph at lines 120--121
+[2 <./classifier_preprocessing.png (PNG copy)> <./flowchart-extractor.png (PNG 
+copy)>]
+Underfull \hbox (badness 4699) in paragraph at lines 121--122
  \OT1/ptm/m/it/10 2) Bound-ing Box De-tec-tion: [][][] \OT1/ptm/m/n/10 TODO: Fa
 ster-RCNN -
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 120--121
+Underfull \hbox (badness 10000) in paragraph at lines 121--122
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 124--125
+Underfull \hbox (badness 10000) in paragraph at lines 125--126
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 127--128
+Underfull \hbox (badness 10000) in paragraph at lines 128--129
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 130--131
+Underfull \hbox (badness 10000) in paragraph at lines 131--132
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 133--134
+Underfull \hbox (badness 10000) in paragraph at lines 134--135
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 136--137
+Underfull \hbox (badness 10000) in paragraph at lines 137--138
 
  []
 
 
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 142--143
+Underfull \hbox (badness 10000) in paragraph at lines 143--144
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 148--154
+Underfull \hbox (badness 10000) in paragraph at lines 149--155
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 155--158
+Underfull \hbox (badness 10000) in paragraph at lines 156--159
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 159--163
+Underfull \hbox (badness 10000) in paragraph at lines 160--164
 
  []
 
@@ -623,98 +633,74 @@ Underfull \hbox (badness 10000) in paragraph at lines 159--163
 
 [3]
 Package hyperref Info: bookmark level for unknown algorithm defaults to 0 on in
-put line 168.
+put line 169.
 
-Overfull \hbox (1.94206pt too wide) in paragraph at lines 196--208
+Overfull \hbox (1.94206pt too wide) in paragraph at lines 197--209
  [][] 
  []
 
-<text_digitization_results_1.png, id=187, 679.338pt x 585.387pt>
+<text_digitization_results_1.png, id=185, 679.338pt x 585.387pt>
 File: text_digitization_results_1.png Graphic file (type png)
 <use text_digitization_results_1.png>
 Package pdftex.def Info: text_digitization_results_1.png  used on input line 21
-4.
+5.
 (pdftex.def)             Requested size: 252.0pt x 217.14359pt.
 
-Underfull \vbox (badness 3646) has occurred while \output is active []
+Underfull \vbox (badness 4647) has occurred while \output is active []
 
 
 
-<text_digitization_results_2.png, id=188, 685.1196pt x 548.5293pt>
+<text_digitization_results_2.png, id=186, 685.1196pt x 548.5293pt>
 File: text_digitization_results_2.png Graphic file (type png)
 <use text_digitization_results_2.png>
 Package pdftex.def Info: text_digitization_results_2.png  used on input line 22
-1.
+2.
 (pdftex.def)             Requested size: 252.0pt x 201.75577pt.
 
 
 [4 <./text_digitization_results_1.png> <./text_digitization_results_2.png>]
 (article.bbl)
 
-<spectral_clustering.png, id=219, 484.9317pt x 585.387pt>
+<spectral_clustering.png, id=217, 664.4825pt x 795.97375pt>
 File: spectral_clustering.png Graphic file (type png)
 <use spectral_clustering.png>
-Package pdftex.def Info: spectral_clustering.png  used on input line 255.
-(pdftex.def)             Requested size: 150.0pt x 181.07507pt.
-<arrow_double_clustering_clusters.png, id=220, 484.9317pt x 585.387pt>
+Package pdftex.def Info: spectral_clustering.png  used on input line 256.
+(pdftex.def)             Requested size: 150.0pt x 179.6815pt.
+<arrow_double_clustering_clusters.png, id=218, 484.9317pt x 585.387pt>
 File: arrow_double_clustering_clusters.png Graphic file (type png)
 <use arrow_double_clustering_clusters.png>
 Package pdftex.def Info: arrow_double_clustering_clusters.png  used on input li
-ne 262.
+ne 263.
 (pdftex.def)             Requested size: 150.0pt x 181.07507pt.
 
 
-[5 <./spectral_clustering.png> <./arrow_double_clustering_clusters.png>]
-<arrow_double_clustering_direction.png, id=244, 484.9317pt x 585.387pt>
+[5 <./spectral_clustering.png (PNG copy)> <./arrow_double_clustering_clusters.p
+ng>]
+<arrow_double_clustering_direction.png, id=241, 659.46375pt x 805.0075pt>
 File: arrow_double_clustering_direction.png Graphic file (type png)
 <use arrow_double_clustering_direction.png>
 Package pdftex.def Info: arrow_double_clustering_direction.png  used on input l
-ine 272.
-(pdftex.def)             Requested size: 150.0pt x 181.07507pt.
-<templates.png, id=246, 209.583pt x 281.1303pt>
+ine 273.
+(pdftex.def)             Requested size: 150.0pt x 183.0965pt.
+<templates.png, id=243, 277.035pt x 336.25626pt>
 File: templates.png Graphic file (type png)
 <use templates.png>
-Package pdftex.def Info: templates.png  used on input line 281.
-(pdftex.def)             Requested size: 50.0pt x 67.06512pt.
-<template_matching_fail.png, id=248, 480.5955pt x 570.933pt>
+Package pdftex.def Info: templates.png  used on input line 282.
+(pdftex.def)             Requested size: 49.9994pt x 60.00017pt.
+<template_matching_fail.png, id=245, 653.44125pt x 771.88374pt>
 File: template_matching_fail.png Graphic file (type png)
 <use template_matching_fail.png>
-Package pdftex.def Info: template_matching_fail.png  used on input line 290.
-(pdftex.def)             Requested size: 150.0pt x 178.1896pt.
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
+Package pdftex.def Info: template_matching_fail.png  used on input line 291.
+(pdftex.def)             Requested size: 150.0pt x 177.18796pt.
 
 
 
-! Undefined control sequence.
-<recently read> \multirow 
-                          
-l.308 		\multirow
-                 {3}{*}{Encoder}
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<recently read> \multirow 
-                          
-l.316 		\multirow
-                 {4}{*}{Decoder}
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-
-Overfull \hbox (121.77461pt too wide) in paragraph at lines 304--325
+Overfull \hbox (35.93413pt too wide) in paragraph at lines 305--327
  [][] 
  []
 
 
-Overfull \hbox (15.17413pt too wide) in paragraph at lines 335--350
+Overfull \hbox (15.17413pt too wide) in paragraph at lines 337--352
  [][] 
  []
 
@@ -731,56 +717,40 @@ Before submitting the final camera ready copy, remember to:
 
 
 
-[6 <./arrow_double_clustering_direction.png> <./templates.png> <./template_matc
-hing_fail.png>] (article.aux)
+[6 <./arrow_double_clustering_direction.png (PNG copy)> <./templates.png (PNG c
+opy)> <./template_matching_fail.png (PNG copy)>] (article.aux)
  ***********
 LaTeX2e <2025-06-01>
 L3 programming layer <2025-05-26>
  ***********
-
-
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
-
-
-Package rerunfilecheck Warning: File `article.out' has changed.
-(rerunfilecheck)                Rerun to get outlines right
-(rerunfilecheck)                or use package `bookmark'.
-
-Package rerunfilecheck Info: Checksums for `article.out':
-(rerunfilecheck)             Before: C46CCFC0E7510749C3AEA432CD3AF3D2;4850
-(rerunfilecheck)             After:  B841E02784673426183152BFA44F1AB6;4850.
+Package rerunfilecheck Info: File `article.out' has not changed.
+(rerunfilecheck)             Checksum: 26BFBD62421FCD051A23A430D4CD2B72;4845.
  ) 
 Here is how much of TeX's memory you used:
- 12461 strings out of 468225
- 201893 string characters out of 5432973
- 614342 words of memory out of 5000000
- 40768 multiletter control sequences out of 15000+600000
+ 12527 strings out of 468225
+ 203114 string characters out of 5432973
+ 614075 words of memory out of 5000000
+ 40831 multiletter control sequences out of 15000+600000
  664848 words of font info for 112 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 75i,9n,79p,759b,529s stack positions out of 10000i,1000n,20000p,200000b,200000s
-
-pdfTeX warning (dest): name{section*.15} has been referenced but does not exist
-, replaced by a fixed one
-
-<C:/Users/filip/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cm
-ex10.pfb><C:/Users/filip/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfo
-nts/cm/cmmi10.pfb><C:/Users/filip/AppData/Local/Programs/MiKTeX/fonts/type1/pub
-lic/amsfonts/cm/cmmi7.pfb><C:/Users/filip/AppData/Local/Programs/MiKTeX/fonts/t
-ype1/public/amsfonts/cm/cmmi8.pfb><C:/Users/filip/AppData/Local/Programs/MiKTeX
-/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/filip/AppData/Local/Program
-s/MiKTeX/fonts/type1/public/amsfonts/cm/cmr7.pfb><C:/Users/filip/AppData/Local/
-Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Users/filip/AppData
-/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/fili
-p/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy7.pfb><C:/Us
-ers/filip/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy8.pf
-b><C:/Users/filip/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmb8a.pf
-b><C:/Users/filip/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmbi8a.p
-fb><C:/Users/filip/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmr8a.p
-fb><C:/Users/filip/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmri8a.
-pfb>
-Output written on article.pdf (6 pages, 1008844 bytes).
+ 75i,10n,79p,759b,529s stack positions out of 10000i,1000n,20000p,200000b,200000s
+<C:/Users/filip/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/
+cmex10.pfb><C:/Users/filip/AppData/Local/Programs/MiKTeX/fonts/type1/public/ams
+fonts/cm/cmmi10.pfb><C:/Users/filip/AppData/Local/Programs/MiKTeX/fonts/type1/p
+ublic/amsfonts/cm/cmmi7.pfb><C:/Users/filip/AppData/Local/Programs/MiKTeX/fonts
+/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/filip/AppData/Local/Programs/MiKT
+eX/fonts/type1/public/amsfonts/cm/cmr7.pfb><C:/Users/filip/AppData/Local/Progra
+ms/MiKTeX/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Users/filip/AppData/Local
+/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/filip/AppD
+ata/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy7.pfb><C:/Users/fi
+lip/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy8.pfb><C:/
+Users/filip/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmb8a.pfb><C:/
+Users/filip/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmbi8a.pfb><C:
+/Users/filip/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmr8a.pfb><C:
+/Users/filip/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmri8a.pfb>
+Output written on article.pdf (6 pages, 1031881 bytes).
 PDF statistics:
- 345 PDF objects out of 1000 (max. 8388607)
- 77 named destinations out of 1000 (max. 500000)
+ 334 PDF objects out of 1000 (max. 8388607)
+ 76 named destinations out of 1000 (max. 500000)
  315 words of extra memory for PDF output out of 10000 (max. 10000000)
 

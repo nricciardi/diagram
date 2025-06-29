@@ -1,6 +1,7 @@
 \documentclass[conference]{IEEEtran}
 
 \usepackage{graphicx}
+\usepackage{multirow}
 \usepackage{amsmath, amssymb}
 \usepackage{hyperref}
 \usepackage{caption}
@@ -278,7 +279,7 @@ For Step (5), we had previously hand-picked some templates (see Figure~\ref{fig:
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=50pt]{templates.png}
+	\includegraphics[width=50pt, height=60pt]{templates.png}
 	\caption{An example of hand-picked template with SIFT descriptors.}
 	\label{fig:templates}
 \end{figure}
@@ -292,10 +293,10 @@ However, this approach didn't work as expected (see Figure~\ref{fig:template_mat
 	\label{fig:template_matching_fail}
 \end{figure}
 
-\section{Arrow-Net}
+\section{ArrowNet}
 \label{arrow-net}
 
-This second approach for determining an arrow's orientation was inspired by UNet \cite{unet}. The core idea was to segment an arrow's bounding box, and to use a specific CNN to try and determine the arrow's head point and the arrow's tail point.
+This second approach for determining an arrow's orientation was inspired by UNet \cite{unet}. The core idea was to segment an arrow's bounding box, and to use a specific CNN to try and determine the arrow's head point and the arrow's tail point. The downsampling-upsampling network is called \textbf{ArrowNet} and its specifics can be found in Table~\ref{table:arrownet}.
 
 \begin{table}[htbp]
 	\centering
@@ -303,25 +304,26 @@ This second approach for determining an arrow's orientation was inspired by UNet
 	\label{tab:arrownet}
 	\begin{tabular}{|l|l|l|l|l|}
 		\hline
-		\textbf{Stage} & \textbf{Layer} & \textbf{Input Shape} & \textbf{Output Shape} & \textbf{Operations} \\
+		\textbf{Stage} & \textbf{Layer} & \textbf{Out Channels} & \textbf{Operations} \\
 		\hline
 		\multirow{3}{*}{Encoder} 
-		& Encoder1 & $(B, 1, 256, 256)$ & $(B, 32, 256, 256)$ & Double Conv Block \\
-		& MaxPool & $(B, 32, 256, 256)$ & $(B, 32, 128, 128)$ & $2 \times 2$ MaxPooling \\
-		& Encoder2 & $(B, 32, 128, 128)$ & $(B, 64, 128, 128)$ & Double Conv Block \\
+		& Encoder1 & $32$ & Double Conv Block \\
+		& MaxPool & $32$ & $2 \times 2$ MaxPooling \\
+		& Encoder2 & $64$ & Double Conv Block \\
 		\hline
 		Bottleneck 
-		& MaxPool + Bottleneck & $(B, 64, 128, 128)$ & $(B, 128, 64, 64)$ & MaxPool + Double Conv \\
+		& MaxPool + Bottleneck & $128$ & MaxPool + Double Conv \\
 		\hline
 		\multirow{4}{*}{Decoder}
-		& Upsampling2 & $(B, 128, 64, 64)$ & $(B, 64, 128, 128)$ & Transpose Conv Block \\
-		& Skip + Decoder2 & $(B, 128, 128, 128)$ & $(B, 64, 128, 128)$ & Concat + Double Conv \\
-		& Upsampling1 & $(B, 64, 128, 128)$ & $(B, 32, 256, 256)$ & Transpose Conv Block \\
-		& Skip + Decoder1 & $(B, 64, 256, 256)$ & $(B, 32, 256, 256)$ & Concat + Double Conv \\
+		& Upsampling2 & $64$ & Transpose Conv Block \\
+		& Skip + Decoder2 & $64$ & Concat + Double Conv \\
+		& Upsampling1 & $32$ & Transpose Conv Block \\
+		& Skip + Decoder1 & $32$ & Concat + Double Conv \\
 		\hline
-		Output & Output Conv & $(B, 32, 256, 256)$ & $(B, 3, 256, 256)$ & $1 \times 1$ Convolution \\
+		Output & Output Conv & $3$ & $1 \times 1$ Convolution \\
 		\hline
 	\end{tabular}
+	\label{table:arrownet}
 \end{table}
 
 
