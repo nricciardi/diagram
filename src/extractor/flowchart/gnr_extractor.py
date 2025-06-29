@@ -468,18 +468,30 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
                 arrow_score: float = 0.0
                 for bbox, label, score in zip(prediction['boxes'], prediction['labels'], prediction['scores']):
 
-                    filtered_bbox: List[ImageBoundingBox] = self._filter_bboxes(diagram_id=diagram_id,
-                    bboxes=[ImageBoundingBox2Points.from_image(category=Lookup.table_target_int_to_str_by_diagram_id[diagram_id][label.item()],
-                            box=bbox, trust=score.item(), image=image)])
+                    if label.item() not in Lookup.table_target_int_to_str_by_diagram_id[diagram_id].keys():
+                        continue
+
+                    filtered_bbox: List[ImageBoundingBox] = self._filter_bboxes(
+                        diagram_id=diagram_id,
+                        bboxes=[
+                            ImageBoundingBox2Points.from_image(
+                                category=Lookup.table_target_int_to_str_by_diagram_id[diagram_id][label.item()],
+                                box=bbox,
+                                trust=score.item(),
+                                image=image
+                            )
+                        ]
+                    )
+
                     if label.item() == FlowchartElementCategoryIndex.ARROW.value and score.item() > arrow_score and len(filtered_bbox) == 1:
-                        arrow_bbox = ImageBoundingBox2Points.from_image(
+
+                        candidate_arrow_bbox = ImageBoundingBox2Points.from_image(
                             category=Lookup.table_target_int_to_str_by_diagram_id[diagram_id][
                                 FlowchartElementCategoryIndex.ARROW.value],
                             box=bbox, trust=score.item(), image=image)
-                        if bbox_overlap(arrow_bbox, head_bbox) > self.arrow_head_overlap_threshold and bbox_overlap(arrow_bbox, tail_bbox) > self.arrow_tail_overlap_threshold:
+                        if bbox_overlap(candidate_arrow_bbox, head_bbox) > self.arrow_head_overlap_threshold and bbox_overlap(candidate_arrow_bbox, tail_bbox) > self.arrow_tail_overlap_threshold:
                             arrow_score = score.item()
-                        else:
-                            arrow_bbox = None
+                            arrow_bbox = candidate_arrow_bbox
 
                 if arrow_bbox is not None:
                     managed_arrows.append(Arrow.from_bboxes(
@@ -496,6 +508,7 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
                         ),
                         arrow_bbox=arrow_bbox
                     ))
+
                 if logging.root.level <= 10:
                     draw_predictions(crop_bbox.unsqueeze(0), prediction)
 
@@ -512,7 +525,8 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
 
 
         for box, label, score in zip(prediction['boxes'], prediction['labels'], prediction['scores']):
-            bboxes.append(ImageBoundingBox2Points.from_image(category=Lookup.table_target_int_to_str_by_diagram_id[diagram_id][label.item()], box=box, trust=score.item(), image=image))
+            if label.item() in Lookup.table_target_int_to_str_by_diagram_id[diagram_id].keys():
+                bboxes.append(ImageBoundingBox2Points.from_image(category=Lookup.table_target_int_to_str_by_diagram_id[diagram_id][label.item()], box=box, trust=score.item(), image=image))
 
         if logging.root.level <= 10:
             # Draw predictions

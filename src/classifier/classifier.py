@@ -70,6 +70,8 @@ class GNRClassifier(Classifier):
         :param image: The image to classify.
         :return: The classification result.
         """
+
+        return WellKnownDiagram.GRAPH_DIAGRAM.value     # TODO
         
         self.model.eval()
         self.model = self.model.to(self.device)
