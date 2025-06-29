@@ -65,7 +65,7 @@ For example:
 ##### Easy Graph
 
 ```bash
---input demo/easy_graph.png --classifier demo/classifier_weights.pth --bbox-detector demo/object_detector_weights.pth --outputs-dir-path demo/outcome --then-compile --element_arrow_distance_threshold 150
+python src/main.py --input demo/easy_graph.png --classifier demo/classifier_weights.pth --bbox-detector demo/object_detector_weights.pth --outputs-dir-path demo/outcome --then-compile --element_arrow_distance_threshold 150
 ```
 
 ![Easy graph](assets/images/easy_graph.png)
@@ -74,7 +74,7 @@ For example:
 ##### Hard Graph
 
 ```bash
---input test/hard_graph.png --classifier demo/classifier_weights.pth --bbox-detector demo/object_detector_weights.pth --outputs-dir-path demo/outcome --then-compile --element_arrow_distance_threshold 250
+python src/main.py --input test/hard_graph.png --classifier demo/classifier_weights.pth --bbox-detector demo/object_detector_weights.pth --outputs-dir-path demo/outcome --then-compile --element_arrow_distance_threshold 250
 ```
 
 > [!WARNING]
@@ -92,7 +92,7 @@ For example:
 ##### Easy Flowchart
 
 ```bash
---input demo/easy_graph.png --classifier demo/classifier_weights.pth --bbox-detector demo/object_detector_weights.pth --outputs-dir-path demo/outcome --then-compile --element_arrow_distance_threshold 150
+python src/main.py --input demo/easy_flowchart.png --classifier demo/classifier_weights.pth --bbox-detector demo/object_detector_weights.pth --outputs-dir-path demo/outcome --then-compile --element_arrow_distance_threshold 350
 ```
 
 ![Easy flowchart](assets/images/easy_flowchart.png)
@@ -104,7 +104,7 @@ For example:
 ##### Hard Flowchart
 
 ```bash
---input test/hard_graph.png --classifier demo/classifier_weights.pth --bbox-detector demo/object_detector_weights.pth --outputs-dir-path demo/outcome --then-compile --element_arrow_distance_threshold 350
+python src/main.py --input demo/hard_flowchart.png --classifier demo/classifier_weights.pth --bbox-detector demo/object_detector_weights.pth --outputs-dir-path demo/outcome --then-compile --element_arrow_distance_threshold 350
 ```
 
 ![Hard flowchart](assets/images/hard_flowchart.png)
