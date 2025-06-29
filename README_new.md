@@ -9,6 +9,15 @@ to eventually integrate or modify them.
 
 ### Install
 
+#### Docker version
+
+```bash
+docker build -t diagram .
+```
+
+
+#### Install on host machine
+
 1. Installa **D2 CLI** dal repository ufficiale: [https://github.com/terrastruct/d2](https://github.com/terrastruct/d2) (cercare la versione appropriata per il proprio sistema nelle )
     - Linux: https://d2lang.com/tour/install/
     - [All releases](https://github.com/terrastruct/d2/releases)
@@ -26,7 +35,48 @@ d2 --version
 pip3 install torch opencv-python matplotlib requests pillow pandas torchvision numpy shapely transformers sentencepiece protobuf torchmetrics scikit-learn
 ```
 
+3. Verificare la corretta installazione di DIAGRAM
 
+```bash
+python src/main.py -h
+```
+
+### Example
+
+#### Docker
+
+On Linux or Windows Powershell, use `pwd` (i.e. current directory) to mount a volume on `/app` project directory in Docker container.
+Suppose to have images and weights in `demo` directory. 
+
+```bash
+docker run --rm -v "`pwd`/demo:/app/demo" diagram --input demo/demo_image1.png --classifier demo/classifier_weights.pth --bbox-detector demo/object_detector_weights.pth --outputs-dir-path demo/outcome --then-compile --element_arrow_distance_threshold 260
+```
+
+
+#### Local version
+
+Le opzioni della CLI possono essere visualizzate tramite il flag `-h`
+
+La CLI è posta all'interno di `src/main.py`
+
+```bash
+python src/main.py -h
+```
+
+I parametri principali sono:
+
+- `--input path/to/image1.png path/to/image2.png ...` per fornire in input le immagini da processare
+- `--classifier path/to/classifier_weights.pth` pesi della rete classificatrice da utilizzare
+- `--bbox-detector path/to/object_detector_weights.pth` pesi della rete di object detection da utilizzare
+- `--outputs-dir-path path/to/output_dir` directory in cui verranno scritti gli output
+- `--then-compile` per ottenere anche la compilazione PNG oltre che i file markup
+
+In aggiunta a ciò è cruciale fornire le threshold ottimali per i propri input. 
+Di default vengono utilizzate delle soglie mediamente buone, ma non ottime in tutti i casi.
+
+Per modificare le soglie utilizzare per esempio:
+
+- `--element_arrow_distance_threshold 260`
 
 
 ## Project Overview
@@ -94,8 +144,8 @@ The diagrams are all **annotated** with **bounding box**, *also for the text*
 
 *Categories*
 
-![Categorie](doc/assets/images/categories-fa.png)
+![Categories](doc/assets/images/categories-fa.png)
 
 *Annotation example*
 
-![Esempio annotazione](doc/assets/images/annotation-fa.png)
+![Labels](doc/assets/images/annotation-fa.png)
