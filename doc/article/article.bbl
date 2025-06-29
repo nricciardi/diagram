@@ -134,6 +134,23 @@ A.~Kembhavi, M.~Salvato, E.~Kolve, M.~Seo, H.~Hajishirzi, and A.~Farhadi, ``A
   B.~Leibe, J.~Matas, N.~Sebe, and M.~Welling, Eds.\hskip 1em plus 0.5em minus
   0.4em\relax Cham: Springer International Publishing, 2016, pp. 235--251.
 
+\bibitem{lin2017feature}
+\BIBentryALTinterwordspacing
+T.-Y. Lin, P.~Dollar, R.~Girshick, K.~He, B.~Hariharan, and S.~Belongie, ``{
+  Feature Pyramid Networks for Object Detection },'' in \emph{2017 IEEE
+  Conference on Computer Vision and Pattern Recognition (CVPR)}.\hskip 1em plus
+  0.5em minus 0.4em\relax Los Alamitos, CA, USA: IEEE Computer Society, Jul.
+  2017, pp. 936--944. [Online]. Available:
+  \url{https://doi.ieeecomputersociety.org/10.1109/CVPR.2017.106}
+\BIBentrySTDinterwordspacing
+
+\bibitem{coco}
+T.-Y. Lin, M.~Maire, S.~Belongie, J.~Hays, P.~Perona, D.~Ramanan,
+  P.~Doll{\'a}r, and C.~L. Zitnick, ``Microsoft coco: Common objects in
+  context,'' in \emph{Computer Vision -- ECCV 2014}, D.~Fleet, T.~Pajdla,
+  B.~Schiele, and T.~Tuytelaars, Eds.\hskip 1em plus 0.5em minus 0.4em\relax
+  Cham: Springer International Publishing, 2014, pp. 740--755.
+
 \bibitem{SIFT}
 \BIBentryALTinterwordspacing
 D.~G. Lowe, ``Distinctive image features from scale-invariant keypoints,''
