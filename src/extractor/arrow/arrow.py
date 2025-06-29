@@ -1,6 +1,6 @@
 import logging
 from dataclasses import dataclass
-from typing import List
+from typing import List, Tuple
 from scipy.spatial import ConvexHull
 from shapely.constructive import convex_hull
 from shapely.geometry import Polygon
@@ -169,13 +169,14 @@ def get_most_certain_bbox(bboxes_part: List[ImageBoundingBox], arrow_bbox: Image
 
     return most_certain_bbox
 
-def compute_arrows(arrow_bboxes: List[ImageBoundingBox], head_bboxes: List[ImageBoundingBox], tail_bboxes: List[ImageBoundingBox]) -> List[Arrow]:
+def compute_arrows(arrow_bboxes: List[ImageBoundingBox], head_bboxes: List[ImageBoundingBox], tail_bboxes: List[ImageBoundingBox]) \
+        -> Tuple[List[Arrow], List[ImageBoundingBox], List[ImageBoundingBox]]:
     """
     arrow_bboxes: bboxes of arrows
     arrow_bboxes: bboxes of arrow heads
     arrow_bboxes: bboxes of arrow tails
 
-    Returns: |arrow_bboxes| arrows
+    :returns: List of Arrow objects, remaining head bboxes, remaining tail bboxes
     """
 
     arrows: List[Arrow] = []
@@ -213,4 +214,4 @@ def compute_arrows(arrow_bboxes: List[ImageBoundingBox], head_bboxes: List[Image
 
         arrows.append(Arrow.from_bboxes(head_bbox=head_bbox, tail_bbox=tail_bbox, arrow=arrow))
 
-    return arrows
+    return arrows, head_bboxes, tail_bboxes
