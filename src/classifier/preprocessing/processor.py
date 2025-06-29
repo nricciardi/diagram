@@ -54,7 +54,10 @@ class GrayScaleProcessor(Processor):
             gray_image = cv2.cvtColor(image_np, cv2.COLOR_RGB2GRAY)
             assert gray_image.shape == image_np.shape[:2], f"Expected shape {image_np.shape[:2]}, but got {gray_image.shape}"
         
-        gray_image = 255 - gray_image
+        avg_brightness = gray_image.mean()
+        if avg_brightness < 127:
+            gray_image = 255 - gray_image
+
         tensor = torch.from_numpy(gray_image).to(device)
         return TensorImage(tensor)
 
