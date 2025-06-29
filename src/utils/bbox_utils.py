@@ -1,7 +1,9 @@
 import math
-from typing import List, Tuple
+from typing import List, Tuple, Dict
 import numpy as np
 from torch import Tensor
+from torchvision.transforms.functional import to_pil_image
+from torchvision.utils import draw_bounding_boxes
 
 from core.image.bbox.bbox import ImageBoundingBox
 from core.image.image import Image
@@ -253,3 +255,13 @@ def crop_image(image: Image, bbox: Tensor) -> Tensor:
         elif cropped_tensor.shape[0] == 1:
             cropped_tensor = cropped_tensor.repeat(3, 1, 1)
         return cropped_tensor
+
+def draw_predictions(image_tensor: Tensor, prediction: Dict[str, Tensor]):
+    # Draw predictions
+    img_cpu = image_tensor.squeeze(0).cpu()
+    boxes = prediction['boxes']
+    labels = prediction['labels']
+    drawn = draw_bounding_boxes(img_cpu, boxes=boxes, labels=[str(l.item()) for l in labels], width=2)
+    plt.imshow(to_pil_image(drawn))
+    plt.axis('off')
+    plt.show()
