@@ -31,7 +31,7 @@ This report describes D.I.A.G.R.A.M., a system for diagram recognition and gener
 \section{Introduction}
 Diagrams are crucial in education, documentation, and many other fields. Developing a system that automatically understands and generates diagrams may reveal helpful for having high-quality, easily editable representations. This, however, poses challenges involving classification, shape detection, structure interpretation and symbolic representation. Our project proposes a modular architecture to tackle these tasks.
 
-\section{Previous Works}
+\section{Related Works}
 \cite{arrowrcnn} \\
 \cite{interactiveUML} \\
 \cite{sketchdiagram}
@@ -118,7 +118,8 @@ The only preprocessing applied is a gray-scale transformation. Other transformat
 
 \subsubsection{Bounding Box Detection}
 \label{extr:bbd}
-TODO: FasterRCNN - backbone ResNet 50FPN~\cite{rcnn}.  \\ After having determined all the bounding boxes of the diagram image, in order to correctly create the diagram internal representation, there's the need to link together text, elements and relations.\\
+The model employed for object detection is a FasterRCNN, relying on a - as backbone - ResNet 50FPN~\cite{rcnn}. The image can be passed rough, and the model automatically resize the image to its own resolution. \\ 
+After having determined all the bounding boxes of the diagram image, in order to correctly create the diagram internal representation, there's the need to link together text, elements and relations. For more details about the model and its training, refer to \textbf{Section}~\ref{sec:obj_det}. \\
 
 
 \subsubsection{Arrow Orientation}
@@ -180,7 +181,76 @@ In order to solve this problem, we decided to use a weighted CrossEntropy Loss f
 This final approach showed a significant improvement in the results, with the loss function decreasing to around 0.6 after 10 epochs of training, with a global accuracy score of 97\% in the validation set.
 
 \subsection{Object Detection}
-TODO
+\label{sec:obj_det}
+TODO: Talk about the net.
+
+The model employed was tested in two different ways: as zero-shot, after a 10-epoch training and after a 100-epoch training. The best-behaving one was, of course, the latter (to see the results of the different stages, see \textbf{Figures}~\ref{fig:bbox1} -~\ref{fig:bbox2} -~\ref{fig:bbox3}). In Table~\ref{tab:map} and Table~\ref{tab:mar} we show the Mean Average Precision and Recall of the model used.
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=200pt, height=150pt]{bbox1.jpg}
+	\caption{The model employed in a zero-shot fashion.}
+	\label{fig:bbox1}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=200pt, height=150pt]{bbox2.jpg}
+	\caption{The model employed after 10 epochs of training.}
+	\label{fig:bbox2}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=180pt, height=150pt]{bbox3.png}
+	\caption{The model employed after 100 epochs of training. }
+	\label{fig:bbox3}
+\end{figure}
+
+\begin{table}[htbp]
+	\centering
+	\caption{Mean Average Precision (\textit{mAP}) Metrics}
+	\begin{tabular}{|l|c|l|}
+		\hline
+		\textbf{Metric} & \textbf{Value} & \textbf{Description} \\
+		\hline
+		mAP & 0.8754 & Overall mean Average Precision \\
+		mAP@0.5 & 0.9878 & mAP at IoU threshold 0.5 \\
+		mAP@0.75 & 0.9183 & mAP at IoU threshold 0.75 \\
+		\hline
+		mAP (Small) & 0.6444 & mAP for small objects \\
+		mAP (Medium) & 0.8054 & mAP for medium objects \\
+		mAP (Large) & 0.8975 & mAP for large objects \\
+		\hline
+	\end{tabular}
+	\label{tab:map}
+\end{table}
+
+\begin{table}[htbp]
+	\centering
+	\caption{Mean Average Recall (\textit{mAR}) Metrics}
+	\label{tab:mar}
+	\begin{tabular}{|l|c|l|}
+		\hline
+		\textbf{Metric} & \textbf{Value} & \textbf{Description} \\
+		\hline
+		mAR@1 & 0.3436 & mAR with max 1 detection per image \\
+		mAR@10 & 0.8877 & mAR with max 10 detections per image \\
+		mAR@100 & 0.9128 & mAR with max 100 detections per image \\
+		\hline
+		mAR (Small) & 0.6631 & mAR for small objects \\
+		mAR (Medium) & 0.8670 & mAR for medium objects \\
+		mAR (Large) & 0.9141 & mAR for large objects \\
+		\hline
+	\end{tabular}
+\end{table}
+
+Furthermore, we also think that the following metrics show a great precision:
+
+\begin{itemize}
+	\item \textbf{Average X-axis error:} 6.84 pixels
+	\item \textbf{Average Y-axis error:} 4.84 pixels
+\end{itemize}
+
 
 \subsection{Arrow Orientation}
 \label{exp:arrow_orientation}
@@ -295,8 +365,7 @@ However, this approach didn't work as expected (see Figure~\ref{fig:template_mat
 
 \section{ArrowNet}
 \label{arrow-net}
-
-This second approach for determining an arrow's orientation was inspired by UNet \cite{unet}. The core idea was to segment an arrow's bounding box, and to use a specific CNN to try and determine the arrow's head point and the arrow's tail point. The downsampling-upsampling network is called \textbf{ArrowNet} and its specifics can be found in Table~\ref{table:arrownet}.
+This second approach for determining an arrow's orientation was inspired by UNet \cite{unet}. The core idea was to segment an arrow's bounding box, and to use a specific CNN to try and determine the arrow's head point and the arrow's tail point. This downsampling-upsampling network is called \textbf{ArrowNet} and its specifics can be found in Table~\ref{table:arrownet}.
 
 \begin{table}[htbp]
 	\centering
@@ -304,7 +373,7 @@ This second approach for determining an arrow's orientation was inspired by UNet
 	\label{tab:arrownet}
 	\begin{tabular}{|l|l|l|l|l|}
 		\hline
-		\textbf{Stage} & \textbf{Layer} & \textbf{Out Channels} & \textbf{Operations} \\
+		\textbf{Stage} & \textbf{Layer} & \textbf{Out Ch} & \textbf{Operations} \\
 		\hline
 		\multirow{3}{*}{Encoder} 
 		& Encoder1 & $32$ & Double Conv Block \\
@@ -312,7 +381,7 @@ This second approach for determining an arrow's orientation was inspired by UNet
 		& Encoder2 & $64$ & Double Conv Block \\
 		\hline
 		Bottleneck 
-		& MaxPool + Bottleneck & $128$ & MaxPool + Double Conv \\
+		& MaxPool+Bottleneck & $128$ & MaxPool+Double Conv \\
 		\hline
 		\multirow{4}{*}{Decoder}
 		& Upsampling2 & $64$ & Transpose Conv Block \\
@@ -320,7 +389,7 @@ This second approach for determining an arrow's orientation was inspired by UNet
 		& Upsampling1 & $32$ & Transpose Conv Block \\
 		& Skip + Decoder1 & $32$ & Concat + Double Conv \\
 		\hline
-		Output & Output Conv & $3$ & $1 \times 1$ Convolution \\
+		Output & Output Conv & $2$ & $1 \times 1$ Convolution \\
 		\hline
 	\end{tabular}
 	\label{table:arrownet}
@@ -328,17 +397,37 @@ This second approach for determining an arrow's orientation was inspired by UNet
 
 The entire architecture is composed of three main building blocks:
 
+\begin{enumerate}
+\item \textbf{Double Convolution Block:} Each double convolution block applies two consecutive $3 \times 3$ convolutions with padding 1, followed by batch normalization, and a ReLU activation after each convolution. This should preserve spatial dimensions while increasing feature depth.
 
-\textbf{Double Convolution Block:} Each double convolution block applies two consecutive $3 \times 3$ convolutions with padding=1, followed by batch normalization and ReLU activation after each convolution. This preserves spatial dimensions while increasing feature depth.
+\item \textbf{Upsampling Block:} The upsampling blocks use $2 \times 2$ transposed convolutions with stride 2, followed by batch normalization and ReLU activation.
 
-\textbf{Upsampling Block:} The upsampling blocks use $2 \times 2$ transposed convolutions with stride=2 to double the spatial resolution, followed by batch normalization and ReLU activation.
+\item \textbf{Skip Connections:} The architecture employs skip connections that concatenate feature maps from the encoder path with corresponding decoder features.
 
-\textbf{Skip Connections:} The architecture employs skip connections that concatenate feature maps from the encoder path with corresponding decoder features, doubling the channel dimension before processing through decoder blocks.
+\end{enumerate}
 
-The network processes input images of size $256 \times 256$ through a symmetric encoder-decoder structure. The encoder progressively reduces spatial resolution from $256^2$ to $128^2$ to $64^2$ while increasing feature channels from 32 to 64 to 128. The decoder reverses this process, upsampling back to the original resolution while maintaining rich feature representations through skip connections. The final $1 \times 1$ convolution maps the 32-channel feature representation to 3 output classes for pixel-wise classification.
+The two output float channels of ArrowNet should have been used to predict, in a given position: $1$ if the head's point is in a certain position, $0$ else; $1$ if the tail's point is in a certain position, $0$ else - for the first and second channel respectively.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=225pt, height=75pt]{arrownet1.jpg}
+	\caption{Some results for arrow's head reconstruction.}
+	\label{fig:arrownet1}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=225pt, height=75pt]{arrownet2.jpg}
+	\caption{The overall result of an ArrowNet input.}
+	\label{fig:arrownet2}
+\end{figure}
+
+As seen in Figure~\ref{fig:arrownet2}, due to the low number of samples in the dataset, the network is unable to correctly distinguish between an arrow's head and tail.
 
 \section{The Classification Network}
 \label{classification_net}
+
+The \textbf{Classification Network} is a lightweight convolutional neural network, suited for processing grayscale images. The architecture is composed of convolutional feature extraction layers followed by fully connected classification layers. Some specific about it can be found in Table~\ref{tab:classification-architecture}.
 
 \begin{table}[h]
 	\centering
@@ -346,17 +435,17 @@ The network processes input images of size $256 \times 256$ through a symmetric 
 	\label{tab:classification-architecture}
 	\begin{tabular}{|c|c|c|c|}
 		\hline
-		\textbf{Conv Layer} & \textbf{Output Channels} & \textbf{Kernel Size} & \textbf{Pool Kernel Size} \\
+		\textbf{Layer Type} & \textbf{Out Channels} & \textbf{Kernel Size} & \textbf{Pool Kernel Size} \\
 		\hline 
-		1 & 8 & 2 & 3 \\
-		2 & 16 & 2  & 3 \\
-		3 & 24 & 3  & 2 \\
+		Conv & 8 & 2 & 3 \\
+		Conv & 16 & 2  & 3 \\
+		Conv & 24 & 3  & 2 \\
 		\hline
-		\textbf{Linear Layer} & \textbf{Output Features} & \textbf{Droput Rate} & \textbf{Activation Function} \\
+		\textbf{Layer Type} & \textbf{Out Features} & \textbf{Droput Rate} & \textbf{Activation Function} \\
 		\hline 
-		1 & 2048 & 0.2 & ReLU \\
-		2 & 128 & 0.2 & ReLU \\
-		3 & 3 & 0.2 & ReLU \\
+		Linear & 2048 & 0.2 & ReLU \\
+		Linear & 128 & 0.2 & ReLU \\
+		Linear & 3 & 0.2 & ReLU \\
 		\hline
 	\end{tabular}
 \end{table}
