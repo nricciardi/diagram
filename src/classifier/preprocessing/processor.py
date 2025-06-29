@@ -39,7 +39,8 @@ class GrayScaleProcessor(Processor):
 
         device = image.as_tensor().device
         image_np = image.as_tensor().cpu().detach().numpy()
-        image_np = (image_np * 255).clip(0, 255).astype(np.uint8)
+        if image_np.min() >= 0 and image_np.max() <= 1:
+            image_np = (image_np * 255).clip(0, 255).astype(np.uint8)
         
         if len(image_np.shape) != 3:
             return image
