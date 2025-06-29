@@ -75,16 +75,27 @@ Source: https://github.com/bernhardschaefer/handwritten-diagram-datasets
 
 ### Graph diagram: dataset/source/fa
 
-[dataset/source/fa](dataset/source/fa/) contiene solo **graph diagram**
+We used the following datasets:
+- https://cmp.felk.cvut.cz/~breslmar/finite_automata/ (**graph diagrams** only, fa)
+- https://cmp.felk.cvut.cz/~breslmar/flowcharts/ (**flowchart diagrams**, fcb)
+- https://tc11.cvc.uab.es/datasets/OHFCD_1 (**flowchart diagrams**, fca)
+- https://github.com/dwslab/hdBPMN (**BPMN diagrams**, hdBPMN)
+- https://www.kaggle.com/datasets/leticiapiucco/handwritten-uml-class-diagrams (**class diagrams**)
+- https://github.com/aaanthonyyy/CircuitNet (**circuit diagrams**)
+- https://paperswithcode.com/dataset/ai2d (**school diagrams**)
 
-Link dataset: https://cmp.felk.cvut.cz/~breslmar/finite_automata/
+For the classifier, we used the class, circuit and school diagrams to gain more robustness
 
-I diagrammi sono tutti **annotati** con **bounding box**, *anche per il testo*.
+For the extractor, we used only flowchart and graph diagrams
 
-*Categorie:*
+The diagrams are all **annotated** with **bounding box**, *also for the text*
+- in addition to the provided bounding boxes for the arrows we added the bounding boxes for the head(s) and tail(s)
+  - we assumed an arrow can have two heads, two tails, or one head and one tail
+
+*Categories*
 
 ![Categorie](doc/assets/images/categories-fa.png)
 
-*Esempio di annotazione*
+*Annotation example*
 
 ![Esempio annotazione](doc/assets/images/annotation-fa.png)

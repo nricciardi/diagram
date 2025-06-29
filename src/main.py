@@ -238,7 +238,7 @@ if __name__ == '__main__':
 
 
     classifier = GNRClassifier("gnr-classifier", model_path=args.classifier)
-    text_digitizer = TrOCRTextExtractorSmall()
+    text_digitizer = TrOCRTextExtractorBaseHandwritten()
     # less expensive version, but with lower performance: TrOCRTextExtractorSmall()
 
     extractors = [
