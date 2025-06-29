@@ -80,4 +80,12 @@ D.~Deng, ``Dbscan clustering algorithm based on density,'' in \emph{2020 7th
   \url{https://doi.org/10.1109/IFEEA51475.2020.00199}
 \BIBentrySTDinterwordspacing
 
+\bibitem{unet}
+\BIBentryALTinterwordspacing
+N.~Siddique, S.~Paheding, C.~P. Elkin, and V.~Devabhaktuni, ``U-net and its
+  variants for medical image segmentation: A review of theory and
+  applications,'' \emph{IEEE Access}, vol.~9, pp. 82\,031--82\,057, 2021.
+  [Online]. Available: \url{https://doi.org/10.1109/ACCESS.2021.3086020}
+\BIBentrySTDinterwordspacing
+
 \end{thebibliography}
