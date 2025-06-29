@@ -1,11 +1,10 @@
-from torchvision.io import decode_image, ImageReadMode
-import cv2
 from core.image.image import Image
 from dataclasses import dataclass
 from torch import Tensor
 import torch
 from typing import Self
-from src import DEVICE
+from PIL import Image as PILImage
+import numpy as np
 
 
 @dataclass
@@ -16,19 +15,24 @@ class TensorImage(Image):
     @classmethod
     def from_str(cls, path: str) -> Self:
 
-        if (path.lower().endswith('.png') or path.lower().endswith('.jpeg') or path.lower().endswith('.jpg')):
-            tensor = decode_image(path, mode = ImageReadMode.GRAY)
-            if tensor.shape[0] == 4:
-                tensor = tensor[:3, :, :]
-            return TensorImage(tensor)
+        pil_img = PILImage.open(path).convert("RGBA")
+        np_img = np.array(pil_img)
 
-        if (path.lower().endswith('.bmp')):
-            np_img = cv2.imread(path)
-            if np_img.shape[2] == 4:
-                np_img = cv2.cvtColor(np_img, cv2.COLOR_BGRA2BGR)
-            assert np_img.shape[2] == 3, f"Expected 3D numpy array, but got {np_img.ndim}D array for image {path}"
-            tensor = torch.from_numpy(np_img).permute(2, 0, 1)
-            return TensorImage(tensor)
+        if np_img.shape[2] == 4:
+            alpha = np_img[:, :, 3:] / 255.0
+            rgb = np_img[:, :, :3].astype(np.float32)
+            white_bg = 255.0 * (1 - alpha)
+            rgb = rgb * alpha + white_bg
+            np_img = rgb.astype(np.uint8)
+        else:
+            np_img = np_img[:, :, :3]
+
+
+        if len(np_img.shape) == 2:
+            np_img = np.stack([np_img] * 3, axis=-1)
+
+        tensor = torch.from_numpy(np_img).permute(2, 0, 1).contiguous()  # C, H, W
+        return TensorImage(tensor)
             
 
     def as_tensor(self) -> Tensor:

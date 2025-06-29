@@ -1,6 +1,5 @@
-from typing import List, Type, override, Optional
-import sys, os
-
+from typing import List, Type, override
+from dataclasses import dataclass
 from src.representation.flowchart_representation.element import FlowchartElementCategory, Element
 from src.representation.flowchart_representation.relation import FlowchartRelationCategory, Relation
 
@@ -10,16 +9,14 @@ from src.representation.flowchart_representation.flowchart_representation import
 from core.transducer.outcome import TransducerOutcome
 from core.transducer.transducer import Transducer
 
+
+@dataclass
 class FlowchartToMermaidTransducer(Transducer):
     """
     Converts flowchart representations into Mermaid.js syntax.
     This transducer is specifically designed to handle flowchart diagrams and their elements, transforming them into
     a textual representation compatible with Mermaid.
     """
-    
-
-    def __init__(self, identifier: str):
-        super().__init__(identifier)
 
     @override
     def compatible_diagrams(self) -> List[str]:
@@ -36,10 +33,16 @@ class FlowchartToMermaidTransducer(Transducer):
         ]
 
     @staticmethod
+    def sanitize_text(text: str) -> str:
+        return text.replace(")", "").replace("(", "")
+
+    @staticmethod
     def wrap_element(category: str, label: str) -> str:
 
         if label.strip() == "":
             label = category
+
+        label = FlowchartToMermaidTransducer.sanitize_text(label)
 
         match category:
             case FlowchartElementCategory.CIRCLE.value:
@@ -59,6 +62,9 @@ class FlowchartToMermaidTransducer(Transducer):
 
     @staticmethod
     def wrap_relation(category: str, label: str) -> str:
+
+        label = FlowchartToMermaidTransducer.sanitize_text(label)
+
         match category:
             case FlowchartRelationCategory.ARROW.value:
                 if label.strip() == "":

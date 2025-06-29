@@ -20,7 +20,8 @@ from src import DEVICE
 from src.classifier.classifier import GNRClassifier
 from src.extractor.bbox_detection import load_model
 from src.extractor.flowchart.gnr_extractor import GNRFlowchartExtractor
-from src.extractor.text_extraction.text_extractor import TrOCRTextExtractorSmall, TrOCRTextExtractorBaseHandwritten
+from src.extractor.text_extraction.text_extractor import TrOCRTextExtractorSmall, TrOCRTextExtractorBaseHandwritten, \
+    TrOCRTextExtractorLargeHandwritten
 from src.transducer.d2.flowchart_transducer import FlowchartToD2Transducer
 from src.transducer.mermaid.flowchart_transducer import FlowchartToMermaidTransducer
 from src.compiler.d2.flowchart_compiler import FlowchartToD2Compiler
@@ -253,7 +254,9 @@ if __name__ == '__main__':
 
     classifier = GNRClassifier("gnr-classifier", model_path=args.classifier)
     text_digitizer = TrOCRTextExtractorBaseHandwritten()
-    # less expensive version, but with lower performance: TrOCRTextExtractorSmall()
+    # less expensive version, but with lower performance:
+    # TrOCRTextExtractorBaseHandwritten()
+    # TrOCRTextExtractorSmall()
 
     extractors = [
         GNRFlowchartExtractor(
