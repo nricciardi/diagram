@@ -70,8 +70,9 @@ CLI parameters are:
 - `--bbox-detector path/to/object_detector_weights.pth` weights of object detection network
 - `--outputs-dir-path path/to/output_dir` directory in which outputs will be dumped
 - `--then-compile` flag to compile markup language file into images
+- `--markups d2-lang mermaid` to specify markup languages
 
-We advise you to tune thresholds based on your drawing style. We have tuned thresholds for common digrams.
+We advise you to tune thresholds based on your drawing style. We have tuned thresholds for common diagrams.
 
 For example:
 
@@ -124,14 +125,14 @@ For example:
 ##### Hard Flowchart
 
 ```bash
---input test/hard_graph.png --classifier demo/classifier_weights.pth --bbox-detector demo/object_detector_weights.pth --outputs-dir-path demo/outcome --then-compile --element_arrow_distance_threshold 250
+--input test/hard_graph.png --classifier demo/classifier_weights.pth --bbox-detector demo/object_detector_weights.pth --outputs-dir-path demo/outcome --then-compile --element_arrow_distance_threshold 350
 ```
 
 ![Hard flowchart](assets/images/hard_flowchart.png)
 
 ![Outcome D2](assets/images/hard_flow_outcome_d2.svg)
 
-![Outcome Mermaid](assets/images/hard_flow_outcome_mermaid.png)
+![Outcome Mermaid](assets/images/hard_flow_mermaid_outcome.png)
 
 
 ## Project Overview
@@ -140,7 +141,7 @@ System's components:
 
 - **Preprocessor**: pre-elaborates images, e.g. straighten images
 - **Classifier**: classifies input images (e.g. `graph-diagram`, `flowchart`)
-- **Extractor**: extracts and builds agnostic representation of input diagram (e.g. matrice del grafo per i `graph-diagram`)
+- **Extractor**: extracts and builds agnostic representation of input diagram
 - **Transducer**: converts agnostic representation of a diagram into a specific markup language (e.g. Mermaid)
 - **Compiler**: produces an input from a markup language file
 - **Orchestrator**: manages other components 

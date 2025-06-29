@@ -194,10 +194,21 @@ def parse_args():
         help="arrow_tail_overlap_threshold"
     )
 
+    parser.add_argument(
+        "--markups",
+        type=str,
+        nargs="+",
+        default=None,
+        help="Pick markup languages"
+    )
+
     return parser.parse_args()
 
 
-def main(device: str, classifier: Classifier, extractors: List[Extractor], transducers: List[Transducer], compilers: List[Compiler], inputs_paths: List[str], parallelization: bool, then_compile: bool, outputs_dir_path: Optional[str]):
+def main(device: str, classifier: Classifier, extractors: List[Extractor], transducers: List[Transducer],
+         compilers: List[Compiler], inputs_paths: List[str], parallelization: bool, then_compile: bool,
+         outputs_dir_path: Optional[str], markups: Optional[List[str]] = None):
+
     images: List[Image] = []
     for path in inputs_paths:
         image = TensorImage.from_str(path)
@@ -222,7 +233,8 @@ def main(device: str, classifier: Classifier, extractors: List[Extractor], trans
         parallelization=parallelization,
         dump_markup=True,       # CLI always dumps markup files
         then_compile=then_compile,
-        outputs_dir_path=outputs_dir_path
+        outputs_dir_path=outputs_dir_path,
+        markups=markups
     )
 
 
@@ -286,7 +298,7 @@ if __name__ == '__main__':
             arrow_crop_delta_size_y=args.arrow_crop_delta_size_y,
             element_arrow_distance_threshold=args.element_arrow_distance_threshold,
             arrow_head_overlap_threshold=args.arrow_head_overlap_threshold,
-            arrow_tail_overlap_threshold=args.arrow_tail_overlap_threshold
+            arrow_tail_overlap_threshold=args.arrow_tail_overlap_threshold,
         )
     ]
 
@@ -305,5 +317,6 @@ if __name__ == '__main__':
         compilers=[
             FlowchartToMermaidCompiler("flowchart-to-mermaid-compiler"),
             FlowchartToD2Compiler("flowchart-to-d2-compiler")
-        ]
+        ],
+        markups=args.markups
     )
