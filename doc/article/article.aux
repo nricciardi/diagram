@@ -27,6 +27,7 @@
 \newlabel{fig:flowchart-extractor}{{3}{2}{The complete pipeline of the extractor module}{figure.caption.3}{}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {IV-C}1}Preprocessing}{2}{subsubsection.4.3.1}\protected@file@percent }
 \citation{rcnn}
+\citation{microsofttrocr}
 \newlabel{extr:bbd}{{\mbox  {IV-C}2}{3}{Bounding Box Detection}{subsubsection.4.3.2}{}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {IV-C}2}Bounding Box Detection}{3}{subsubsection.4.3.2}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {IV-C}3}Arrow Orientation}{3}{subsubsection.4.3.3}\protected@file@percent }
@@ -40,10 +41,6 @@
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VI-A}}Classifier}{3}{subsection.6.1}\protected@file@percent }
 \newlabel{exp:classifier}{{\mbox  {VI-A}}{3}{Classifier}{subsection.6.1}{}}
 \bibstyle{IEEEtran}
-\bibdata{article}
-\bibcite{arrowrcnn}{1}
-\bibcite{interactiveUML}{2}
-\bibcite{sketchdiagram}{3}
 \@writefile{loa}{\contentsline {algorithm}{\numberline {1}{\ignorespaces Cross-Entropy weight computation}}{4}{algorithm.1}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VI-B}}Object Detection}{4}{subsection.6.2}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VI-C}}Arrow Orientation}{4}{subsection.6.3}\protected@file@percent }
@@ -57,18 +54,28 @@
 \newlabel{fig:text_digitization_results_2}{{5}{4}{Some results in which the \textit {trocr-base-handwritten} fails}{figure.caption.6}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {VII}Discussion}{4}{section.7}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {VIII}Conclusion and Future Work}{4}{section.8}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{References}{4}{section*.7}\protected@file@percent }
+\bibdata{article}
+\bibcite{arrowrcnn}{1}
+\bibcite{interactiveUML}{2}
+\bibcite{sketchdiagram}{3}
 \bibcite{rcnn}{4}
+\bibcite{microsofttrocr}{5}
+\bibcite{SIFT}{6}
+\bibcite{dbscan}{7}
+\citation{SIFT}
+\citation{dbscan}
+\citation{SIFT}
+\@writefile{toc}{\contentsline {section}{References}{5}{section*.7}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{Appendix\nobreakspace  A: Double Clustering}{5}{section*.8}\protected@file@percent }
 \newlabel{double_clustering}{{A}{5}{\appendixname \nobreakspace \thesectiondis \\* Double Clustering}{section*.8}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces The result of Spectral Clustering to one instance of an arrow bounding box in our dataset.}}{5}{figure.caption.9}\protected@file@percent }
 \newlabel{fig:spectral_clustering}{{6}{5}{The result of Spectral Clustering to one instance of an arrow bounding box in our dataset}{figure.caption.9}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces The result of DBScan to one instance of an arrow bounding box in our dataset.}}{5}{figure.caption.10}\protected@file@percent }
 \newlabel{fig:arrow_double_clustering_clusters}{{7}{5}{The result of DBScan to one instance of an arrow bounding box in our dataset}{figure.caption.10}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces The estimated direction of the arrow, finding the points that maximize the distance inside the cluster.}}{5}{figure.caption.11}\protected@file@percent }
-\newlabel{fig:arrow_double_clustering_direction}{{8}{5}{The estimated direction of the arrow, finding the points that maximize the distance inside the cluster}{figure.caption.11}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {9}{\ignorespaces An example of hand-picked template with SIFT descriptors.}}{5}{figure.caption.12}\protected@file@percent }
-\newlabel{fig:templates}{{9}{5}{An example of hand-picked template with SIFT descriptors}{figure.caption.12}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces The estimated direction of the arrow, finding the points that maximize the distance inside the cluster.}}{6}{figure.caption.11}\protected@file@percent }
+\newlabel{fig:arrow_double_clustering_direction}{{8}{6}{The estimated direction of the arrow, finding the points that maximize the distance inside the cluster}{figure.caption.11}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {9}{\ignorespaces An example of hand-picked template with SIFT descriptors.}}{6}{figure.caption.12}\protected@file@percent }
+\newlabel{fig:templates}{{9}{6}{An example of hand-picked template with SIFT descriptors}{figure.caption.12}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {10}{\ignorespaces The overall result of the algorithm.}}{6}{figure.caption.13}\protected@file@percent }
 \newlabel{fig:template_matching_fail}{{10}{6}{The overall result of the algorithm}{figure.caption.13}{}}
 \@writefile{toc}{\contentsline {section}{Appendix\nobreakspace  B: Arrow-Net}{6}{section*.14}\protected@file@percent }
