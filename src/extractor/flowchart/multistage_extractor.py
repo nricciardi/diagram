@@ -70,7 +70,7 @@ class MultistageFlowchartExtractor(MultiStageExtractor, ABC):
         arrow_tail_bboxes: List[ImageBoundingBox] = [bbox for bbox in bboxes if self._is_arrow_tail_category(diagram_id, bbox.category)]
         text_bboxes: List[ImageBoundingBox] = [bbox for bbox in bboxes if self._is_text_category(diagram_id, bbox.category)]
 
-        arrows: List[Arrow] = compute_arrows(arrow_bboxes, arrow_head_bboxes, arrow_tail_bboxes)
+        arrows, head_bboxes, tail_bboxes = compute_arrows(arrow_bboxes, arrow_head_bboxes, arrow_tail_bboxes)
 
         arrow_bboxes_to_recover = []
         for arrow_bbox in arrow_bboxes:
