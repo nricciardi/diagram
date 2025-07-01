@@ -10,57 +10,49 @@ Reallocating 'singl_function' (item size: 4) to 100 items.
 Reallocating 'wiz_functions' (item size: 4) to 6000 items.
 Reallocating 'singl_function' (item size: 4) to 100 items.
 Database file #1: article.bib
-I was expecting a `,' or a `}'---line 371 of file article.bib
- :  
- :  url = {https://doi.org/10.1007/978-3-030-79382-1_21}
-(Error may have been on previous line)
-I'm skipping whatever remains of this entry
 -- IEEEtran.bst version 1.14 (2015/08/26) by Michael Shell.
 -- http://www.michaelshell.org/tex/ieeetran/bibtex/
 -- See the "IEEEtran_bst_HOWTO.pdf" manual for usage information.
-Warning--empty booktitle in interactiveUML
-Warning--empty booktitle in online1
 
 Done.
-You've used 21 entries,
+You've used 23 entries,
             4087 wiz_defined-function locations,
-            968 strings with 12541 characters,
-and the built_in function-call counts, 17280 in all, are:
-= -- 1336
-> -- 504
-< -- 111
-+ -- 273
-- -- 111
-* -- 902
-:= -- 2616
-add.period$ -- 54
-call.type$ -- 21
-change.case$ -- 30
-chr.to.int$ -- 258
+            987 strings with 13252 characters,
+and the built_in function-call counts, 19298 in all, are:
+= -- 1520
+> -- 549
+< -- 129
++ -- 299
+- -- 118
+* -- 1011
+:= -- 2945
+add.period$ -- 58
+call.type$ -- 23
+change.case$ -- 32
+chr.to.int$ -- 303
 cite$ -- 23
-duplicate$ -- 1209
-empty$ -- 1393
-format.name$ -- 121
-if$ -- 3980
+duplicate$ -- 1331
+empty$ -- 1527
+format.name$ -- 130
+if$ -- 4443
 int.to.chr$ -- 0
-int.to.str$ -- 21
-missing$ -- 246
-newline$ -- 116
-num.names$ -- 27
-pop$ -- 604
+int.to.str$ -- 23
+missing$ -- 269
+newline$ -- 132
+num.names$ -- 29
+pop$ -- 647
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 2
-skip$ -- 1273
+skip$ -- 1429
 stack$ -- 0
-substring$ -- 658
-swap$ -- 986
-text.length$ -- 25
+substring$ -- 764
+swap$ -- 1107
+text.length$ -- 28
 text.prefix$ -- 0
 top$ -- 5
-type$ -- 21
-warning$ -- 2
-while$ -- 63
-width$ -- 23
-write$ -- 265
-(There was 1 error message)
+type$ -- 23
+warning$ -- 0
+while$ -- 72
+width$ -- 25
+write$ -- 301

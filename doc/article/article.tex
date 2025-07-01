@@ -37,7 +37,7 @@ The area of analyzing handwritten diagrams has been already studied in literatur
 
 Various works have already focused on the development, training and evaluation of specific deep-learning networks for extracting structures in arrow-oriented diagrams (like \textbf{Arrow R-CNN} \cite{arrowrcnn}) or in vector diagrams (as in \cite{sketchdiagram}). More traditional approaches tipically focus on specific diagram types and a restricted set of elements in them (e.g., \textbf{UML} \cite{interactiveUML}). 
 
-Some works in element recognition - like arrows - are particularly domain-specific (like medical imaging \cite{med1}\cite{med2}). Other studies focus on the so-called \textit{online recognition} task, whose goal is to recognize diagrams as they are drawn (see \cite{online1}, \cite{online2}, \cite{online3}). The online recognition task quite often employs the use of relative strokes, and is mainly focused on flowchart diagrams.
+Some works in element recognition - like arrows - are particularly domain-specific (like medical imaging \cite{med1}\cite{med2}, or in circuit diagrams \cite{2024modular}). Other studies focus on the so-called \textit{online recognition} task, whose goal is to recognize diagrams as they are drawn (see \cite{online1}, \cite{online2}, \cite{online3} and especially \cite{framework} for a general framework). The online recognition task quite often employs the use of relative strokes, and is mainly focused on flowchart diagrams.
 
 % System Architecture
 \section{System Architecture}
@@ -358,8 +358,8 @@ The development of D.I.A.G.R.A.M. offers an insightful perspective on the integr
 		\caption{An easy flowchart diagram.}
 	\end{subfigure}
 	\hfill
-	\begin{subfigure}[b]{0.4\linewidth}
-		\includegraphics[width=40pt, height=150pt]{ex2.png}
+	\begin{subfigure}[b]{0.45\linewidth}
+		\includegraphics[width=35pt, height=150pt]{ex2.png}
 		\caption{The network's output.}
 	\end{subfigure}
 	
@@ -372,7 +372,7 @@ The development of D.I.A.G.R.A.M. offers an insightful perspective on the integr
 	\end{subfigure}
 	\hfill
 	\begin{subfigure}[b]{0.45\linewidth}
-		\includegraphics[width=80pt, height=150pt]{ex4.png}
+		\includegraphics[width=50pt, height=130pt]{ex4.png}
 		\caption{The network's output.}
 	\end{subfigure}
 	
@@ -385,7 +385,7 @@ The development of D.I.A.G.R.A.M. offers an insightful perspective on the integr
 	\end{subfigure}
 	\hfill
 	\begin{subfigure}[b]{0.45\linewidth}
-		\includegraphics[width=\linewidth]{ex6.png}
+		\includegraphics[width=70pt, height=130pt]{ex6.png}
 		\caption{The network's output.}
 	\end{subfigure}
 	
@@ -399,7 +399,7 @@ The system as a whole adheres to principles of scalability and generality. By de
 
 In comparison to related work, D.I.A.G.R.A.M. distinguishes itself by targeting offline, image-based recognition (as opposed to stroke-based online methods) while retaining support for structural output generation. This positions it as a hybrid between traditional rule-based recognizers and modern neural approaches.
 
-TODO: Nodo extra
+We'd like to point out a few things about Figure~\ref{fig:results}. First of all, the result shown in part (d). A non-existing node can be seen in the upper right corner of the image; this is due to the fact that the self-arrow of node $q_5$ is recognized - by the object detection network - both as an arrow and as a node, with an high trust value. This problem could have been solved by applying a Non-Maxima Suppression - but in this specific case, the highest confidence value was surprisingly the node's one. This problem - that occasionally shows up - is probably to be attributed to the low samples present in the dataset.
 
 \section{Conclusion and Future Work}
 TODO

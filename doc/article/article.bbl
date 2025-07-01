@@ -40,7 +40,9 @@ I.~Saito, H.~Yoshida, and K.~Sakaguchi, ``Sketch2diagram: Generating vector
 \bibitem{interactiveUML}
 \BIBentryALTinterwordspacing
 E.~Lank, J.~Thorley, and S.~Chen, ``An interactive system for recognizing hand
-  drawn uml diagrams.'' 01 2000, p.~7. [Online]. Available:
+  drawn uml diagrams.'' in \emph{Proceedings of the 2000 Conference of the
+  Centre for Advanced Studies on Collaborative Research}, ser. CASCON '00, 01
+  2000, p.~7. [Online]. Available:
   \url{https://dl.acm.org/doi/10.5555/782034.782041}
 \BIBentrySTDinterwordspacing
 
@@ -61,11 +63,19 @@ K.~Santosh, N.~Alam, P.~Roy, L.~Wendling, S.~Antani, and G.~Thoma, ``A simple
   \url{https://doi.org/10.1142/S0218001416570020}
 \BIBentrySTDinterwordspacing
 
+\bibitem{2024modular}
+\BIBentryALTinterwordspacing
+J.~Bayer, L.~van Waveren, and A.~Dengel. (2024) Modular graph extraction for
+  handwritten circuit diagram images. [Online]. Available:
+  \url{https://arxiv.org/abs/2402.11093}
+\BIBentrySTDinterwordspacing
+
 \bibitem{online1}
 \BIBentryALTinterwordspacing
 M.~Bresler, T.~Phan, D.~Průša, M.~Nakagawa, and V.~Hlavac, ``Recognition
-  system for on-line sketched diagrams,'' vol. 2014, 09 2014. [Online].
-  Available: \url{https://doi.org/10.1109/ICFHR.2014.100}
+  system for on-line sketched diagrams,'' in \emph{2014 14th International
+  Conference on Frontiers in Handwriting Recognition}, 09 2014, pp. 563--568.
+  [Online]. Available: \url{https://doi.org/10.1109/ICFHR.2014.100}
 \BIBentrySTDinterwordspacing
 
 \bibitem{online2}
@@ -83,6 +93,15 @@ M.~Bresler, D.~Průša, and V.~Hlavac, ``Detection of arrows in on-line
   \emph{International Journal on Document Analysis and Recognition (IJDAR)},
   vol.~19, 09 2016. [Online]. Available:
   \url{https://doi.org/10.1007/s10032-016-0269-z}
+\BIBentrySTDinterwordspacing
+
+\bibitem{framework}
+\BIBentryALTinterwordspacing
+F.~Julca-Aguilar, H.~Mouchère, C.~Viard-Gaudin, and R.~Zanibbi, ``A general
+  framework for the recognition of online handwritten graphics,''
+  \emph{International Journal on Document Analysis and Recognition (IJDAR)},
+  vol.~23, no.~2, pp. 143--160, 2020. [Online]. Available:
+  \url{https://doi.org/10.1007/s10032-019-00349-6}
 \BIBentrySTDinterwordspacing
 
 \bibitem{rcnn}
@@ -111,12 +130,15 @@ B.~Schäfer, M.~Keuper, and H.~Stuckenschmidt. (2021) Ohfcd - online
   \url{https://tc11.cvc.uab.es/datasets/OHFCD_1}. Accessed: 29/06/2025.
 
 \bibitem{BPMN}
+\BIBentryALTinterwordspacing
 B.~Sch{\"a}fer, H.~{van der Aa}, H.~Leopold, and H.~Stuckenschmidt,
   ``\BIBforeignlanguage{en}{Sketch2bpmn: Automatic recognition of hand-drawn
   bpmn models},'' in \emph{\BIBforeignlanguage{en}{Advanced Information Systems
   Engineering}}, ser. Lecture {{Notes}} in {{Computer Science}}.\hskip 1em plus
   0.5em minus 0.4em\relax {Springer International Publishing}, 06 2021, pp.
-  344--360.
+  344--360. [Online]. Available:
+  \url{https://doi.org/10.1007/978-3-030-79382-1_21}
+\BIBentrySTDinterwordspacing
 
 \bibitem{modelsketch}
 L.~Piucco, E.~L. Dos~Santos, M.~Johann, and L.~M. Oliveira. (2021) Modelsketch:
@@ -129,10 +151,13 @@ A.~Anthony, N.~Lee, S.~Sabri, and Z.~Wu. (2021) Circuitnet: A dataset for
   \url{https://github.com/aaanthonyyy/CircuitNet}. Accessed: 2025-06-29.
 
 \bibitem{ai2d}
+\BIBentryALTinterwordspacing
 A.~Kembhavi, M.~Salvato, E.~Kolve, M.~Seo, H.~Hajishirzi, and A.~Farhadi, ``A
   diagram is worth a dozen images,'' in \emph{Computer Vision -- ECCV 2016},
   B.~Leibe, J.~Matas, N.~Sebe, and M.~Welling, Eds.\hskip 1em plus 0.5em minus
   0.4em\relax Cham: Springer International Publishing, 2016, pp. 235--251.
+  [Online]. Available: \url{https://doi.org/10.1007/978-3-319-46493-0_15}
+\BIBentrySTDinterwordspacing
 
 \bibitem{lin2017feature}
 \BIBentryALTinterwordspacing
@@ -145,11 +170,14 @@ T.-Y. Lin, P.~Dollar, R.~Girshick, K.~He, B.~Hariharan, and S.~Belongie, ``{
 \BIBentrySTDinterwordspacing
 
 \bibitem{coco}
+\BIBentryALTinterwordspacing
 T.-Y. Lin, M.~Maire, S.~Belongie, J.~Hays, P.~Perona, D.~Ramanan,
   P.~Doll{\'a}r, and C.~L. Zitnick, ``Microsoft coco: Common objects in
   context,'' in \emph{Computer Vision -- ECCV 2014}, D.~Fleet, T.~Pajdla,
   B.~Schiele, and T.~Tuytelaars, Eds.\hskip 1em plus 0.5em minus 0.4em\relax
-  Cham: Springer International Publishing, 2014, pp. 740--755.
+  Cham: Springer International Publishing, 2014, pp. 740--755. [Online].
+  Available: \url{https://doi.org/10.1007/978-3-319-10602-1_48}
+\BIBentrySTDinterwordspacing
 
 \bibitem{SIFT}
 \BIBentryALTinterwordspacing
