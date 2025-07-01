@@ -20,9 +20,13 @@ Try `d2` installation.
 d2 --version
 ```
 
-2. Install dependencies (use Conda if you want)
+2. Install dependencies using **Python 3.12**
 
 ```bash
+conda create --name diagram python=3.12
+
+conda activate diagram
+
 pip3 install torch opencv-python matplotlib requests pillow pandas torchvision numpy shapely transformers sentencepiece protobuf torchmetrics scikit-learn
 ```
 
@@ -162,35 +166,3 @@ flowchart TD
 Then, markup language is compiled using associated compiler.
 
 
-
-## Dataset
-
-Source: https://github.com/bernhardschaefer/handwritten-diagram-datasets
-
-
-### Graph diagram: dataset/source/fa
-
-We used the following datasets:
-- https://cmp.felk.cvut.cz/~breslmar/finite_automata/ (**graph diagrams** only, fa)
-- https://cmp.felk.cvut.cz/~breslmar/flowcharts/ (**flowchart diagrams**, fcb)
-- https://tc11.cvc.uab.es/datasets/OHFCD_1 (**flowchart diagrams**, fca)
-- https://github.com/dwslab/hdBPMN (**BPMN diagrams**, hdBPMN)
-- https://www.kaggle.com/datasets/leticiapiucco/handwritten-uml-class-diagrams (**class diagrams**)
-- https://github.com/aaanthonyyy/CircuitNet (**circuit diagrams**)
-- https://paperswithcode.com/dataset/ai2d (**school diagrams**)
-
-For the classifier, we used the class, circuit and school diagrams to gain more robustness
-
-For the extractor, we used only flowchart and graph diagrams
-
-The diagrams are all **annotated** with **bounding box**, *also for the text*
-- in addition to the provided bounding boxes for the arrows we added the bounding boxes for the head(s) and tail(s)
-  - we assumed an arrow can have two heads, two tails, or one head and one tail
-
-*Categories*
-
-![Categories](assets/images/categories-fa.png)
-
-*Annotation example*
-
-![Labels](assets/images/annotation-fa.png)
