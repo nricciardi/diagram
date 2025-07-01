@@ -397,9 +397,39 @@ Among the modules, the Extractor proved particularly effective. Leveraging deep 
 
 The system as a whole adheres to principles of scalability and generality. By decoupling the diagram type detection from the extraction and compilation logic, D.I.A.G.R.A.M. maintains flexibility in handling new diagram formats with minimal architectural changes. However, its performance remains sensitive to input quality and assumes a level of neatness in the handwritten diagrams that may not always be guaranteed in real-world scenarios.
 
-In comparison to related work, D.I.A.G.R.A.M. distinguishes itself by targeting offline, image-based recognition (as opposed to stroke-based online methods) while retaining support for structural output generation. This positions it as a hybrid between traditional rule-based recognizers and modern neural approaches.
+In comparison to related work, D.I.A.G.R.A.M. distinguishes itself by targeting offline, image-based recognition (as opposed to stroke-based online methods) while retaining support for structural output generation. This positions it as a hybrid between traditional rule-based recognizers and modern neural approaches. \\
 
-We'd like to point out a few things about Figure~\ref{fig:results}. First of all, the result shown in part (d). A non-existing node can be seen in the upper right corner of the image; this is due to the fact that the self-arrow of node $q_5$ is recognized - by the object detection network - both as an arrow and as a node, with an high trust value. This problem could have been solved by applying a Non-Maxima Suppression - but in this specific case, the highest confidence value was surprisingly the node's one. This problem - that occasionally shows up - is probably to be attributed to the low samples present in the dataset.
+We'd like to point out a few things about the results shown Figure~\ref{fig:results}. First of all, the result shown in part (d). A non-existing node can be seen in the upper right corner of the image; this is due to the fact that the self-arrow of node $q_5$ is recognized - by the object detection network - both as an arrow and as a node, with an high trust value. This problem could have been solved by applying a Non-Maxima Suppression - but in this specific case, the highest confidence value was surprisingly the node's one. This problem - that occasionally shows up - is probably to be attributed to the low samples present in the dataset.
+
+\begin{figure}[h!]
+	\centering
+	\vspace{0.5em}
+	
+	% First row
+	\begin{tabular}{ccc}
+		\includegraphics[height=5cm]{ex6.png} &
+		\includegraphics[height=5cm]{chat1.png} &
+		\includegraphics[height=5cm]{chat2.png} \\
+		% Optional captions under each image
+		(a) Our result & (b) GPT Mermaid & (c) GPT D2 \\
+	\end{tabular}
+	
+	\vspace{1em}
+	
+	% Second row
+	\begin{tabular}{ccc}
+		\includegraphics[height=5cm]{ex4.png} &
+		\includegraphics[height=5cm]{chat3.png} &
+		\includegraphics[height=5cm]{chat4.png} \\
+		(d) Our result & (e) GPT Mermaid & (f) GPT D2 \\
+	\end{tabular}
+	
+	\caption{Six vertically-oriented images arranged in two rows}
+	\label{fig:chat}
+	
+\end{figure}
+
+Another result we'd like to present is a comparison between D.I.A.G.R.A.M.'s results and what GPT-4o could give in zero-shot. The prompt given was the following: "The current image features a diagram. Analyze it and output the respective D2 and Mermaid script.". The results given (see Figure~\ref{fig:chat}) may be - at first glance - quite similar. However, some key differences arise. For instance, in diagrams (b), (e), (f), GPT isn't able to correctly output the shape of the nodes - whereas our net is capable of doing. Just like our net added a node instead of the self-arrow (see preceding paragraph), GPT isn't able to correctly recognize that portion of ink as a self-arrow (images (e), (f)). Another subtle difference - this time, not logical - can be seen in image (c): GPT created three different nodes, while the original image had only one.
 
 \section{Conclusion and Future Work}
 TODO
