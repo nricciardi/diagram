@@ -159,6 +159,16 @@ A.~Kembhavi, M.~Salvato, E.~Kolve, M.~Seo, H.~Hajishirzi, and A.~Farhadi, ``A
   [Online]. Available: \url{https://doi.org/10.1007/978-3-319-46493-0_15}
 \BIBentrySTDinterwordspacing
 
+\bibitem{alexnet}
+\BIBentryALTinterwordspacing
+A.~Krizhevsky, I.~Sutskever, and G.~E. Hinton, ``Imagenet classification with
+  deep convolutional neural networks,'' in \emph{Advances in Neural Information
+  Processing Systems}, F.~Pereira, C.~Burges, L.~Bottou, and K.~Weinberger,
+  Eds., vol.~25.\hskip 1em plus 0.5em minus 0.4em\relax Curran Associates,
+  Inc., 2012. [Online]. Available:
+  \url{https://proceedings.neurips.cc/paper_files/paper/2012/file/c399862d3b9d6b76c8436e924a68c45b-Paper.pdf}
+\BIBentrySTDinterwordspacing
+
 \bibitem{lin2017feature}
 \BIBentryALTinterwordspacing
 T.-Y. Lin, P.~Dollar, R.~Girshick, K.~He, B.~Hariharan, and S.~Belongie, ``{

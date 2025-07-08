@@ -37,7 +37,7 @@ The area of analyzing handwritten diagrams has been already studied in literatur
 
 Various works have already focused on the development, training and evaluation of specific deep-learning networks for extracting structures in arrow-oriented diagrams (like \textbf{Arrow R-CNN} \cite{arrowrcnn}) or in vector diagrams (as in \cite{sketchdiagram}). More traditional approaches tipically focus on specific diagram types and a restricted set of elements in them (e.g., \textbf{UML} \cite{interactiveUML}). 
 
-Some works in element recognition - like arrows - are particularly domain-specific (like medical imaging \cite{med1}\cite{med2}, or in circuit diagrams \cite{2024modular}). Other studies focus on the so-called \textit{online recognition} task, whose goal is to recognize diagrams as they are drawn (see \cite{online1}, \cite{online2}, \cite{online3} and especially \cite{framework} for a general framework). The online recognition task quite often employs the use of relative strokes, and is mainly focused on flowchart diagrams.
+Some works in element recognition - like arrows - are particularly domain-specific (like medical imaging \cite{med1}\cite{med2}, or in circuit diagrams \cite{2024modular}). Other studies focus on the so-called \textit{online recognition} task, whose goal is to recognize diagrams as they are drawn (see \cite{online1}, \cite{online2}, \cite{online3} and especially \cite{framework} for a general framework). The online recognition task quite often employs the use of relative strokes - making it actually \textit{easier} than the offline one - and is mainly focused on flowchart diagrams.
 
 % System Architecture
 \section{System Architecture}
@@ -50,10 +50,10 @@ Figure~\ref{fig:pipeline} illustrates the full pipeline, composed of four main m
 \label{fig:pipeline}
 \end{figure}
 
-The Classifier is able to recognize the category of the hand-written diagram that the user submitted as input. This is necessary in order for the system to know to which Extractor pass the data. This module is able to apply object detection and semantic recognition to represent the diagram in a unified way. After that, the representation is sent to the Transducer, which converts the data in a Markup language of choice. The Markup language content is therefore sent to the Compiler, thus generating the high-quality and editable diagram in .png format.
+The Classifier is able to recognize the category of the hand-written diagram that the user submitted as input. This is necessary in order for the system to know to which Extractor pass the data. This module is able to apply object detection and semantic recognition to represent the diagram in a unified way. After that, the representation is processed by the Transducer, which converts the data in a Markup language of choice. The Markup language content is therefore sent to the Compiler, thus generating the high-quality and editable diagram in PNG format.
 
 \subsection{Classifier Module}
-The Classifier is the first component of the pipeline. It is able to tell to which category a given image of an handwritten diagram belongs to. This is necessary in order to later know the Extractors that can process the input image.
+The Classifier is the first component of the pipeline. It is able to understand which category a given image of an handwritten diagram belongs to. This is necessary in order to later know the Extractors that can process the input image.
 \subsection{Extractor Module}
 The Extractor is the key component of the D.I.A.G.R.A.M. system, able to transform the raw diagram image into a structured, category-agnostic representation.
 The Extractor recognizes the diagram's components, such as shapes, lines, and text, through an object detection network, and organizes them into a unified format. This representation serves as the foundation for the subsequent Transducer module, which converts the structured data into a domain-specific markup language.
@@ -70,7 +70,7 @@ Its primary role is to take the structured representation of the diagram, expres
 \section{Flowchart Diagram Recognition}
 
 \subsection{Internal Representation}
-In order to pass data through the components of the pipeline in a unified way, it was necessary to decide upon an internal representation of the flowchart diagram. It consists of \textbf{elements} and \textbf{relations}. The latter are linked to at least one element. Every element has a \textit{category} and possibly some \textit{inner} and \textit{outer text}. Every relation has a \textit{category} too, either a \textit{source} or \textit{target element} or both, and possibly \textit{text} related to it.
+In order to pass data through the components of the pipeline in a unified way, it was necessary to decide upon an internal representation of the flowchart diagram. It consists of \textbf{elements} and \textbf{relations}. The latter are linked to at least one element. Every element has a \textit{category} and possibly some \textit{inner} and \textit{outer text}. Every relation has a \textit{category} too, and could have a \textit{source} or \textit{target element}, and possibly \textit{text} related to it. The latter property is actually subdivided in four distinct boxes: the text could be associated with the arrow's head, tail, body or the text could be cut off by the arrow itself.
 
 This internal representation is generated from the image provided by the user by the Extractor module, while it is parsed and converted to a markup language of choice by the Transducer. 
 
@@ -138,7 +138,7 @@ Since the task of converting an image of text into the relative string has alrea
 Once the text has been digitized, it's necessary to effectively compute which elements are connected by which arrows. This is done by finding, for each arrow, the elements nearer to the head (which we will assume to be the 'target' of the relation) and to the tail (the 'source' of the relationship exemplified by the arrow). These associations are nullified if the distance is above a certain adjustable threshold. This last step is done under the hypothesis that an arrow may come from nothing - or may point to nothing, having actually only either the source or the target. \\
 
 \subsubsection{Text Association}
-It can be assumed that every piece of text is linked to one and only one element or relation. So, every bounding box containing text is linked to the nearest element - it being either a relation or an element. The associations that require too long a distance are eliminated further in the algorithm, and the relevant text is discarded.\\
+It can be assumed that every piece of text is linked to one and only one element or relation. So, every bounding box containing text is linked to the nearest element - it being either a relation or an element. The associations that require too long a distance are eliminated further in the algorithm, and the associated text is discarded.\\
 
 \subsubsection{Element-Text Association}
 After that a text box has been assigned to an element, there's the need to understand if the text is either inside or outside the element and whether the text is actually referring to the given element or not. In order to do this, the overlap between the two bounding boxes is computed; if the overlap is over a certain threshold, heuristically decided, the association is kept. Otherwise, the distance between the two bounding boxes is computed - as the distance between their central point. If the distance is over a certain threshold, the association is kept; otherwise, it's discarded.\\
@@ -178,11 +178,11 @@ We implemented a targeted approach for dataset utilization based on the specific
 
 \subsection{Classifier}
 \label{exp:classifier}
-The first architecture explored for the Classifier module was a Convolutional Neural Network (CNN) following AlexNet's architecture, but smaller in size.
-It had two Convolutional layers, each followed by a batch normalization and then by a max pooling layers. The first layer had only 4 filters, while the second one had 8.
+The first architecture explored for the Classifier module was a Convolutional Neural Network (CNN) following AlexNet's architecture \cite{alexnet}, but smaller in size.
+It has two Convolutional layers, each followed by a batch normalization and then by a max pooling layers. The first layer had only 4 filters, while the second one had 8.
 The output of the second layer was then flattened and passed through a fully connected layer which downsized the features to 128, followed by a ReLU activation function. Other two fully connected layer brought the number of output features down to the number of classes.
 Then, a softmax activation function was applied to the output layer, in order to obtain the probabilities of each class.
-The model was trained on our own dataset, with only three possible output classes: 'flowchart', 'graph' and 'other'; it was trained for 10 epochs, with an AdamW optimizer (with a learning rate of $0.001$) and a standard CrossEntropy Loss function.
+The model was trained on our own dataset, with only three possible output classes: 'flowchart', 'graph' and 'other'; it was trained for 10 epochs, with an AdamW optimizer (with a learning rate of $0.001$) and a standard CrossEntropy Loss function. For a more comprehensive overview of the classifier's architecture, see Appendix~\ref{classification_net}.
 \\
 
 We first tried such a small network because the features that had to be recognized were very simple, down to the basic shapes of the diagram elements.
@@ -227,7 +227,7 @@ Its main components are:
 
 The original model was trained over the COCO dataset \cite{coco}, which comprised 91 classes. It should be highlighted that the original training dataset was not in any way related to diagrams: with an efficient finetune, the network was able to swiftly change to our task. The finetuning is done with a learning rate of $0.005$ \\
 
-The model employed was tested in three different ways: as zero-shot, after a 10-epoch training and after a 100-epoch training. The best-behaving one was, of course, the latter (to see the results of the different stages, see \textbf{Figures}~\ref{fig:bbox1} -~\ref{fig:bbox2} -~\ref{fig:bbox3} -~\ref{fig:fc}). In Table~\ref{tab:map} and Table~\ref{tab:mar} we show the Mean Average Precision and Recall of the model used.
+The model employed was tested in three different ways: as zero-shot, after a 10-epoch training and after a 100-epoch training. The best-behaving one was, of course, the latter (to see the results of the different stages, see \textbf{Figures}~\ref{fig:bbox1} -~\ref{fig:bbox3} -~\ref{fig:fc}). In Table~\ref{tab:map} and Table~\ref{tab:mar} we show the Mean Average Precision and Recall of the model used.
 
 \begin{figure}[H]
 	\centering
@@ -238,15 +238,8 @@ The model employed was tested in three different ways: as zero-shot, after a 10-
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=200pt, height=150pt]{bbox2.jpg}
-	\caption{The model employed after 10 epochs of training.}
-	\label{fig:bbox2}
-\end{figure}
-
-\begin{figure}[H]
-	\centering
 	\includegraphics[width=180pt, height=150pt]{bbox3.png}
-	\caption{The model employed after 100 epochs of training. More bounding boxes can be seen because we also added arrow's tails and heads.}
+	\caption{The model employed after 100 epochs of training. With respect to Figure~\ref{fig:bbox1}, we also added here the heads and the tails for the arrows.}
 	\label{fig:bbox3}
 \end{figure}
 
@@ -445,9 +438,9 @@ TODO
 \label{double_clustering}
 The first algorithmic approach proposed to solve this task - called \textit{Double Clustering} - was as follows: 
 \begin{enumerate}
+	\item Find the keypoints of the arrow using SIFT \cite{SIFT}.
 	\item Apply a clustering algorithm to the bounding box.
 	\item Suppose that the biggest cluster belongs to the arrow; the other clusters are thought to contain useless elements for this task, and can be discarded.
-	\item Find the keypoints of the arrow using SIFT \cite{SIFT}.
 	\item Find the two keypoints inside the arrow with maximum distance. Assume that these two points are closely related to the two ends of the arrow.
 	\item Run a template matching procedure inside the two clusters to find the head of the arrow.
 \end{enumerate}
@@ -582,6 +575,8 @@ The \textbf{Classification Network} is a lightweight convolutional neural networ
 		\hline
 	\end{tabular}
 \end{table}
+
+Each convolutional layer, is followed by a ReLU activation function, a layer which applies batch normalization and by a MaxPooling layer.
 
 \end{appendices}
 
