@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (MiKTeX 25.4) (preloaded format=pdflatex 2025.6.15)  9 JUL 2025 18:00
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (MiKTeX 25.4) (preloaded format=pdflatex 2025.6.15)  9 JUL 2025 18:06
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -945,7 +945,7 @@ Package rerunfilecheck Info: File `article.out' has not changed.
 Here is how much of TeX's memory you used:
  12854 strings out of 468225
  208467 string characters out of 5432973
- 626301 words of memory out of 5000000
+ 626302 words of memory out of 5000000
  41108 multiletter control sequences out of 15000+600000
  665926 words of font info for 113 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
@@ -964,7 +964,7 @@ Users/filip/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmb8a.pfb><C:/
 Users/filip/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmbi8a.pfb><C:
 /Users/filip/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmr8a.pfb><C:
 /Users/filip/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmri8a.pfb>
-Output written on article.pdf (11 pages, 3405734 bytes).
+Output written on article.pdf (11 pages, 3405733 bytes).
 PDF statistics:
  497 PDF objects out of 1000 (max. 8388607)
  122 named destinations out of 1000 (max. 500000)
