@@ -181,9 +181,9 @@ After that a text box has been assigned to a node, there's the need to understan
 \subsubsection{Arrow-Text Association}
 After a text box is assigned to an arrow, some computation is needed to fully understand how the text is associated to the arrow itself. The arrow is approximated by a line adjoining its head and its tail.
 The distance between the line and the text's bounding box is computed and compared with a threshold - if it's over it, the association is discarded.
-Otherwise, the line approximation is then split into three different sections - whose sizes are heuristically determined, such that the relation's central section is bigger than the other two. The distance between the text bounding box and each of the three sections boxes is computed - then, the section with the lowest distance value is then assigned to the text under consideration. \\
+Otherwise, the line approximation is then split into three different sections (see Figure~\ref{fig:arrowsplit}) - whose sizes are heuristically determined, such that the relation's central section is bigger than the other two. The distance between the text bounding box and each of the three sections boxes is computed - then, the section with the lowest distance value is then assigned to the text under consideration.
 
-\begin{figure}
+\begin{figure}[H]
 	\centering
 	\includegraphics[width=\linewidth]{arrowsplit.jpg}
 	\caption{A three-split of an arrow.}
@@ -445,7 +445,7 @@ We'd like to point out a few things about the results shown Figure~\ref{fig:resu
 	\begin{tabular}{ccc}
 		\includegraphics[height=5cm]{ex6.png} &
 		\includegraphics[height=5cm]{chat1.png} &
-		\includegraphics[height=5cm]{chat2.png} \\
+		\includegraphics[height=4.35cm]{chat2.png} \\
 		% Optional captions under each image
 		(a) Our result & (b) GPT Mermaid & (c) GPT D2 \\
 	\end{tabular}
