@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (MiKTeX 25.4) (preloaded format=pdflatex 2025.6.15)  9 JUL 2025 16:56
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (MiKTeX 25.4) (preloaded format=pdflatex 2025.6.15)  9 JUL 2025 17:03
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -916,11 +916,6 @@ File: arrownet1.jpg Graphic file (type jpg)
 <use arrownet1.jpg>
 Package pdftex.def Info: arrownet1.jpg  used on input line 584.
 (pdftex.def)             Requested size: 225.00235pt x 75.00078pt.
-<arrownet2.jpg, id=401, 704.6325pt x 258.9675pt>
-File: arrownet2.jpg Graphic file (type jpg)
-<use arrownet2.jpg>
-Package pdftex.def Info: arrownet2.jpg  used on input line 591.
-(pdftex.def)             Requested size: 224.99243pt x 74.99985pt.
 
 
 ** Conference Paper **
@@ -939,19 +934,19 @@ Before submitting the final camera ready copy, remember to:
 
 [11
 
- <./arrownet1.jpg> <./arrownet2.jpg>] (article.aux)
+ <./arrownet1.jpg>] (article.aux)
  ***********
 LaTeX2e <2025-06-01>
 L3 programming layer <2025-05-26>
  ***********
 Package rerunfilecheck Info: File `article.out' has not changed.
-(rerunfilecheck)             Checksum: 412AFE47DD6D3B4E8FFC24E08AF26E2D;5268.
+(rerunfilecheck)             Checksum: A12E05FA11F9CE91EC887D7485FF1E59;5268.
  ) 
 Here is how much of TeX's memory you used:
- 12855 strings out of 468225
- 208468 string characters out of 5432973
- 622329 words of memory out of 5000000
- 41109 multiletter control sequences out of 15000+600000
+ 12846 strings out of 468225
+ 208297 string characters out of 5432973
+ 622257 words of memory out of 5000000
+ 41101 multiletter control sequences out of 15000+600000
  665926 words of font info for 113 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  75i,12n,79p,890b,636s stack positions out of 10000i,1000n,20000p,200000b,200000s
@@ -969,9 +964,9 @@ Users/filip/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmb8a.pfb><C:/
 Users/filip/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmbi8a.pfb><C:
 /Users/filip/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmr8a.pfb><C:
 /Users/filip/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmri8a.pfb>
-Output written on article.pdf (11 pages, 3398148 bytes).
+Output written on article.pdf (11 pages, 3387477 bytes).
 PDF statistics:
- 497 PDF objects out of 1000 (max. 8388607)
- 122 named destinations out of 1000 (max. 500000)
- 434 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 494 PDF objects out of 1000 (max. 8388607)
+ 121 named destinations out of 1000 (max. 500000)
+ 429 words of extra memory for PDF output out of 10000 (max. 10000000)
 

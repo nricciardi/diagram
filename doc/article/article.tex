@@ -586,14 +586,7 @@ The two output float channels of ArrowNet should have been used to predict, in a
 	\label{fig:arrownet1}
 \end{figure}
 
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=225pt, height=75pt]{arrownet2.jpg}
-	\caption{The overall result of an ArrowNet input.}
-	\label{fig:arrownet2}
-\end{figure}
-
-As seen in Figure~\ref{fig:arrownet2}, due to the low number of samples in the dataset, the network is unable to correctly distinguish between an arrow's head and tail.
+Due to the low number of synthetic samples provided, the network is unable to correctly distinguish between an arrow's head and tail. In particular, the network overfitted and simply detected as correct the presence of black ink.
 
 \section{The Classification Network}
 \label{classification_net}
