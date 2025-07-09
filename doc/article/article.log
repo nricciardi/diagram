@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (MiKTeX 25.4) (preloaded format=pdflatex 2025.6.15)  9 JUL 2025 17:03
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (MiKTeX 25.4) (preloaded format=pdflatex 2025.6.15)  9 JUL 2025 17:27
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -631,219 +631,220 @@ Underfull \hbox (badness 10000) in paragraph at lines 170--171
  []
 
 
-Underfull \hbox (badness 1436) in paragraph at lines 173--174
-\OT1/ptm/m/n/10 The dis-tance be-tween the line and the text's bound-ing
- []
-
-
-Underfull \hbox (badness 1533) in paragraph at lines 173--174
-\OT1/ptm/m/n/10 ap-prox-i-ma-tion is then split into three dif-fer-ent sec-tion
-s
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 173--174
+Underfull \hbox (badness 10000) in paragraph at lines 173--178
 
  []
 
-<arrowsplit.jpg, id=210, 1606.0pt x 518.93875pt>
+<arrowsplit.jpg, id=212, 1606.0pt x 518.93875pt>
 File: arrowsplit.jpg Graphic file (type jpg)
 <use arrowsplit.jpg>
-Package pdftex.def Info: arrowsplit.jpg  used on input line 177.
+Package pdftex.def Info: arrowsplit.jpg  used on input line 181.
 (pdftex.def)             Requested size: 252.0pt x 81.42447pt.
+<self_arrow.jpeg, id=213, 642.4pt x 481.8pt>
+File: self_arrow.jpeg Graphic file (type jpg)
+<use self_arrow.jpeg>
+Package pdftex.def Info: self_arrow.jpeg  used on input line 188.
+(pdftex.def)             Requested size: 252.0pt x 188.99663pt.
 
-Underfull \hbox (badness 2213) in paragraph at lines 183--184
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
+
+
+Underfull \hbox (badness 2213) in paragraph at lines 194--195
 []\OT1/ptm/m/n/10 Our ap-proach lever-ages mul-ti-ple hand-writ-ten di-a-gram
  []
 
 
 
-
-Underfull \hbox (badness 4859) in paragraph at lines 207--208
+[4 <./arrowsplit.jpg> <./self_arrow.jpeg>]
+Underfull \hbox (badness 4859) in paragraph at lines 218--219
 \OT1/ptm/m/n/10 Au-tomata datasets. This tar-geted ap-proach al-lows the
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 207--208
+Underfull \hbox (badness 10000) in paragraph at lines 218--219
 
  []
 
 
-Underfull \hbox (badness 2401) in paragraph at lines 213--219
+Underfull \hbox (badness 2401) in paragraph at lines 224--230
 \OT1/ptm/m/n/10 was a Con-vo-lu-tional Neu-ral Net-work (CNN) fol-low-ing
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 213--219
+Underfull \hbox (badness 10000) in paragraph at lines 224--230
 
  []
 
 
-
-[4 <./arrowsplit.jpg>]
-Underfull \hbox (badness 10000) in paragraph at lines 220--223
+Underfull \hbox (badness 10000) in paragraph at lines 231--234
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 224--228
+Underfull \hbox (badness 10000) in paragraph at lines 235--239
 
  []
+
+
 
 Package hyperref Info: bookmark level for unknown algorithm defaults to 0 on in
-put line 233.
+put line 244.
 
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 258--259
+Underfull \hbox (badness 10000) in paragraph at lines 269--270
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 260--261
+Underfull \hbox (badness 10000) in paragraph at lines 271--272
 
  []
 
-<bbox1.jpg, id=246, 642.4pt x 481.8pt>
+<bbox1.jpg, id=249, 642.4pt x 481.8pt>
 File: bbox1.jpg Graphic file (type jpg)
 <use bbox1.jpg>
-Package pdftex.def Info: bbox1.jpg  used on input line 266.
+Package pdftex.def Info: bbox1.jpg  used on input line 277.
 (pdftex.def)             Requested size: 199.99474pt x 149.99605pt.
-<bbox3.png, id=247, 462.528pt x 346.896pt>
+
+
+[5]
+<bbox3.png, id=272, 462.528pt x 346.896pt>
 File: bbox3.png Graphic file (type png)
 <use bbox3.png>
-Package pdftex.def Info: bbox3.png  used on input line 273.
+Package pdftex.def Info: bbox3.png  used on input line 284.
 (pdftex.def)             Requested size: 180.00407pt x 149.99869pt.
-<fc.png, id=250, 462.528pt x 346.896pt>
+<fc.png, id=275, 462.528pt x 346.896pt>
 File: fc.png Graphic file (type png)
 <use fc.png>
-Package pdftex.def Info: fc.png  used on input line 280.
+Package pdftex.def Info: fc.png  used on input line 291.
 (pdftex.def)             Requested size: 180.00407pt x 149.99869pt.
 
 
-[5 <./bbox1.jpg> <./bbox3.png>]
-Overfull \hbox (1.94206pt too wide) in paragraph at lines 343--355
+
+Overfull \hbox (1.94206pt too wide) in paragraph at lines 354--366
  [][] 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 357--358
+Underfull \hbox (badness 10000) in paragraph at lines 368--369
 
  []
 
-<text_digitization_results_1.png, id=278, 679.338pt x 585.387pt>
+<text_digitization_results_1.png, id=281, 679.338pt x 585.387pt>
 File: text_digitization_results_1.png Graphic file (type png)
 <use text_digitization_results_1.png>
-Package pdftex.def Info: text_digitization_results_1.png  used on input line 36
-1.
+Package pdftex.def Info: text_digitization_results_1.png  used on input line 37
+2.
 (pdftex.def)             Requested size: 252.0pt x 217.14359pt.
 
+Underfull \vbox (badness 10000) has occurred while \output is active []
 
-<text_digitization_results_2.png, id=279, 685.1196pt x 548.5293pt>
+
+
+[6 <./bbox1.jpg> <./bbox3.png> <./fc.png>]
+<text_digitization_results_2.png, id=291, 685.1196pt x 548.5293pt>
 File: text_digitization_results_2.png Graphic file (type png)
 <use text_digitization_results_2.png>
-Package pdftex.def Info: text_digitization_results_2.png  used on input line 36
-8.
+Package pdftex.def Info: text_digitization_results_2.png  used on input line 37
+9.
 (pdftex.def)             Requested size: 252.0pt x 201.75577pt.
-
-
-[6 <./fc.png> <./text_digitization_results_1.png> <./text_digitization_results_
-2.png>]
-<ex1.png, id=292, 1612.0225pt x 1671.24374pt>
+<ex1.png, id=293, 1612.0225pt x 1671.24374pt>
 File: ex1.png Graphic file (type png)
 <use ex1.png>
-Package pdftex.def Info: ex1.png  used on input line 382.
+Package pdftex.def Info: ex1.png  used on input line 393.
 (pdftex.def)             Requested size: 113.39923pt x 117.56003pt.
-<ex2.png, id=293, 858.20625pt x 3854.4pt>
+<ex2.png, id=294, 858.20625pt x 3854.4pt>
 File: ex2.png Graphic file (type png)
 <use ex2.png>
-Package pdftex.def Info: ex2.png  used on input line 387.
+Package pdftex.def Info: ex2.png  used on input line 398.
 (pdftex.def)             Requested size: 34.99025pt x 149.974pt.
-<ex3.png, id=294, 1337.99875pt x 1037.8775pt>
+<ex3.png, id=295, 1337.99875pt x 1037.8775pt>
 File: ex3.png Graphic file (type png)
 <use ex3.png>
-Package pdftex.def Info: ex3.png  used on input line 395.
+Package pdftex.def Info: ex3.png  used on input line 406.
 (pdftex.def)             Requested size: 113.39923pt x 87.9571pt.
-<ex4.png, id=295, 246.1697pt x 662.475pt>
+<ex4.png, id=296, 246.1697pt x 662.475pt>
 File: ex4.png Graphic file (type png)
 <use ex4.png>
-Package pdftex.def Info: ex4.png  used on input line 400.
+Package pdftex.def Info: ex4.png  used on input line 411.
 (pdftex.def)             Requested size: 49.99933pt x 129.99583pt.
-<ex5.png, id=296, 1511.6475pt x 1672.2475pt>
+<ex5.png, id=297, 1511.6475pt x 1672.2475pt>
 File: ex5.png Graphic file (type png)
 <use ex5.png>
-Package pdftex.def Info: ex5.png  used on input line 408.
+Package pdftex.def Info: ex5.png  used on input line 419.
 (pdftex.def)             Requested size: 113.39923pt x 125.43866pt.
-<ex6.png, id=297, 741.77126pt x 1364.09625pt>
+<ex6.png, id=298, 741.77126pt x 1364.09625pt>
 File: ex6.png Graphic file (type png)
 <use ex6.png>
-Package pdftex.def Info: ex6.png  used on input line 413.
+Package pdftex.def Info: ex6.png  used on input line 424.
 (pdftex.def)             Requested size: 69.99362pt x 129.98596pt.
 
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 425--426
+
+[7 <./text_digitization_results_1.png> <./text_digitization_results_2.png> <./e
+x1.png (PNG copy)> <./ex2.png> <./ex3.png (PNG copy)> <./ex4.png> <./ex5.png (P
+NG copy)> <./ex6.png (PNG copy)>]
+Underfull \hbox (badness 10000) in paragraph at lines 436--437
 []\OT1/ptm/m/n/10 In com-par-i-son to re-lated work, D.I.A.G.R.A.M.
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 425--426
+Underfull \hbox (badness 10000) in paragraph at lines 436--437
 \OT1/ptm/m/n/10 dis-tin-guishes it-self by tar-get-ing of-fline, image-based
  []
 
 
-Underfull \hbox (badness 1783) in paragraph at lines 425--426
+Underfull \hbox (badness 1783) in paragraph at lines 436--437
 \OT1/ptm/m/n/10 while re-tain-ing sup-port for struc-tural out-put gen-er-a-tio
 n.
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 425--426
+Underfull \hbox (badness 10000) in paragraph at lines 436--437
 
  []
 
 File: ex6.png Graphic file (type png)
 <use ex6.png>
-Package pdftex.def Info: ex6.png  used on input line 435.
+Package pdftex.def Info: ex6.png  used on input line 446.
 (pdftex.def)             Requested size: 77.35065pt x 142.26378pt.
-<chat1.png, id=299, 1183.42125pt x 2610.75375pt>
+<chat1.png, id=310, 1183.42125pt x 2610.75375pt>
 File: chat1.png Graphic file (type png)
 <use chat1.png>
-Package pdftex.def Info: chat1.png  used on input line 436.
+Package pdftex.def Info: chat1.png  used on input line 447.
 (pdftex.def)             Requested size: 64.48343pt x 142.26378pt.
-<chat2.png, id=300, 2514.39375pt x 3815.25375pt>
+<chat2.png, id=311, 2514.39375pt x 3815.25375pt>
 File: chat2.png Graphic file (type png)
 <use chat2.png>
-Package pdftex.def Info: chat2.png  used on input line 437.
-(pdftex.def)             Requested size: 93.72939pt x 142.26378pt.
+Package pdftex.def Info: chat2.png  used on input line 448.
+(pdftex.def)             Requested size: 81.5672pt x 123.76965pt.
 
-Overfull \hbox (29.28952pt too wide) in paragraph at lines 434--441
+Overfull \hbox (17.12733pt too wide) in paragraph at lines 445--452
  [][] 
  []
 
 File: ex4.png Graphic file (type png)
 <use ex4.png>
-Package pdftex.def Info: ex4.png  used on input line 446.
+Package pdftex.def Info: ex4.png  used on input line 457.
 (pdftex.def)             Requested size: 52.86159pt x 142.26378pt.
-<chat3.png, id=301, 620.3175pt x 2056.68375pt>
+<chat3.png, id=312, 620.3175pt x 2056.68375pt>
 File: chat3.png Graphic file (type png)
 <use chat3.png>
-Package pdftex.def Info: chat3.png  used on input line 447.
+Package pdftex.def Info: chat3.png  used on input line 458.
 (pdftex.def)             Requested size: 42.90607pt x 142.26378pt.
-<chat4.png, id=302, 1321.93875pt x 3777.11125pt>
+<chat4.png, id=313, 1321.93875pt x 3777.11125pt>
 File: chat4.png Graphic file (type png)
 <use chat4.png>
-Package pdftex.def Info: chat4.png  used on input line 448.
+Package pdftex.def Info: chat4.png  used on input line 459.
 (pdftex.def)             Requested size: 49.78235pt x 142.26378pt.
 
-LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 
 
-[7 <./ex1.png (PNG copy)> <./ex2.png> <./ex3.png (PNG copy)> <./ex4.png> <./ex5
-.png (PNG copy)> <./ex6.png (PNG copy)>]
-
-(article.bbl
+[8 <./chat1.png (PNG copy)> <./chat2.png (PNG copy)> <./chat3.png (PNG copy)> <
+./chat4.png (PNG copy)>] (article.bbl
 ** WARNING: IEEEtran.bst: No hyphenation pattern has been
 ** loaded for the language `en'. Using the pattern for
 ** the default language instead.
@@ -858,65 +859,63 @@ Underfull \hbox (badness 1558) in paragraph at lines 144--147
 
 
 
-[8 <./chat1.png (PNG copy)> <./chat2.png (PNG copy)> <./chat3.png (PNG copy)> <
-./chat4.png (PNG copy)>])
+)
 
-<spectral_clustering.png, id=350, 664.4825pt x 795.97375pt>
+[9]
+<spectral_clustering.png, id=368, 664.4825pt x 795.97375pt>
 File: spectral_clustering.png Graphic file (type png)
 <use spectral_clustering.png>
-Package pdftex.def Info: spectral_clustering.png  used on input line 490.
+Package pdftex.def Info: spectral_clustering.png  used on input line 501.
 (pdftex.def)             Requested size: 150.0pt x 179.6815pt.
-<arrow_double_clustering_clusters.png, id=351, 484.9317pt x 585.387pt>
+<arrow_double_clustering_clusters.png, id=369, 484.9317pt x 585.387pt>
 File: arrow_double_clustering_clusters.png Graphic file (type png)
 <use arrow_double_clustering_clusters.png>
 Package pdftex.def Info: arrow_double_clustering_clusters.png  used on input li
-ne 497.
+ne 508.
 (pdftex.def)             Requested size: 150.0pt x 181.07507pt.
 
 
-[9 <./spectral_clustering.png (PNG copy)> <./arrow_double_clustering_clusters.p
-ng>]
-<arrow_double_clustering_direction.png, id=378, 659.46375pt x 805.0075pt>
+<arrow_double_clustering_direction.png, id=372, 659.46375pt x 805.0075pt>
 File: arrow_double_clustering_direction.png Graphic file (type png)
 <use arrow_double_clustering_direction.png>
 Package pdftex.def Info: arrow_double_clustering_direction.png  used on input l
-ine 507.
+ine 518.
 (pdftex.def)             Requested size: 150.0pt x 183.0965pt.
-<templates.png, id=380, 277.035pt x 336.25626pt>
+<templates.png, id=374, 277.035pt x 336.25626pt>
 File: templates.png Graphic file (type png)
 <use templates.png>
-Package pdftex.def Info: templates.png  used on input line 516.
+Package pdftex.def Info: templates.png  used on input line 527.
 (pdftex.def)             Requested size: 49.9994pt x 60.00017pt.
-<template_matching_fail.png, id=383, 653.44125pt x 771.88374pt>
+<template_matching_fail.png, id=377, 653.44125pt x 771.88374pt>
 File: template_matching_fail.png Graphic file (type png)
 <use template_matching_fail.png>
-Package pdftex.def Info: template_matching_fail.png  used on input line 525.
+Package pdftex.def Info: template_matching_fail.png  used on input line 536.
 (pdftex.def)             Requested size: 150.0pt x 177.18796pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
 
 
-<selfarrowdc.jpg, id=384, 796.9775pt x 652.4375pt>
+[10 <./spectral_clustering.png (PNG copy)> <./arrow_double_clustering_clusters.
+png> <./arrow_double_clustering_direction.png (PNG copy)> <./templates.png (PNG
+ copy)>]
+<selfarrowdc.jpg, id=396, 796.9775pt x 652.4375pt>
 File: selfarrowdc.jpg Graphic file (type jpg)
 <use selfarrowdc.jpg>
-Package pdftex.def Info: selfarrowdc.jpg  used on input line 532.
+Package pdftex.def Info: selfarrowdc.jpg  used on input line 543.
 (pdftex.def)             Requested size: 150.0pt x 122.78967pt.
 
-Overfull \hbox (2.95023pt too wide) in paragraph at lines 545--567
+Overfull \hbox (2.95023pt too wide) in paragraph at lines 556--578
  [][] 
  []
 
 
 
-[10 <./arrow_double_clustering_direction.png (PNG copy)> <./templates.png (PNG 
-copy)> <./template_matching_fail.png (PNG copy)> <./selfarrowdc.jpg>]
-<arrownet1.jpg, id=400, 903.375pt x 301.125pt>
+<arrownet1.jpg, id=399, 903.375pt x 301.125pt>
 File: arrownet1.jpg Graphic file (type jpg)
 <use arrownet1.jpg>
-Package pdftex.def Info: arrownet1.jpg  used on input line 584.
+Package pdftex.def Info: arrownet1.jpg  used on input line 595.
 (pdftex.def)             Requested size: 225.00235pt x 75.00078pt.
-
 
 ** Conference Paper **
 Before submitting the final camera ready copy, remember to:
@@ -930,26 +929,23 @@ Before submitting the final camera ready copy, remember to:
 
 
 
-
-
-[11
-
- <./arrownet1.jpg>] (article.aux)
+[11 <./template_matching_fail.png (PNG copy)> <./selfarrowdc.jpg> <./arrownet1.
+jpg>] (article.aux)
  ***********
 LaTeX2e <2025-06-01>
 L3 programming layer <2025-05-26>
  ***********
 Package rerunfilecheck Info: File `article.out' has not changed.
-(rerunfilecheck)             Checksum: A12E05FA11F9CE91EC887D7485FF1E59;5268.
+(rerunfilecheck)             Checksum: A846D6211A6E17CE6FC717B2DA79B7A5;5268.
  ) 
 Here is how much of TeX's memory you used:
- 12846 strings out of 468225
- 208297 string characters out of 5432973
- 622257 words of memory out of 5000000
- 41101 multiletter control sequences out of 15000+600000
+ 12855 strings out of 468225
+ 208484 string characters out of 5432973
+ 626316 words of memory out of 5000000
+ 41109 multiletter control sequences out of 15000+600000
  665926 words of font info for 113 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 75i,12n,79p,890b,636s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 75i,12n,79p,890b,529s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <C:/Users/filip/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/
 cmex10.pfb><C:/Users/filip/AppData/Local/Programs/MiKTeX/fonts/type1/public/ams
 fonts/cm/cmmi10.pfb><C:/Users/filip/AppData/Local/Programs/MiKTeX/fonts/type1/p
@@ -964,9 +960,9 @@ Users/filip/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmb8a.pfb><C:/
 Users/filip/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmbi8a.pfb><C:
 /Users/filip/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmr8a.pfb><C:
 /Users/filip/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmri8a.pfb>
-Output written on article.pdf (11 pages, 3387481 bytes).
+Output written on article.pdf (11 pages, 3405886 bytes).
 PDF statistics:
- 494 PDF objects out of 1000 (max. 8388607)
- 121 named destinations out of 1000 (max. 500000)
- 429 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 498 PDF objects out of 1000 (max. 8388607)
+ 122 named destinations out of 1000 (max. 500000)
+ 434 words of extra memory for PDF output out of 10000 (max. 10000000)
 
