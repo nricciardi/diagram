@@ -170,12 +170,23 @@ It can be assumed that every piece of text is linked to one and only one element
 After that a text box has been assigned to a node, there's the need to understand if the text is either inside or outside of the target node and whether the text is actually referring to the given element or not. In order to do this, the overlap between the two bounding boxes is computed; the value is compared to an heuristically determined threshold. If it's higher, the association is kept and the text is determined to be inside. If it's lower, the distance between the two bounding boxes is computed - as the distance between their central point. If the distance is below a certain threshold, the association is kept and the text is regarded as outside the node; otherwise, it's discarded.\\
 
 \subsubsection{Arrow-Text Association}
-After a text box is assigned to an arrow, some computation is needed to fully understand how the text is associated to the arrow itself. The arrow is approximated by a line adjoining its head and its tail. The distance between the line and the text's bounding box is computed and compared with a threshold - if it's over it, the association is discarded. Otherwise, the line approximation is then split into three different sections - whose sizes are heuristically determined, such that the relation's central section is bigger than the other two. The distance between the text bounding box and each of the three sections boxes is computed - then, the section with the lowest distance value is then assigned to the text under consideration. \\
+After a text box is assigned to an arrow, some computation is needed to fully understand how the text is associated to the arrow itself. The arrow is approximated by a line adjoining its head and its tail.
+The distance between the line and the text's bounding box is computed and compared with a threshold - if it's over it, the association is discarded.
+Otherwise, the line approximation is then split into three different sections - whose sizes are heuristically determined, such that the relation's central section is bigger than the other two. The distance between the text bounding box and each of the three sections boxes is computed - then, the section with the lowest distance value is then assigned to the text under consideration.
+We must notice that for self-arrow we can not compute simple distance between the line and the text's bounding box, given that the approximated arrow line is not accurate. Thus, we approximate the arrow using two segments like a triangle.
+The third point is the middle of the opposite edge. \\
 
 \begin{figure}
 	\centering
 	\includegraphics[width=\linewidth]{arrowsplit.jpg}
 	\caption{A three-split of an arrow.}
+	\label{fig:arrowsplit}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\includegraphics[width=\linewidth]{self_arrow.jpeg}
+	\caption{Self-arrow approximation.}
 	\label{fig:arrowsplit}
 \end{figure}
 
