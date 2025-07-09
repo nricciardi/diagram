@@ -127,6 +127,32 @@ The only preprocessing applied is a gray-scale transformation. Other transformat
 The model employed for object detection is a FasterRCNN, relying on a - as backbone - ResNet 50FPN~\cite{rcnn}. The image can be passed rough, and the model automatically resize the image to its own resolution. \\ 
 After having determined all the bounding boxes of the diagram image, in order to correctly create the diagram internal representation, there's the need to link together text, elements and relations. For more details about the model and its training, refer to \textbf{Section}~\ref{sec:obj_det}. \\
 
+\subsubsection{Arrow Retrieval}
+Sometimes, the number of arrow's bodies, heads and tails don't match up. In particular, the following, trivial, equivalance doesn't hold true:
+$$
+	2\times\text{arrow bodies} = \text{arrow heads} + \text{arrow tails}
+$$
+
+The case in which, for a specific arrow, its head or its tail has not been found. In order to be able to be as error-robust as possible, we give the arrow - and a crop with more area around it - to the extraction net once again. If it's able to find both an head and a tail this time, we assume those to be the one's linked to the arrow. If more than one head or tail is found, the highest confidence result is kept - unless the confidence is lower than a certain threshold. 
+
+The other case is the one in which we have some heads and tails without any body. For each pair of head and tail, the area of the image linking them is cropped and given to the detection net. For every arrow's bounding box found - if any - we compute the overlap with both the head and tail's bounding boxes. If the overlap is lower than a certain threshold, the arrow's bounding box is discarded. If it's over it and if it's over the current arrow's confidence value - if present, in the case in which we found multiple valid candidates - it's momentarily assumed as the correct arrow. If no arrow fulfills any of the above requisite, we discard the couple as candidates. \\
+
+\begin{figure}[htbp]
+	\centering
+	
+	% Row 1
+	\begin{subfigure}[b]{0.45\linewidth}
+		\includegraphics[width=\linewidth]{retrieval1.jpg}
+		\caption{A graph diagram. The upper rightmost self-arrow has been detected - but not its tail and head.}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.45\linewidth}
+		\includegraphics[width=\linewidth]{retrieval2.png}
+		\caption{The detection net's output, able to recognize the arrow's head and tail after passing only a crop of the region.}
+	\end{subfigure}
+	
+\end{figure}
+
 
 \subsubsection{Arrow Orientation}
 To later correctly assign arrows to their source and target elements, the need to determine where the tip of an arrow lies. This task involves a few problems, among which determining exactly the arrow shape and its end - because sometimes other pen signs may be found in the bounding box of the arrow itself. After a few trials (and errors; for further insight, refer to section~\ref{exp:arrow_orientation}), the approach yielding the best results was through the use of the object detection network (see section~\ref{extr:bbd}) to recognize both arrow heads and tails. \\
@@ -138,13 +164,20 @@ Since the task of converting an image of text into the relative string has alrea
 Once the text has been digitized, it's necessary to effectively compute which elements are connected by which arrows. This is done by finding, for each arrow, the elements nearer to the head (which we will assume to be the 'target' of the relation) and to the tail (the 'source' of the relationship exemplified by the arrow). These associations are nullified if the distance is above a certain adjustable threshold. This last step is done under the hypothesis that an arrow may come from nothing - or may point to nothing, having actually only either the source or the target. \\
 
 \subsubsection{Text Association}
-It can be assumed that every piece of text is linked to one and only one element or relation. So, every bounding box containing text is linked to the nearest element - it being either a relation or an element. The associations that require too long a distance are eliminated further in the algorithm, and the associated text is discarded.\\
+It can be assumed that every piece of text is linked to one and only one element or relation. So, every bounding box containing text is linked to the nearest element - it being either a relation or a node. The associations that require too long a distance are eliminated further in the algorithm, and the associated text is discarded.\\
 
-\subsubsection{Element-Text Association}
-After that a text box has been assigned to an element, there's the need to understand if the text is either inside or outside the element and whether the text is actually referring to the given element or not. In order to do this, the distance between the two bounding boxes is computed - as the distance between their central point. If the distance is over a certain threshold, the association is kept; otherwise, it's discarded.\\
+\subsubsection{Node-Text Association}
+After that a text box has been assigned to a node, there's the need to understand if the text is either inside or outside of the target node and whether the text is actually referring to the given element or not. In order to do this, the overlap between the two bounding boxes is computed; the value is compared to an heuristically determined threshold. If it's higher, the association is kept and the text is determined to be inside. If it's lower, the distance between the two bounding boxes is computed - as the distance between their central point. If the distance is below a certain threshold, the association is kept and the text is regarded as outside the node; otherwise, it's discarded.\\
 
-\subsubsection{Relation-Text Association}
-After a text box is assigned to a relation, some computation is needed to fully understand how the text is associated to the relation itself. The relation's bounding box is then split into three different sections. The overlap between the text bounding box and each of the three sections boxes is computed - then, the section with the highest overlap value is then assigned to the text under consideration. \\
+\subsubsection{Arrow-Text Association}
+After a text box is assigned to an arrow, some computation is needed to fully understand how the text is associated to the arrow itself. The arrow is approximated by a line adjoining its head and its tail. The distance between the line and the text's bounding box is computed and compared with a threshold - if it's over it, the association is discarded. Otherwise, the line approximation is then split into three different sections - whose sizes are heuristically determined, such that the relation's central section is bigger than the other two. The distance between the text bounding box and each of the three sections boxes is computed - then, the section with the lowest distance value is then assigned to the text under consideration. \\
+
+\begin{figure}
+	\centering
+	\includegraphics[width=\linewidth]{arrowsplit.jpg}
+	\caption{A three-split of an arrow.}
+	\label{fig:arrowsplit}
+\end{figure}
 
 \section{Dataset}
 Our approach leverages multiple handwritten diagram datasets to ensure robustness across different diagram types and drawing styles. We employed a strategic dataset partitioning scheme where different subsets serve specific model training purposes.
@@ -171,8 +204,7 @@ We implemented a targeted approach for dataset utilization based on the specific
 
 \textbf{Classifier Training:} To enhance model robustness and generalization capabilities, we employed class diagrams, circuit diagrams, and school diagrams from the UML, CircuitNet, and AI2D datasets respectively. This diverse selection ensures the classifier can effectively distinguish between different diagram types across various domains.
 
-\textbf{Extractor Training:} For the specialized extraction tasks, we focused exclusively on the first three datasets: flowchart and graph diagrams from the FCB, OHFCD\_1, and Finite Automata datasets. This targeted approach allows the extraction models to achieve high precision on the specific structural elements relevant to these diagram types, which were the core of our task.
-
+\textbf{Extractor Training:} For the specialized extraction tasks, we focused exclusively on the first three datasets: flowchart and graph diagrams from the FCB, OHFCD\_1, and Finite Automata datasets. This targeted approach allows the extraction models to achieve high precision on the specific structural elements relevant to these diagram types, which were the core of our task. \\
 
 \section{Experiments}
 
@@ -322,7 +354,7 @@ microsoft-trocr-small-handwritten & \textbf{1.346} & 0.100  & 3947 \\
 \label{tab:text_digitization}
 \end{table}
 
-Some examples of the different models applied to our flowchart diagram dataset can be seen in Figure~\ref{fig:text_digitization_results_1} and in Figure~\ref{fig:text_digitization_results_2}.
+Some examples of the different models applied to our flowchart diagram dataset can be seen in Figure~\ref{fig:text_digitization_results_1} and in Figure~\ref{fig:text_digitization_results_2}. \\
 
 \begin{figure}[H]
 \centering
@@ -486,13 +518,20 @@ For Step (5), we had previously hand-picked some templates (see Figure~\ref{fig:
 	\label{fig:templates}
 \end{figure}
 
-However, this approach didn't work as expected (see Figure~\ref{fig:template_matching_fail}). In particular, it never worked around self arrows: the maximized distance inside one of the two clusters is never between the tail and the head of the arrow.
+However, this approach didn't work as expected (see Figure~\ref{fig:template_matching_fail}). In particular, it never worked around self arrows: the maximized distance inside one of the two clusters is never between the tail and the head of the arrow (see Figure~\ref{fig:selfarrowdc}).
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=150pt]{template_matching_fail.png}
 	\caption{The overall result of the algorithm.}
 	\label{fig:template_matching_fail}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=150pt]{selfarrowdc.jpg}
+	\caption{An instance which explains why the self-arrow's tail and head are not correctly recognized.}
+	\label{fig:selfarrowdc}
 \end{figure}
 
 \section{ArrowNet}
