@@ -42,6 +42,7 @@ class MultistageFlowchartExtractor(MultiStageExtractor, ABC):
 
     parallelization: bool = False
 
+    @override
     def _build_diagram_representation(self, diagram_id: str, image: Image, bboxes: List[ImageBoundingBox]) -> FlowchartRepresentation:
         if self.parallelization:
             return self.__par_build_diagram_representation(diagram_id, image, bboxes)

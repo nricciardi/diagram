@@ -310,9 +310,7 @@ class GNRFlowchartExtractor(MultistageFlowchartExtractor):
         return outcome
 
     @override
-    def _manage_wrong_computed_arrows(self, diagram_id: str, image: Image, arrow_bboxes: List[ImageBoundingBox]) -> \
-    List[Optional[Arrow]]:
-
+    def _manage_wrong_computed_arrows(self, diagram_id: str, image: Image, arrow_bboxes: List[ImageBoundingBox]) -> List[Optional[Arrow]]:
         """
         Args:
             diagram_id:
