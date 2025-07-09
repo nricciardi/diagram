@@ -141,10 +141,10 @@ Once the text has been digitized, it's necessary to effectively compute which el
 It can be assumed that every piece of text is linked to one and only one element or relation. So, every bounding box containing text is linked to the nearest element - it being either a relation or an element. The associations that require too long a distance are eliminated further in the algorithm, and the associated text is discarded.\\
 
 \subsubsection{Element-Text Association}
-After that a text box has been assigned to an element, there's the need to understand if the text is either inside or outside the element and whether the text is actually referring to the given element or not. In order to do this, the overlap between the two bounding boxes is computed; if the overlap is over a certain threshold, heuristically decided, the association is kept. Otherwise, the distance between the two bounding boxes is computed - as the distance between their central point. If the distance is over a certain threshold, the association is kept; otherwise, it's discarded.\\
+After that a text box has been assigned to an element, there's the need to understand if the text is either inside or outside the element and whether the text is actually referring to the given element or not. In order to do this, the distance between the two bounding boxes is computed - as the distance between their central point. If the distance is over a certain threshold, the association is kept; otherwise, it's discarded.\\
 
 \subsubsection{Relation-Text Association}
-After a text box is assigned to a relation, some computation is needed to fully understand how the text is associated to the relation itself. The relation's bounding box is then split into three different sections. The overlap between the text bounding box and each of the three sections boxes is computed - then, the section with the highest overlap value is then assigned to the text under consideration. 
+After a text box is assigned to a relation, some computation is needed to fully understand how the text is associated to the relation itself. The relation's bounding box is then split into three different sections. The overlap between the text bounding box and each of the three sections boxes is computed - then, the section with the highest overlap value is then assigned to the text under consideration. \\
 
 \section{Dataset}
 Our approach leverages multiple handwritten diagram datasets to ensure robustness across different diagram types and drawing styles. We employed a strategic dataset partitioning scheme where different subsets serve specific model training purposes.
@@ -445,7 +445,7 @@ Continued refinements in both the recognition pipeline and the system's usabilit
 The first algorithmic approach proposed to solve this task - called \textit{Double Clustering} - was as follows: 
 \begin{enumerate}
 	\item Find the keypoints of the arrow using SIFT \cite{SIFT}.
-	\item Apply a clustering algorithm to the bounding box.
+	\item Apply a clustering algorithm to the image inside the bounding box, leveraging only the keypoints.
 	\item Suppose that the biggest cluster belongs to the arrow; the other clusters are thought to contain useless elements for this task, and can be discarded.
 	\item Find the two keypoints inside the arrow with maximum distance. Assume that these two points are closely related to the two ends of the arrow.
 	\item Run a template matching procedure inside the two clusters to find the head of the arrow.
