@@ -425,7 +425,13 @@ We'd like to point out a few things about the results shown Figure~\ref{fig:resu
 Another result we'd like to present is a comparison between D.I.A.G.R.A.M.'s results and what GPT-4o could give in zero-shot. The prompt given was the following: "The current image features a diagram. Analyze it and output the respective D2 and Mermaid script.". The results given (see Figure~\ref{fig:chat}) may be - at first glance - quite similar. However, some key differences arise. For instance, in diagrams (b), (e), (f), GPT isn't able to correctly output the shape of the nodes - whereas our net is capable of doing. Just like our net added a node instead of the self-arrow (see preceding paragraph), GPT isn't able to correctly recognize that portion of ink as a self-arrow (images (e), (f)). Another subtle difference - this time, not logical - can be seen in image (c): GPT created three different nodes, while the original image had only one.
 
 \section{Conclusion and Future Work}
-TODO
+In this work, we introduced D.I.A.G.R.A.M., a system designed for the recognition and digitalization of visual diagrams. By combining deterministic algorithms with deep learning models, the system is capable of interpreting graphical input and converting it into structured, machine-readable formats. Our architecture demonstrates the feasibility of diagram understanding as a hybrid problem, leveraging both rule-based and learned components to achieve robustness and flexibility.
+
+Despite the promising results, several opportunities remain for improvement. A key direction for future work is the parallelization of the extractor module, which currently represents a bottleneck in the processing pipeline. Efficient multi-threaded implementations could significantly speed up large-scale or real-time diagram analysis.
+
+Additionally, to enhance portability and reproducibility, the system could benefit from containerization using Docker, particularly for managing CLI tools and Python dependencies. This would allow for more consistent deployment across diverse environments and simplify collaboration and maintenance.
+
+Continued refinements in both the recognition pipeline and the system's usability will move us closer to a practical tool for academic, industrial, and educational use cases where diagram understanding and easy modeling is essential.
 
 \newpage
 \bibliographystyle{IEEEtran}
