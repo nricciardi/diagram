@@ -1,4 +1,4 @@
-# D.I.A.G.R.A.M.: Development of Image Analysis for Graph Recognition And Modeling
+# DRAFT: Diagram Recognition and Formatting Tool
 
 This project proposes the development of a system for analyzing different types of handwritten diagrams and converting them into well-rendered images through a textual syntax.
 The goal is to create a tool capable of analyzing scanned or photographed sketches of diagrams and automatically generating code that can be rendered into the same diagrams digitally, 
@@ -31,7 +31,7 @@ conda activate diagram
 pip3 install torch opencv-python matplotlib requests pillow pandas torchvision numpy shapely transformers sentencepiece protobuf torchmetrics scikit-learn
 ```
 
-3. Check _DIAGRAM_ installation
+3. Check _DRAFT_ installation
 
 ```bash
 python src/main.py -h
